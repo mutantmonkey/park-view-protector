@@ -37,6 +37,16 @@ public class ParkViewProtector extends Canvas
 		
 		// make the window visible
 		window.setVisible(true);
+		
+		// this makes the program end when the window is closed
+		window.addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e)
+			{
+				window.dispose();
+				System.exit(0);
+			}
+		});
 	}
 	
 	public static void main(String args[])
