@@ -6,12 +6,15 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class Entity
 {
-	int hp;
+	public int hp;
+	
+	public ArrayList<Item> inventory;
 	
 	public Entity(int health)
 	{
