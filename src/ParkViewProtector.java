@@ -19,6 +19,8 @@ public class ParkViewProtector extends Canvas
 	protected JFrame window;
 	protected JPanel contentPanel;
 	
+	private boolean running			= true;
+	
 	public ParkViewProtector()
 	{
 		// create container JFrame (window)
@@ -48,6 +50,13 @@ public class ParkViewProtector extends Canvas
 				System.exit(0);
 			}
 		});
+	}
+	
+	public void gameLoop()
+	{
+		while(running)
+		{
+		}
 	}
 	
 	public static void main(String args[])
