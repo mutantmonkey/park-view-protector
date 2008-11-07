@@ -4,11 +4,6 @@
  * @author	Javateerz
  */
 
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-
 public class InfectedStudent extends Student
 {
 	/**
