@@ -13,16 +13,16 @@ public class Student extends Entity
 	/**
 	 * Create a new student
 	 * 
-	 * @param health	HP of student
-	 * @param maxHealth	Max HP of student
+	 * @param hp		HP of student
+	 * @param maxHp		Max HP of student
 	 * @param spd		Speed of student
-	 * @param gend		Gender of student
+	 * @param gender	Gender of student
 	 */
-	public Student(int health, int maxHealth, double spd, char gend)
+	public Student(int x, int y, int hp, int maxHp, double spd, char gender)
 	{
-		super(health, maxHealth, spd);
+		super(x, y, hp, maxHp, spd);
 		
-		gender		= gend;
+		this.gender		= gender;
 	}
 	
 	/**
