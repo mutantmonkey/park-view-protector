@@ -4,9 +4,10 @@
  * @author	Javateerz
  */
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 
-public abstract class Entity
+public abstract class Character
 {
 	protected int hp;
 	protected int maxHp;
@@ -21,7 +22,7 @@ public abstract class Entity
 	
 	protected Sprite sprite;
 	
-	public Entity(int x, int y, int hp, int maxHp, double speed)
+	public Character(int x, int y, int hp, int maxHp, double speed)
 	{
 		this.x		= x;
 		this.y		= y;
@@ -29,6 +30,8 @@ public abstract class Entity
 		this.hp		= hp;
 		this.maxHp	= maxHp;
 		this.speed	= speed;
+		
+		//this.sprite	= DataStore.INSTANCE.getSprite("images/placeholder.gif");
 	}
 	
 	public int getHp()
@@ -41,18 +44,27 @@ public abstract class Entity
 		hp		   -= amount;
 	}
 	
-	public void move(int direction)
+	public void move(int distX, int distY)
 	{
-		
+		x		   += distX;
+		y		   += distY;
 	}
 	
-	public void dropItem()
+	public void dropItem(int i)
 	{
-		
+		inventory.remove(i);
 	}
 	
 	public void pickItem(Item item)
 	{
 		inventory.add(item);
+	}
+	
+	/**
+	 * Called by graphics API, draw the entity
+	 */
+	public void draw(Graphics g)
+	{
+		sprite.draw(g, x, y);
 	}
 }

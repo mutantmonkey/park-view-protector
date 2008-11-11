@@ -4,7 +4,7 @@
  * @author	Javateerz
  */
 
-public class Student extends Entity
+public class Student extends Character
 {
 	private char gender;
 	private boolean infected;
@@ -22,6 +22,7 @@ public class Student extends Entity
 		super(x, y, hp, maxHp, spd);
 		
 		this.gender		= gender;
+		this.sprite		= DataStore.INSTANCE.getSprite("images/student.gif");
 	}
 	
 	/**
