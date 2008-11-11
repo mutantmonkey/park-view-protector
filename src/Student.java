@@ -4,26 +4,60 @@
  * @author	Javateerz
  */
 
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-
-public class Student extends Entity
+public class Student extends Character
 {
-	char gender;
+	private char gender;
+	private boolean infected;
 	
 	/**
 	 * Create a new student
 	 * 
-	 * @param health	HP of student
+	 * @param hp		HP of student
+	 * @param maxHp		Max HP of student
 	 * @param spd		Speed of student
-	 * @param gend		Gender of student
+	 * @param gender	Gender of student
 	 */
-	public Student(int health, double spd, char gend)
+	public Student(int x, int y, int hp, int maxHp, double spd, char gender)
 	{
-		super(health, spd);
+		super(x, y, hp, maxHp, spd);
 		
-		gender		= gend;
+		this.gender		= gender;
+		this.sprite		= DataStore.INSTANCE.getSprite("images/student.gif");
+	}
+	
+	/**
+	 * Returns the gender of the student
+	 * 
+	 * @return
+	 */
+	public char getGender()
+	{
+		return gender;
+	}
+	
+	/**
+	 * Returns whether or not the student is "infected"
+	 * 
+	 * @return
+	 */
+	public boolean isInfected()
+	{
+		return infected;
+	}
+	
+	/**
+	 * Gives the student the "infection"
+	 */
+	public void infect()
+	{
+		infected			= true;
+	}
+	
+	/**
+	 * Cures the infection of the student the "infection"
+	 */
+	public void cure()
+	{
+		infected			= false;
 	}
 }

@@ -16,8 +16,12 @@ public class ParkViewProtector extends Canvas
 	public static final int WIDTH	= 700;
 	public static final int HEIGHT	= 500;
 	
+	public static final int SPEED_THROTTLE	= 100;
+	
 	protected JFrame window;
 	protected JPanel contentPanel;
+	
+	private boolean running			= true;
 	
 	public ParkViewProtector()
 	{
@@ -29,7 +33,7 @@ public class ParkViewProtector extends Canvas
 		contentPanel				= (JPanel) window.getContentPane();
 		contentPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		
-		// this makes the panel behave like what we were used to in ACM
+		// this makes the panel behave like what we were used to with ACM
 		contentPanel.setLayout(null);
 		
 		// set content panel size
@@ -50,8 +54,27 @@ public class ParkViewProtector extends Canvas
 		});
 	}
 	
+	/**
+	 * The main game loop
+	 */
+	public void mainLoop()
+	{
+		while(running)
+		{
+			// keep the game from running too fast
+			try
+			{
+				Thread.sleep(SPEED_THROTTLE);
+			}
+			catch(Exception e) {}
+		}
+	}
+	
 	public static void main(String args[])
 	{
-		new ParkViewProtector();
+		ParkViewProtector game			= new ParkViewProtector();
+		game.mainLoop();
+		
+		System.out.println("The game has finished running! Yay");
 	}
 }
