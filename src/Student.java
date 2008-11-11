@@ -7,7 +7,6 @@
 public class Student extends Entity
 {
 	private char gender;
-	
 	private boolean infected;
 	
 	/**
@@ -40,7 +39,7 @@ public class Student extends Entity
 	 * 
 	 * @return
 	 */
-	public boolean getInfected()
+	public boolean isInfected()
 	{
 		return infected;
 	}

@@ -10,6 +10,11 @@ public class Sprite
 {
 	private Image image;
 	
+	/**
+	 * Create a new sprite
+	 * 
+	 * @param image An image to use as the sprite
+	 */
 	public Sprite(Image image)
 	{
 		this.image		= image;

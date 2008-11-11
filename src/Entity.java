@@ -4,20 +4,22 @@
  * @author	Javateerz
  */
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public abstract class Entity
 {
-	public int hp;
-	public int maxHp;
+	protected int hp;
+	protected int maxHp;
 	
+	protected double speed;
+	
+	// placement
 	private int x;
 	private int y;
 	
-	public double speed;
-	
 	public ArrayList<Item> inventory;
+	
+	protected Sprite sprite;
 	
 	public Entity(int x, int y, int hp, int maxHp, double speed)
 	{
@@ -29,7 +31,17 @@ public abstract class Entity
 		this.speed	= speed;
 	}
 	
-	public void move()
+	public int getHp()
+	{
+		return hp;
+	}
+	
+	public void adjustHp(int amount)
+	{
+		hp		   -= amount;
+	}
+	
+	public void move(int direction)
 	{
 		
 	}
@@ -39,8 +51,8 @@ public abstract class Entity
 		
 	}
 	
-	public void pickItem()
+	public void pickItem(Item item)
 	{
-		
+		inventory.add(item);
 	}
 }
