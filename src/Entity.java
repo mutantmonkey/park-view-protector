@@ -22,4 +22,4 @@ public class Entity
 		hp		= health;
 		speed	= spd;
 	}
-}
+} 
