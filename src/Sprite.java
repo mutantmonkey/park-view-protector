@@ -8,16 +8,16 @@ import java.awt.*;
 
 public class Sprite
 {
-	private Image image;
+	private Image img;
 	
 	/**
 	 * Create a new sprite
 	 * 
 	 * @param image An image to use as the sprite
 	 */
-	public Sprite(Image image)
+	public Sprite(Image img)
 	{
-		this.image		= image;
+		this.img		= img;
 	}
 	
 	/**
@@ -29,6 +29,6 @@ public class Sprite
 	 */
 	public void draw(Graphics g, int x, int y)
 	{
-		g.drawImage(image, x, y, null);
+		g.drawImage(img, x, y, null);
 	}
 }
