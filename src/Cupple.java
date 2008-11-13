@@ -6,13 +6,9 @@ public class Cupple extends Character
 	private int x;
 	private int y;
 	
-	public Cupple(int x,int y,int hp,int maxHp,double speed)
+	public Cupple(Student a,Student b)
 	{
-		super(x,y,hp,maxHp,speed);
-	}
-	
-	public void makeCupple(Student a,Student b)
-	{
+		super(a.x,a.y,a.hp+b.hp,a.maxHp,(a.speed+b.speed)/4);
 		if(a.getGender() == 'm')
 		{
 			male = a;
@@ -23,8 +19,6 @@ public class Cupple extends Character
 			male = b;
 			female = a;
 		}
-		hp = a.getHp()*b.getHp();
-		speed = (a.getSpeed()+b.getSpeed)/2;
 	}
 	
 	public Student getMale()
