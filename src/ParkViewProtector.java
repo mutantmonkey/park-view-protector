@@ -26,6 +26,7 @@ public class ParkViewProtector extends Canvas
 	
 	private boolean running					= true;
 	
+	private Staff player;
 	private ArrayList<Student> students		= new ArrayList<Student>();
 	
 	public ParkViewProtector()
@@ -65,7 +66,20 @@ public class ParkViewProtector extends Canvas
 		// don't automatically repaint
 		setIgnoreRepaint(true);
 		
+		// initialize everything
+		initPlayer();
 		initStudents();
+		
+		// add key handler class
+		addKeyListener(new KeyHandler());
+	}
+	
+	/**
+	 * Create and initialize player (the staff member we're playing as)
+	 */
+	public void initPlayer()
+	{
+		player						= new Stark(10, 10, 10, 10, 10.0, 10,10, 10);
 	}
 	
 	/**
@@ -107,6 +121,9 @@ public class ParkViewProtector extends Canvas
 			// draw the background
 			g.setColor(Color.white);
 			g.fillRect(0, 0, WIDTH, HEIGHT);
+			
+			// update player
+			player.draw(g);
 			
 			// update students
 			for(int i = 0; i < students.size(); i++)
