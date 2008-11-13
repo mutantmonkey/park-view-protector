@@ -15,8 +15,8 @@ public abstract class Character
 	protected double speed;
 	
 	// placement
-	private int x;
-	private int y;
+	protected int x;
+	protected int y;
 	
 	public ArrayList<Item> inventory;
 	
@@ -57,8 +57,8 @@ public abstract class Character
 	
 	public void move(int distX, int distY)
 	{
-		x		   += distX;
-		y		   += distY;
+		x		   += distX * speed;
+		y		   += distY * speed;
 	}
 	
 	public void dropItem(int i)
