@@ -8,20 +8,25 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class ParkViewProtector extends Canvas
 {
-	public static final int WIDTH	= 700;
-	public static final int HEIGHT	= 500;
+	public static final int WIDTH			= 700;
+	public static final int HEIGHT			= 500;
 	
 	public static final int SPEED_THROTTLE	= 100;
+	public static final int MAX_STUDENTS	= 5;
 	
 	protected JFrame window;
 	protected JPanel contentPanel;
 	
-	private boolean running			= true;
+	private boolean running					= true;
+	
+	private ArrayList<Student> students		= new ArrayList<Student>();
 	
 	public ParkViewProtector()
 	{
@@ -40,6 +45,10 @@ public class ParkViewProtector extends Canvas
 		setBounds(0, 0, WIDTH, HEIGHT);
 		contentPanel.add(this);
 		
+		// set up window
+		window.setResizable(false);
+		window.pack();
+		
 		// make the window visible
 		window.setVisible(true);
 		
@@ -52,6 +61,34 @@ public class ParkViewProtector extends Canvas
 				System.exit(0);
 			}
 		});
+		
+		// don't automatically repaint
+		setIgnoreRepaint(true);
+		
+		initStudents();
+	}
+	
+	/**
+	 * Create and initialize students
+	 */
+	public void initStudents()
+	{
+		int numStudents				= (int) (Math.random() * MAX_STUDENTS) + 1;
+		Student student				= null;
+		
+		int x, y;
+		double speed;
+		
+		for(int i = 0; i < numStudents; i++)
+		{
+			x						= (int) (Math.random() * WIDTH) + 1;
+			y						= (int) (Math.random() * HEIGHT) + 1;
+			speed					= Math.random() * 5 + 1;
+			
+			student					= new Student(x, y, 5, 5, speed, 0, 'm');
+			
+			students.add(student);
+		}
 	}
 	
 	/**
@@ -59,11 +96,30 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void mainLoop()
 	{
-		Student test				= new Student(5, 5, 5, 5, 2.0, 'm');
+		// accelerated graphics
+		createBufferStrategy(2);
+		BufferStrategy strategy		= getBufferStrategy();
 		
 		while(running)
 		{
-			test.draw(getGraphics());
+			Graphics g				= (Graphics) strategy.getDrawGraphics();
+			
+			// draw the background
+			g.setColor(Color.white);
+			g.fillRect(0, 0, WIDTH, HEIGHT);
+			
+			// update students
+			for(int i = 0; i < students.size(); i++)
+			{
+				students.get(i).draw(g);
+				
+				// move students randomly for testing
+				students.get(i).move((int) (Math.random() * 5) - 2, (int) (Math.random() * 5) - 2);
+			}
+			
+			// finish drawing
+			g.dispose();
+			strategy.show();
 			
 			// keep the game from running too fast
 			try
