@@ -81,6 +81,9 @@ public class ParkViewProtector extends Canvas
 		
 		// add key handler class
 		addKeyListener(new KeyHandler());
+		
+		// request focus so we will get events without a click
+		requestFocus();
 	}
 	
 	/**
