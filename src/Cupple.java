@@ -8,17 +8,14 @@ public class Cupple extends Character
 	
 	public Cupple(int x,int y,int hp,int maxHp,double speed)
 	{
-		super(hp,maxHp,speed);
-		this.x = x;
-		this.y = y;
+		super(x,y,hp,maxHp,speed);
 	}
 	
-	public Cupple(Student a,Student b)
+	public void makeCupple(Student a,Student b)
 	{
-		super();
 		if(a.getGender() == 'm')
 		{
-			male = new Student(x,y,a.getHp(),a.getMaxHp(),a.getSpeed(),'m');
+			male = a;
 			female = b;
 		}
 		else

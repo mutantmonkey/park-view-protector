@@ -44,6 +44,17 @@ public abstract class Character
 		hp		   -= amount;
 	}
 	
+	public double getSpeed()
+	{
+		return speed;
+	}
+	
+	public double changeSpeed(double change)
+	{
+		speed = change;
+		return speed;
+	}
+	
 	public void move(int distX, int distY)
 	{
 		x		   += distX;
