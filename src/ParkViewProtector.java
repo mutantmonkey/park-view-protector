@@ -59,8 +59,12 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void mainLoop()
 	{
+		Student test				= new Student(5, 5, 5, 5, 2.0, 'm');
+		
 		while(running)
 		{
+			test.draw(getGraphics());
+			
 			// keep the game from running too fast
 			try
 			{
