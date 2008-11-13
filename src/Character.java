@@ -1,7 +1,7 @@
 /**
- * Park View Protector
+ * Class to handle everything associated with Student, Staff, and Cupple
  *
- * @author	Javateerz
+ * @author	Jamie of the Javateerz
  */
 
 import java.awt.Graphics;
@@ -37,16 +37,21 @@ public abstract class Character
 		this.sprite	= DataStore.INSTANCE.getSprite("images/placeholder.gif");
 	}
 	
+	/**
+	 * Returns the amount of HP that this character has
+	 * 
+	 * @return Amount of HP
+	 */
 	public int getHp()
 	{
 		return hp;
 	}
 	
 	/**
+	 * Decreases the HP by the specified amount
 	 * 
-	 * 
-	 * @param amount
-	 * @return
+	 * @param amount Amount of HP to subtract
+	 * @return New amount of HP
 	 */
 	public int adjustHp(int amount)
 	{
@@ -55,6 +60,11 @@ public abstract class Character
 		return hp;
 	}
 	
+	/**
+	 * Returns the speed of the character
+	 * 
+	 * @return Speed
+	 */
 	public double getSpeed()
 	{
 		return speed;
@@ -87,18 +97,28 @@ public abstract class Character
 	 */
 	public abstract void attack();
 	
+	/**
+	 * Removes an item from the character's inventory
+	 * 
+	 * @param i Index of item in the ArrayList
+	 */
 	public void dropItem(int i)
 	{
 		inventory.remove(i);
 	}
 	
+	/**
+	 * Adds an item to the character's inventory
+	 * 
+	 * @param item Item to add
+	 */
 	public void pickItem(Item item)
 	{
 		inventory.add(item);
 	}
 	
 	/**
-	 * Called by graphics API, draw the entity
+	 * Called by main game loop, draws the character's sprite on the screen
 	 */
 	public void draw(Graphics g)
 	{

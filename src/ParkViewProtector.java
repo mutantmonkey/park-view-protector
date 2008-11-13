@@ -3,7 +3,7 @@
  * 
  * This class is a subclass of Canvas so we can use accelerated graphics
  *
- * @author	Javateerz
+ * @author	Jamie of the Javateerz
  */
 
 import java.awt.*;
@@ -18,7 +18,7 @@ public class ParkViewProtector extends Canvas
 	public static final int WIDTH			= 700;
 	public static final int HEIGHT			= 500;
 	
-	public static final int SPEED_THROTTLE	= 100;
+	public static final int SPEED_THROTTLE	= 10;
 	public static final int MAX_STUDENTS	= 5;
 	
 	protected JFrame window;
@@ -26,6 +26,15 @@ public class ParkViewProtector extends Canvas
 	
 	private boolean running					= true;
 	
+	// how far the player needs to move in each direction the next time the game loop is run
+	public static int moveX					= 0;
+	public static int moveY					= 0;
+	
+	// graphics
+	private Graphics g;
+	private BufferStrategy strategy;
+	
+	// characters
 	private Staff player;
 	private ArrayList<Student> students		= new ArrayList<Student>();
 	
@@ -48,7 +57,7 @@ public class ParkViewProtector extends Canvas
 		
 		// set up window
 		window.setResizable(false);
-		window.pack();
+		//window.pack();
 		
 		// make the window visible
 		window.setVisible(true);
@@ -112,11 +121,11 @@ public class ParkViewProtector extends Canvas
 	{
 		// accelerated graphics
 		createBufferStrategy(2);
-		BufferStrategy strategy		= getBufferStrategy();
+		strategy					= getBufferStrategy();
 		
 		while(running)
 		{
-			Graphics g				= (Graphics) strategy.getDrawGraphics();
+			g						= (Graphics) strategy.getDrawGraphics();
 			
 			// draw the background
 			g.setColor(Color.white);
@@ -137,6 +146,11 @@ public class ParkViewProtector extends Canvas
 			// finish drawing
 			g.dispose();
 			strategy.show();
+			
+			// move player
+			player.move(moveX, moveY);
+			moveX					= 0;
+			moveY					= 0;
 			
 			// keep the game from running too fast
 			try

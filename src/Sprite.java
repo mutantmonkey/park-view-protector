@@ -1,7 +1,7 @@
 /**
  * Sprite class using AWT
  *
- * @author	Javateerz
+ * @author	Jamie of the Javateerz
  */
 
 import java.awt.*;

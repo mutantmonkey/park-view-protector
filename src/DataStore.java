@@ -1,7 +1,8 @@
 /**
- * A singleton class to handle data storage and caching (to prevent loading sprites, music, etc. more than once)
+ * Singleton class to handle data storage and caching (to prevent loading sprites, music,
+ * etc. more than once)
  * 
- * @author Javateerz
+ * @author	Jamie of the Javateerz
  */
 
 import java.awt.image.*;
@@ -17,7 +18,7 @@ public enum DataStore
 {
 	INSTANCE;
 	
-	private HashMap<String, Sprite> sprites	= new HashMap();
+	private HashMap<String, Sprite> sprites	= new HashMap<String, Sprite>();
 	
 	public Sprite getSprite(String file)
 	{

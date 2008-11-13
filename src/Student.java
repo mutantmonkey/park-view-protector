@@ -1,7 +1,7 @@
 /**
- * Park View Protector
+ * This class stores information about a Student
  *
- * @author	Javateerz
+ * @author	Jamie of the Javateerz
  */
 
 public class Student extends Character
