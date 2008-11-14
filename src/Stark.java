@@ -16,10 +16,21 @@ public class Stark extends Staff
 	
 	public void attack()
 	{
-		//AOE aoe=new AOE
+		//Attack atk=new Attack(x, y, direct, damage, 0, 0);
+		//atk.dealDamage();
 	}
-	public void doSkill()
+	public void skill(int ski)
 	{
-		
+		switch(ski)
+		{
+			//The skills will be implemented here.
+			case 0:		//Recycle
+				//Attack atk=new Attack();
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+		}
 	}
 }

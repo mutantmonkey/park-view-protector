@@ -15,7 +15,7 @@ public abstract class Staff extends Character
 {
 	private int tp;
 	private int maxTp;
-	public abstract void doSkill();
+	public abstract void skill(int ski);
 	
 	// Creates a Staff member.
 	public Staff(int x, int y, int hp, int maxHp, double speed, int dmg, int tp, int maxTp)
