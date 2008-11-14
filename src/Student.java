@@ -22,7 +22,7 @@ public class Student extends Character
 		super(x, y, hp, maxHp, spd, dmg);
 		
 		this.gender		= gender;
-		this.sprite		= DataStore.INSTANCE.getSprite("images/student.gif");
+		this.sprite		= DataStore.INSTANCE.getSprite("images/student.png");
 	}
 	
 	/**

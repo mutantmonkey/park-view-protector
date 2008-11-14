@@ -19,7 +19,9 @@ public class ParkViewProtector extends Canvas
 	public static final int HEIGHT			= 500;
 	
 	public static final int SPEED_THROTTLE	= 10;
-	public static final int MAX_STUDENTS	= 5;
+	
+	public static final int MIN_STUDENTS	= 5;
+	public static final int MAX_STUDENTS	= 15;
 	
 	protected JFrame window;
 	protected JPanel contentPanel;
@@ -84,6 +86,10 @@ public class ParkViewProtector extends Canvas
 		
 		// request focus so we will get events without a click
 		requestFocus();
+		
+		// accelerated graphics
+		createBufferStrategy(2);
+		strategy					= getBufferStrategy();
 	}
 	
 	/**
@@ -99,7 +105,7 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void initStudents()
 	{
-		int numStudents				= (int) (Math.random() * MAX_STUDENTS) + 1;
+		int numStudents				= (int) (Math.random() * (MAX_STUDENTS - MIN_STUDENTS + 1)) + MIN_STUDENTS;
 		Student student				= null;
 		
 		int x, y;
@@ -109,7 +115,7 @@ public class ParkViewProtector extends Canvas
 		{
 			x						= (int) (Math.random() * WIDTH) + 1;
 			y						= (int) (Math.random() * HEIGHT) + 1;
-			speed					= Math.random() * 5 + 1;
+			speed					= Math.random() * 5;
 			
 			student					= new Student(x, y, 5, 5, speed, 0, 'm');
 			
@@ -122,10 +128,6 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void mainLoop()
 	{
-		// accelerated graphics
-		createBufferStrategy(2);
-		strategy					= getBufferStrategy();
-		
 		while(running)
 		{
 			g						= (Graphics) strategy.getDrawGraphics();
@@ -143,7 +145,7 @@ public class ParkViewProtector extends Canvas
 				students.get(i).draw(g);
 				
 				// move students randomly for testing
-				students.get(i).move((int) (Math.random() * 5) - 2, (int) (Math.random() * 5) - 2);
+				students.get(i).move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
 			}
 			
 			// finish drawing

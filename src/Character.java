@@ -34,7 +34,7 @@ public abstract class Character
 		
 		this.speed	= speed;
 		
-		this.sprite	= DataStore.INSTANCE.getSprite("images/placeholder.gif");
+		this.sprite	= DataStore.INSTANCE.getSprite("images/placeholder.png");
 	}
 	
 	/**
