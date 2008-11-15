@@ -111,14 +111,16 @@ public class ParkViewProtector extends Canvas
 		
 		int x, y;
 		double speed;
+		char gender;
 		
 		for(int i = 0; i < numStudents; i++)
 		{
 			x						= (int) (Math.random() * WIDTH) + 1;
 			y						= (int) (Math.random() * HEIGHT) + 1;
 			speed					= Math.random() * 5;
+			gender					= (Math.random() > 0.4) ? 'm' : 'f';
 			
-			student					= new Student(x, y, 5, 5, speed, 0, 'm');
+			student					= new Student(x, y, 5, 5, speed, 0, gender);
 			
 			students.add(student);
 		}
