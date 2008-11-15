@@ -77,7 +77,32 @@ public class ParkViewProtector extends Canvas
 		
 		// don't automatically repaint
 		setIgnoreRepaint(true);
+	}
+	
+	/**
+	 * Show opening graphics
+	 */
+	public void showOpening()
+	{
+		Graphics g						= getGraphics();
 		
+		// draw the background
+		g.setColor(Color.white);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		Sprite mainLogo					= DataStore.INSTANCE.getSprite("images/javateerslogo.png");
+		mainLogo.draw(g, WIDTH / 2 - mainLogo.getWidth() / 2, HEIGHT / 2 - mainLogo.getHeight() / 2);
+		
+		g.dispose();
+		
+		try{Thread.sleep(5000);}catch(Exception e){}
+	}
+	
+	/**
+	 * Initialize game
+	 */
+	public void init()
+	{
 		// initialize everything
 		initPlayer();
 		initStudents();
@@ -175,6 +200,8 @@ public class ParkViewProtector extends Canvas
 	public static void main(String args[])
 	{
 		ParkViewProtector game			= new ParkViewProtector();
+		game.showOpening();
+		game.init();
 		game.mainLoop();
 		
 		System.out.println("The game has finished running! Yay");
