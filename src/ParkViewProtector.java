@@ -39,6 +39,7 @@ public class ParkViewProtector extends Canvas
 	// characters
 	private Staff player;
 	private ArrayList<Student> students		= new ArrayList<Student>();
+	private ArrayList<Cupple> couples		= new ArrayList<Cupple>();
 	
 	public ParkViewProtector()
 	{
@@ -145,7 +146,10 @@ public class ParkViewProtector extends Canvas
 				students.get(i).draw(g);
 				
 				// move students randomly for testing
-				students.get(i).move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
+				if(Math.random() > 0.9)
+				{
+					students.get(i).move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
+				}
 			}
 			
 			// finish drawing
