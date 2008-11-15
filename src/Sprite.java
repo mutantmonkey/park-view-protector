@@ -21,6 +21,26 @@ public class Sprite
 	}
 	
 	/**
+	 * Gets the width (in pixels) of the sprite
+	 * 
+	 * @return Width of the sprite
+	 */
+	public int getWidth()
+	{
+		return img.getWidth(null);
+	}
+	
+	/**
+	 * Gets the height (in pixels) of the sprite
+	 * 
+	 * @return Height of the sprite
+	 */
+	public int getHeight()
+	{
+		return img.getHeight(null);
+	}
+	
+	/**
 	 * Draws the image on a Graphics context
 	 * 
 	 * @param g Graphics context
