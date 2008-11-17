@@ -177,6 +177,12 @@ public class ParkViewProtector extends Canvas
 				{
 					students.get(i).move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
 				}
+				
+				// collision detection! :D
+				if(player.getBounds().intersects(students.get(i).getBounds()))
+				{
+					students.remove(i);
+				}
 			}
 			
 			// finish drawing

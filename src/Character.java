@@ -5,6 +5,7 @@
  */
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public abstract class Character
@@ -123,5 +124,16 @@ public abstract class Character
 	public void draw(Graphics g)
 	{
 		sprite.draw(g, x, y);
+	}
+	
+	/**
+	 * Gets the bounds :D
+	 * @return Bounding box
+	 */
+	public Rectangle getBounds()
+	{
+		Rectangle rect			= new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
+		
+		return rect;
 	}
 }
