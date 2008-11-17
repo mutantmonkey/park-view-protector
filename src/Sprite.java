@@ -1,7 +1,7 @@
 /**
  * Sprite class using AWT
  *
- * @author	Javateerz
+ * @author	Jamie of the Javateerz
  */
 
 import java.awt.*;
@@ -18,6 +18,26 @@ public class Sprite
 	public Sprite(Image img)
 	{
 		this.img		= img;
+	}
+	
+	/**
+	 * Gets the width (in pixels) of the sprite
+	 * 
+	 * @return Width of the sprite
+	 */
+	public int getWidth()
+	{
+		return img.getWidth(null);
+	}
+	
+	/**
+	 * Gets the height (in pixels) of the sprite
+	 * 
+	 * @return Height of the sprite
+	 */
+	public int getHeight()
+	{
+		return img.getHeight(null);
 	}
 	
 	/**

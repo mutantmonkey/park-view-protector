@@ -1,7 +1,7 @@
 /**
- * Park View Protector
+ * This class stores information about a Student
  *
- * @author	Javateerz
+ * @author	Jamie of the Javateerz
  */
 
 public class Student extends Character
@@ -17,12 +17,12 @@ public class Student extends Character
 	 * @param spd		Speed of student
 	 * @param gender	Gender of student
 	 */
-	public Student(int x, int y, int hp, int maxHp, double spd, char gender)
+	public Student(int x, int y, int hp, int maxHp, double spd, int dmg, char gender)
 	{
-		super(x, y, hp, maxHp, spd);
+		super(x, y, hp, maxHp, spd, dmg);
 		
 		this.gender		= gender;
-		this.sprite		= DataStore.INSTANCE.getSprite("images/student.gif");
+		this.sprite		= DataStore.INSTANCE.getSprite("images/student.png");
 	}
 	
 	/**
@@ -59,5 +59,13 @@ public class Student extends Character
 	public void cure()
 	{
 		infected			= false;
+	}
+	
+	/**
+	 * Does an attack
+	 */
+	public void attack()
+	{
+		
 	}
 }
