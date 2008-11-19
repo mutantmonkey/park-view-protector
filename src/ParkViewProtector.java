@@ -148,6 +148,12 @@ public class ParkViewProtector extends Canvas
 			student					= new Student(x, y, 5, 5, speed, 0, gender);
 			
 			students.add(student);
+			
+			// FIXME: remove soon, just for testing
+			if(Math.random() > 0.8)
+			{
+				students.get(i).infect();
+			}
 		}
 	}
 	
@@ -182,6 +188,20 @@ public class ParkViewProtector extends Canvas
 				if(player.getBounds().intersects(students.get(i).getBounds()))
 				{
 					students.remove(i);
+				}
+				
+				// FIXME: this is the worst code
+				if(students.get(i).isInfected())
+				{
+					for(int j = 0; j < students.size(); j++)
+					{
+						if(students.get(i).getBounds().intersects(students.get(j).getBounds()))
+						{
+							students.get(j).infect();
+							//System.out.println("student #" + j + " infected");
+							break;
+						}
+					}
 				}
 			}
 			

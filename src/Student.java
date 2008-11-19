@@ -51,6 +51,8 @@ public class Student extends Character
 	public void infect()
 	{
 		infected			= true;
+		
+		sprite				= DataStore.INSTANCE.getSprite("images/iStudent.png");
 	}
 	
 	/**
@@ -59,6 +61,8 @@ public class Student extends Character
 	public void cure()
 	{
 		infected			= false;
+		
+		sprite				= DataStore.INSTANCE.getSprite("images/student.png");
 	}
 	
 	/**
