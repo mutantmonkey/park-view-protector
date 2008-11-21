@@ -23,18 +23,22 @@ public class KeyHandler extends KeyAdapter
 		{
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_KP_UP:
+			case KeyEvent.VK_W:
 				ParkViewProtector.moveY--;
 				break;
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_KP_DOWN:
+			case KeyEvent.VK_S:
 				ParkViewProtector.moveY++;
 				break;
 			case KeyEvent.VK_LEFT:
 			case KeyEvent.VK_KP_LEFT:
+			case KeyEvent.VK_A:
 				ParkViewProtector.moveX--;
 				break;
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_KP_RIGHT:
+			case KeyEvent.VK_D:
 				ParkViewProtector.moveX++;
 				break;
 		}
