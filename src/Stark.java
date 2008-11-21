@@ -25,7 +25,6 @@ public class Stark extends Staff
 		{
 			//The skills will be implemented here.
 			case 0:		//Recycle
-				//Attack atk=new Attack();
 				break;
 			case 1:
 				break;

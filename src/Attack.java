@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.awt.Rectangle;
 
 /**
  * Park View Protector
@@ -12,10 +13,12 @@ public class Attack
 {
 	private int x;
 	private int y;
+	private int xSize;
+	private int ySize;	
 	private int direct;
 	private int damage;
-	//Target: 0=Student, 1=Staff
-	private int target;
+	//Target: True=Student, FLASE=Staff
+	private boolean isStudent;
 	/*
 	 * Shape of the attack?
 	 * 0=Front
@@ -24,27 +27,39 @@ public class Attack
 	 */
 	private int type;
 	
-	public Attack(int x, int y, int direct, int damage, int target, int type)
+	public Attack(int x, int y, int direct, int damage, boolean isStudent, int type)
 	{
 		this.x=x;
 		this.y=y;
 		this.direct=direct;
 		this.damage=damage;
-		this.target=target;
+		this.isStudent=isStudent;
 		this.type=type;
 	}
 	
-	//I don't know why it's erroring
 	public ArrayList detect()
 	{
 		ArrayList targets;
-		switch(type)
+		if(isStudent)
 		{
-			//type of attacks to impletmented here.
-			case 0:
-				//if(targ instanceof Student)
-				//targets.add(targ)
-				break;
+			switch(type)
+			{
+				//type of attacks to impletmented here.
+				case 0:
+					x-=10;
+					y-=10;
+					xSize=40;
+					ySize=40;
+					break;
+			}
+		}
+		else
+		{
+			switch(type)
+			{
+				case 0:
+					break;
+			}
 		}
 		return targets;
 	}
@@ -56,5 +71,10 @@ public class Attack
 		{
 			targets.get(i).adjustHP(damage);
 		}
+	}
+	public Rectangle getBounds()
+	{
+		Rectangle rect=new Rectangle(x, y, xSize, ySize);
+		return rect;
 	}
 }
