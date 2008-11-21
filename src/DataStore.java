@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 import javax.imageio.*;
+import javax.sound.sampled.*;
 
 // this is an enum, but we could also use our own Singleton class
 public enum DataStore
@@ -19,6 +20,59 @@ public enum DataStore
 	INSTANCE;
 	
 	private HashMap<String, Sprite> sprites	= new HashMap<String, Sprite>();
+	
+	public Clip getAudio(String file)
+	{
+		// load the file
+		//URL url				= this.getClass().getClassLoader().getResource(file);
+		File url			= new File(file);
+		
+		AudioInputStream stream = null;
+		try
+		{
+			stream = AudioSystem.getAudioInputStream(url);
+		}
+		catch (UnsupportedAudioFileException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		catch (IOException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		AudioFormat format	= stream.getFormat();
+		
+		Clip clip = null;
+		
+		try
+		{
+			// Create the clip
+			DataLine.Info info = new DataLine.Info(
+				Clip.class, stream.getFormat(), ((int)stream.getFrameLength()*format.getFrameSize()));
+			clip = (Clip) AudioSystem.getLine(info);
+			
+			// This method does not return until the audio file is completely loaded
+			clip.open(stream);
+			
+			// Start playing
+			clip.start();
+		}
+		catch (LineUnavailableException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return clip;
+	}
 	
 	public Sprite getSprite(String file)
 	{

@@ -124,6 +124,8 @@ public class ParkViewProtector extends Canvas
 	public void initPlayer()
 	{
 		player						= new Stark(10, 10, 10, 10, 10.0, 10,10, 10);
+		
+		DataStore.INSTANCE.getAudio("sounds/nof.wav");
 	}
 	
 	/**
@@ -184,12 +186,6 @@ public class ParkViewProtector extends Canvas
 					students.get(i).move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
 				}
 				
-				// collision detection! :D
-				if(player.getBounds().intersects(students.get(i).getBounds()))
-				{
-					students.remove(i);
-				}
-				
 				// FIXME: this is the worst code
 				if(students.get(i).isInfected())
 				{
@@ -202,6 +198,14 @@ public class ParkViewProtector extends Canvas
 							break;
 						}
 					}
+				}
+				
+				// collision detection! :D
+				if(player.getBounds().intersects(students.get(i).getBounds()))
+				{
+					//Toolkit.getDefaultToolkit().beep();
+					
+					students.remove(i);
 				}
 			}
 			
