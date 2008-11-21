@@ -12,6 +12,8 @@ public class Stark extends Staff
 	public Stark(int x, int y, int hp, int maxHp, double speed, int tp, int maxTp, int damage)
 	{
 		super(x, y, hp, maxHp, speed, tp, maxTp, damage);
+		
+		sprite = DataStore.INSTANCE.getSprite("images/stark.png");
 	}
 	
 	public void attack()
