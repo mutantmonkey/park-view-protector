@@ -191,10 +191,11 @@ public class ParkViewProtector extends Canvas
 				{
 					for(int j = 0; j < students.size(); j++)
 					{
-						if(students.get(i).getBounds().intersects(students.get(j).getBounds()))
+						if(students.get(i).getBounds().intersects(students.get(j).getBounds())
+								&& !students.get(i).isInfected())
 						{
 							students.get(j).infect();
-							//System.out.println("student #" + j + " infected");
+							System.out.println("student #" + j + " infected");
 							break;
 						}
 					}
