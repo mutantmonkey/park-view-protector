@@ -186,7 +186,14 @@ public class ParkViewProtector extends Canvas
 					students.get(i).move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
 				}
 				
+<<<<<<< local
+<<<<<<< local
+				// FIXME: "this is the worst code"
+=======
+=======
+>>>>>>> other
 				// FIXME: this is the worst code
+>>>>>>> other
 				if(students.get(i).isInfected())
 				{
 					for(int j = 0; j < students.size(); j++)
@@ -204,8 +211,17 @@ public class ParkViewProtector extends Canvas
 				// collision detection! :D
 				if(player.getBounds().intersects(students.get(i).getBounds()))
 				{
+<<<<<<< local
+<<<<<<< local
+=======
+=======
+>>>>>>> other
 					//Toolkit.getDefaultToolkit().beep();
 					
+<<<<<<< local
+>>>>>>> other
+=======
+>>>>>>> other
 					students.remove(i);
 				}
 			}
