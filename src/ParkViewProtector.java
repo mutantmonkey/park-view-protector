@@ -20,8 +20,8 @@ public class ParkViewProtector extends Canvas
 	
 	public static final int SPEED_THROTTLE	= 10;
 	
-	public static final int MIN_STUDENTS	= 5;
-	public static final int MAX_STUDENTS	= 15;
+	public static final int MIN_STUDENTS	= 15;
+	public static final int MAX_STUDENTS	= 30;
 	
 	protected JFrame window;
 	protected JPanel contentPanel;
@@ -125,7 +125,7 @@ public class ParkViewProtector extends Canvas
 	{
 		player						= new Stark(10, 10, 10, 10, 10.0, 10,10, 10);
 		
-		DataStore.INSTANCE.getAudio("sounds/nof.wav");
+		//DataStore.INSTANCE.getAudio("sounds/nof.wav");
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class ParkViewProtector extends Canvas
 			students.add(student);
 			
 			// FIXME: remove soon, just for testing
-			if(Math.random() > 0.8)
+			if(Math.random() > 0.5)
 			{
 				students.get(i).infect();
 			}
@@ -164,6 +164,9 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void mainLoop()
 	{
+		Student currStudent;
+		Cupple currCouple;
+		
 		while(running)
 		{
 			g						= (Graphics) strategy.getDrawGraphics();
@@ -178,51 +181,74 @@ public class ParkViewProtector extends Canvas
 			// update students
 			for(int i = 0; i < students.size(); i++)
 			{
-				students.get(i).draw(g);
+				currStudent			= students.get(i);
+				
+				currStudent.draw(g);
 				
 				// move students randomly for testing
 				if(Math.random() > 0.9)
 				{
-					students.get(i).move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
+					currStudent.move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
+				}
+
+				// collision detection! :D
+				if(player.getBounds().intersects(currStudent.getBounds()))
+				{
+					students.remove(i);
+					break;
 				}
 				
-<<<<<<< local
-<<<<<<< local
 				// FIXME: "this is the worst code"
-=======
-=======
->>>>>>> other
-				// FIXME: this is the worst code
->>>>>>> other
-				if(students.get(i).isInfected())
+				if(currStudent.isInfected())
 				{
 					for(int j = 0; j < students.size(); j++)
 					{
-						if(students.get(i).getBounds().intersects(students.get(j).getBounds())
-								&& !students.get(i).isInfected())
+						// don't do anything if it's us
+						if(i == j) continue;
+						
+						// if we hit a student that isn't infected
+						// TODO: decide on and add realistic chances
+						if(currStudent.getBounds().intersects(students.get(j).getBounds())
+								&& !students.get(j).isInfected())
 						{
 							students.get(j).infect();
 							System.out.println("student #" + j + " infected");
 							break;
 						}
+						
+						// if we hit another infected student
+						// TODO: decide on and add realistic chances
+						/*if(currStudent.getBounds().intersects(students.get(j).getBounds()) && 
+								students.get(j).isInfected())
+						{
+							couples.add(new Cupple(currStudent, students.get(j)));
+							
+							/*try
+							{*//*
+								students.remove(i);
+								students.remove(j);
+							/*}
+							catch(Exception e)
+							{
+								System.out.println("Something went wrong when deleting someone :O");
+							}*//*
+							break;
+						}*/
 					}
 				}
+			}
+			
+			// update couples
+			for(int i = 0; i < couples.size(); i++)
+			{
+				currCouple			= couples.get(i);
 				
-				// collision detection! :D
-				if(player.getBounds().intersects(students.get(i).getBounds()))
+				currCouple.draw(g);
+				
+				// move couples randomly for testing
+				if(Math.random() > 0.9)
 				{
-<<<<<<< local
-<<<<<<< local
-=======
-=======
->>>>>>> other
-					//Toolkit.getDefaultToolkit().beep();
-					
-<<<<<<< local
->>>>>>> other
-=======
->>>>>>> other
-					students.remove(i);
+					currCouple.move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
 				}
 			}
 			
