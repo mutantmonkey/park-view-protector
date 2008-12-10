@@ -9,9 +9,11 @@
 
 public class Stark extends Staff
 {
-	public Stark(int x, int y, int hp, int maxHp, double speed, int tp, int maxTp, int damage)
+	public static final double SPEED= 1.0;
+	
+	public Stark(int x, int y, int hp, int maxHp, int tp, int maxTp, int damage)
 	{
-		super(x, y, hp, maxHp, speed, tp, maxTp, damage);
+		super(x, y, hp, maxHp, SPEED, tp, maxTp, damage);
 		
 		sprite = DataStore.INSTANCE.getSprite("images/stark.png");
 	}
