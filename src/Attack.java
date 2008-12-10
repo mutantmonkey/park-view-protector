@@ -18,7 +18,7 @@ public class Attack
 	private int direct;
 	private int damage;
 	//Target: True=Student, FLASE=Staff
-	private boolean isStudent;
+	private int isStudent;
 	/*
 	 * Shape of the attack?
 	 * 0=Front
@@ -66,7 +66,7 @@ public class Attack
 	
 	public void dealDamage()
 	{
-		ArrayList targets=detect();
+		ArrayList<Character> targets=detect();
 		for(int i; i<targets.size(); i++)
 		{
 			targets.get(i).adjustHP(damage);
