@@ -88,6 +88,8 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void showOpening()
 	{
+		DataStore.INSTANCE.getAudio("sounds/clockhomestart.wav");
+		
 		Graphics g						= getGraphics();
 		
 		// draw the background
