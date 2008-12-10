@@ -21,25 +21,127 @@ public class KeyHandler extends KeyAdapter
 		
 		switch(e.getKeyCode())
 		{
+			// UP
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_KP_UP:
+			case KeyEvent.VK_NUMPAD8:
 			case KeyEvent.VK_W:
-				ParkViewProtector.moveY--;
+				ParkViewProtector.upPressed			= true;
 				break;
+			
+			// DOWN
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_KP_DOWN:
+			case KeyEvent.VK_NUMPAD2:
 			case KeyEvent.VK_S:
-				ParkViewProtector.moveY++;
+				ParkViewProtector.downPressed		= true;
 				break;
+				
+			// LEFT
 			case KeyEvent.VK_LEFT:
 			case KeyEvent.VK_KP_LEFT:
+			case KeyEvent.VK_NUMPAD4:
 			case KeyEvent.VK_A:
-				ParkViewProtector.moveX--;
+				ParkViewProtector.leftPressed		= true;
 				break;
+				
+			// RIGHT
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_KP_RIGHT:
+			case KeyEvent.VK_NUMPAD6:
 			case KeyEvent.VK_D:
-				ParkViewProtector.moveX++;
+				ParkViewProtector.rightPressed		= true;
+				break;
+			
+			// UP, TO THE LEFT
+			case KeyEvent.VK_NUMPAD7:
+				ParkViewProtector.upPressed			= true;
+				ParkViewProtector.leftPressed		= true;
+				break;
+				
+			// UP, TO THE RIGHT
+			case KeyEvent.VK_NUMPAD9:
+				ParkViewProtector.upPressed			= true;
+				ParkViewProtector.rightPressed		= true;
+				break;
+				
+			// DOWN, TO THE LEFT
+			case KeyEvent.VK_NUMPAD1:
+				ParkViewProtector.downPressed		= true;
+				ParkViewProtector.leftPressed		= true;
+				break;
+				
+			// DOWN, TO THE RIGHT
+			case KeyEvent.VK_NUMPAD3:
+				ParkViewProtector.downPressed		= true;
+				ParkViewProtector.rightPressed		= true;
+				break;
+		}
+	}
+	
+	/**
+	 * Called when a key is pressed (not necessarily released)
+	 */
+	public void keyReleased(KeyEvent e)
+	{
+		System.out.println("Key release: code " + e.getKeyCode());
+		
+		switch(e.getKeyCode())
+		{
+			// UP
+			case KeyEvent.VK_UP:
+			case KeyEvent.VK_KP_UP:
+			case KeyEvent.VK_NUMPAD8:
+			case KeyEvent.VK_W:
+				ParkViewProtector.upPressed			= false;
+				break;
+				
+			// DOWN
+			case KeyEvent.VK_DOWN:
+			case KeyEvent.VK_KP_DOWN:
+			case KeyEvent.VK_NUMPAD2:
+			case KeyEvent.VK_S:
+				ParkViewProtector.downPressed		= false;
+				break;
+				
+			// LEFT
+			case KeyEvent.VK_LEFT:
+			case KeyEvent.VK_KP_LEFT:
+			case KeyEvent.VK_NUMPAD4:
+			case KeyEvent.VK_A:
+				ParkViewProtector.leftPressed		= false;
+				break;
+				
+			// RIGHT
+			case KeyEvent.VK_RIGHT:
+			case KeyEvent.VK_KP_RIGHT:
+			case KeyEvent.VK_NUMPAD6:
+			case KeyEvent.VK_D:
+				ParkViewProtector.rightPressed		= false;
+				break;
+				
+			// UP, TO THE LEFT
+			case KeyEvent.VK_NUMPAD7:
+				ParkViewProtector.upPressed			= false;
+				ParkViewProtector.leftPressed		= false;
+				break;
+				
+			// UP, TO THE RIGHT
+			case KeyEvent.VK_NUMPAD9:
+				ParkViewProtector.upPressed			= false;
+				ParkViewProtector.rightPressed		= false;
+				break;
+				
+			// DOWN, TO THE LEFT
+			case KeyEvent.VK_NUMPAD1:
+				ParkViewProtector.downPressed		= false;
+				ParkViewProtector.leftPressed		= false;
+				break;
+				
+			// DOWN, TO THE RIGHT
+			case KeyEvent.VK_NUMPAD3:
+				ParkViewProtector.downPressed		= false;
+				ParkViewProtector.rightPressed		= false;
 				break;
 		}
 	}

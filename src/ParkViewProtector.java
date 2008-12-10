@@ -23,14 +23,18 @@ public class ParkViewProtector extends Canvas
 	public static final int MIN_STUDENTS	= 15;
 	public static final int MAX_STUDENTS	= 30;
 	
+	public static final int MOVE_SPEED		= 1;
+	
 	protected JFrame window;
 	protected JPanel contentPanel;
 	
 	private boolean running					= true;
 	
 	// how far the player needs to move in each direction the next time the game loop is run
-	public static int moveX					= 0;
-	public static int moveY					= 0;
+	public static boolean upPressed			= false;
+	public static boolean downPressed		= false;
+	public static boolean leftPressed		= false;
+	public static boolean rightPressed		= false;
 	
 	// graphics
 	private Graphics g;
@@ -123,9 +127,9 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void initPlayer()
 	{
-		player						= new Stark(10, 10, 10, 10, 10.0, 10,10, 10);
+		player						= new Stark(10, 10, 10, 10, 10, 10, 10);
 		
-		//DataStore.INSTANCE.getAudio("sounds/nof.wav");
+		DataStore.INSTANCE.getAudio("sounds/nof.wav");
 	}
 	
 	/**
@@ -218,22 +222,22 @@ public class ParkViewProtector extends Canvas
 						
 						// if we hit another infected student
 						// TODO: decide on and add realistic chances
-						/*if(currStudent.getBounds().intersects(students.get(j).getBounds()) && 
+						if(currStudent.getBounds().intersects(students.get(j).getBounds()) && 
 								students.get(j).isInfected())
 						{
 							couples.add(new Cupple(currStudent, students.get(j)));
 							
-							/*try
-							{*//*
+							try
+							{
 								students.remove(i);
 								students.remove(j);
-							/*}
+							}
 							catch(Exception e)
 							{
 								System.out.println("Something went wrong when deleting someone :O");
-							}*//*
+							}
 							break;
-						}*/
+						}
 					}
 				}
 			}
@@ -256,10 +260,33 @@ public class ParkViewProtector extends Canvas
 			g.dispose();
 			strategy.show();
 			
-			// move player
-			player.move(moveX, moveY);
-			moveX					= 0;
-			moveY					= 0;
+			/////////////////////////////////////////////////////////////////
+			// Move the player
+			/////////////////////////////////////////////////////////////////
+			
+			if(upPressed && !downPressed)
+			{
+				player.move(0, -MOVE_SPEED);
+				//upPressed				= false;
+			}
+			
+			if(downPressed && !upPressed)
+			{
+				player.move(0, MOVE_SPEED);
+				//downPressed				= false;
+			}
+			
+			if(leftPressed && !rightPressed)
+			{
+				player.move(-MOVE_SPEED, 0);
+				//leftPressed				= false;
+			}
+			
+			if(rightPressed && !leftPressed)
+			{
+				player.move(MOVE_SPEED, 0);
+				//rightPressed			= false;
+			}
 			
 			// keep the game from running too fast
 			try
