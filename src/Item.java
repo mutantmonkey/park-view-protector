@@ -1,3 +1,5 @@
+import java.awt.Graphics;
+
 /*
  * Behold...
  * 
@@ -8,16 +10,20 @@
 
 public abstract class Item
 {
-	private String name;
+	protected String name;
 	
-	private String descrip;
+	protected String descrip;
 	
-	private Sprite sprite; //graphic usage coming soon
+	protected Sprite sprite; //graphic usage coming soon
+	
+	protected int x;
+	protected int y;
 	
 	public Item(String name,String descrip)
 	{
 		this.name = name;
 		this.descrip = descrip;
+		this.sprite	= DataStore.INSTANCE.getSprite("images/gItem.png");
 	}
 	
 	public String getName()
@@ -28,6 +34,17 @@ public abstract class Item
 	public String getDes()
 	{
 		return descrip;
+	}
+	
+	public void draw(Graphics g)
+	{
+		sprite.draw(g, x, y);
+	}
+	
+	public void place(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
 	}
 	
 	public abstract void run();
