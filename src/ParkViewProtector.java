@@ -19,11 +19,16 @@ public class ParkViewProtector extends Canvas
 	public static final int HEIGHT			= 500;
 	
 	public static final int SPEED_THROTTLE	= 10;
-	
-	public static final int MIN_STUDENTS	= 15;
-	public static final int MAX_STUDENTS	= 30;
-	
 	public static final int MOVE_SPEED		= 1;
+	
+	public static final int MIN_STUDENTS	= 20;
+	public static final int MAX_STUDENTS	= 50;
+	
+	public static final double INFECT_CHANCE	= 0.4;
+	public static final double CUPPLE_CHANCE	= 1.0;
+	
+	public static final int MIN_NUM_MOVES	= 24;
+	public static final int MAX_NUM_MOVES	= 30;
 	
 	protected JFrame window;
 	protected JPanel contentPanel;
@@ -185,8 +190,11 @@ public class ParkViewProtector extends Canvas
 			
 			// update player
 			player.draw(g);
+
+			/////////////////////////////////////////////////////////////////
+			// Update students
+			/////////////////////////////////////////////////////////////////
 			
-			// update students
 			for(int i = 0; i < students.size(); i++)
 			{
 				currStudent			= students.get(i);
@@ -206,35 +214,23 @@ public class ParkViewProtector extends Canvas
 					break;
 				}
 				
-				// FIXME: "this is the worst code"
 				if(currStudent.isInfected())
 				{
 					for(int j = 0; j < students.size(); j++)
 					{
 						// don't do anything if it's us
 						if(i == j) continue;
-						
-						// if we hit a student that isn't infected
-						// TODO: decide on and add realistic chances
-						if(currStudent.getBounds().intersects(students.get(j).getBounds())
-								&& !students.get(j).isInfected())
-						{
-							students.get(j).infect();
-							System.out.println("student #" + j + " infected");
-							break;
-						}
-						
+
 						// if we hit another infected student
 						// TODO: decide on and add realistic chances
-						if(currStudent.getBounds().intersects(students.get(j).getBounds()) && 
-								students.get(j).isInfected())
+						if(currStudent.getBounds().intersects(students.get(j).getBounds())
+								&& students.get(j).isInfected()
+								&& Math.random() <= CUPPLE_CHANCE)
 						{
 							couples.add(new Cupple(currStudent, students.get(j)));
 							
 							try
 							{
-								// FIXME: doesn't work right
-								
 								student1		= i;
 								student2		= j;
 								
@@ -256,17 +252,41 @@ public class ParkViewProtector extends Canvas
 				}
 			}
 			
-			// update couples
+			/////////////////////////////////////////////////////////////////
+			// Update couples
+			/////////////////////////////////////////////////////////////////
+			
 			for(int i = 0; i < couples.size(); i++)
 			{
 				currCouple			= couples.get(i);
 				
 				currCouple.draw(g);
-				
-				// move couples randomly for testing
-				if(Math.random() > 0.9)
+			
+				if(currCouple.getMoveCount() <= 0 || currCouple.getMoveCount() > MIN_NUM_MOVES)
 				{
-					currCouple.move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
+					// choose a new direction
+					currCouple.setDirection((int) (Math.random() * 3));
+					
+					currCouple.resetMoveCount();
+				}
+				
+				currCouple.move(MOVE_SPEED);
+				
+				/////////////////////////////////////////////////////////////////
+				// Update students
+				/////////////////////////////////////////////////////////////////
+				
+				for(int j = 0; j < students.size(); j++)
+				{
+					// if we hit a student that isn't infected
+					if(currCouple.getBounds().intersects(students.get(j).getBounds())
+							&& !students.get(j).isInfected()
+							&& Math.random() <= INFECT_CHANCE)
+					{
+						students.get(j).infect();
+						System.out.println("student #" + j + " infected by couple #" + i);
+						break;
+					}
 				}
 			}
 			
@@ -277,7 +297,7 @@ public class ParkViewProtector extends Canvas
 			/////////////////////////////////////////////////////////////////
 			// Move the player
 			/////////////////////////////////////////////////////////////////
-			// TODO: use physics for diagonal movement? (sqrt 2MOVE_SPEED^2)
+			// TODO: use physics for diagonal movement? (sqrt 2 * MOVE_SPEED^2)
 			
 			if(upPressed && !downPressed)
 			{

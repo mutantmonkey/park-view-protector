@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public abstract class Character
 {
+	// stats
 	protected int hp;
 	protected int maxHp;
 	protected int damage;
@@ -20,9 +21,13 @@ public abstract class Character
 	protected int x;
 	protected int y;
 	
+	// direction (0 = north, 1 = east, 2 = south, 3 = west)
+	protected int direction		= 2;
+	
 	public ArrayList<Item> inventory;
 	
 	protected Sprite sprite;
+	protected int moveCount;
 	
 	public Character(int x, int y, int hp, int maxHp, double speed, int damage)
 	{
@@ -89,8 +94,68 @@ public abstract class Character
 	 */
 	public void move(int distX, int distY)
 	{
+		// determine and change direction if necessary
+		switch(direction)
+		{
+			// NORTH
+			default:
+				if(distY > 0)	direction	= 3;
+				break;
+			
+			// EAST
+			case 1:
+				if(distX < 0)	direction	= 3;
+				break;
+				
+			// SOUTH
+			case 2:
+				if(distY < 0)	direction	= 0;
+				break;
+			
+			// WEST
+			case 3:
+				if(distX < 0)	direction	= 1;
+				break;
+		}
+		
 		x		   += distX * speed;
 		y		   += distY * speed;
+		
+		moveCount++;
+	}
+	
+	/**
+	 * Moves the student a distance (which is multiplied by speed) in the current direction
+	 * 
+	 * @param dist distance
+	 */
+	public void move(int distance)
+	{
+		// determine and change direction if necessary
+		switch(direction)
+		{
+			// NORTH
+			default:
+				y		-= distance * speed;
+				break;
+			
+			// EAST
+			case 1:
+				x		+= distance * speed;
+				break;
+				
+			// SOUTH
+			case 2:
+				y		+= distance * speed;
+				break;
+			
+			// WEST
+			case 3:
+				x		-= distance * speed;
+				break;
+		}
+		
+		moveCount++;
 	}
 	
 	/**
@@ -116,6 +181,44 @@ public abstract class Character
 	public void pickItem(Item item)
 	{
 		inventory.add(item);
+	}
+	
+	/**
+	 * Changes the direction that the character is facing
+	 * 
+	 * @param int direction
+	 */
+	public void setDirection(int dir)
+	{
+		direction	= dir;
+	}
+	
+	/**
+	 * Returns the direction that the character is facing
+	 * 
+	 * @return
+	 */
+	public int getDirection()
+	{
+		return direction;
+	}
+	
+	/**
+	 * Returns the number of moves made
+	 * 
+	 * @return
+	 */
+	public int getMoveCount()
+	{
+		return moveCount;
+	}
+	
+	/**
+	 * Resets the move counter
+	 */
+	public void resetMoveCount()
+	{
+		moveCount	= 0;
 	}
 	
 	/**
