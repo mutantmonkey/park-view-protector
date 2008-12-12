@@ -19,6 +19,9 @@ public class Cupple extends Character
 			male = b;
 			female = a;
 		}
+		
+		// temp graphic
+		this.sprite	= DataStore.INSTANCE.getSprite("images/cupple.png");
 	}
 	
 	public Student getMale()
