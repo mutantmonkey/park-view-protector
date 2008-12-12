@@ -173,6 +173,8 @@ public class ParkViewProtector extends Canvas
 		Student currStudent;
 		Cupple currCouple;
 		
+		int student1, student2;
+		
 		while(running)
 		{
 			g						= (Graphics) strategy.getDrawGraphics();
@@ -231,8 +233,18 @@ public class ParkViewProtector extends Canvas
 							
 							try
 							{
-								students.remove(i);
-								students.remove(j);
+								// FIXME: doesn't work right
+								
+								student1		= i;
+								student2		= j;
+								
+								if(student2 > student1)
+								{
+									student2--;
+								}
+								
+								students.remove(student1);
+								students.remove(student2);
 							}
 							catch(Exception e)
 							{
@@ -265,6 +277,7 @@ public class ParkViewProtector extends Canvas
 			/////////////////////////////////////////////////////////////////
 			// Move the player
 			/////////////////////////////////////////////////////////////////
+			// TODO: use physics for diagonal movement? (sqrt 2MOVE_SPEED^2)
 			
 			if(upPressed && !downPressed)
 			{
