@@ -27,8 +27,8 @@ public class ParkViewProtector extends Canvas
 	public static final double INFECT_CHANCE	= 0.4;
 	public static final double CUPPLE_CHANCE	= 1.0;
 	
-	public static final int MIN_NUM_MOVES	= 24;
-	public static final int MAX_NUM_MOVES	= 30;
+	public static final int MIN_NUM_MOVES	= 10;
+	public static final int MAX_NUM_MOVES	= 50;
 	
 	protected JFrame window;
 	protected JPanel contentPanel;
@@ -106,7 +106,7 @@ public class ParkViewProtector extends Canvas
 		
 		g.dispose();
 		
-		try{Thread.sleep(5000);}catch(Exception e){}
+		try{Thread.sleep(3000);}catch(Exception e){}
 	}
 	
 	/**
@@ -155,7 +155,7 @@ public class ParkViewProtector extends Canvas
 		{
 			x						= (int) (Math.random() * WIDTH) + 1;
 			y						= (int) (Math.random() * HEIGHT) + 1;
-			speed					= Math.random() * 5;
+			speed					= Math.random() * 3;
 			gender					= (Math.random() > 0.4) ? 'm' : 'f';
 			
 			student					= new Student(x, y, 5, 5, speed, 0, gender);
@@ -191,9 +191,9 @@ public class ParkViewProtector extends Canvas
 			// update player
 			player.draw(g);
 
-			/////////////////////////////////////////////////////////////////
-			// Update students
-			/////////////////////////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////
+			// Update couples
+			////////////////////////////////////////////////////////////////////////////////////
 			
 			for(int i = 0; i < students.size(); i++)
 			{
@@ -201,11 +201,8 @@ public class ParkViewProtector extends Canvas
 				
 				currStudent.draw(g);
 				
-				// move students randomly for testing
-				if(Math.random() > 0.9)
-				{
-					currStudent.move((int) (Math.random() * 6) - 2, (int) (Math.random() * 6) - 2);
-				}
+				// random movement
+				currStudent.moveRandom(MOVE_SPEED, (int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) + MIN_NUM_MOVES + 1));
 
 				// collision detection! :D
 				if(player.getBounds().intersects(currStudent.getBounds()))
@@ -229,16 +226,17 @@ public class ParkViewProtector extends Canvas
 						{
 							couples.add(new Cupple(currStudent, students.get(j)));
 							
+							
+							student1			= i;
+							student2			= j;
+							
+							if(student2 > student1)
+							{
+								student2--;
+							}
+							
 							try
 							{
-								student1		= i;
-								student2		= j;
-								
-								if(student2 > student1)
-								{
-									student2--;
-								}
-								
 								students.remove(student1);
 								students.remove(student2);
 							}
@@ -252,30 +250,20 @@ public class ParkViewProtector extends Canvas
 				}
 			}
 			
-			/////////////////////////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////
 			// Update couples
-			/////////////////////////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////
 			
 			for(int i = 0; i < couples.size(); i++)
 			{
 				currCouple			= couples.get(i);
 				
 				currCouple.draw(g);
-			
-				if(currCouple.getMoveCount() <= 0 || currCouple.getMoveCount() > MIN_NUM_MOVES)
-				{
-					// choose a new direction
-					currCouple.setDirection((int) (Math.random() * 3));
-					
-					currCouple.resetMoveCount();
-				}
 				
-				currCouple.move(MOVE_SPEED);
+				// random movement
+				currCouple.moveRandom(MOVE_SPEED, (int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) + MIN_NUM_MOVES + 1));
 				
-				/////////////////////////////////////////////////////////////////
-				// Update students
-				/////////////////////////////////////////////////////////////////
-				
+				// update students
 				for(int j = 0; j < students.size(); j++)
 				{
 					// if we hit a student that isn't infected
@@ -294,9 +282,9 @@ public class ParkViewProtector extends Canvas
 			g.dispose();
 			strategy.show();
 			
-			/////////////////////////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////
 			// Move the player
-			/////////////////////////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////
 			// TODO: use physics for diagonal movement? (sqrt 2 * MOVE_SPEED^2)
 			
 			if(upPressed && !downPressed)

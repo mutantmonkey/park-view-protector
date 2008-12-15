@@ -5,6 +5,10 @@
  * @author	Jamie of the Javateerz
  */
 
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Transparency;
 import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +25,12 @@ public enum DataStore
 	
 	private HashMap<String, Sprite> sprites	= new HashMap<String, Sprite>();
 	
+	/**
+	 * Loads/retrieves an audio clip
+	 * 
+	 * @param file The audio clip to load
+	 * @return The audio clip
+	 */
 	public Clip getAudio(String file)
 	{
 		// load the file
@@ -32,15 +42,14 @@ public enum DataStore
 		{
 			stream = AudioSystem.getAudioInputStream(url);
 		}
-		catch (UnsupportedAudioFileException e1)
+		catch(UnsupportedAudioFileException e1)
 		{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		catch (IOException e1)
+		catch(IOException e)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			System.out.println("Error loading audio clip: " + file);
 		}
 		
 		AudioFormat format	= stream.getFormat();
@@ -60,12 +69,12 @@ public enum DataStore
 			// Start playing
 			clip.start();
 		}
-		catch (LineUnavailableException e)
+		catch(LineUnavailableException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		catch (IOException e)
+		catch(IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,6 +83,12 @@ public enum DataStore
 		return clip;
 	}
 	
+	/**
+	 * Loads/retrieves a sprite
+	 * 
+	 * @param file The image to use as a sprite
+	 * @return The loaded sprite (instance of Sprite)
+	 */
 	public Sprite getSprite(String file)
 	{
 		// is the sprite already cached?
@@ -95,10 +110,19 @@ public enum DataStore
 		}
 		catch(IOException e)
 		{
-			// bah
+			System.out.println("Error loading sprite: " + file);
 		}
 		
-		Sprite sprite		= new Sprite(img);
+		// create an image using accelerated graphics (hardware rendering, prevents flickering)
+		GraphicsConfiguration gc	= GraphicsEnvironment.getLocalGraphicsEnvironment().
+			getDefaultScreenDevice().getDefaultConfiguration();
+		
+		Image image			= gc.createCompatibleImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
+		
+		// draw image into accelerated image
+		image.getGraphics().drawImage(img, 0, 0, null);
+		
+		Sprite sprite		= new Sprite(image);
 		
 		// cache the sprite so it doesn't have to be loaded again
 		sprites.put(file, sprite);
