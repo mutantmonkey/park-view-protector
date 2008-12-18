@@ -25,7 +25,7 @@ public class ParkViewProtector extends Canvas
 	public static final int MAX_STUDENTS	= 50;
 	
 	public static final double INFECT_CHANCE	= 0.4;
-	public static final double CUPPLE_CHANCE	= 1.0;
+	public static final double CUPPLE_CHANCE	= 0.6;
 	
 	public static final int MIN_NUM_MOVES	= 10;
 	public static final int MAX_NUM_MOVES	= 50;
@@ -202,7 +202,9 @@ public class ParkViewProtector extends Canvas
 				currStudent.draw(g);
 				
 				// random movement
-				currStudent.moveRandom(MOVE_SPEED, (int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) + MIN_NUM_MOVES + 1));
+				moveRandom(currStudent, MOVE_SPEED,
+						(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
+								MIN_NUM_MOVES + 1));
 
 				// collision detection! :D
 				if(player.getBounds().intersects(currStudent.getBounds()))
@@ -261,7 +263,9 @@ public class ParkViewProtector extends Canvas
 				currCouple.draw(g);
 				
 				// random movement
-				currCouple.moveRandom(MOVE_SPEED, (int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) + MIN_NUM_MOVES + 1));
+				moveRandom(currCouple, MOVE_SPEED,
+						(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
+								MIN_NUM_MOVES + 1));
 				
 				// update students
 				for(int j = 0; j < students.size(); j++)
@@ -318,6 +322,50 @@ public class ParkViewProtector extends Canvas
 			}
 			catch(Exception e) {}
 		}
+	}
+	
+	/**
+	 * Random movement
+	 * 
+	 * @param Movable Object to move
+	 * @param speed Speed to move at
+	 * @param changeMoves Number of moves to change the direction after
+	 */
+	public void moveRandom(Movable obj, int speed, int changeMoves)
+	{
+		// change direction if the move count exceeds the number of moves to change after
+		if(obj.getMoveCount() <= 0 || obj.getMoveCount() > changeMoves)
+		{
+			// choose a new direction
+			obj.setDirection((int) (Math.random() * 4));
+			obj.resetMoveCount();
+		}
+		
+		// change direction if we hit the top or bottom
+		if(obj.getBounds().y <= 0 && obj.getDirection() == Direction.NORTH)
+		{
+			obj.setDirection(Direction.SOUTH);
+			obj.resetMoveCount();
+		}
+		else if(obj.getBounds().y >= HEIGHT - obj.getBounds().height  &&
+				obj.getDirection() == Direction.SOUTH)
+		{
+			obj.setDirection(Direction.NORTH);
+			obj.resetMoveCount();
+		}
+		else if(obj.getBounds().x <= 0 && obj.getDirection() == Direction.EAST)
+		{
+			obj.setDirection(Direction.WEST);
+			obj.resetMoveCount();
+		}
+		else if(obj.getBounds().x >= WIDTH - obj.getBounds().width &&
+				obj.getDirection() == Direction.WEST)
+		{
+			obj.setDirection(Direction.EAST);
+			obj.resetMoveCount();
+		}
+		
+		obj.move(speed);
 	}
 	
 	public static void main(String args[])

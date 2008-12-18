@@ -70,23 +70,19 @@ public abstract class Movable
 		// determine and change direction if necessary
 		switch(direction)
 		{
-			// NORTH
-			default:
-				if(distY > 0)	direction	= 3;
+			case Direction.NORTH:
+				if(distY > 0)	direction	= 2;
 				break;
 			
-			// EAST
-			case 1:
+			case Direction.EAST:
 				if(distX < 0)	direction	= 3;
 				break;
 				
-			// SOUTH
-			case 2:
+			case Direction.SOUTH:
 				if(distY < 0)	direction	= 0;
 				break;
 			
-			// WEST
-			case 3:
+			case Direction.WEST:
 				if(distX < 0)	direction	= 1;
 				break;
 		}
@@ -107,23 +103,19 @@ public abstract class Movable
 		// determine and change direction if necessary
 		switch(direction)
 		{
-			// NORTH
-			default:
+			case Direction.NORTH:
 				y		-= distance * speed;
 				break;
 			
-			// EAST
-			case 1:
+			case Direction.EAST:
 				x		+= distance * speed;
 				break;
 				
-			// SOUTH
-			case 2:
+			case Direction.SOUTH:
 				y		+= distance * speed;
 				break;
 			
-			// WEST
-			case 3:
+			case Direction.WEST:
 				x		-= distance * speed;
 				break;
 		}
@@ -188,4 +180,12 @@ public abstract class Movable
 		
 		return rect;
 	}
+}
+
+class Direction
+{
+	public static final int NORTH	= 0;
+	public static final int SOUTH	= 2;
+	public static final int EAST	= 1;
+	public static final int WEST	= 3;
 }

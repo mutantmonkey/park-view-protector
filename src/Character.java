@@ -61,26 +61,6 @@ public abstract class Character extends Movable
 	}
 	
 	/**
-	 * Random movement
-	 * 
-	 * @param speed Speed to move at
-	 * @param changeMoves Number of moves to change the direction after
-	 */
-	public void moveRandom(int speed, int changeMoves)
-	{
-		// change direction if the move count exceeds the number of moves to change after
-		if(moveCount <= 0 || moveCount > changeMoves)
-		{
-			// choose a new direction
-			setDirection((int) (Math.random() * 3));
-					
-			resetMoveCount();
-		}
-		
-		move(speed);
-	}
-	
-	/**
 	 * Does an attack
 	 */
 	public abstract void attack();
