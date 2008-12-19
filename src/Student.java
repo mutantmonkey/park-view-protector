@@ -72,4 +72,9 @@ public class Student extends Character
 	{
 		
 	}
+	
+	public void changeGraphic()
+	{
+		this.sprite		= DataStore.INSTANCE.getSprite("images/placeholder.png");
+	}
 }

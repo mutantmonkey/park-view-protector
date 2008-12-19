@@ -104,19 +104,19 @@ public abstract class Movable
 		switch(direction)
 		{
 			case Direction.NORTH:
-				y		-= distance * speed;
+				y		-= (int)(distance * speed);
 				break;
 			
 			case Direction.EAST:
-				x		+= distance * speed;
+				x		+= (int)(distance * speed);
 				break;
 				
 			case Direction.SOUTH:
-				y		+= distance * speed;
+				y		+= (int)(distance * speed);
 				break;
 			
 			case Direction.WEST:
-				x		-= distance * speed;
+				x		-= (int)(distance * speed);
 				break;
 		}
 		

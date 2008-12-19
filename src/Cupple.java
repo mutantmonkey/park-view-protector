@@ -8,7 +8,7 @@ public class Cupple extends Character
 	
 	public Cupple(Student a,Student b)
 	{
-		super(a.x,a.y,a.hp+b.hp,a.maxHp,(a.speed+b.speed)/4,a.damage);
+		super(a.x,a.y,a.hp+b.hp,a.maxHp,(a.speed+b.speed)/2,a.damage);
 		if(a.getGender() == 'm')
 		{
 			male = a;

@@ -76,6 +76,10 @@ public class KeyHandler extends KeyAdapter
 				ParkViewProtector.downPressed		= true;
 				ParkViewProtector.rightPressed		= true;
 				break;
+				
+			case KeyEvent.VK_SPACE:
+				ParkViewProtector.attackPressed=true;
+				break;
 		}
 	}
 	
@@ -142,6 +146,10 @@ public class KeyHandler extends KeyAdapter
 			case KeyEvent.VK_NUMPAD3:
 				ParkViewProtector.downPressed		= false;
 				ParkViewProtector.rightPressed		= false;
+				break;
+				
+			case KeyEvent.VK_SPACE:
+				ParkViewProtector.attackPressed=false;
 				break;
 		}
 	}

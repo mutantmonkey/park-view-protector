@@ -22,13 +22,13 @@ public class ParkViewProtector extends Canvas
 	public static final int MOVE_SPEED		= 1;
 	
 	public static final int MIN_STUDENTS	= 20;
-	public static final int MAX_STUDENTS	= 50;
+	public static final int MAX_STUDENTS	= 30;
 	
 	public static final double INFECT_CHANCE	= 0.4;
 	public static final double CUPPLE_CHANCE	= 0.6;
 	
 	public static final int MIN_NUM_MOVES	= 10;
-	public static final int MAX_NUM_MOVES	= 50;
+	public static final int MAX_NUM_MOVES	= 400;
 	
 	protected JFrame window;
 	protected JPanel contentPanel;
@@ -40,6 +40,7 @@ public class ParkViewProtector extends Canvas
 	public static boolean downPressed		= false;
 	public static boolean leftPressed		= false;
 	public static boolean rightPressed		= false;
+	public static boolean attackPressed		=false;
 	
 	// graphics
 	private Graphics g;
@@ -49,6 +50,7 @@ public class ParkViewProtector extends Canvas
 	private Staff player;
 	private ArrayList<Student> students		= new ArrayList<Student>();
 	private ArrayList<Cupple> couples		= new ArrayList<Cupple>();
+	private ArrayList<Attack> attacks		= new ArrayList<Attack>();
 	
 	public ParkViewProtector()
 	{
@@ -155,7 +157,7 @@ public class ParkViewProtector extends Canvas
 		{
 			x						= (int) (Math.random() * WIDTH) + 1;
 			y						= (int) (Math.random() * HEIGHT) + 1;
-			speed					= Math.random() * 3;
+			speed					= (Math.random())+1;
 			gender					= (Math.random() > 0.4) ? 'm' : 'f';
 			
 			student					= new Student(x, y, 5, 5, speed, 0, gender);
@@ -177,9 +179,11 @@ public class ParkViewProtector extends Canvas
 	{
 		Student currStudent;
 		Cupple currCouple;
+		Attack currAttack;
 		
 		int student1, student2;
 		
+		students.get(0).changeGraphic();
 		while(running)
 		{
 			g						= (Graphics) strategy.getDrawGraphics();
@@ -191,6 +195,12 @@ public class ParkViewProtector extends Canvas
 			// update player
 			player.draw(g);
 
+			for(int i=0; i<attacks.size(); i++)
+			{
+				currAttack=attacks.get(i);
+				currAttack.draw(g);
+			}
+			
 			////////////////////////////////////////////////////////////////////////////////////
 			// Update couples
 			////////////////////////////////////////////////////////////////////////////////////
@@ -315,6 +325,14 @@ public class ParkViewProtector extends Canvas
 				//rightPressed			= false;
 			}
 			
+			if(attackPressed)
+			{
+				Attack testAttack;
+				testAttack=new Attack(player.x, player.y, 0, "attack", player.getDirection(), 0, true, 0);
+				testAttack.switchXY();
+				attacks.add(testAttack);
+			}
+			
 			// keep the game from running too fast
 			try
 			{
@@ -337,7 +355,7 @@ public class ParkViewProtector extends Canvas
 		if(obj.getMoveCount() <= 0 || obj.getMoveCount() > changeMoves)
 		{
 			// choose a new direction
-			obj.setDirection((int) (Math.random() * 4));
+			obj.setDirection((int) (Math.random()*4));
 			obj.resetMoveCount();
 		}
 		
@@ -353,15 +371,15 @@ public class ParkViewProtector extends Canvas
 			obj.setDirection(Direction.NORTH);
 			obj.resetMoveCount();
 		}
-		else if(obj.getBounds().x <= 0 && obj.getDirection() == Direction.EAST)
+		else if(obj.getBounds().x <= 0 && obj.getDirection() == Direction.WEST)
 		{
-			obj.setDirection(Direction.WEST);
+			obj.setDirection(Direction.EAST);
 			obj.resetMoveCount();
 		}
 		else if(obj.getBounds().x >= WIDTH - obj.getBounds().width &&
-				obj.getDirection() == Direction.WEST)
+				obj.getDirection() == Direction.EAST)
 		{
-			obj.setDirection(Direction.EAST);
+			obj.setDirection(Direction.WEST);
 			obj.resetMoveCount();
 		}
 		

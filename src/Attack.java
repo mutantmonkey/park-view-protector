@@ -9,16 +9,18 @@ import java.awt.Rectangle;
  * Creates an attack area
  */
 
-public class Attack
+public class Attack extends Movable
 {
 	private int x;
 	private int y;
+	private double speed;
+	private String name;
 	private int xSize;
 	private int ySize;	
 	private int direct;
 	private int damage;
 	//Target: True=Student, FLASE=Staff
-	private int isStudent;
+	private boolean isStudent;
 	/*
 	 * Shape of the attack?
 	 * 0=Front
@@ -27,54 +29,50 @@ public class Attack
 	 */
 	private int type;
 	
-	public Attack(int x, int y, int direct, int damage, boolean isStudent, int type)
+	public Attack(int x, int y, double speed, String name, int direct, int damage, boolean isStudent, int type)
 	{
-		this.x=x;
-		this.y=y;
+		super(x, y, speed);
+		this.name=name;
 		this.direct=direct;
 		this.damage=damage;
 		this.isStudent=isStudent;
 		this.type=type;
 	}
 	
-	public ArrayList detect()
+	/*public ArrayList detect()
 	{
 		ArrayList targets;
-		if(isStudent)
+		switch(type)
 		{
-			switch(type)
-			{
-				//type of attacks to impletmented here.
-				case 0:
-					x-=10;
-					y-=10;
-					xSize=40;
-					ySize=40;
-					break;
-			}
-		}
-		else
-		{
-			switch(type)
-			{
-				case 0:
-					break;
-			}
+			case Type.FRONT:
+				break;
 		}
 		return targets;
-	}
+	}*/
 	
-	public void dealDamage()
+	public void switchXY()
 	{
-		ArrayList<Character> targets=detect();
-		for(int i; i<targets.size(); i++)
+		int temp;
+		if(direct==Direction.NORTH)
 		{
-			targets.get(i).adjustHP(damage);
+			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_n.png");
+		}
+		else if(direct==Direction.SOUTH)
+		{
+			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_s.png");
+		}
+		else if(direct==Direction.WEST)
+		{
+			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_w.png");
+		}
+		else /*Implied else if for EAST*/
+		{
+			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_e.png");
 		}
 	}
-	public Rectangle getBounds()
-	{
-		Rectangle rect=new Rectangle(x, y, xSize, ySize);
-		return rect;
-	}
+}
+
+class Type
+{
+	public static final int FRONT=0;
 }
