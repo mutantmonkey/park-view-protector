@@ -80,7 +80,9 @@ public class ParkViewProtector extends Canvas
 			public void windowClosing(WindowEvent e)
 			{
 				window.dispose();
-				System.exit(0);
+				
+				running				= false;
+				//System.exit(0);
 			}
 		});
 		
@@ -155,7 +157,7 @@ public class ParkViewProtector extends Canvas
 		{
 			x						= (int) (Math.random() * WIDTH) + 1;
 			y						= (int) (Math.random() * HEIGHT) + 1;
-			speed					= Math.random() * 3;
+			speed					= Math.random() * 3 + 1;
 			gender					= (Math.random() > 0.4) ? 'm' : 'f';
 			
 			student					= new Student(x, y, 5, 5, speed, 0, gender);
@@ -353,15 +355,15 @@ public class ParkViewProtector extends Canvas
 			obj.setDirection(Direction.NORTH);
 			obj.resetMoveCount();
 		}
-		else if(obj.getBounds().x <= 0 && obj.getDirection() == Direction.EAST)
+		else if(obj.getBounds().x <= 0 && obj.getDirection() == Direction.WEST)
 		{
-			obj.setDirection(Direction.WEST);
+			obj.setDirection(Direction.EAST);
 			obj.resetMoveCount();
 		}
 		else if(obj.getBounds().x >= WIDTH - obj.getBounds().width &&
-				obj.getDirection() == Direction.WEST)
+				obj.getDirection() == Direction.EAST)
 		{
-			obj.setDirection(Direction.EAST);
+			obj.setDirection(Direction.WEST);
 			obj.resetMoveCount();
 		}
 		
