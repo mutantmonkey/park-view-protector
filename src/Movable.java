@@ -68,24 +68,10 @@ public abstract class Movable
 	public void move(int distX, int distY)
 	{
 		// determine and change direction if necessary
-		switch(direction)
-		{
-			case Direction.NORTH:
-				if(distY > 0)	direction	= 2;
-				break;
-			
-			case Direction.EAST:
-				if(distX < 0)	direction	= 3;
-				break;
-				
-			case Direction.SOUTH:
-				if(distY < 0)	direction	= 0;
-				break;
-			
-			case Direction.WEST:
-				if(distX < 0)	direction	= 1;
-				break;
-		}
+		if(distY > 0)	direction	= Direction.SOUTH;
+		if(distX < 0)	direction	= Direction.WEST;
+		if(distY < 0)	direction	= Direction.NORTH;
+		if(distX > 0)	direction	= Direction.EAST;
 		
 		x		   += (int) Math.round(distX * speed);
 		y		   += (int) Math.round(distY * speed);
