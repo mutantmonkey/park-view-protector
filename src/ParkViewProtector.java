@@ -79,9 +79,9 @@ public class ParkViewProtector extends Canvas
 		{
 			public void windowClosing(WindowEvent e)
 			{
-				window.dispose();
-				
 				running				= false;
+				
+				window.dispose();
 				//System.exit(0);
 			}
 		});
