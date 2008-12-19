@@ -87,8 +87,8 @@ public abstract class Movable
 				break;
 		}
 		
-		x		   += distX * speed;
-		y		   += distY * speed;
+		x		   += (int) Math.round(distX * speed);
+		y		   += (int) Math.round(distY * speed);
 		
 		moveCount++;
 	}
@@ -100,26 +100,28 @@ public abstract class Movable
 	 */
 	public void move(int distance)
 	{
+		int dist		= (int) Math.round(distance * speed);
+		
 		// determine and change direction if necessary
 		switch(direction)
 		{
 			case Direction.NORTH:
-				y		-= (int)(distance * speed);
+				y		-= dist;
 				break;
 			
 			case Direction.EAST:
-				x		+= (int)(distance * speed);
+				x		+= dist;
 				break;
 				
 			case Direction.SOUTH:
-				y		+= (int)(distance * speed);
+				y		+= dist;
 				break;
 			
 			case Direction.WEST:
-				x		-= (int)(distance * speed);
+				x		-= dist;
 				break;
 		}
-		
+			
 		moveCount++;
 	}
 	
@@ -185,7 +187,7 @@ public abstract class Movable
 class Direction
 {
 	public static final int NORTH	= 0;
-	public static final int SOUTH	= 2;
 	public static final int EAST	= 1;
+	public static final int SOUTH	= 2;
 	public static final int WEST	= 3;
 }

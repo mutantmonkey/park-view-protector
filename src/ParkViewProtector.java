@@ -40,7 +40,7 @@ public class ParkViewProtector extends Canvas
 	public static boolean downPressed		= false;
 	public static boolean leftPressed		= false;
 	public static boolean rightPressed		= false;
-	public static boolean attackPressed		=false;
+	public static boolean attackPressed		= false;
 	
 	// graphics
 	private Graphics g;
@@ -81,8 +81,10 @@ public class ParkViewProtector extends Canvas
 		{
 			public void windowClosing(WindowEvent e)
 			{
+				running				= false;
+				
 				window.dispose();
-				System.exit(0);
+				//System.exit(0);
 			}
 		});
 		
@@ -157,7 +159,7 @@ public class ParkViewProtector extends Canvas
 		{
 			x						= (int) (Math.random() * WIDTH) + 1;
 			y						= (int) (Math.random() * HEIGHT) + 1;
-			speed					= (Math.random())+1;
+			speed					= Math.random() * 3 + 1;
 			gender					= (Math.random() > 0.4) ? 'm' : 'f';
 			
 			student					= new Student(x, y, 5, 5, speed, 0, gender);
@@ -355,7 +357,7 @@ public class ParkViewProtector extends Canvas
 		if(obj.getMoveCount() <= 0 || obj.getMoveCount() > changeMoves)
 		{
 			// choose a new direction
-			obj.setDirection((int) (Math.random()*4));
+			obj.setDirection((int) (Math.random() * 4));
 			obj.resetMoveCount();
 		}
 		
