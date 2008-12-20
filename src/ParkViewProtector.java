@@ -19,7 +19,13 @@ public class ParkViewProtector extends Canvas
 	public static final int HEIGHT			= 500;
 	
 	public static final int SPEED_THROTTLE	= 10;
+	
+	// number of pixels to move by
 	public static final int MOVE_SPEED		= 1;
+	
+	// delay (in number of frames) before another attack can be used
+	public static final int ATTACK_DELAY	= 100;
+	private int attackDelay					= 0;
 	
 	public static final int MIN_STUDENTS	= 20;
 	public static final int MAX_STUDENTS	= 30;
@@ -35,7 +41,7 @@ public class ParkViewProtector extends Canvas
 	
 	private boolean running					= true;
 	
-	// how far the player needs to move in each direction the next time the game loop is run
+	// which keys are pressed
 	public static boolean upPressed			= false;
 	public static boolean downPressed		= false;
 	public static boolean leftPressed		= false;
@@ -46,7 +52,7 @@ public class ParkViewProtector extends Canvas
 	private Graphics g;
 	private BufferStrategy strategy;
 	
-	// characters
+	// objects on the screen
 	private Staff player;
 	private ArrayList<Student> students		= new ArrayList<Student>();
 	private ArrayList<Cupple> couples		= new ArrayList<Cupple>();
@@ -197,10 +203,26 @@ public class ParkViewProtector extends Canvas
 			// update player
 			player.draw(g);
 
-			for(int i=0; i<attacks.size(); i++)
+			////////////////////////////////////////////////////////////////////////////////////
+			// Update attacks
+			////////////////////////////////////////////////////////////////////////////////////
+			
+			for(int i = 0; i < attacks.size(); i++)
 			{
-				currAttack=attacks.get(i);
+				currAttack			= attacks.get(i);
 				currAttack.draw(g);
+				
+				currAttack.move(MOVE_SPEED);
+				
+				// is the attack off the screen?
+				if(currAttack.getBounds().x < -currAttack.getBounds().width || currAttack.getBounds().x > WIDTH ||
+				   currAttack.getBounds().y < -currAttack.getBounds().height || currAttack.getBounds().y > HEIGHT)
+				{
+					System.out.println("Attack #" + i +" went off screen, removing");
+					
+					attacks.remove(i);
+					i--;
+				}
 			}
 			
 			////////////////////////////////////////////////////////////////////////////////////
@@ -210,7 +232,6 @@ public class ParkViewProtector extends Canvas
 			for(int i = 0; i < students.size(); i++)
 			{
 				currStudent			= students.get(i);
-				
 				currStudent.draw(g);
 				
 				// random movement
@@ -271,7 +292,6 @@ public class ParkViewProtector extends Canvas
 			for(int i = 0; i < couples.size(); i++)
 			{
 				currCouple			= couples.get(i);
-				
 				currCouple.draw(g);
 				
 				// random movement
@@ -289,6 +309,19 @@ public class ParkViewProtector extends Canvas
 					{
 						students.get(j).infect();
 						System.out.println("student #" + j + " infected by couple #" + i);
+						break;
+					}
+				}
+				
+				// hit by an attack?
+				for(int j = 0; j < attacks.size(); j++)
+				{
+					currAttack		= attacks.get(j);
+					
+					if(currAttack.getBounds().intersects(currCouple.getBounds()))
+					{
+						attacks.remove(j);
+						couples.remove(i);
 						break;
 					}
 				}
@@ -327,13 +360,20 @@ public class ParkViewProtector extends Canvas
 				//rightPressed			= false;
 			}
 			
-			if(attackPressed)
+			if(attackPressed && attackDelay == 0)
 			{
 				Attack testAttack;
-				testAttack=new Attack(player.x, player.y, 0, "attack", player.getDirection(), 0, true, 0);
+				testAttack			= new Attack(player.x, player.y, 2.0, "attack", player.getDirection(), 0, true, 0);
 				testAttack.switchXY();
 				attacks.add(testAttack);
+				
+				// set delay
+				attackDelay			= ATTACK_DELAY;
 			}
+			
+			// decrease delay if there is one
+			if(attackDelay > 0)
+				attackDelay--;
 			
 			// keep the game from running too fast
 			try
