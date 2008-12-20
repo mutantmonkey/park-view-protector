@@ -17,7 +17,6 @@ public class Attack extends Movable
 	private String name;
 	private int xSize;
 	private int ySize;	
-	private int direct;
 	private int damage;
 	//Target: True=Student, FLASE=Staff
 	private boolean isStudent;
@@ -33,7 +32,7 @@ public class Attack extends Movable
 	{
 		super(x, y, speed);
 		this.name=name;
-		this.direct=direct;
+		this.direction=direct;
 		this.damage=damage;
 		this.isStudent=isStudent;
 		this.type=type;
@@ -53,15 +52,15 @@ public class Attack extends Movable
 	public void switchXY()
 	{
 		int temp;
-		if(direct==Direction.NORTH)
+		if(direction==Direction.NORTH)
 		{
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_n.png");
 		}
-		else if(direct==Direction.SOUTH)
+		else if(direction==Direction.SOUTH)
 		{
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_s.png");
 		}
-		else if(direct==Direction.WEST)
+		else if(direction==Direction.WEST)
 		{
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_w.png");
 		}
