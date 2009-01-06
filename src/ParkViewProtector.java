@@ -51,15 +51,13 @@ public class ParkViewProtector extends Canvas
 		contentPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		
 		// this makes the panel behave like what we were used to with ACM
-		contentPanel.setLayout(null);
+		contentPanel.setLayout(new GridLayout(1, 1));
 		
-		// set content panel size
-		setBounds(0, 0, WIDTH, HEIGHT);
 		contentPanel.add(this);
 		
 		// set up window
 		window.setResizable(false);
-		//window.pack();
+		window.pack();
 		
 		// make the window visible
 		window.setVisible(true);

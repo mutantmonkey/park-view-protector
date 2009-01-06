@@ -34,6 +34,8 @@ public class Game
 	public static final int MIN_NUM_MOVES		= 10;
 	public static final int MAX_NUM_MOVES		= 400;
 	
+	public static final int STATS_BAR_HEIGHT	= 20;
+	
 	// graphics
 	private Graphics g;
 	private BufferStrategy strategy;
@@ -71,7 +73,8 @@ public class Game
 	 */
 	public void initPlayer()
 	{
-		player						= new Stark(10, 10, 10, 10, 10, 10, 10);
+		// FIXME: magic numbers are bad
+		player						= new Stark(0, STATS_BAR_HEIGHT, 10, 10, 10, 10, 10);
 	}
 	
 	/**
@@ -119,33 +122,8 @@ public class Game
 		g.setColor(Color.white);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		// update player
-		player.draw(g);
-
 		////////////////////////////////////////////////////////////////////////////////////
-		// Update attacks
-		////////////////////////////////////////////////////////////////////////////////////
-		
-		for(int i = 0; i < attacks.size(); i++)
-		{
-			currAttack			= attacks.get(i);
-			currAttack.draw(g);
-			
-			currAttack.move(MOVE_SPEED);
-			
-			// is the attack off the screen?
-			if(currAttack.getBounds().x < -currAttack.getBounds().width || currAttack.getBounds().x > WIDTH ||
-			   currAttack.getBounds().y < -currAttack.getBounds().height || currAttack.getBounds().y > HEIGHT)
-			{
-				System.out.println("Attack #" + i +" went off screen, removing");
-				
-				attacks.remove(i);
-				i--;
-			}
-		}
-		
-		////////////////////////////////////////////////////////////////////////////////////
-		// Update students
+		// Draw students
 		////////////////////////////////////////////////////////////////////////////////////
 		
 		for(int i = 0; i < students.size(); i++)
@@ -161,8 +139,7 @@ public class Game
 			// collision detection! :D
 			/*if(player.getBounds().intersects(currStudent.getBounds()))
 			{
-				students.remove(i);
-				break;
+				player.adjustHp(1);
 			}*/
 			
 			if(currStudent.isInfected())
@@ -205,7 +182,7 @@ public class Game
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
-		// Update couples
+		// Draw couples
 		////////////////////////////////////////////////////////////////////////////////////
 		
 		for(int i = 0; i < couples.size(); i++)
@@ -251,6 +228,48 @@ public class Game
 			}
 		}
 		
+		////////////////////////////////////////////////////////////////////////////////////
+		// Draw attacks
+		////////////////////////////////////////////////////////////////////////////////////
+		
+		for(int i = 0; i < attacks.size(); i++)
+		{
+			currAttack			= attacks.get(i);
+			currAttack.draw(g);
+			
+			currAttack.move(MOVE_SPEED);
+			
+			// is the attack off the screen?
+			if(currAttack.getBounds().x < -currAttack.getBounds().width || currAttack.getBounds().x > WIDTH ||
+			   currAttack.getBounds().y < -currAttack.getBounds().height || currAttack.getBounds().y > HEIGHT)
+			{
+				System.out.println("Attack #" + i +" went off screen, removing");
+				
+				attacks.remove(i);
+				i--;
+			}
+		}
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		// Draw player
+		////////////////////////////////////////////////////////////////////////////////////
+		
+		player.draw(g);
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		// Draw statistics
+		////////////////////////////////////////////////////////////////////////////////////
+		// these are painted last to ensure that they are always on top
+
+		// background rectangle
+		g.setColor(new Color(255, 0, 255));
+		g.fillRect(0, 0, WIDTH, STATS_BAR_HEIGHT);
+		
+		// draw HP
+		g.setColor(Color.white);
+		g.setFont(new Font("Courier New", Font.PLAIN, 12));
+		g.drawString("HP: " + player.getHp(), 5, STATS_BAR_HEIGHT - 6);
+		
 		// finish drawing
 		g.dispose();
 		strategy.show();
@@ -260,25 +279,28 @@ public class Game
 		////////////////////////////////////////////////////////////////////////////////////
 		// TODO: use physics for diagonal movement? (sqrt 2 * MOVE_SPEED^2)
 		
-		if(ParkViewProtector.upPressed && !ParkViewProtector.downPressed)
+		if(ParkViewProtector.upPressed && !ParkViewProtector.downPressed
+				&& player.getBounds().y > STATS_BAR_HEIGHT)
 		{
 			player.move(0, -MOVE_SPEED);
-			//upPressed				= false;
 		}
 		
-		if(ParkViewProtector.downPressed && !ParkViewProtector.upPressed)
+		if(ParkViewProtector.downPressed && !ParkViewProtector.upPressed
+				&& player.getBounds().y < HEIGHT - player.getBounds().height)
 		{
 			player.move(0, MOVE_SPEED);
 			//downPressed				= false;
 		}
 		
-		if(ParkViewProtector.leftPressed && !ParkViewProtector.rightPressed)
+		if(ParkViewProtector.leftPressed && !ParkViewProtector.rightPressed
+				&& player.getBounds().x > 0)
 		{
 			player.move(-MOVE_SPEED, 0);
 			//leftPressed				= false;
 		}
 		
-		if(ParkViewProtector.rightPressed && !ParkViewProtector.leftPressed)
+		if(ParkViewProtector.rightPressed && !ParkViewProtector.leftPressed
+				&& player.getBounds().x < WIDTH - player.getBounds().width)
 		{
 			player.move(MOVE_SPEED, 0);
 			//rightPressed			= false;
@@ -325,7 +347,7 @@ public class Game
 		}
 		
 		// change direction if we hit the top or bottom
-		if(obj.getBounds().y <= 0 && obj.getDirection() == Direction.NORTH)
+		if(obj.getBounds().y <= STATS_BAR_HEIGHT && obj.getDirection() == Direction.NORTH)
 		{
 			obj.setDirection(Direction.SOUTH);
 			obj.resetMoveCount();
