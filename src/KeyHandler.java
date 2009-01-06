@@ -80,6 +80,15 @@ public class KeyHandler extends KeyAdapter
 			case KeyEvent.VK_SPACE:
 				ParkViewProtector.attackPressed=true;
 				break;
+				
+			// "m" for menu?
+			case KeyEvent.VK_M:
+				ParkViewProtector.showMenu			= true;
+				break;
+				
+			case KeyEvent.VK_ESCAPE:
+				ParkViewProtector.escPressed		= true;
+				break;
 		}
 	}
 	
