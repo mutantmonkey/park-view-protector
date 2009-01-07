@@ -115,8 +115,8 @@ public class ParkViewProtector extends Canvas
 		createBufferStrategy(2);
 		strategy					= getBufferStrategy();
 		
-		game						= new Game(WIDTH, HEIGHT, g, strategy);
-		menu						= new Menu(WIDTH, HEIGHT, g, strategy);
+		game						= new Game(g, strategy);
+		menu						= new Menu(g, strategy);
 	}
 	
 	/**

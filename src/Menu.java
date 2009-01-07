@@ -10,9 +10,6 @@ import java.awt.image.BufferStrategy;
 
 public class Menu
 {
-	public final int WIDTH;
-	public final int HEIGHT;
-	
 	// graphics
 	private Graphics g;
 	private BufferStrategy strategy;
@@ -25,12 +22,8 @@ public class Menu
 	 * @param g Graphics canvas
 	 * @param strategy Buffer strategy
 	 */
-	public Menu(int w, int h, Graphics g, BufferStrategy strategy)
+	public Menu(Graphics g, BufferStrategy strategy)
 	{
-		// TODO: find out if this is legal
-		WIDTH							= w;
-		HEIGHT							= h;
-		
 		this.g							= g;
 		this.strategy					= strategy;
 	}
@@ -47,7 +40,7 @@ public class Menu
 		
 		// draw the background
 		g.setColor(Color.black);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
 	
 		// finish drawing
 		g.dispose();

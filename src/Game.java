@@ -10,9 +10,6 @@ import java.util.ArrayList;
 
 public class Game
 {
-	public final int WIDTH;
-	public final int HEIGHT;
-	
 	public static final int SPEED_THROTTLE		= 10;
 	
 	// number of pixels to move by
@@ -55,12 +52,8 @@ public class Game
 	 * @param g Graphics canvas
 	 * @param strategy Buffer strategy
 	 */
-	public Game(int w, int h, Graphics g, BufferStrategy strategy)
+	public Game(Graphics g, BufferStrategy strategy)
 	{
-		// TODO: find out if this is legal
-		WIDTH								= w;
-		HEIGHT								= h;
-		
 		this.g								= g;
 		this.strategy						= strategy;
 		
@@ -92,8 +85,8 @@ public class Game
 		
 		for(int i = 0; i < numStudents; i++)
 		{
-			x						= (int) (Math.random() * WIDTH) + 1;
-			y						= (int) (Math.random() * HEIGHT) + 1;
+			x						= (int) (Math.random() * ParkViewProtector.WIDTH) + 1;
+			y						= (int) (Math.random() * ParkViewProtector.HEIGHT) + 1;
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			
@@ -121,7 +114,7 @@ public class Game
 		
 		// draw the background
 		g.setColor(Color.white);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw students
@@ -241,8 +234,10 @@ public class Game
 			currAttack.move(MOVE_SPEED);
 			
 			// is the attack off the screen?
-			if(currAttack.getBounds().x < -currAttack.getBounds().width || currAttack.getBounds().x > WIDTH ||
-			   currAttack.getBounds().y < -currAttack.getBounds().height || currAttack.getBounds().y > HEIGHT)
+			if(currAttack.getBounds().x < -currAttack.getBounds().width ||
+					currAttack.getBounds().x > ParkViewProtector.WIDTH ||
+					currAttack.getBounds().y < -currAttack.getBounds().height ||
+					currAttack.getBounds().y > ParkViewProtector.HEIGHT)
 			{
 				System.out.println("Attack #" + i +" went off screen, removing");
 				
@@ -264,7 +259,7 @@ public class Game
 
 		// background rectangle
 		g.setColor(new Color(255, 0, 255));
-		g.fillRect(0, 0, WIDTH, STATS_BAR_HEIGHT);
+		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
 		
 		// draw HP
 		g.setColor(Color.white);
@@ -292,7 +287,7 @@ public class Game
 		}
 		
 		if(ParkViewProtector.downPressed && !ParkViewProtector.upPressed
-				&& player.getBounds().y < HEIGHT - player.getBounds().height)
+				&& player.getBounds().y < ParkViewProtector.HEIGHT - player.getBounds().height)
 		{
 			player.move(0, MOVE_SPEED);
 			//downPressed				= false;
@@ -306,7 +301,7 @@ public class Game
 		}
 		
 		if(ParkViewProtector.rightPressed && !ParkViewProtector.leftPressed
-				&& player.getBounds().x < WIDTH - player.getBounds().width)
+				&& player.getBounds().x < ParkViewProtector.WIDTH - player.getBounds().width)
 		{
 			player.move(MOVE_SPEED, 0);
 			//rightPressed			= false;
@@ -358,7 +353,7 @@ public class Game
 			obj.setDirection(Direction.SOUTH);
 			obj.resetMoveCount();
 		}
-		else if(obj.getBounds().y >= HEIGHT - obj.getBounds().height  &&
+		else if(obj.getBounds().y >= ParkViewProtector.HEIGHT - obj.getBounds().height  &&
 				obj.getDirection() == Direction.SOUTH)
 		{
 			obj.setDirection(Direction.NORTH);
@@ -369,7 +364,7 @@ public class Game
 			obj.setDirection(Direction.EAST);
 			obj.resetMoveCount();
 		}
-		else if(obj.getBounds().x >= WIDTH - obj.getBounds().width &&
+		else if(obj.getBounds().x >= ParkViewProtector.WIDTH - obj.getBounds().width &&
 				obj.getDirection() == Direction.EAST)
 		{
 			obj.setDirection(Direction.WEST);
