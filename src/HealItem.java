@@ -1,41 +1,22 @@
 public class HealItem extends UsableItem
 {
-	public HealItem(String name,String descrip)
+	private int hpInc;
+	private int tpInc;
+	
+	public HealItem(String name,String descrip,int hp,int tp)
 	{
 		super(name,descrip);
 		this.sprite	= DataStore.INSTANCE.getSprite("images/gItem.png");
+		hpInc = hp;
+		tpInc = tp;
 	}
 	
 	public void run(Character c)
 	{
-		if(contains("HP+="))
+		if(c instanceof Staff)
 		{
-			int increase = Integer.parseInt((descrip.substring(idxOf("HP+=") + 4)));
-			c.adjustHp(increase*-1);
+			((Staff)c).adjustTp(tpInc);
 		}
-	}
-	
-	public boolean contains(String check)
-	{
-		for(int i = 0;i < descrip.length()-check.length();i++)
-		{
-			if(descrip.substring(i,i+check.length()).equals(check))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public int idxOf(String check)
-	{
-		for(int i = 0;i < descrip.length()-check.length();i++)
-		{
-			if(descrip.substring(i,i+check.length()).equals(check))
-			{
-				return i;
-			}
-		}
-		return -1;
+		c.adjustHp(hpInc);
 	}
 }
