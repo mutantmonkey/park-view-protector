@@ -35,6 +35,7 @@ public class Game
 	public static final int MAX_NUM_MOVES		= 400;
 	
 	public static final int STATS_BAR_HEIGHT	= 20;
+	public static final int STAT_PAD_BOTTOM		= 6;
 	
 	// graphics
 	private Graphics g;
@@ -268,7 +269,12 @@ public class Game
 		// draw HP
 		g.setColor(Color.white);
 		g.setFont(new Font("Courier New", Font.PLAIN, 12));
-		g.drawString("HP: " + player.getHp(), 5, STATS_BAR_HEIGHT - 6);
+		g.drawString("HP:    / " + player.getMaxHp(), 5,
+				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
+		
+		g.drawString("" + player.getHp(), 33, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
+		
+		g.drawString("Speed: " + player.getSpeed(), 200, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
 		// finish drawing
 		g.dispose();

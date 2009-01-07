@@ -61,6 +61,16 @@ public abstract class Character extends Movable
 	}
 	
 	/**
+	 * Returns the maximum amount of HP the character can have
+	 * 
+	 * @return Amount of max HP
+	 */
+	public int getMaxHp()
+	{
+		return maxHp;
+	}
+	
+	/**
 	 * Does an attack
 	 */
 	public abstract void attack();
