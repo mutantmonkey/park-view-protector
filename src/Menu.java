@@ -10,9 +10,18 @@ import java.awt.image.BufferStrategy;
 
 public class Menu
 {
+	public static final int LINE_SPACING	= 50;
+	public static final Font textFont		= new Font("Vivaldi", Font.PLAIN, 42);
+	public static final Color textColor		= Color.white;
+	
 	// graphics
 	private Graphics g;
 	private BufferStrategy strategy;
+	
+	private MenuItem[] items			= {
+			new MenuItem("Ha Ha"),
+			new MenuItem("Blah")
+		};
 	
 	/**
 	 * Constructor
@@ -36,11 +45,21 @@ public class Menu
 			ParkViewProtector.escPressed	= false;
 		}
 		
-		g								= (Graphics) strategy.getDrawGraphics();
+		g									= (Graphics) strategy.getDrawGraphics();
 		
 		// draw the background
 		g.setColor(Color.black);
 		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
+		
+		// set font and color
+		g.setFont(textFont);
+		g.setColor(textColor);
+		
+		// draw menu items
+		for(int i = 0; i < items.length; i++)
+		{
+			items[i].draw(g, (i + 1) * LINE_SPACING);
+		}
 	
 		// finish drawing
 		g.dispose();
