@@ -13,6 +13,7 @@ public class Menu
 	public static final int LINE_SPACING	= 50;
 	public static final Font textFont		= new Font("Vivaldi", Font.PLAIN, 42);
 	public static final Color textColor		= Color.white;
+	public static final Color selTextColor	= new Color(255, 0, 255);
 	
 	// graphics
 	private Graphics g;
@@ -22,6 +23,7 @@ public class Menu
 			new MenuItem("Ha Ha"),
 			new MenuItem("Blah")
 		};
+	private int selectedItem			= 0;
 	
 	/**
 	 * Constructor
@@ -53,12 +55,30 @@ public class Menu
 		
 		// set font and color
 		g.setFont(textFont);
-		g.setColor(textColor);
 		
 		// draw menu items
 		for(int i = 0; i < items.length; i++)
 		{
+			if(i == selectedItem)
+			{
+				g.setColor(selTextColor);
+			}
+			else {
+				g.setColor(textColor);
+			}
+			
 			items[i].draw(g, (i + 1) * LINE_SPACING);
+		}
+		
+		// handle key presses
+		if(ParkViewProtector.upPressed && selectedItem > 0)
+		{
+			selectedItem--;
+		}
+		
+		if(ParkViewProtector.downPressed && selectedItem < items.length - 1)
+		{
+			selectedItem++;
 		}
 	
 		// finish drawing
