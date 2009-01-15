@@ -32,6 +32,7 @@ public class ParkViewProtector extends Canvas
 	public static boolean rightPressed		= false;
 	public static boolean attackPressed		= false;
 	public static boolean escPressed		= false;
+	public static boolean enterPressed		= false;
 	
 	// graphics
 	private Graphics g;

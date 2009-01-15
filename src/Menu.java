@@ -10,8 +10,8 @@ import java.awt.image.BufferStrategy;
 
 public class Menu
 {
-	public static final int LINE_SPACING	= 50;
-	public static final Font textFont		= new Font("Vivaldi", Font.PLAIN, 42);
+	public static final int LINE_SPACING	= 40;
+	public static final Font textFont		= new Font("Tahoma", Font.PLAIN, 32);
 	public static final Color textColor		= Color.white;
 	public static final Color selTextColor	= new Color(255, 0, 255);
 	
@@ -20,8 +20,9 @@ public class Menu
 	private BufferStrategy strategy;
 	
 	private MenuItem[] items			= {
-			new MenuItem("Ha Ha"),
-			new MenuItem("Blah")
+			new MenuItem("Back"),
+			new MenuItem("Options"),
+			new MenuItem("Quit Game"),
 		};
 	private int selectedItem			= 0;
 	
@@ -41,7 +42,26 @@ public class Menu
 	
 	public void show()
 	{
-		if(ParkViewProtector.escPressed)
+		// handle key presses
+		if(ParkViewProtector.upPressed && selectedItem > 0)
+		{
+			selectedItem--;
+		}
+		else if(ParkViewProtector.downPressed && selectedItem < items.length - 1)
+		{
+			selectedItem++;
+		}
+		else if(ParkViewProtector.enterPressed)
+		{
+			// FIXME: replace with proper handling
+			if(selectedItem == 0)
+			{
+				ParkViewProtector.showMenu	= false;
+			}
+			
+			ParkViewProtector.enterPressed	= false;
+		}
+		else if(ParkViewProtector.escPressed)
 		{
 			ParkViewProtector.showMenu		= false;
 			ParkViewProtector.escPressed	= false;
@@ -59,6 +79,7 @@ public class Menu
 		// draw menu items
 		for(int i = 0; i < items.length; i++)
 		{
+			// set text color
 			if(i == selectedItem)
 			{
 				g.setColor(selTextColor);
@@ -70,17 +91,6 @@ public class Menu
 			items[i].draw(g, (i + 1) * LINE_SPACING);
 		}
 		
-		// handle key presses
-		if(ParkViewProtector.upPressed && selectedItem > 0)
-		{
-			selectedItem--;
-		}
-		
-		if(ParkViewProtector.downPressed && selectedItem < items.length - 1)
-		{
-			selectedItem++;
-		}
-	
 		// finish drawing
 		g.dispose();
 		strategy.show();

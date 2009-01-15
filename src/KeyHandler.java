@@ -89,6 +89,10 @@ public class KeyHandler extends KeyAdapter
 			case KeyEvent.VK_ESCAPE:
 				ParkViewProtector.escPressed		= true;
 				break;
+				
+			case KeyEvent.VK_ENTER:
+				ParkViewProtector.enterPressed		= true;
+				break;
 		}
 	}
 	
@@ -158,7 +162,15 @@ public class KeyHandler extends KeyAdapter
 				break;
 				
 			case KeyEvent.VK_SPACE:
-				ParkViewProtector.attackPressed=false;
+				ParkViewProtector.attackPressed		= false;
+				break;
+				
+			case KeyEvent.VK_ESCAPE:
+				ParkViewProtector.escPressed		= false;
+				break;
+				
+			case KeyEvent.VK_ENTER:
+				ParkViewProtector.enterPressed		= false;
 				break;
 		}
 	}
