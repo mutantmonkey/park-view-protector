@@ -310,7 +310,7 @@ public class Game
 		if(ParkViewProtector.attackPressed && attackDelay == 0)
 		{
 			Attack testAttack;
-			testAttack			= new Attack(player.x, player.y, 2.0, "attack", player.getDirection(), 0, true, 0);
+			testAttack			= new Attack(player.x, player.y, 2.0, "attack", player.getDirection(), 3, 0, true, 0);
 			testAttack.switchXY();
 			attacks.add(testAttack);
 			
