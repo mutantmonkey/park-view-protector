@@ -59,45 +59,53 @@ public class Attack extends Movable
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_n.png");
 			System.out.println(getDirection());
 			//move(-this.getBounds().width/4,-this.getBounds().height/4);
-			x+=(int) Math.round(-getBounds().width/4 * speed);
-			y+=(int) Math.round(-getBounds().height/4 * speed);
+			System.out.println("Placement: "+x+" "+y);
+			this.x+=(int) Math.round(-getBounds().width/2);
+			this.y+=(int) Math.round(-getBounds().height/2);
+			System.out.println("Placement: "+x+" "+y);
 		}
 		else if(direction==Direction.SOUTH)
 		{
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_s.png");
 			System.out.println(getDirection());
 			//move(-this.getBounds().width/4,-this.getBounds().height/4);
-			x+=(int) Math.round(-getBounds().width/4 * speed);
-			y+=(int) Math.round(-getBounds().height/4 * speed);
+			System.out.println("Placement: "+x+" "+y);
+			this.x+=(int) Math.round(-getBounds().width/2);
+			this.y+=(int) Math.round(-getBounds().height/2);
+			System.out.println("Placement: "+x+" "+y);
 		}
 		else if(direction==Direction.WEST)
 		{
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_w.png");
 			System.out.println(getDirection());
 			//move(-this.getBounds().width/4,-this.getBounds().height/4);
-			x+=(int) Math.round(-getBounds().width/4 * speed);
-			y+=(int) Math.round(-getBounds().height/4 * speed);
+			System.out.println("Placement: "+x+" "+y);
+			this.x+=(int) Math.round(-getBounds().width/2);
+			this.y+=(int) Math.round(-getBounds().height/2);
+			System.out.println("Placement: "+x+" "+y);
 		}
 		else /*Implied else if for EAST*/
 		{
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_e.png");
 			System.out.println(getDirection());
 			//move(-this.getBounds().width/4,-this.getBounds().height/4);
-			x+=(int) Math.round(-getBounds().width/4 * speed);
-			y+=(int) Math.round(-getBounds().height/4 * speed);
+			System.out.println("Placement: "+this.x+" "+this.y);
+			this.x+=(int) Math.round(-getBounds().width/2);
+			this.y+=(int) Math.round(-getBounds().height/2);
+			System.out.println("Placement: "+this.x+" "+this.y);
 		}
 		
 		if(type==Type.FRONT)
 		{
 			System.out.println(getDirection());
 			if(direction==Direction.EAST)
-				x+=(int) Math.round(15 * speed);
+				x+=(int) Math.round(30);
 			else if(direction==Direction.WEST)
-				x-=(int) Math.round(15 * speed);
+				x-=(int) Math.round(30);
 			else if(direction==Direction.SOUTH)
-				y+=(int) Math.round(15*speed);
+				y+=(int) Math.round(30);
 			else
-				y-=(int) Math.round(15*speed);
+				y-=(int) Math.round(30);
 		}
 	}
 }
