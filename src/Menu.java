@@ -10,6 +10,7 @@ import java.awt.image.BufferStrategy;
 
 public class Menu
 {
+	public static final int TOP_SPACING		= 120;
 	public static final int LINE_SPACING	= 40;
 	public static final Font textFont		= new Font("Tahoma", Font.PLAIN, 32);
 	public static final Color textColor		= Color.white;
@@ -88,7 +89,7 @@ public class Menu
 				g.setColor(textColor);
 			}
 			
-			items[i].draw(g, (i + 1) * LINE_SPACING);
+			items[i].draw(g, ParkViewProtector.WIDTH / 2, TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
 		
 		// finish drawing
