@@ -48,6 +48,6 @@ public class MenuItem extends JLabel
 		int width			= g.getFontMetrics().stringWidth(label);
 		x				   -= width / 2;
 		
-		g.drawString(name, x, y);
+		g.drawString(label, x, y);
 	}
 }
