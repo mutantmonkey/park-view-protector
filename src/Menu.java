@@ -12,7 +12,7 @@ public class Menu
 {
 	public static final int TOP_SPACING		= 120;
 	public static final int LINE_SPACING	= 40;
-	public static final Font textFont		= new Font("Tahoma", Font.PLAIN, 32);
+	public static final Font textFont		= new Font("Dialog", Font.PLAIN, 32);
 	public static final Color textColor		= Color.white;
 	public static final Color selTextColor	= new Color(255, 0, 255);
 	
