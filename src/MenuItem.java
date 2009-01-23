@@ -12,7 +12,7 @@ public class MenuItem extends JLabel
 	private String label;
 	
 	/**
-	 * Create a new menu item with the specified label
+	 * Creates a new menu item with the specified label
 	 * 
 	 * @param name
 	 */
@@ -22,7 +22,7 @@ public class MenuItem extends JLabel
 	}
 	
 	/**
-	 * Get the bounds of the menu item
+	 * Gets the bounds of the menu item
 	 * 
 	 * @param g Graphics context
 	 * @return Bounding box
@@ -36,7 +36,7 @@ public class MenuItem extends JLabel
 	}
 	
 	/**
-	 * Draw the menu item on the graphics context
+	 * Draws the menu item on the graphics context
 	 *  
 	 * @param g Graphics context
 	 * @param x X position
