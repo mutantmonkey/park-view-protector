@@ -10,6 +10,7 @@ import javax.swing.*;
 public class MenuItem extends JLabel
 {
 	private String label;
+	private int action;
 	
 	/**
 	 * Creates a new menu item with the specified label
@@ -19,6 +20,18 @@ public class MenuItem extends JLabel
 	public MenuItem(String label)
 	{
 		this.label			= label;
+		this.action			= 0;
+	}
+	
+	/**
+	 * Creates a new menu item with the specified label
+	 * 
+	 * @param name
+	 */
+	public MenuItem(String label, int action)
+	{
+		this.label			= label;
+		this.action			= action;
 	}
 	
 	/**
@@ -33,6 +46,16 @@ public class MenuItem extends JLabel
 		int height			= g.getFontMetrics().getHeight();
 		
 		return new Rectangle(width, height);
+	}
+	
+	/**
+	 * Gets the action ID
+	 * 
+	 * @return Action ID :D
+	 */
+	public int getAction()
+	{
+		return action;
 	}
 	
 	/**

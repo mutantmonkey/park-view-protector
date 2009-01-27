@@ -52,7 +52,7 @@ public class Game
 	 * @param g Graphics canvas
 	 * @param strategy Buffer strategy
 	 */
-	public Game(Graphics g, BufferStrategy strategy)
+	public Game(ParkViewProtector p, Graphics g, BufferStrategy strategy)
 	{
 		this.g								= g;
 		this.strategy						= strategy;
@@ -310,7 +310,9 @@ public class Game
 		if(ParkViewProtector.attackPressed && attackDelay == 0)
 		{
 			Attack testAttack;
-			testAttack			= new Attack(player.x, player.y, 2.0, "attack", player.getDirection(), 3, 0, true, 0);
+			testAttack			= new Attack(player.x + player.getBounds().width / 2,
+												player.y + player.getBounds().height / 2, 0.5, "attack", 
+												player.getDirection(), 3, 0, true, 0);
 			testAttack.switchXY();
 			attacks.add(testAttack);
 			

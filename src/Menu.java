@@ -10,20 +10,22 @@ import java.awt.image.BufferStrategy;
 
 public class Menu
 {
-	public static final int TOP_SPACING		= 120;
-	public static final int LINE_SPACING	= 40;
-	public static final Font textFont		= new Font("Dialog", Font.PLAIN, 32);
-	public static final Color textColor		= Color.white;
-	public static final Color selTextColor	= new Color(255, 0, 255);
+	public static final int TOP_SPACING				= 120;
+	public static final int LINE_SPACING			= 40;
+	public static final Font TEXT_FONT				= new Font("Dialog", Font.PLAIN, 32);
+	public static final Color TEXT_COLOR			= Color.white;
+	public static final Color SELECTED_TEXT_COLOR	= new Color(255, 0, 255);
+	
+	private ParkViewProtector driver;
 	
 	// graphics
 	private Graphics g;
 	private BufferStrategy strategy;
 	
 	private MenuItem[] items			= {
-			new MenuItem("Back"),
-			new MenuItem("Options"),
-			new MenuItem("Quit Game"),
+			new MenuItem("Back", 1),
+			new MenuItem("Options", 2),
+			new MenuItem("Quit Game", 3),
 		};
 	private int selectedItem			= 0;
 	
@@ -35,8 +37,9 @@ public class Menu
 	 * @param g Graphics canvas
 	 * @param strategy Buffer strategy
 	 */
-	public Menu(Graphics g, BufferStrategy strategy)
+	public Menu(ParkViewProtector p, Graphics g, BufferStrategy strategy)
 	{
+		this.driver						= p;
 		this.g							= g;
 		this.strategy					= strategy;
 	}
@@ -54,11 +57,7 @@ public class Menu
 		}
 		else if(ParkViewProtector.enterPressed)
 		{
-			// FIXME: replace with proper handling
-			if(selectedItem == 0)
-			{
-				ParkViewProtector.showMenu	= false;
-			}
+			execute(items[selectedItem].getAction());
 			
 			ParkViewProtector.enterPressed	= false;
 		}
@@ -75,7 +74,7 @@ public class Menu
 		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
 		
 		// set font and color
-		g.setFont(textFont);
+		g.setFont(TEXT_FONT);
 		
 		// draw menu items
 		for(int i = 0; i < items.length; i++)
@@ -83,10 +82,10 @@ public class Menu
 			// set text color
 			if(i == selectedItem)
 			{
-				g.setColor(selTextColor);
+				g.setColor(SELECTED_TEXT_COLOR);
 			}
 			else {
-				g.setColor(textColor);
+				g.setColor(TEXT_COLOR);
 			}
 			
 			items[i].draw(g, ParkViewProtector.WIDTH / 2, TOP_SPACING + (i + 1) * LINE_SPACING);
@@ -102,5 +101,23 @@ public class Menu
 			Thread.sleep(100);
 		}
 		catch(Exception e) {}
+	}
+	
+	/**
+	 * Runs the action for the menu item (almost certainly not the best way to do this)
+	 * 
+	 * @param actionId
+	 */
+	private void execute(int actionId)
+	{
+		switch(actionId)
+		{
+			case 1:
+				ParkViewProtector.showMenu	= false;
+				break;
+			
+			case 3:
+				driver.quit();
+		}
 	}
 }

@@ -22,7 +22,6 @@ public class ParkViewProtector extends Canvas
 	protected JPanel contentPanel;
 	
 	private boolean running					= true;
-	
 	public static boolean showMenu			= false;
 	
 	// which keys are pressed
@@ -116,8 +115,8 @@ public class ParkViewProtector extends Canvas
 		createBufferStrategy(2);
 		strategy					= getBufferStrategy();
 		
-		game						= new Game(g, strategy);
-		menu						= new Menu(g, strategy);
+		game						= new Game(this, g, strategy);
+		menu						= new Menu(this, g, strategy);
 	}
 	
 	/**
@@ -141,6 +140,12 @@ public class ParkViewProtector extends Canvas
 				game.show();
 			}
 		}
+	}
+	
+	public void quit()
+	{
+		running							= false;
+		window.dispose();
 	}
 	
 	public static void main(String args[])
