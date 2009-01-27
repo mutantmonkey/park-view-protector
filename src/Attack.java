@@ -57,45 +57,24 @@ public class Attack extends Movable
 		if(direction==Direction.NORTH)
 		{
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_n.png");
-			System.out.println(getDirection());
-			//move(-this.getBounds().width/4,-this.getBounds().height/4);
-			System.out.println("Placement: "+x+" "+y);
-			this.x+=(int) Math.round(-getBounds().width/2);
-			this.y+=(int) Math.round(-getBounds().height/2);
-			System.out.println("Placement: "+x+" "+y);
 		}
 		else if(direction==Direction.SOUTH)
 		{
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_s.png");
-			System.out.println(getDirection());
-			//move(-this.getBounds().width/4,-this.getBounds().height/4);
-			System.out.println("Placement: "+x+" "+y);
-			this.x+=(int) Math.round(-getBounds().width/2);
-			this.y+=(int) Math.round(-getBounds().height/2);
-			System.out.println("Placement: "+x+" "+y);
 		}
 		else if(direction==Direction.WEST)
 		{
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_w.png");
-			System.out.println(getDirection());
-			//move(-this.getBounds().width/4,-this.getBounds().height/4);
-			System.out.println("Placement: "+x+" "+y);
-			this.x+=(int) Math.round(-getBounds().width/2);
-			this.y+=(int) Math.round(-getBounds().height/2);
-			System.out.println("Placement: "+x+" "+y);
 		}
 		else /*Implied else if for EAST*/
 		{
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_e.png");
-			System.out.println(getDirection());
-			//move(-this.getBounds().width/4,-this.getBounds().height/4);
-			System.out.println("Placement: "+this.x+" "+this.y);
-			this.x+=(int) Math.round(-getBounds().width/2);
-			this.y+=(int) Math.round(-getBounds().height/2);
-			System.out.println("Placement: "+this.x+" "+this.y);
 		}
 		
-		if(type==Type.FRONT)
+		x -= getBounds().width / 2;
+		y -= getBounds().height / 2;
+		
+		/*if(type==Type.FRONT)
 		{
 			System.out.println(getDirection());
 			if(direction==Direction.EAST)
@@ -106,7 +85,7 @@ public class Attack extends Movable
 				y+=(int) Math.round(30);
 			else
 				y-=(int) Math.round(30);
-		}
+		}*/
 	}
 }
 
