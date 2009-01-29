@@ -9,10 +9,18 @@
  * -Updated parameters. (TP=Teacher Points)
  * -Added doSkill. Unsure what this is gonna' do yet.
  * -Added useItem.
+ * 
+ * @serial
+ * Yes, I know, this is probably not the best thing to do; classes that are extended usually
+ * aren't supposed to be serializable. Sorry.
  */
 
-public abstract class Staff extends Character
+import java.io.Serializable;
+
+public abstract class Staff extends Character implements Serializable
 {
+	private static final long serialVersionUID = 0;
+	
 	private int tp;
 	private int maxTp;
 	public abstract void skill(int ski);
@@ -70,4 +78,6 @@ public abstract class Staff extends Character
 	{
 		maxTp=amount;
 	}
+	
+	
 }

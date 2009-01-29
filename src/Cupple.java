@@ -1,5 +1,16 @@
-public class Cupple extends Character
+/**
+ * This class stores information about a couple ("cupple")
+ *
+ * @author	Jamie of the Javateerz
+ * @serial
+ */
+
+import java.io.Serializable;
+
+public class Cupple extends Character implements Serializable
 {
+	private static final long serialVersionUID = 0;
+	
 	private Student male;
 	private Student female;
 	

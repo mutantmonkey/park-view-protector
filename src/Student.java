@@ -2,10 +2,15 @@
  * This class stores information about a Student
  *
  * @author	Jamie of the Javateerz
+ * @serial
  */
 
-public class Student extends Character
+import java.io.Serializable;
+
+public class Student extends Character implements Serializable
 {
+	private static final long serialVersionUID = 0;
+	
 	private char gender;
 	private boolean infected;
 	
