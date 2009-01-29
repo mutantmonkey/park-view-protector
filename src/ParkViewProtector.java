@@ -15,8 +15,8 @@ import javax.swing.*;
 
 public class ParkViewProtector extends Canvas
 {
-	public static final int WIDTH			= 700;
-	public static final int HEIGHT			= 500;
+	public static final int WIDTH			= 800;
+	public static final int HEIGHT			= 600;
 	
 	protected JFrame window;
 	protected JPanel contentPanel;
