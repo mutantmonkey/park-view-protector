@@ -27,7 +27,7 @@ public class Attack extends Movable
 	public Attack(int x, int y, double speed, String name, int direct, int damage, int duration,
 			boolean isStudent, int type)
 	{
-		super(x+20, y+32, speed);
+		super(x, y, speed);
 		this.type=type;
 		this.name=name;
 		this.direction=direct;
@@ -71,8 +71,8 @@ public class Attack extends Movable
 			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_e.png");
 		}
 		
-		x -= getBounds().width / 2;
-		y -= getBounds().height / 2;
+		x -= getBounds().width / 4;
+		y -= getBounds().height / 4;
 		
 		/*if(type==Type.FRONT)
 		{
