@@ -94,4 +94,12 @@ public abstract class Character extends Movable
 	{
 		inventory.add(item);
 	}
+	
+	protected void validateState()
+	{
+		if(hp > maxHp)
+		{
+			throw new IllegalArgumentException("HP cannot exceed max HP");
+		}
+	}
 }

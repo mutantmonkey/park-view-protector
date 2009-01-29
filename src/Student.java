@@ -5,7 +5,7 @@
  * @serial
  */
 
-import java.io.Serializable;
+import java.io.*;
 
 public class Student extends Character implements Serializable
 {
@@ -81,5 +81,17 @@ public class Student extends Character implements Serializable
 	public void changeGraphic()
 	{
 		this.sprite		= DataStore.INSTANCE.getSprite("images/placeholder.png");
+	}
+	
+	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	{
+		os.defaultReadObject();
+		
+		validateState();
+	}
+	
+	private void writeObject(ObjectOutputStream os) throws IOException
+	{
+		os.defaultWriteObject();
 	}
 }

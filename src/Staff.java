@@ -15,6 +15,9 @@
  * aren't supposed to be serializable. Sorry.
  */
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public abstract class Staff extends Character implements Serializable
@@ -79,5 +82,23 @@ public abstract class Staff extends Character implements Serializable
 		maxTp=amount;
 	}
 	
+	protected void validateState()
+	{
+		super.validateState();
+		
+		if(tp > maxTp)
+		{
+			throw new IllegalArgumentException("TP cannot exceed max TP");
+		}
+	}
 	
+	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	{
+		os.defaultReadObject();
+	}
+	
+	private void writeObject(ObjectOutputStream os) throws IOException
+	{
+		os.defaultWriteObject();
+	}
 }

@@ -5,7 +5,7 @@
  * @serial
  */
 
-import java.io.Serializable;
+import java.io.*;
 
 public class Cupple extends Character implements Serializable
 {
@@ -48,5 +48,17 @@ public class Cupple extends Character implements Serializable
 	public void attack()
 	{
 		// TODO: insert code here
+	}
+	
+	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	{
+		os.defaultReadObject();
+		
+		validateState();
+	}
+	
+	private void writeObject(ObjectOutputStream os) throws IOException
+	{
+		os.defaultWriteObject();
 	}
 }
