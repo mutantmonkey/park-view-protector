@@ -22,6 +22,7 @@ public class ParkViewProtector extends Canvas
 	protected JPanel contentPanel;
 	
 	private boolean running					= true;
+	public static boolean showTitle			= true;
 	public static boolean showMenu			= false;
 	
 	// which keys are pressed
@@ -33,15 +34,22 @@ public class ParkViewProtector extends Canvas
 	public static boolean escPressed		= false;
 	public static boolean enterPressed		= false;
 	
+	// logos
+	Sprite jtzLogo;
+	
 	// graphics
 	private Graphics g;
 	private BufferStrategy strategy;
 	
+	private TitleScreen title;
 	private Game game;
 	private Menu menu;
 	
 	public ParkViewProtector()
 	{
+		// load logos
+		jtzLogo						= DataStore.INSTANCE.getSprite("images/javateerslogo.png");
+		
 		// create container JFrame (window)
 		window						= new JFrame("Park View Protector");
 		window.setSize(WIDTH, HEIGHT);
@@ -90,9 +98,8 @@ public class ParkViewProtector extends Canvas
 		g.setColor(Color.white);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		Sprite mainLogo					= DataStore.INSTANCE.getSprite("images/javateerslogo.png");
-		mainLogo.draw(g, WIDTH / 2 - mainLogo.getWidth() / 2, HEIGHT / 2 - mainLogo.getHeight() / 2);
-		
+		// Javateerz logo
+		jtzLogo.draw(g, WIDTH / 2 - jtzLogo.getWidth() / 2, HEIGHT / 2 - jtzLogo.getHeight() / 2);
 		g.dispose();
 		
 		try{Thread.sleep(3000);}catch(Exception e){}
@@ -115,6 +122,7 @@ public class ParkViewProtector extends Canvas
 		createBufferStrategy(2);
 		strategy					= getBufferStrategy();
 		
+		title						= new TitleScreen(this, g, strategy);
 		game						= new Game(this, g, strategy);
 		menu						= new Menu(this, g, strategy);
 	}
@@ -132,7 +140,11 @@ public class ParkViewProtector extends Canvas
 		
 		while(running)
 		{
-			if(showMenu)
+			if(showTitle)
+			{
+				title.show();
+			}
+			else if(showMenu)
 			{
 				menu.show();
 			}
