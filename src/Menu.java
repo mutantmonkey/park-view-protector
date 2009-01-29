@@ -16,18 +16,16 @@ public class Menu
 	public static final Color TEXT_COLOR			= Color.white;
 	public static final Color SELECTED_TEXT_COLOR	= new Color(255, 0, 255);
 	
-	private ParkViewProtector driver;
-	
-	// graphics
-	private Graphics g;
-	private BufferStrategy strategy;
+	protected ParkViewProtector driver;
+	protected Graphics g;
+	protected BufferStrategy strategy;
 	
 	private MenuItem[] items			= {
 			new MenuItem("Back", 1),
 			new MenuItem("Options", 2),
 			new MenuItem("Quit Game", 3),
 		};
-	private int selectedItem			= 0;
+	protected int selectedItem			= 0;
 	
 	/**
 	 * Constructor
@@ -88,7 +86,7 @@ public class Menu
 				g.setColor(TEXT_COLOR);
 			}
 			
-			items[i].draw(g, ParkViewProtector.WIDTH / 2, TOP_SPACING + (i + 1) * LINE_SPACING);
+			items[i].drawCentered(g, ParkViewProtector.WIDTH / 2, TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
 		
 		// finish drawing
@@ -118,6 +116,7 @@ public class Menu
 			
 			case 3:
 				driver.quit();
+				break;
 		}
 	}
 }

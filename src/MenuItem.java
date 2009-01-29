@@ -59,6 +59,22 @@ public class MenuItem extends JLabel
 	}
 	
 	/**
+	 * Draws the menu item centered on the graphics context
+	 *  
+	 * @param g Graphics context
+	 * @param x X position
+	 * @param y Y position
+	 */
+	public void drawCentered(Graphics g, int x, int y)
+	{
+		// center the string
+		int width			= g.getFontMetrics().stringWidth(label);
+		x				   -= width / 2;
+		
+		draw(g, x, y);
+	}
+	
+	/**
 	 * Draws the menu item on the graphics context
 	 *  
 	 * @param g Graphics context
@@ -67,10 +83,6 @@ public class MenuItem extends JLabel
 	 */
 	public void draw(Graphics g, int x, int y)
 	{
-		// center the string
-		int width			= g.getFontMetrics().stringWidth(label);
-		x				   -= width / 2;
-		
 		g.drawString(label, x, y);
 	}
 }
