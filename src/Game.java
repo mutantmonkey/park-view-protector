@@ -245,7 +245,7 @@ public class Game
 				i--;
 			}
 			
-			if(currAttack.over())
+			if(i >= 0 && currAttack.over())
 			{
 				attacks.remove(i);
 				i--;
@@ -318,8 +318,9 @@ public class Game
 			Attack testAttack;
 			testAttack			= new Attack(player.x + player.getBounds().width / 2,
 												player.y + player.getBounds().height / 2,
-												0, "attack", player.getDirection(), 3, 50, 
-												true, 1);
+												5, "attack", player.getDirection(), 3, 50, 
+												true, Type.FRONT);
+
 			testAttack.switchXY();
 			attacks.add(testAttack);
 			
