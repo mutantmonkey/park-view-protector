@@ -244,6 +244,12 @@ public class Game
 				attacks.remove(i);
 				i--;
 			}
+			
+			if(currAttack.over())
+			{
+				attacks.remove(i);
+				i--;
+			}
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -312,13 +318,14 @@ public class Game
 			Attack testAttack;
 			testAttack			= new Attack(player.x + player.getBounds().width / 2,
 												player.y + player.getBounds().height / 2,
-												0, "attack", player.getDirection(), 3, 0, 
-												true, 0);
+												0, "attack", player.getDirection(), 3, 50, 
+												true, 1);
 			testAttack.switchXY();
 			attacks.add(testAttack);
 			
 			// set delay
 			attackDelay			= ATTACK_DELAY;
+			
 		}
 		
 		// decrease delay if there is one

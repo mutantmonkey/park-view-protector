@@ -41,15 +41,24 @@ public class Attack extends Movable
 	{
 		return duration;
 	}
+
 	
 	public int getTime()
 	{
 		return time;
 	}
 	
-	public void tick()
+	public void move(int dist)
 	{
+		super.move(dist);
 		time++;
+	}
+	
+	public boolean over()
+	{
+		if(time>duration)
+			return true;
+		return false;
 	}
 	
 	public void switchXY()
@@ -74,22 +83,40 @@ public class Attack extends Movable
 		x -= getBounds().width / 4;
 		y -= getBounds().height / 4;
 		
-		/*if(type==Type.FRONT)
+		if(type==Type.FRONT)
 		{
 			System.out.println(getDirection());
 			if(direction==Direction.EAST)
-				x+=(int) Math.round(30);
+				x+=(int) Math.round(10);
 			else if(direction==Direction.WEST)
-				x-=(int) Math.round(30);
+				x-=(int) Math.round(10);
 			else if(direction==Direction.SOUTH)
-				y+=(int) Math.round(30);
+				y+=(int) Math.round(10);
 			else
-				y-=(int) Math.round(30);
-		}*/
+				y-=(int) Math.round(10);
+		}
+		else if(type==Type.BACK)
+		{
+			if(direction==Direction.EAST)
+				x-=(int) Math.round(10);
+			else if(direction==Direction.WEST)
+				x+=(int) Math.round(10);
+			else if(direction==Direction.SOUTH)
+				y-=(int) Math.round(10);
+			else
+				y+=(int) Math.round(10);
+		}
+		else if(type==Type.CENTER)
+		{
+			//Impletment never
+		}
 	}
 }
 
 class Type
 {
 	public static final int FRONT=0;
+	public static final int BACK=1;
+	public static final int CENTER=2;
+	
 }
