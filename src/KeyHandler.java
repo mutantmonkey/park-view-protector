@@ -17,7 +17,7 @@ public class KeyHandler extends KeyAdapter
 	 */
 	public void keyPressed(KeyEvent e)
 	{
-		System.out.println("Key pressed: code " + e.getKeyCode());
+		//System.out.println("Key pressed: code " + e.getKeyCode());
 		
 		switch(e.getKeyCode())
 		{
@@ -101,7 +101,7 @@ public class KeyHandler extends KeyAdapter
 	 */
 	public void keyReleased(KeyEvent e)
 	{
-		System.out.println("Key release: code " + e.getKeyCode());
+		//System.out.println("Key release: code " + e.getKeyCode());
 		
 		switch(e.getKeyCode())
 		{
