@@ -52,7 +52,7 @@ public class ParkViewProtector extends Canvas
 		
 		// create container JFrame (window)
 		window						= new JFrame("Park View Protector");
-		window.setSize(WIDTH, HEIGHT);
+		window.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		
 		// set up content panel
 		contentPanel				= (JPanel) window.getContentPane();
@@ -63,8 +63,8 @@ public class ParkViewProtector extends Canvas
 		contentPanel.add(this);
 		
 		// set up window
-		window.setResizable(false);
 		window.pack();
+		window.setResizable(false);
 		
 		// make the window visible
 		window.setVisible(true);
