@@ -6,9 +6,10 @@
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.*;
 import java.util.ArrayList;
 
-public class Game
+public class Game implements Serializable
 {
 	public static final int SPEED_THROTTLE		= 10;
 	
@@ -383,5 +384,15 @@ public class Game
 		}
 		
 		obj.move(speed);
+	}
+	
+	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	{
+		os.defaultReadObject();
+	}
+	
+	private void writeObject(ObjectOutputStream os) throws IOException
+	{
+		os.defaultWriteObject();
 	}
 }
