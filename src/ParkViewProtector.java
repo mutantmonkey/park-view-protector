@@ -43,7 +43,7 @@ public class ParkViewProtector extends Canvas
 	
 	private TitleScreen title;
 	private Game game;
-	private Menu menu;
+	private Menu menu; 
 	
 	public ParkViewProtector()
 	{
@@ -132,12 +132,6 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void mainLoop()
 	{
-		Student currStudent;
-		Cupple currCouple;
-		Attack currAttack;
-		
-		int student1, student2;
-		
 		while(running)
 		{
 			if(showTitle)
@@ -152,6 +146,16 @@ public class ParkViewProtector extends Canvas
 				game.show();
 			}
 		}
+	}
+	
+	/**
+	 * Gets the instance of Game being run by ParkViewProtector
+	 * 
+	 * @return The instance of Game
+	 */
+	public Game getGame()
+	{
+		return game;
 	}
 	
 	public void quit()
