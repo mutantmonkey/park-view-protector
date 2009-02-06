@@ -109,6 +109,9 @@ public class TitleScreen extends Menu
 				break;
 			
 			case 2:
+				DataSaver ds = new DataSaver();
+				driver.setGame(ds.retrieve());
+				
 				ParkViewProtector.showTitle	= false;
 				break;
 		}
