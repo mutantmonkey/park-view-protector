@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 public abstract class Staff extends Character implements Serializable
 {
-	private static final long serialVersionUID = 0;
+	private static final long serialVersionUID = 1L;
 	
 	private int tp;
 	private int maxTp;
