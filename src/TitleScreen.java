@@ -110,7 +110,7 @@ public class TitleScreen extends Menu
 			
 			case 2:
 				DataSaver ds = new DataSaver();
-				driver.setGame(ds.retrieve());
+				driver.setGame(ds.load());
 				
 				ParkViewProtector.showTitle	= false;
 				break;

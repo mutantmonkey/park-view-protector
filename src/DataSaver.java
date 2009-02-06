@@ -20,7 +20,7 @@ public class DataSaver
 		}
 		catch(Exception e)
 		{
-			System.out.println(ERROR);
+			e.printStackTrace();
 		}
 	}
 	
@@ -39,13 +39,13 @@ public class DataSaver
 			}
 			catch(Exception e)
 			{
-				System.out.println(ERROR);
+				e.printStackTrace();
 			}
 			ois.close();
 		}
 		catch(Exception e)
 		{
-			System.out.println(ERROR);
+			e.printStackTrace();
 		}
 		return ret;
 	}
