@@ -390,11 +390,17 @@ public class Game implements Serializable
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
 	{
-		os.defaultReadObject();
+		player			= (Staff) os.readObject();
+		//students		= (ArrayList<Student>) os.readObject();
+		//couples			= (ArrayList<Cupple>) os.readObject();
+		//attacks			= (ArrayList<Attack>) os.readObject();
 	}
 	
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
-		os.defaultWriteObject();
+		os.writeObject(player);
+		os.writeObject(students);
+		os.writeObject(couples);
+		os.writeObject(attacks);
 	}
 }
