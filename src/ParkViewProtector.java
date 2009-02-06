@@ -158,6 +158,11 @@ public class ParkViewProtector extends Canvas
 		return game;
 	}
 	
+	public void setGame(Game gamma)
+	{
+		game							= gamma;
+	}
+	
 	public void quit()
 	{
 		running							= false;
