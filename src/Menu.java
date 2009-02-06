@@ -125,7 +125,8 @@ public class Menu
 				break;
 			
 			case 5:
-				driver = (ParkViewProtector)(DataSaver.load());
+				driver.setGame(DataSaver.load());
+				break;
 		}
 	}
 }
