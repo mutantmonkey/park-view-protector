@@ -24,6 +24,8 @@ public class Menu
 			new MenuItem("Back", 1),
 			new MenuItem("Options", 2),
 			new MenuItem("Quit Game", 3),
+			new MenuItem("Save Game", 4),
+			new MenuItem("Load Game", 5)
 		};
 	protected int selectedItem			= 0;
 	
@@ -117,6 +119,13 @@ public class Menu
 			case 3:
 				driver.quit();
 				break;
+			
+			case 4:
+				DataSaver.save(driver.getGame());
+				break;
+			
+			case 5:
+				driver = (ParkViewProtector)(DataSaver.load());
 		}
 	}
 }

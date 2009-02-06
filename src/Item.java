@@ -26,26 +26,26 @@ public abstract class Item
 		this.sprite	= DataStore.INSTANCE.getSprite("images/gItem.png");
 	}
 	
-	public String getName()
+	public String getName()//gets name
 	{
 		return name;
 	}
 	
-	public String getDes()
+	public String getDes()//gets description
 	{
 		return descrip;
 	}
 	
-	public void draw(Graphics g)
+	public void draw(Graphics g)//draws it...?
 	{
 		sprite.draw(g, x, y);
 	}
 	
-	public void place(int x, int y)
+	public void place(int x, int y)//places it...?
 	{
 		this.x = x;
 		this.y = y;
 	}
 	
-	public abstract void run();
+	public abstract void run(Character c);//runs it...?
 }

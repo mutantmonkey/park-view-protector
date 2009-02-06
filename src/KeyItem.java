@@ -5,7 +5,7 @@ public class KeyItem extends Item
 		super(name,descrip);
 	}
 	
-	public void run()
+	public void run(Character c)
 	{
 		
 	}
