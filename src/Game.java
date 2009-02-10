@@ -28,6 +28,7 @@ public class Game implements Serializable
 	
 	public static final double INFECT_CHANCE	= 0.4;
 	public static final double CUPPLE_CHANCE	= 0.6;
+	public static final double ATTACK_CHANCE	= 0.1;
 	
 	public static final int MIN_NUM_MOVES		= 10;
 	public static final int MAX_NUM_MOVES		= 400;
@@ -71,7 +72,7 @@ public class Game implements Serializable
 	public void initPlayer()
 	{
 		// FIXME: magic numbers are bad
-		player						= new Stark(0, STATS_BAR_HEIGHT, 10, 10, 10, 10, 10);
+		player						= new Stark(0, STATS_BAR_HEIGHT, 100, 100, 10, 10, 1);
 	}
 	
 	/**
@@ -107,7 +108,7 @@ public class Game implements Serializable
 	
 	public void show()
 	{
-		Student currStudent;
+		Student currStudent; 
 		Cupple currCouple;
 		Attack currAttack;
 		
@@ -132,12 +133,6 @@ public class Game implements Serializable
 			moveRandom(currStudent, MOVE_SPEED,
 					(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
 							MIN_NUM_MOVES + 1));
-
-			// collision detection! :D
-			/*if(player.getBounds().intersects(currStudent.getBounds()))
-			{
-				player.adjustHp(1);
-			}*/
 			
 			if(currStudent.isInfected())
 			{
@@ -191,6 +186,13 @@ public class Game implements Serializable
 			moveRandom(currCouple, MOVE_SPEED,
 					(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
 							MIN_NUM_MOVES + 1));
+			
+			// did the couple hit the player? if so, decrease HP
+			if(currCouple.getBounds().intersects(player.getBounds()) &&
+					Math.random() <= ATTACK_CHANCE)
+			{
+				player.adjustHp(1);
+			}
 			
 			// update students
 			for(int j = 0; j < students.size(); j++)
@@ -399,8 +401,8 @@ public class Game implements Serializable
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
 		os.writeObject(player);
-		os.writeObject(students);
-		os.writeObject(couples);
-		os.writeObject(attacks);
+		//os.writeObject(students);
+		//os.writeObject(couples);
+		//os.writeObject(attacks);
 	}
 }
