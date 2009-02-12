@@ -80,7 +80,12 @@ public class Game implements Serializable
 	 */
 	public void initStudents()
 	{
+		// create a random number of students using MIN_STUDENTS and MAX_STUDENTS; multiply
+		// it by 2 and divide to ensure that an even number is created to ensure proper
+		// coupling
 		int numStudents				= (int) (Math.random() * (MAX_STUDENTS - MIN_STUDENTS + 1)) + MIN_STUDENTS;
+		numStudents					= Math.round(numStudents * 2 / 2);
+		
 		Student student				= null;
 		
 		int x, y;

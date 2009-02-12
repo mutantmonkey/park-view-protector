@@ -92,7 +92,7 @@ public abstract class Staff extends Character implements Serializable
 		}
 	}
 	
-	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	/*private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
 	{
 		os.defaultReadObject();
 	}
@@ -100,5 +100,5 @@ public abstract class Staff extends Character implements Serializable
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
 		os.defaultWriteObject();
-	}
+	}*/
 }

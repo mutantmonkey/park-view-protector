@@ -11,6 +11,17 @@ public class Stark extends Staff
 {
 	public static final double SPEED= 1.0;
 	
+	/**
+	 * Create a new Stark
+	 * 
+	 * @param x X Location
+	 * @param y Y Location
+	 * @param hp HP
+	 * @param maxHp Max HP
+	 * @param tp Teacher Points
+	 * @param maxTp Max Teacher Points
+	 * @param damage Damage that will be dealt
+	 */
 	public Stark(int x, int y, int hp, int maxHp, int tp, int maxTp, int damage)
 	{
 		super(x, y, hp, maxHp, SPEED, tp, maxTp, damage);
