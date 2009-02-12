@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 public abstract class Staff extends Character implements Serializable
 {
-	private static final long serialVersionUID = 0;
+	private static final long serialVersionUID = 1L;
 	
 	private int tp;
 	private int maxTp;
@@ -92,7 +92,7 @@ public abstract class Staff extends Character implements Serializable
 		}
 	}
 	
-	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	/*private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
 	{
 		os.defaultReadObject();
 	}
@@ -100,5 +100,5 @@ public abstract class Staff extends Character implements Serializable
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
 		os.defaultWriteObject();
-	}
+	}*/
 }

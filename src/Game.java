@@ -28,12 +28,15 @@ public class Game implements Serializable
 	
 	public static final double INFECT_CHANCE	= 0.4;
 	public static final double CUPPLE_CHANCE	= 0.6;
+	public static final double ATTACK_CHANCE	= 0.1;
 	
 	public static final int MIN_NUM_MOVES		= 10;
 	public static final int MAX_NUM_MOVES		= 400;
 	
 	public static final int STATS_BAR_HEIGHT	= 20;
 	public static final int STAT_PAD_BOTTOM		= 6;
+	
+	private static final long serialVersionUID	= 1L;
 	
 	// graphics
 	private Graphics g;
@@ -69,7 +72,7 @@ public class Game implements Serializable
 	public void initPlayer()
 	{
 		// FIXME: magic numbers are bad
-		player						= new Stark(0, STATS_BAR_HEIGHT, 10, 10, 10, 10, 10);
+		player						= new Stark(0, STATS_BAR_HEIGHT, 100, 100, 10, 10, 1);
 	}
 	
 	/**
@@ -77,7 +80,12 @@ public class Game implements Serializable
 	 */
 	public void initStudents()
 	{
+		// create a random number of students using MIN_STUDENTS and MAX_STUDENTS; multiply
+		// it by 2 and divide to ensure that an even number is created to ensure proper
+		// coupling
 		int numStudents				= (int) (Math.random() * (MAX_STUDENTS - MIN_STUDENTS + 1)) + MIN_STUDENTS;
+		numStudents					= Math.round(numStudents * 2 / 2);
+		
 		Student student				= null;
 		
 		int x, y;
@@ -105,7 +113,7 @@ public class Game implements Serializable
 	
 	public void show()
 	{
-		Student currStudent;
+		Student currStudent; 
 		Cupple currCouple;
 		Attack currAttack;
 		
@@ -130,12 +138,6 @@ public class Game implements Serializable
 			moveRandom(currStudent, MOVE_SPEED,
 					(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
 							MIN_NUM_MOVES + 1));
-
-			// collision detection! :D
-			/*if(player.getBounds().intersects(currStudent.getBounds()))
-			{
-				player.adjustHp(1);
-			}*/
 			
 			if(currStudent.isInfected())
 			{
@@ -189,6 +191,13 @@ public class Game implements Serializable
 			moveRandom(currCouple, MOVE_SPEED,
 					(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
 							MIN_NUM_MOVES + 1));
+			
+			// did the couple hit the player? if so, decrease HP
+			if(currCouple.getBounds().intersects(player.getBounds()) &&
+					Math.random() <= ATTACK_CHANCE)
+			{
+				player.adjustHp(1);
+			}
 			
 			// update students
 			for(int j = 0; j < students.size(); j++)
@@ -388,11 +397,17 @@ public class Game implements Serializable
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
 	{
-		os.defaultReadObject();
+		player			= (Staff) os.readObject();
+		//students		= (ArrayList<Student>) os.readObject();
+		//couples			= (ArrayList<Cupple>) os.readObject();
+		//attacks			= (ArrayList<Attack>) os.readObject();
 	}
 	
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
-		os.defaultWriteObject();
+		os.writeObject(player);
+		//os.writeObject(students);
+		//os.writeObject(couples);
+		//os.writeObject(attacks);
 	}
 }

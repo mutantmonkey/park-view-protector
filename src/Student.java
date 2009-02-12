@@ -9,7 +9,7 @@ import java.io.*;
 
 public class Student extends Character implements Serializable
 {
-	private static final long serialVersionUID = 0;
+	private static final long serialVersionUID = 1L;
 	
 	private char gender;
 	private boolean infected;
