@@ -318,7 +318,7 @@ public class Game
 			Attack testAttack;
 			testAttack			= new Attack(player.x + player.getBounds().width / 2,
 												player.y + player.getBounds().height / 2,
-												5, "attack", player.getDirection(), 3, 50, 
+												5, "stick", player.getDirection(), 3, 50, 
 												true, Type.FRONT);
 
 			testAttack.switchXY();
