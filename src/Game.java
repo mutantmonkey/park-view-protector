@@ -9,7 +9,7 @@ import java.awt.image.BufferStrategy;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Game implements Serializable
+public class Game implements Externalizable
 {
 	public static final int SPEED_THROTTLE		= 10;
 	
@@ -45,6 +45,14 @@ public class Game implements Serializable
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
 
+	/*public Game()
+	{
+		System.out.println("howdy");
+		
+		this.g = ParkViewProtector.g;
+		this.strategy = ParkViewProtector.strategy;
+	}*/
+	
 	/**
 	 * Constructor
 	 * 
@@ -386,13 +394,17 @@ public class Game implements Serializable
 		obj.move(speed);
 	}
 	
-	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	public void readExternal(ObjectInput out) throws ClassNotFoundException, IOException
 	{
-		os.defaultReadObject();
+		player				= (Staff) out.readObject();
+		students			= (ArrayList<Student>) out.readObject();
+		couples				= (ArrayList<Cupple>) out.readObject();
 	}
 	
-	private void writeObject(ObjectOutputStream os) throws IOException
+	public void writeExternal(ObjectOutput os) throws IOException
 	{
-		os.defaultWriteObject();
+		os.writeObject(player);
+		os.writeObject(students);
+		os.writeObject(couples);
 	}
 }
