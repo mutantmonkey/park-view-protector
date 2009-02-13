@@ -11,6 +11,8 @@ public class Student extends Character implements Serializable
 {
 	private static final long serialVersionUID = 0;
 	
+	private String type	= "default";
+	
 	private char gender;
 	private boolean infected;
 	
@@ -27,7 +29,18 @@ public class Student extends Character implements Serializable
 		super(x, y, hp, maxHp, spd, dmg);
 		
 		this.gender		= gender;
-		this.sprite		= DataStore.INSTANCE.getSprite("images/student.png");
+		
+		updateSprite();
+	}
+	
+	/**
+	 * Updates the sprite
+	 */
+	private void updateSprite()
+	{
+		String dir		= infected ? "student_infected" : "student";
+		
+		sprite			= DataStore.INSTANCE.getSprite("images/" + dir + "/" + type + ".png");
 	}
 	
 	/**
@@ -57,7 +70,7 @@ public class Student extends Character implements Serializable
 	{
 		infected			= true;
 		
-		sprite				= DataStore.INSTANCE.getSprite("images/iStudent.png");
+		updateSprite();
 	}
 	
 	/**
@@ -67,7 +80,7 @@ public class Student extends Character implements Serializable
 	{
 		infected			= false;
 		
-		sprite				= DataStore.INSTANCE.getSprite("images/student.png");
+		updateSprite();
 	}
 	
 	/**
