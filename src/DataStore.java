@@ -5,13 +5,12 @@
  * @author	Jamie of the Javateerz
  */
 
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.image.*;
+
 import java.io.File;
 import java.io.IOException;
+
 import java.net.URL;
 import java.util.HashMap;
 
