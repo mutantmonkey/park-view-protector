@@ -30,6 +30,12 @@ public class Student extends Character implements Serializable
 		
 		this.gender		= gender;
 		
+		// FIXME: this is just for testing; determining type should probably be handled in the driver
+		if(gender != 'f' && Math.random() < 0.4)
+		{
+			type = "goth";
+		}
+		
 		updateSprite();
 	}
 	
@@ -40,7 +46,7 @@ public class Student extends Character implements Serializable
 	{
 		String dir		= infected ? "student_infected" : "student";
 		
-		sprite			= DataStore.INSTANCE.getSprite("images/" + dir + "/" + type + ".png");
+		sprite			= DataStore.INSTANCE.getSprite("images/" + dir + "/" + type + "_" + gender + ".png");
 	}
 	
 	/**
