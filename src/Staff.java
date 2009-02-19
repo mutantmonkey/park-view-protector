@@ -91,14 +91,4 @@ public abstract class Staff extends Character implements Serializable
 			throw new IllegalArgumentException("TP cannot exceed max TP");
 		}
 	}
-	
-	/*private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
-	{
-		os.defaultReadObject();
-	}
-	
-	private void writeObject(ObjectOutputStream os) throws IOException
-	{
-		os.defaultWriteObject();
-	}*/
 }

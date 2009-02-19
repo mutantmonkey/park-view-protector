@@ -8,8 +8,10 @@
 import java.awt.*;
 import java.awt.image.*;
 
-import java.io.*;
-//import java.net.URL;
+import java.io.File;
+import java.io.IOException;
+
+import java.net.URL;
 import java.util.HashMap;
 
 import javax.imageio.*;
