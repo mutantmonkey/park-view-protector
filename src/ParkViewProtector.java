@@ -9,7 +9,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -17,6 +17,12 @@ public class ParkViewProtector extends Canvas
 {
 	public static final int WIDTH			= 800;
 	public static final int HEIGHT			= 600;
+	
+	// colors
+	public static final Color COLOR_BG_1	= new Color(255, 0, 255);
+	public static final Color COLOR_TEXT_1	= Color.white;
+	public static final Color COLOR_BG_2	= Color.white;
+	public static final Color COLOR_TEXT_2	= Color.black;
 	
 	protected JFrame window;
 	protected JPanel contentPanel;
