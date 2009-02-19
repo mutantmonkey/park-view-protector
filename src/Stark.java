@@ -28,7 +28,7 @@ public class Stark extends Staff implements Serializable
 	 */
 	public Stark(int x, int y, int hp, int maxHp, int tp, int maxTp, int damage)
 	{
-		super(x, y, hp, maxHp, SPEED, tp, maxTp, damage);
+		super(x, y, hp, maxHp, SPEED, damage, tp, maxTp);
 		
 		sprite = DataStore.INSTANCE.getSprite("images/staff/stark.png");
 	}

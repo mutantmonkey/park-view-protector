@@ -17,7 +17,7 @@ public class Game implements Serializable
 	public static final int MOVE_SPEED			= 1;
 	
 	// delay (in number of frames) before another attack can be used
-	public static final int ATTACK_DELAY		= 100;
+	public static final int ATTACK_DELAY		= 20;
 	private int attackDelay						= 0;
 	
 	public static final int MIN_STUDENTS		= 20;
@@ -33,7 +33,8 @@ public class Game implements Serializable
 	public static final int MIN_NUM_MOVES		= 10;
 	public static final int MAX_NUM_MOVES		= 400;
 	
-	public static final int DECOUPLE_SPACING	= 50;
+	public static final int DECOUPLE_SPACING	= 80;
+	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
 	
 	public static final int STATS_BAR_HEIGHT	= 20;
 	public static final int STAT_PAD_BOTTOM		= 6;
@@ -154,7 +155,7 @@ public class Game implements Serializable
 						charge				= currStudent.getCharge() +
 												students.get(j).getCharge();
 						
-						if(Math.random() * 100 < charge)
+						if(Math.random() * COUPLE_CHANCE_MULTIPLIER < charge)
 						{
 							couples.add(new Cupple(currStudent, students.get(j)));
 							
@@ -315,12 +316,17 @@ public class Game implements Serializable
 		// draw HP
 		g.setColor(ParkViewProtector.COLOR_TEXT_1);
 		g.setFont(new Font("Courier New", Font.PLAIN, 12));
-		g.drawString("HP:    / " + player.getMaxHp(), 5,
+		g.drawString("HP:     / " + player.getMaxHp(), 5,
 				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
-		
 		g.drawString("" + player.getHp(), 33, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
 		g.drawString("Speed: " + player.getSpeed(), 200, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
+		
+		System.out.println(player.getMaxTp());
+		
+		g.drawString("Teacher Points:    / " + player.getMaxTp(), 400,
+				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
+		g.drawString("" + player.getTp(), 512, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
 		// finish drawing
 		g.dispose();
