@@ -367,31 +367,31 @@ public class Game implements Serializable
 		if(ParkViewProtector.attackPressed && attackDelay == 0)
 		{
 			Attack testAttack;
-			String NameAtk="attack";
-			int TypeAtk=0;
-			double SpeeAtk=0;
+			String atkName="attack";
+			int atkType=0;
+			int atkSpee=0;
 			if(ParkViewProtector.zPressed)
 			{
-				NameAtk="attack";
-				TypeAtk=0;
-				SpeeAtk=5;
+				atkName="attack";
+				atkType=0;
+				atkSpee=5;
 			}
 			else if(ParkViewProtector.xPressed)
 			{
-				NameAtk="stick";
-				TypeAtk=0;
-				SpeeAtk=0;
+				atkName="stick";
+				atkType=0;
+				atkSpee=0;
 			}
 			else if(ParkViewProtector.cPressed)
 			{
-				NameAtk="attack";
-				TypeAtk=1;
-				SpeeAtk=-5;
+				atkName="attack";
+				atkType=1;
+				atkSpee=-5;
 			}
 			testAttack			= new Attack(player.x + player.getBounds().width / 2,
 												player.y + player.getBounds().height / 2,
-												SpeeAtk, NameAtk, player.getDirection(), 3, 50, 
-												true, TypeAtk);
+												atkSpee, atkName, player.getDirection(), 3, 50, 
+												true, atkType);
 
 			testAttack.switchXY();
 			attacks.add(testAttack);

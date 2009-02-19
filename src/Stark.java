@@ -35,20 +35,65 @@ public class Stark extends Staff implements Serializable
 	
 	public void attack()
 	{
-		//Attack atk=new Attack(x, y, direct, damage, 0, 0);
-		//atk.dealDamage();
+		
 	}
-	public void skill(int ski)
+	
+	public void skill(int i)
 	{
-		switch(ski)
-		{
-			//The skills will be implemented here.
-			case 0:		//Recycle
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-		}
+		
+	}
+	public String getAtkName(int name)
+	{
+		if(name==0)
+			return "physball";
+		else if(name==1)
+			return "meterstick";
+		else if(name==2)
+			return "goodnight";
+		return "attack";
+	}
+	
+	public int getAtkType(int i)
+	{
+		if(i==0)
+			return 0;
+		else if(i==1)
+			return 0;
+		else if(i==2)
+			return 2;
+		return 0;
+	}
+	
+	public int getAtkSpee(int i)
+	{
+		if(i==0)
+			return 5;
+		else if(i==1)
+			return 0;
+		else if(i==2)
+			return 0;
+		return 0;
+	}
+	
+	public int getAtkDama(int i)
+	{
+		if(i==0)
+			return 1;
+		else if(i==1)
+			return 3;
+		else if(i==2)
+			return 1;
+		return 0;
+	}
+	
+	public int getDuration(int i)
+	{
+		if(i==0)
+			return 40;
+		else if(i==1)
+			return 10;
+		else if(i==2)
+			return 50;
+		return 0;
 	}
 }
