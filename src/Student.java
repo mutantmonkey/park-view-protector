@@ -9,12 +9,12 @@ import java.io.*;
 
 public class Student extends Character implements Serializable
 {
-	private static final long serialVersionUID = 0;
+	private static final long serialVersionUID = 1L;
 	
 	private String type	= "default";
 	
 	private char gender;
-	private boolean infected;
+	private int charge;
 	
 	/**
 	 * Create a new student
@@ -30,6 +30,9 @@ public class Student extends Character implements Serializable
 		
 		this.gender		= gender;
 		
+		// generate a random charge
+		this.charge		= (int) (Math.random() * 10 + 1);
+		
 		// FIXME: this is just for testing; determining type should probably be handled in the driver
 		if(gender != 'f' && Math.random() < 0.4)
 		{
@@ -44,9 +47,9 @@ public class Student extends Character implements Serializable
 	 */
 	private void updateSprite()
 	{
-		String dir		= infected ? "student_infected" : "student";
+		//String dir		= infected ? "student_infected" : "student";
 		
-		sprite			= DataStore.INSTANCE.getSprite("images/" + dir + "/" + type + "_" + gender + ".png");
+		sprite			= DataStore.INSTANCE.getSprite("images/student/" + type + "_" + gender + ".png");
 	}
 	
 	/**
@@ -60,31 +63,23 @@ public class Student extends Character implements Serializable
 	}
 	
 	/**
-	 * Returns whether or not the student is "infected"
+	 * Returns the charge of the student
 	 * 
 	 * @return
 	 */
-	public boolean isInfected()
+	public int getCharge()
 	{
-		return infected;
+		return charge;
 	}
 	
 	/**
-	 * Gives the student the "infection"
+	 * Increases the charge of the student by the specified amount
+	 * 
+	 * @param amt Amount to add to charge
 	 */
-	public void infect()
+	public void adjustCharge(int amt)
 	{
-		infected			= true;
-		
-		updateSprite();
-	}
-	
-	/**
-	 * Cures the infection of the student the "infection"
-	 */
-	public void cure()
-	{
-		infected			= false;
+		charge			   += amt;
 		
 		updateSprite();
 	}

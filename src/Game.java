@@ -9,7 +9,7 @@ import java.awt.image.BufferStrategy;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Game implements Externalizable
+public class Game implements Serializable
 {
 	public static final int SPEED_THROTTLE		= 10;
 	
@@ -17,7 +17,7 @@ public class Game implements Externalizable
 	public static final int MOVE_SPEED			= 1;
 	
 	// delay (in number of frames) before another attack can be used
-	public static final int ATTACK_DELAY		= 100;
+	public static final int ATTACK_DELAY		= 20;
 	private int attackDelay						= 0;
 	
 	public static final int MIN_STUDENTS		= 20;
@@ -28,14 +28,20 @@ public class Game implements Externalizable
 	
 	public static final double INFECT_CHANCE	= 0.4;
 	public static final double CUPPLE_CHANCE	= 0.6;
+	public static final double ATTACK_CHANCE	= 0.1;
 	
 	public static final int MIN_NUM_MOVES		= 10;
 	public static final int MAX_NUM_MOVES		= 400;
 	
+	public static final int DECOUPLE_SPACING	= 80;
+	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
+	
 	public static final int STATS_BAR_HEIGHT	= 20;
 	public static final int STAT_PAD_BOTTOM		= 6;
 	
-	// graphics
+	private static final long serialVersionUID	= 1L;
+	
+	private ParkViewProtector driver;
 	private Graphics g;
 	private BufferStrategy strategy;
 	
@@ -45,14 +51,6 @@ public class Game implements Externalizable
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
 
-	/*public Game()
-	{
-		System.out.println("howdy");
-		
-		this.g = ParkViewProtector.g;
-		this.strategy = ParkViewProtector.strategy;
-	}*/
-	
 	/**
 	 * Constructor
 	 * 
@@ -63,6 +61,7 @@ public class Game implements Externalizable
 	 */
 	public Game(ParkViewProtector p, Graphics g, BufferStrategy strategy)
 	{
+		this.driver							= p;
 		this.g								= g;
 		this.strategy						= strategy;
 		
@@ -77,7 +76,8 @@ public class Game implements Externalizable
 	public void initPlayer()
 	{
 		// FIXME: magic numbers are bad
-		player						= new Stark(0, STATS_BAR_HEIGHT, 10, 10, 10, 10, 10);
+		player						= new Stark(0, STATS_BAR_HEIGHT, 100, 100, 10, 10, 1);
+		//player						= new Stark(0, STATS_BAR_HEIGHT, 0, 0, 10, 10, 1);
 	}
 	
 	/**
@@ -85,7 +85,12 @@ public class Game implements Externalizable
 	 */
 	public void initStudents()
 	{
+		// create a random number of students using MIN_STUDENTS and MAX_STUDENTS; multiply
+		// it by 2 and divide to ensure that an even number is created to ensure proper
+		// coupling
 		int numStudents				= (int) (Math.random() * (MAX_STUDENTS - MIN_STUDENTS + 1)) + MIN_STUDENTS;
+		numStudents					= Math.round(numStudents * 2 / 2);
+		
 		Student student				= null;
 		
 		int x, y;
@@ -102,27 +107,23 @@ public class Game implements Externalizable
 			student					= new Student(x, y, 5, 5, speed, 0, gender);
 			
 			students.add(student);
-			
-			// FIXME: remove soon, just for testing
-			if(Math.random() > 0.5)
-			{
-				students.get(i).infect();
-			}
 		}
 	}
 	
 	public void show()
 	{
-		Student currStudent;
+		Student currStudent; 
 		Cupple currCouple;
 		Attack currAttack;
 		
+		Student male, female;
 		int student1, student2;
+		int charge;
 		
 		g						= (Graphics) strategy.getDrawGraphics();
 		
 		// draw the background
-		g.setColor(Color.white);
+		g.setColor(ParkViewProtector.COLOR_BG_2);
 		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -138,48 +139,64 @@ public class Game implements Externalizable
 			moveRandom(currStudent, MOVE_SPEED,
 					(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
 							MIN_NUM_MOVES + 1));
-
-			// collision detection! :D
-			/*if(player.getBounds().intersects(currStudent.getBounds()))
-			{
-				player.adjustHp(1);
-			}*/
 			
-			if(currStudent.isInfected())
+			// couple with another student if possible
+			if(currStudent.getCharge() > 0)
 			{
 				for(int j = 0; j < students.size(); j++)
 				{
 					// don't do anything if it's us
 					if(i == j) continue;
 
-					// if we hit another infected student
-					// TODO: decide on and add realistic chances
+					// did we hit another student with a charge?
 					if(currStudent.getBounds().intersects(students.get(j).getBounds())
-							&& students.get(j).isInfected()
-							&& Math.random() <= CUPPLE_CHANCE)
+							&& students.get(j).getCharge() > 0)
 					{
-						couples.add(new Cupple(currStudent, students.get(j)));
+						charge				= currStudent.getCharge() +
+												students.get(j).getCharge();
 						
-						
-						student1			= i;
-						student2			= j;
-						
-						if(student2 > student1)
+						if(Math.random() * COUPLE_CHANCE_MULTIPLIER < charge)
 						{
-							student2--;
+							couples.add(new Cupple(currStudent, students.get(j)));
+							
+							
+							student1			= i;
+							student2			= j;
+							
+							if(student2 > student1)
+							{
+								student2--;
+							}
+							
+							try
+							{
+								students.remove(student1);
+								students.remove(student2);
+							}
+							catch(Exception e)
+							{
+								System.out.println("Something went wrong when deleting someone :O");
+							}
+							break;
 						}
-						
-						try
-						{
-							students.remove(student1);
-							students.remove(student2);
-						}
-						catch(Exception e)
-						{
-							System.out.println("Something went wrong when deleting someone :O");
-						}
-						break;
 					}
+				}
+			}
+			
+			// hit by an attack?
+			for(int j = 0; j < attacks.size(); j++)
+			{
+				currAttack		= attacks.get(j);
+				
+				if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
+						currStudent.getCharge() > 0)
+				{
+					attacks.remove(j);
+					
+					// FIXME: should be variable depending on strength
+					currStudent.adjustCharge(-1);
+					
+					break;
 				}
 			}
 		}
@@ -198,8 +215,21 @@ public class Game implements Externalizable
 					(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
 							MIN_NUM_MOVES + 1));
 			
+			// did the couple hit the player? if so, decrease HP
+			if(currCouple.getBounds().intersects(player.getBounds()) &&
+					Math.random() <= ATTACK_CHANCE)
+			{
+				if(player.getHp() <= 0)
+				{
+					gameOver();
+				}
+				else {
+					player.adjustHp(1);
+				}
+			}
+			
 			// update students
-			for(int j = 0; j < students.size(); j++)
+			/*for(int j = 0; j < students.size(); j++)
 			{
 				// if we hit a student that isn't infected
 				if(currCouple.getBounds().intersects(students.get(j).getBounds())
@@ -210,7 +240,7 @@ public class Game implements Externalizable
 					System.out.println("student #" + j + " infected by couple #" + i);
 					break;
 				}
-			}
+			}*/
 			
 			// hit by an attack?
 			for(int j = 0; j < attacks.size(); j++)
@@ -221,9 +251,16 @@ public class Game implements Externalizable
 				{
 					attacks.remove(j);
 					
+					male		= currCouple.getMale();
+					male.moveTo(currCouple.getBounds().x, currCouple.getBounds().y);
+					
+					female		= currCouple.getFemale();
+					female.moveTo(currCouple.getBounds().x + DECOUPLE_SPACING,
+							currCouple.getBounds().y);
+					
 					// create students before removing couple
-					//students.add(currCouple.getMale());
-					//students.add(currCouple.getFemale());
+					students.add(male);
+					students.add(female);
 					
 					couples.remove(i);
 					break;
@@ -273,18 +310,23 @@ public class Game implements Externalizable
 		// these are painted last to ensure that they are always on top
 
 		// background rectangle
-		g.setColor(new Color(255, 0, 255));
+		g.setColor(ParkViewProtector.COLOR_BG_1);
 		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
 		
 		// draw HP
-		g.setColor(Color.white);
+		g.setColor(ParkViewProtector.COLOR_TEXT_1);
 		g.setFont(new Font("Courier New", Font.PLAIN, 12));
-		g.drawString("HP:    / " + player.getMaxHp(), 5,
+		g.drawString("HP:     / " + player.getMaxHp(), 5,
 				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
-		
 		g.drawString("" + player.getHp(), 33, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
 		g.drawString("Speed: " + player.getSpeed(), 200, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
+		
+		System.out.println(player.getMaxTp());
+		
+		g.drawString("Teacher Points:    / " + player.getMaxTp(), 400,
+				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
+		g.drawString("" + player.getTp(), 512, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
 		// finish drawing
 		g.dispose();
@@ -325,10 +367,31 @@ public class Game implements Externalizable
 		if(ParkViewProtector.attackPressed && attackDelay == 0)
 		{
 			Attack testAttack;
+			String NameAtk="attack";
+			int TypeAtk=0;
+			double SpeeAtk=0;
+			if(ParkViewProtector.zPressed)
+			{
+				NameAtk="attack";
+				TypeAtk=0;
+				SpeeAtk=5;
+			}
+			else if(ParkViewProtector.xPressed)
+			{
+				NameAtk="stick";
+				TypeAtk=0;
+				SpeeAtk=0;
+			}
+			else if(ParkViewProtector.cPressed)
+			{
+				NameAtk="attack";
+				TypeAtk=1;
+				SpeeAtk=-5;
+			}
 			testAttack			= new Attack(player.x + player.getBounds().width / 2,
 												player.y + player.getBounds().height / 2,
-												5, "stick", player.getDirection(), 3, 50, 
-												true, Type.FRONT);
+												SpeeAtk, NameAtk, player.getDirection(), 3, 50, 
+												true, TypeAtk);
 
 			testAttack.switchXY();
 			attacks.add(testAttack);
@@ -394,17 +457,55 @@ public class Game implements Externalizable
 		obj.move(speed);
 	}
 	
-	public void readExternal(ObjectInput out) throws ClassNotFoundException, IOException
+	public void gameOver()
 	{
-		player				= (Staff) out.readObject();
-		students			= (ArrayList<Student>) out.readObject();
-		couples				= (ArrayList<Cupple>) out.readObject();
+		String msg				= "GAME OVER";
+		
+		// draw the background
+		g.setColor(ParkViewProtector.COLOR_BG_1);
+		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
+		
+		// get width of string
+		int x					= ParkViewProtector.WIDTH / 2;
+		x					   -= g.getFontMetrics().stringWidth(msg);
+		int y					= ParkViewProtector.HEIGHT / 2;
+		y					   -= g.getFontMetrics().getHeight();
+		
+		System.out.println("Put it at (" + x + ", " + y + ")");
+		
+		// draw text
+		g.setFont(new Font("System", Font.BOLD, 32));
+		g.setColor(ParkViewProtector.COLOR_TEXT_1);
+		g.drawString(msg, x, y);
+		
+		// finish drawing
+		g.dispose();
+		strategy.show();
+		
+		try
+		{
+			Thread.sleep(15000);
+		}
+		catch(Exception e)
+		{
+		}
+		
+		driver.quit();
 	}
 	
-	public void writeExternal(ObjectOutput os) throws IOException
+	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	{
+		player			= (Staff) os.readObject();
+		//students		= (ArrayList<Student>) os.readObject();
+		//couples			= (ArrayList<Cupple>) os.readObject();
+		//attacks			= (ArrayList<Attack>) os.readObject();
+	}
+	
+	private void writeObject(ObjectOutputStream os) throws IOException
 	{
 		os.writeObject(player);
-		os.writeObject(students);
-		os.writeObject(couples);
+		//os.writeObject(students);
+		//os.writeObject(couples);
+		//os.writeObject(attacks);
 	}
 }
