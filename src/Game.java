@@ -26,7 +26,9 @@ public class Game implements Serializable
 	public static final int MAX_STUDENT_SPEED	= 1;
 	public static final double GENDER_CHANCE	= 0.5;
 	
-	public static final double INFECT_CHANCE	= 0.4;
+	public static final double COUPLE_CHARGE_CHANCE	= 0.1;
+	public static final int COUPLE_CHARGE_AMOUNT	= 1;
+	
 	public static final double CUPPLE_CHANCE	= 0.6;
 	public static final double ATTACK_CHANCE	= 0.1;
 	
@@ -229,18 +231,20 @@ public class Game implements Serializable
 			}
 			
 			// update students
-			/*for(int j = 0; j < students.size(); j++)
+			for(int j = 0; j < students.size(); j++)
 			{
 				// if we hit a student that isn't infected
 				if(currCouple.getBounds().intersects(students.get(j).getBounds())
-						&& !students.get(j).isInfected()
-						&& Math.random() <= INFECT_CHANCE)
+						&& Math.random() <= COUPLE_CHARGE_CHANCE)
 				{
-					students.get(j).infect();
-					System.out.println("student #" + j + " infected by couple #" + i);
+					students.get(j).adjustCharge(COUPLE_CHARGE_AMOUNT);
+					
+					System.out.println("Couple #" + i + " increased the charge of student " +
+							"#" + j + " by " + COUPLE_CHARGE_AMOUNT);
+					
 					break;
 				}
-			}*/
+			}
 			
 			// hit by an attack?
 			for(int j = 0; j < attacks.size(); j++)
@@ -320,10 +324,10 @@ public class Game implements Serializable
 				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		g.drawString("" + player.getHp(), 33, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
+		// draw speed
 		g.drawString("Speed: " + player.getSpeed(), 200, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
-		System.out.println(player.getMaxTp());
-		
+		// draw Teacher Points
 		g.drawString("Teacher Points:    / " + player.getMaxTp(), 400,
 				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		g.drawString("" + player.getTp(), 512, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
