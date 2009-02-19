@@ -35,7 +35,7 @@ public class Student extends Character implements Serializable
 		
 		// FIXME: this is just for testing; determining type should probably be handled in
 		// the driver
-		if(gender == 'm' && Math.random() < 0.4)
+		if(Math.random() < 0.4)
 		{
 			type = "goth";
 		}
