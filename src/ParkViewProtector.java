@@ -33,9 +33,6 @@ public class ParkViewProtector extends Canvas
 	public static boolean attackPressed		= false;
 	public static boolean escPressed		= false;
 	public static boolean enterPressed		= false;
-	public static boolean zPressed			=false;
-	public static boolean xPressed			=false;
-	public static boolean cPressed			=false;
 	
 	// logos
 	Sprite jtzLogo;

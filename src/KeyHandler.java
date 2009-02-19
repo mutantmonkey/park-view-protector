@@ -76,25 +76,9 @@ public class KeyHandler extends KeyAdapter
 				ParkViewProtector.downPressed		= true;
 				ParkViewProtector.rightPressed		= true;
 				break;
-			
-			// ATTACK KEYS
+				
 			case KeyEvent.VK_SPACE:
-				ParkViewProtector.attackPressed		= true;
-				break;
-				
-			case KeyEvent.VK_Z:
-				ParkViewProtector.zPressed			= true;
-				ParkViewProtector.attackPressed		= true;
-				break;
-				
-			case KeyEvent.VK_X:
-				ParkViewProtector.xPressed			= true;
-				ParkViewProtector.attackPressed		= true;
-				break;
-				
-			case KeyEvent.VK_C:
-				ParkViewProtector.cPressed			= true;
-				ParkViewProtector.attackPressed		= true;
+				ParkViewProtector.attackPressed=true;
 				break;
 				
 			// "m" for menu?
@@ -178,21 +162,6 @@ public class KeyHandler extends KeyAdapter
 				break;
 				
 			case KeyEvent.VK_SPACE:
-				ParkViewProtector.attackPressed		= false;
-				break;
-				
-			case KeyEvent.VK_Z:
-				ParkViewProtector.zPressed			= false;
-				ParkViewProtector.attackPressed		= false;
-				break;
-				
-			case KeyEvent.VK_X:
-				ParkViewProtector.xPressed			= false;
-				ParkViewProtector.attackPressed		= false;
-				break;
-				
-			case KeyEvent.VK_C:
-				ParkViewProtector.cPressed			= false;
 				ParkViewProtector.attackPressed		= false;
 				break;
 				
