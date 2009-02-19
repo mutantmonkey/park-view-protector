@@ -325,11 +325,26 @@ public class Game implements Externalizable
 		if(ParkViewProtector.attackPressed && attackDelay == 0)
 		{
 			Attack testAttack;
-			testAttack			= new Attack(player.x + player.getBounds().width / 2,
+			if(ParkViewProtector.zPressed)
+				testAttack			= new Attack(player.x + player.getBounds().width / 2,
 												player.y + player.getBounds().height / 2,
-												5, "stick", player.getDirection(), 3, 50, 
+												5, "attack", player.getDirection(), 3, 50, 
 												true, Type.FRONT);
-
+			else if(ParkViewProtector.xPressed)
+				testAttack			= new Attack(player.x + player.getBounds().width / 2,
+												player.y + player.getBounds().height / 2,
+												0, "attack", player.getDirection(), 3, 50, 
+												true, Type.FRONT);
+			else if(ParkViewProtector.xPressed)
+				testAttack			= new Attack(player.x + player.getBounds().width / 2,
+												player.y + player.getBounds().height / 2,
+												0, "stick", player.getDirection(), 3, 50, 
+												true, Type.FRONT);
+			else
+				testAttack			= new Attack(player.x + player.getBounds().width / 2,
+												player.y + player.getBounds().height / 2,
+												0, "stick", player.getDirection(), 3, 50, 
+												true, Type.BACK);
 			testAttack.switchXY();
 			attacks.add(testAttack);
 			
