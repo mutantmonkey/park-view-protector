@@ -52,6 +52,9 @@ public class Game implements Serializable
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
+	
+	//are those charges of yours showing?
+	private boolean chargesExposed				= false;
 
 	/**
 	 * Constructor
@@ -332,6 +335,19 @@ public class Game implements Serializable
 				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		g.drawString("" + player.getTp(), 512, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
+		//hide/show charges of students, foowal!
+		
+		if(ParkViewProtector.shiftPressed)// && !chargesExposed)
+		{
+			showCharges();
+			//chargesExposed		= true;
+		}
+		/*else if(!ParkViewProtector.shiftPressed && chargesExposed)
+		{
+			hideCharges();
+			chargesExposed		= false;
+		}*/
+		
 		// finish drawing
 		g.dispose();
 		strategy.show();
@@ -495,6 +511,24 @@ public class Game implements Serializable
 		}
 		
 		driver.quit();
+	}
+	
+	public void showCharges()
+	{
+		g.setColor(ParkViewProtector.COLOR_BG_1);
+		
+		for(int i = 0;i < students.size();i++)
+		{
+			g.drawRect(students.get(i).x, students.get(i).y, 40, 64);
+		}
+	}
+	
+	public void hideCharges()
+	{
+		for(int i = 0;i < students.size();i++)
+		{
+			g.clearRect(students.get(i).x, students.get(i).y, 40, 64);
+		}
 	}
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException

@@ -109,6 +109,10 @@ public class KeyHandler extends KeyAdapter
 			case KeyEvent.VK_ENTER:
 				ParkViewProtector.enterPressed		= true;
 				break;
+				
+			case KeyEvent.VK_SHIFT:
+				ParkViewProtector.shiftPressed		= true;
+				break;
 		}
 	}
 	
@@ -202,6 +206,10 @@ public class KeyHandler extends KeyAdapter
 				
 			case KeyEvent.VK_ENTER:
 				ParkViewProtector.enterPressed		= false;
+				break;
+				
+			case KeyEvent.VK_SHIFT:
+				ParkViewProtector.shiftPressed		= false;
 				break;
 		}
 	}
