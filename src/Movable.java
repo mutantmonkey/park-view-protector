@@ -112,6 +112,18 @@ public abstract class Movable
 	}
 	
 	/**
+	 * Move the object to a location
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void moveTo(int x, int y)
+	{
+		this.x			= x;
+		this.y			= y;
+	}
+	
+	/**
 	 * Changes the direction that the object is facing
 	 * 
 	 * @param int direction

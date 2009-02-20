@@ -81,6 +81,22 @@ public class KeyHandler extends KeyAdapter
 				ParkViewProtector.attackPressed=true;
 				break;
 				
+			case KeyEvent.VK_Z:
+				ParkViewProtector.zPressed			= true;
+				ParkViewProtector.attackPressed		= true;
+				break;
+				
+			case KeyEvent.VK_X:
+				ParkViewProtector.xPressed			= true;
+				ParkViewProtector.attackPressed		= true;
+				break;
+				
+			case KeyEvent.VK_C:
+				ParkViewProtector.cPressed			= true;
+				ParkViewProtector.attackPressed		= true;
+				break;
+				
+				
 			// "m" for menu?
 			case KeyEvent.VK_M:
 				ParkViewProtector.showMenu			= true;
@@ -92,6 +108,10 @@ public class KeyHandler extends KeyAdapter
 				
 			case KeyEvent.VK_ENTER:
 				ParkViewProtector.enterPressed		= true;
+				break;
+				
+			case KeyEvent.VK_SHIFT:
+				ParkViewProtector.shiftPressed		= true;
 				break;
 		}
 	}
@@ -165,12 +185,31 @@ public class KeyHandler extends KeyAdapter
 				ParkViewProtector.attackPressed		= false;
 				break;
 				
+			case KeyEvent.VK_Z:
+				ParkViewProtector.zPressed			= false;
+				ParkViewProtector.attackPressed		= false;
+				break;
+				
+			case KeyEvent.VK_X:
+				ParkViewProtector.xPressed			= false;
+				ParkViewProtector.attackPressed		= false;
+				break;
+				
+			case KeyEvent.VK_C:
+				ParkViewProtector.cPressed			= false;
+				ParkViewProtector.attackPressed		= false;
+				break;
+				
 			case KeyEvent.VK_ESCAPE:
 				ParkViewProtector.escPressed		= false;
 				break;
 				
 			case KeyEvent.VK_ENTER:
 				ParkViewProtector.enterPressed		= false;
+				break;
+				
+			case KeyEvent.VK_SHIFT:
+				ParkViewProtector.shiftPressed		= false;
 				break;
 		}
 	}
