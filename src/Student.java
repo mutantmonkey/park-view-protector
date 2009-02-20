@@ -33,10 +33,14 @@ public class Student extends Character implements Serializable
 		// generate a random charge
 		this.charge		= (int) (Math.random() * 10 + 1);
 		
-		// FIXME: this is just for testing; determining type should probably be handled in the driver
-		if(gender != 'f' && Math.random() < 0.4)
+		// FIXME: this is just for testing; determining type should probably be handled in
+		// the driver
+		if(Math.random() < 0.4)
 		{
 			type = "goth";
+		}
+		else {
+			type = "gangster";
 		}
 		
 		updateSprite();
@@ -47,8 +51,6 @@ public class Student extends Character implements Serializable
 	 */
 	private void updateSprite()
 	{
-		//String dir		= infected ? "student_infected" : "student";
-		
 		sprite			= DataStore.INSTANCE.getSprite("images/student/" + type + "_" + gender + ".png");
 	}
 	
@@ -80,8 +82,6 @@ public class Student extends Character implements Serializable
 	public void adjustCharge(int amt)
 	{
 		charge			   += amt;
-		
-		updateSprite();
 	}
 	
 	/**
