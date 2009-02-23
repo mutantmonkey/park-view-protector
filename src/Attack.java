@@ -13,7 +13,7 @@ public class Attack extends Movable
 {
 	private double speed;
 	private String name;
-	private int damage, duration, time=0;
+	private int damage, duration, time=0, status;
 	//Target: True=Student, FLASE=Staff
 	private boolean isStudent;
 	/*
@@ -25,7 +25,7 @@ public class Attack extends Movable
 	private int type;
 	
 	public Attack(int x, int y, double speed, String name, int direct, int damage, int duration,
-			boolean isStudent, int type)
+			boolean isStudent, int type, int statusEffect)
 	{
 		super(x, y, speed);
 		this.type=type;
@@ -34,6 +34,7 @@ public class Attack extends Movable
 		this.damage=damage;
 		this.isStudent=isStudent;
 		this.duration=duration;
+		status=statusEffect;
 		switchXY();
 	}
 	
@@ -46,6 +47,11 @@ public class Attack extends Movable
 	public int getTime()
 	{
 		return time;
+	}
+	
+	public int getStatus()
+	{
+		return status;
 	}
 	
 	public void move(int dist)

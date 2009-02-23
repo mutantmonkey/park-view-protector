@@ -6,9 +6,10 @@
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.*;
 import java.util.ArrayList;
 
-public class Game
+public class Game implements Serializable
 {
 	public static final int SPEED_THROTTLE		= 10;
 	
@@ -25,9 +26,7 @@ public class Game
 	public static final int MAX_STUDENT_SPEED	= 1;
 	public static final double GENDER_CHANCE	= 0.5;
 	
-	public static final double COUPLE_CHARGE_CHANCE	= 0.1;
-	public static final int COUPLE_CHARGE_AMOUNT	= 1;
-	
+	public static final double INFECT_CHANCE	= 0.4;
 	public static final double CUPPLE_CHANCE	= 0.6;
 	public static final double ATTACK_CHANCE	= 0.1;
 	
@@ -39,6 +38,8 @@ public class Game
 	
 	public static final int STATS_BAR_HEIGHT	= 20;
 	public static final int STAT_PAD_BOTTOM		= 6;
+	
+	private static final long serialVersionUID	= 1L;
 	
 	private ParkViewProtector driver;
 	private Graphics g;
@@ -190,6 +191,10 @@ public class Game
 				if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
 						currStudent.getCharge() > 0)
 				{
+					/*if(currAttack.getStatus()==1)
+					{
+						currStudent.stun(500);
+					}*/
 					attacks.remove(j);
 					
 					// FIXME: should be variable depending on strength
@@ -228,20 +233,18 @@ public class Game
 			}
 			
 			// update students
-			for(int j = 0; j < students.size(); j++)
+			/*for(int j = 0; j < students.size(); j++)
 			{
 				// if we hit a student that isn't infected
 				if(currCouple.getBounds().intersects(students.get(j).getBounds())
-						&& Math.random() <= COUPLE_CHARGE_CHANCE)
+						&& !students.get(j).isInfected()
+						&& Math.random() <= INFECT_CHANCE)
 				{
-					students.get(j).adjustCharge(COUPLE_CHARGE_AMOUNT);
-					
-					System.out.println("Couple #" + i + " increased the charge of student " +
-							"#" + j + " by " + COUPLE_CHARGE_AMOUNT);
-					
+					students.get(j).infect();
+					System.out.println("student #" + j + " infected by couple #" + i);
 					break;
 				}
-			}
+			}*/
 			
 			// hit by an attack?
 			for(int j = 0; j < attacks.size(); j++)
@@ -321,26 +324,13 @@ public class Game
 				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		g.drawString("" + player.getHp(), 33, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
-		// draw speed
 		g.drawString("Speed: " + player.getSpeed(), 200, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
-		// draw Teacher Points
+		System.out.println(player.getMaxTp());
+		
 		g.drawString("Teacher Points:    / " + player.getMaxTp(), 400,
 				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		g.drawString("" + player.getTp(), 512, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
-		
-		//hide/show charges of students, foowal!
-		
-		if(ParkViewProtector.shiftPressed)// && !chargesExposed)
-		{
-			showCharges();
-			//chargesExposed		= true;
-		}
-		/*else if(!ParkViewProtector.shiftPressed && chargesExposed)
-		{
-			hideCharges();
-			chargesExposed		= false;
-		}*/
 		
 		// finish drawing
 		g.dispose();
@@ -381,32 +371,20 @@ public class Game
 		if(ParkViewProtector.attackPressed && attackDelay == 0)
 		{
 			Attack testAttack;
-			String atkName="attack";
-			int atkType=0;
-			int atkSpee=0;
+			int attackKey=0;
 			if(ParkViewProtector.zPressed)
 			{
-				atkName="attack";
-				atkType=0;
-				atkSpee=5;
+				attackKey=0;
 			}
 			else if(ParkViewProtector.xPressed)
 			{
-				atkName="stick";
-				atkType=0;
-				atkSpee=0;
+				attackKey=1;
 			}
 			else if(ParkViewProtector.cPressed)
 			{
-				atkName="attack";
-				atkType=1;
-				atkSpee=-5;
+				attackKey=2;
 			}
-			testAttack			= new Attack(player.x + player.getBounds().width / 2,
-												player.y + player.getBounds().height / 2,
-												atkSpee, atkName, player.getDirection(), 3, 50, 
-												true, atkType);
-
+			testAttack			= player.getAttack(attackKey);
 			testAttack.switchXY();
 			attacks.add(testAttack);
 			
@@ -507,49 +485,19 @@ public class Game
 		driver.quit();
 	}
 	
-	public void showCharges()
+	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
 	{
-		g.setColor(ParkViewProtector.COLOR_BG_1);
-		
-		for(int i = 0;i < students.size();i++)
-		{
-			g.drawRect(students.get(i).x, students.get(i).y, 40, 64);
-		}
+		player			= (Staff) os.readObject();
+		//students		= (ArrayList<Student>) os.readObject();
+		//couples			= (ArrayList<Cupple>) os.readObject();
+		//attacks			= (ArrayList<Attack>) os.readObject();
 	}
 	
-	public void hideCharges()
+	private void writeObject(ObjectOutputStream os) throws IOException
 	{
-		for(int i = 0;i < students.size();i++)
-		{
-			g.clearRect(students.get(i).x, students.get(i).y, 40, 64);
-		}
-	}
-	
-	public Staff getPlayer()
-	{
-		return player;
-	}
-	
-	public ArrayList<Student> getStudents()
-	{
-		return students;
-	}
-	
-	public ArrayList<Cupple> getCouples()
-	{
-		return couples;
-	}
-	
-	public ArrayList<Attack> getAttacks()
-	{
-		return attacks;
-	}
-	
-	public void loadData(SavedData datas)
-	{
-		player			= datas.getPlayer();
-		students		= datas.getStudents();
-		couples			= datas.getCouples();
-		attacks			= datas.getAttacks();
+		os.writeObject(player);
+		//os.writeObject(students);
+		//os.writeObject(couples);
+		//os.writeObject(attacks);
 	}
 }
