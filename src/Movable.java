@@ -178,6 +178,14 @@ public abstract class Movable
 	}
 	
 	/**
+	 * Stuns an object for the number of frames specified
+	 */
+	public void stun(int frames)
+	{
+		stunFrames				= frames;
+	}
+	
+	/**
 	 * Called by main game loop, draws the object's sprite on the screen
 	 */
 	public void draw(Graphics g)
