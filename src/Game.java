@@ -191,6 +191,10 @@ public class Game implements Serializable
 				if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
 						currStudent.getCharge() > 0)
 				{
+					/*if(currAttack.getStatus()==1)
+					{
+						currStudent.stun(500);
+					}*/
 					attacks.remove(j);
 					
 					// FIXME: should be variable depending on strength
@@ -367,32 +371,20 @@ public class Game implements Serializable
 		if(ParkViewProtector.attackPressed && attackDelay == 0)
 		{
 			Attack testAttack;
-			String atkName="attack";
-			int atkType=0;
-			int atkSpee=0;
+			int attackKey=0;
 			if(ParkViewProtector.zPressed)
 			{
-				atkName="attack";
-				atkType=0;
-				atkSpee=5;
+				attackKey=0;
 			}
 			else if(ParkViewProtector.xPressed)
 			{
-				atkName="stick";
-				atkType=0;
-				atkSpee=0;
+				attackKey=1;
 			}
 			else if(ParkViewProtector.cPressed)
 			{
-				atkName="attack";
-				atkType=1;
-				atkSpee=-5;
+				attackKey=2;
 			}
-			testAttack			= new Attack(player.x + player.getBounds().width / 2,
-												player.y + player.getBounds().height / 2,
-												atkSpee, atkName, player.getDirection(), 3, 50, 
-												true, atkType);
-
+			testAttack			= player.getAttack(attackKey);
 			testAttack.switchXY();
 			attacks.add(testAttack);
 			
