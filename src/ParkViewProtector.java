@@ -168,9 +168,9 @@ public class ParkViewProtector extends Canvas
 		return game;
 	}
 	
-	public void setGame(Game gamma)
+	public void setGameData(SavedData datas)
 	{
-		game							= gamma;
+		game.loadData(datas);
 	}
 	
 	public void quit()

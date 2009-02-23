@@ -5,7 +5,6 @@
  */
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 
 public class Menu
@@ -125,7 +124,7 @@ public class Menu
 				break;
 			
 			case 5:
-				driver.setGame(DataSaver.load());
+				driver.setGameData(DataSaver.load());
 				break;
 		}
 	}

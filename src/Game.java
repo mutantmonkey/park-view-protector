@@ -6,10 +6,9 @@
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.*;
 import java.util.ArrayList;
 
-public class Game implements Serializable
+public class Game
 {
 	public static final int SPEED_THROTTLE		= 10;
 	
@@ -41,8 +40,6 @@ public class Game implements Serializable
 	public static final int STATS_BAR_HEIGHT	= 20;
 	public static final int STAT_PAD_BOTTOM		= 6;
 	
-	private static final long serialVersionUID	= 1L;
-	
 	private ParkViewProtector driver;
 	private Graphics g;
 	private BufferStrategy strategy;
@@ -52,9 +49,6 @@ public class Game implements Serializable
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
-	
-	//are those charges of yours showing?
-	private boolean chargesExposed				= false;
 
 	/**
 	 * Constructor
@@ -531,19 +525,31 @@ public class Game implements Serializable
 		}
 	}
 	
-	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	public Staff getPlayer()
 	{
-		player			= (Staff) os.readObject();
-		//students		= (ArrayList<Student>) os.readObject();
-		//couples			= (ArrayList<Cupple>) os.readObject();
-		//attacks			= (ArrayList<Attack>) os.readObject();
+		return player;
 	}
 	
-	private void writeObject(ObjectOutputStream os) throws IOException
+	public ArrayList<Student> getStudents()
 	{
-		os.writeObject(player);
-		//os.writeObject(students);
-		//os.writeObject(couples);
-		//os.writeObject(attacks);
+		return students;
+	}
+	
+	public ArrayList<Cupple> getCouples()
+	{
+		return couples;
+	}
+	
+	public ArrayList<Attack> getAttacks()
+	{
+		return attacks;
+	}
+	
+	public void loadData(SavedData datas)
+	{
+		player			= datas.getPlayer();
+		students		= datas.getStudents();
+		couples			= datas.getCouples();
+		attacks			= datas.getAttacks();
 	}
 }
