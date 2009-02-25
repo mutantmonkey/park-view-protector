@@ -191,12 +191,15 @@ public class Game implements Serializable
 				if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
 						currStudent.getCharge() > 0)
 				{
-					/*if(currAttack.getStatus()==1)
+					if(currAttack.getStatus()==Status.STUN)
 					{
-						currStudent.stun(500);
-					}*/
-					attacks.remove(j);
+						currStudent.stun(currAttack.getStatusDuration());
+					}
 					
+					if(!currAttack.isAoE())
+					{
+						attacks.remove(j);
+					}
 					// FIXME: should be variable depending on strength
 					currStudent.adjustCharge(-1);
 					
@@ -253,7 +256,10 @@ public class Game implements Serializable
 				
 				if(currAttack.getBounds().intersects(currCouple.getBounds()))
 				{
-					attacks.remove(j);
+					if(!currAttack.isAoE())
+					{
+						attacks.remove(j);
+					}
 					
 					male		= currCouple.getMale();
 					male.moveTo(currCouple.getBounds().x, currCouple.getBounds().y);
@@ -340,7 +346,7 @@ public class Game implements Serializable
 		// Move the player
 		////////////////////////////////////////////////////////////////////////////////////
 		// TODO: use physics for diagonal movement? (sqrt 2 * MOVE_SPEED^2)
-		
+		//FIXME: diagonals=2 move calls
 		if(ParkViewProtector.upPressed && !ParkViewProtector.downPressed
 				&& player.getBounds().y > STATS_BAR_HEIGHT)
 		{
@@ -368,7 +374,7 @@ public class Game implements Serializable
 			//rightPressed			= false;
 		}
 		
-		if(ParkViewProtector.attackPressed && attackDelay == 0)
+		if(ParkViewProtector.attackPressed&&attackDelay == 0)
 		{
 			Attack testAttack;
 			int attackKey=0;
@@ -385,14 +391,14 @@ public class Game implements Serializable
 				attackKey=2;
 			}
 			testAttack			= player.getAttack(attackKey);
+			player.stun(testAttack.getStillTime());
 			testAttack.switchXY();
 			attacks.add(testAttack);
 			
 			// set delay
-			attackDelay			= ATTACK_DELAY;
+			attackDelay			= testAttack.getReuse();
 			
 		}
-		
 		// decrease delay if there is one
 		if(attackDelay > 0)
 			attackDelay--;

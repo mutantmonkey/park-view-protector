@@ -47,33 +47,42 @@ public class Stark extends Staff implements Serializable
 	{
 		Attack attack;
 		String name="attack";
-		int damage=0, type=0, speed=0, duration=0, status=0;
+		int damage=0, type=0, speed=0, duration=0, status=0, statusLength=0, stillTime=0, hits=1, hitsDelay=duration, reuse=duration;
+		boolean isStudent=false, AoE=false;
 		switch(i)
 		{
 			case 0:
 				name="physball";
-				type=0;
+				type=Type.FRONT;
 				damage=5;
 				speed=5;
 				duration=40;
+				reuse=30;
 				break;
 			case 1:
 				name="meterstick";
-				type=0;
+				type=Type.FRONT;
 				damage=10;
 				speed=0;
 				duration=30;
+				stillTime=duration;
+				reuse=duration;
+				AoE=true;
 				break;
 			case 2:
 				name="goodnight";
-				type=2;
+				type=Type.CENTER;
 				damage=3;
 				speed=0;
 				duration=50;
-				status=1;
+				stillTime=duration;
+				reuse=duration;
+				status=Status.STUN;
+				statusLength=100;
+				AoE=true;
 				break;
 		}
-		attack=new Attack(x,y,speed, name, this.getDirection(), damage, duration, true, type, status);
+		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitsDelay, reuse);
 		return attack;
 	}
 }
