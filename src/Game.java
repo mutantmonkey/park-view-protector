@@ -353,9 +353,9 @@ public class Game implements Serializable
 		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpBarWidth, BAR_HEIGHT);
 		
 		// draw TP bar
-		int tpMaxWidth				= player.getMaxTp() * 2;
+		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
 		int tpBarWidth				= (int) (((double) player.getTp() / player.getMaxTp())
-											* BAR_MULTIPLIER);
+											* tpMaxWidth);
 		
 		// background
 		g.setColor(ParkViewProtector.STATS_BAR_TP.darker().darker());
