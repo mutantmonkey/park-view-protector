@@ -124,7 +124,7 @@ public class Menu
 				break;
 			
 			case 5:
-				driver.setGameData(DataSaver.load());
+				driver.setGame(DataSaver.load());
 				break;
 		}
 	}

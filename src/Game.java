@@ -36,14 +36,18 @@ public class Game implements Serializable
 	public static final int DECOUPLE_SPACING	= 80;
 	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
 	
-	public static final int STATS_BAR_HEIGHT	= 20;
-	public static final int STAT_PAD_BOTTOM		= 6;
+	public static final int STATS_BAR_HEIGHT	= 70;
+	public static final int STAT_PAD_TOP		= 10;
+	public static final int STAT_PAD_BOTTOM		= 10;
+	public static final int BAR_HEIGHT			= 10;
+	public static final int BAR_SPACING			= 5;
+	public static final int BAR_MULTIPLIER		= 2;
 	
 	private static final long serialVersionUID	= 1L;
 	
-	private ParkViewProtector driver;
-	private Graphics g;
-	private BufferStrategy strategy;
+	private transient ParkViewProtector driver;
+	private transient Graphics g;
+	private transient BufferStrategy strategy;
 	
 	// objects on the screen
 	private Staff player;
@@ -319,12 +323,25 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// these are painted last to ensure that they are always on top
 
-		// background rectangle
-		g.setColor(ParkViewProtector.COLOR_BG_1);
+		// background rectangle (TODO: make it translucent!)
+		g.setColor(ParkViewProtector.STATS_BAR_BG);
 		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
 		
+		// draw HP bar
+		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
+		int hpBarWidth				= (int) (((double) player.getHp() / player.getMaxHp())
+											* hpMaxWidth);
+		
+		// background
+		g.setColor(ParkViewProtector.STATS_BAR_HP.darker().darker());
+		g.fillRect(STAT_PAD_TOP, STAT_PAD_TOP, hpMaxWidth, BAR_HEIGHT);
+		
+		// main bar
+		g.setColor(ParkViewProtector.STATS_BAR_HP);
+		g.fillRect(STAT_PAD_TOP, STAT_PAD_TOP, hpBarWidth, BAR_HEIGHT);
+		
 		// draw HP
-		g.setColor(ParkViewProtector.COLOR_TEXT_1);
+		g.setColor(ParkViewProtector.STATS_BAR_FG);
 		g.setFont(new Font("Courier New", Font.PLAIN, 12));
 		g.drawString("HP:     / " + player.getMaxHp(), 5,
 				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
@@ -332,11 +349,22 @@ public class Game implements Serializable
 		
 		g.drawString("Speed: " + player.getSpeed(), 200, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		
-		System.out.println(player.getMaxTp());
-		
 		g.drawString("Teacher Points:    / " + player.getMaxTp(), 400,
 				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
 		g.drawString("" + player.getTp(), 512, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
+		
+		// draw TP bar
+		int tpMaxWidth				= player.getMaxTp() * 2;
+		int tpBarWidth				= (int) (((double) player.getTp() / player.getMaxTp())
+											* BAR_MULTIPLIER);
+		
+		// background
+		g.setColor(ParkViewProtector.STATS_BAR_TP.darker().darker());
+		g.fillRect(STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpMaxWidth, BAR_HEIGHT);
+		
+		// main bar
+		g.setColor(ParkViewProtector.STATS_BAR_TP);
+		g.fillRect(STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpBarWidth, BAR_HEIGHT);
 		
 		// finish drawing
 		g.dispose();
@@ -348,7 +376,7 @@ public class Game implements Serializable
 		// TODO: use physics for diagonal movement? (sqrt 2 * MOVE_SPEED^2)
 		//FIXME: diagonals=2 move calls
 		if(ParkViewProtector.upPressed && !ParkViewProtector.downPressed
-				&& player.getBounds().y > STATS_BAR_HEIGHT)
+				&& player.getBounds().y > 0)
 		{
 			player.move(0, -MOVE_SPEED);
 		}
@@ -429,7 +457,7 @@ public class Game implements Serializable
 		}
 		
 		// change direction if we hit the top or bottom
-		if(obj.getBounds().y <= STATS_BAR_HEIGHT && obj.getDirection() == Direction.NORTH)
+		if(obj.getBounds().y <= 0 && obj.getDirection() == Direction.NORTH)
 		{
 			obj.setDirection(Direction.SOUTH);
 			obj.resetMoveCount();

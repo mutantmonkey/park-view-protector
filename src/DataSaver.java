@@ -7,15 +7,13 @@ public class DataSaver
 	
 	public static void save(Game gamma)
 	{
-		SavedData datas			= new SavedData(gamma);
-		
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
 		try
 		{
 			fos = new FileOutputStream(FILE);
 			oos = new ObjectOutputStream(fos);
-			oos.writeObject(datas);
+			oos.writeObject(gamma);
 			oos.close();
 		}
 		catch(Exception e)
@@ -24,11 +22,11 @@ public class DataSaver
 		}
 	}
 	
-	public static SavedData load()
+	public static Game load()
 	{
 		FileInputStream fos = null;
 		ObjectInputStream ois = null;
-		SavedData ret = null;
+		Game ret = null;
 		
 		try
 		{
@@ -36,7 +34,7 @@ public class DataSaver
 			ois = new ObjectInputStream(fos);
 			try
 			{
-				ret = (SavedData) ois.readObject();
+				ret = (Game) ois.readObject();
 			}
 			catch(Exception e)
 			{
@@ -68,10 +66,10 @@ class SavedData implements Serializable
 	
 	public SavedData(Game g)
 	{
-		player			= g.getPlayer();
+		/*player			= g.getPlayer();
 		students		= g.getStudents();
 		couples			= g.getCouples();
-		attacks			= g.getAttacks();
+		attacks			= g.getAttacks();*/
 	}
 	
 	public Staff getPlayer()
