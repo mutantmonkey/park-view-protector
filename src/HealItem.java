@@ -14,11 +14,9 @@ public class HealItem extends UsableItem
 	public void run(Character c)
 	{
 		c.adjustHp(hpInc);
-	}
-	
-	public void run(Staff s)
-	{
-		s.adjustTp(tpInc);
-		s.adjustHp(hpInc);
+		if(c instanceof Staff)
+		{
+			c.adjustHp(tpInc);
+		}
 	}
 }

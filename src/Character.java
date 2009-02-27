@@ -15,15 +15,11 @@ public abstract class Character extends Movable
 	
 	/**
 	 * Keeps track of items
+	 * 
+	 * Memory inquired
 	 */
 	public ItemBin bin;
 	
-	/**
-	 * Memory inquired
-	 */
-	
-	protected final int HP_AMT = -50;
-	protected final int TP_AMT = -50;
 	
 	/**
 	 * Constructor
