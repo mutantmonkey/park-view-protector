@@ -14,9 +14,16 @@ public abstract class Character extends Movable
 	protected int damage;
 	
 	/**
-	 * Stores the inventory for the character
+	 * Keeps track of items
 	 */
-	public ArrayList<Item> inventory;
+	public ItemBin bin;
+	
+	/**
+	 * Memory inquired
+	 */
+	
+	protected final int HP_AMT = -50;
+	protected final int TP_AMT = -50;
 	
 	/**
 	 * Constructor
@@ -35,6 +42,7 @@ public abstract class Character extends Movable
 		this.hp		= hp;
 		this.maxHp	= maxHp;
 		this.damage	= damage;
+		bin = new ItemBin(this);
 	}
 	
 	/**
@@ -76,13 +84,13 @@ public abstract class Character extends Movable
 	public abstract void attack();
 	
 	/**
-	 * Removes an item from the character's inventory
-	 * 
-	 * @param i Index of item in the ArrayList
+	 * Drops the entire inventory
 	 */
-	public void dropItem(int i)
+	
+	public void dropInv()
 	{
-		inventory.remove(i);
+		bin.dropInv();
+		//code to add the items to the field
 	}
 	
 	/**
@@ -92,7 +100,19 @@ public abstract class Character extends Movable
 	 */
 	public void pickItem(Item item)
 	{
-		inventory.add(item);
+		bin.add(item);
+
+		//code to remove from field...
+	}
+	
+	/**
+	 * Runs an item on the character used on, then removes it from the inventory
+	 * 
+	 * @param type Char
+	 */
+	public void useItem(char type)
+	{
+		bin.useItem(type);
 	}
 	
 	protected void validateState()

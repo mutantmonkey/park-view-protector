@@ -1,39 +1,83 @@
 import java.awt.Graphics;
 
-/*
+/**
  * Behold...
  * 
  * ...an Item...
  * 
- * ...@author:	Javateerz...
+ * @author:	Javateerz...
  */
 
-public abstract class Item
+public class Item
 {
-	protected String name;
-	
-	protected String descrip;
+	private char type; //'h' is for health restore, 't' is for teacher point restore
+	private Character user; //if it open on the field, the user is null
+	private Staff staff; // if it belongs to a staff member
 	
 	protected Sprite sprite; //graphic usage coming soon
 	
-	protected int x;
-	protected int y;
+	private int x;
+	private int y;
 	
-	public Item(String name,String descrip)
+	private final int HP_AMT = -50; //data store
+	private final int TP_AMT = 10; //reference pointer pointers
+									//see advanced Starkiometry
+	
+	public Item(char type)
 	{
-		this.name = name;
-		this.descrip = descrip;
+		this.type = type;
 		this.sprite	= DataStore.INSTANCE.getSprite("images/gItem.png");
 	}
 	
-	public String getName()//gets name
+	/**
+	 * 
+	 * @param type
+	 * @param c
+	 */
+	public Item(char type,Character c)
 	{
-		return name;
+		this.type = type;
+		user = c;
+		if(c instanceof Staff)
+		{
+			staff = (Staff)c;
+		}
+		this.sprite	= DataStore.INSTANCE.getSprite("images/gItem.png");
 	}
 	
-	public String getDes()//gets description
+	public char getType()//gets name
 	{
-		return descrip;
+		return type;
+	}
+	
+	public Character getUser()
+	{
+		return user;
+	}
+	
+	public void setUser(Character c)
+	{
+		user = c;
+	}
+	
+	public void resetUser()
+	{
+		user = null;
+	}
+	
+	public void run()
+	{
+		if(type == 'h')
+		{
+			user.adjustHp(HP_AMT);
+		}
+		else if(type == 't')
+		{
+			if(staff != null)
+			{
+				staff.adjustTp(TP_AMT);
+			}
+		}
 	}
 	
 	public void draw(Graphics g)//draws it...?
@@ -46,6 +90,4 @@ public abstract class Item
 		this.x = x;
 		this.y = y;
 	}
-	
-	public abstract void run(Character c);//runs it...?
 }

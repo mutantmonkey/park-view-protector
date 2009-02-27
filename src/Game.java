@@ -54,7 +54,6 @@ public class Game implements Serializable
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
 	
 	//are those charges of yours showing?
-	private boolean chargesExposed				= false;
 
 	/**
 	 * Constructor
@@ -337,16 +336,10 @@ public class Game implements Serializable
 		
 		//hide/show charges of students, foowal!
 		
-		if(ParkViewProtector.shiftPressed)// && !chargesExposed)
+		if(ParkViewProtector.shiftPressed)
 		{
 			showCharges();
-			//chargesExposed		= true;
 		}
-		/*else if(!ParkViewProtector.shiftPressed && chargesExposed)
-		{
-			hideCharges();
-			chargesExposed		= false;
-		}*/
 		
 		// finish drawing
 		g.dispose();
@@ -519,15 +512,10 @@ public class Game implements Serializable
 		
 		for(int i = 0;i < students.size();i++)
 		{
-			g.drawRect(students.get(i).x, students.get(i).y, 40, 64);
-		}
-	}
-	
-	public void hideCharges()
-	{
-		for(int i = 0;i < students.size();i++)
-		{
-			g.clearRect(students.get(i).x, students.get(i).y, 40, 64);
+			if(students.get(i).getCharge() != 0)
+			{
+				g.drawRect(students.get(i).x, students.get(i).y, 40, 64);
+			}
 		}
 	}
 	
