@@ -36,12 +36,14 @@ public class Game implements Serializable
 	public static final int DECOUPLE_SPACING	= 80;
 	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
 	
-	public static final int STATS_BAR_HEIGHT	= 70;
 	public static final int STAT_PAD_TOP		= 10;
-	public static final int STAT_PAD_BOTTOM		= 10;
+	public static final int STAT_PAD_BOTTOM		= STAT_PAD_TOP;
+	public static final int STAT_PAD_LEFT_BAR	= STAT_PAD_TOP * 3 + 3;
 	public static final int BAR_HEIGHT			= 10;
 	public static final int BAR_SPACING			= 5;
 	public static final int BAR_MULTIPLIER		= 2;
+	public static final int STATS_BAR_HEIGHT	= STAT_PAD_TOP + BAR_HEIGHT * 2 +
+													BAR_SPACING + STAT_PAD_BOTTOM;
 	
 	private static final long serialVersionUID	= 1L;
 	
@@ -327,6 +329,16 @@ public class Game implements Serializable
 		g.setColor(ParkViewProtector.STATS_BAR_BG);
 		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
 		
+		// draw labels
+		g.setColor(ParkViewProtector.STATS_BAR_FG);
+		g.setFont(new Font("System", Font.PLAIN, 10));
+		
+		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;
+		
+		g.drawString("HP:", STAT_PAD_TOP, STAT_PAD_TOP + textCenter);
+		g.drawString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING + textCenter);
+		g.drawString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP + BAR_HEIGHT);
+		
 		// draw HP bar
 		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
 		int hpBarWidth				= (int) (((double) player.getHp() / player.getMaxHp())
@@ -334,24 +346,11 @@ public class Game implements Serializable
 		
 		// background
 		g.setColor(ParkViewProtector.STATS_BAR_HP.darker().darker());
-		g.fillRect(STAT_PAD_TOP, STAT_PAD_TOP, hpMaxWidth, BAR_HEIGHT);
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpMaxWidth, BAR_HEIGHT);
 		
 		// main bar
 		g.setColor(ParkViewProtector.STATS_BAR_HP);
-		g.fillRect(STAT_PAD_TOP, STAT_PAD_TOP, hpBarWidth, BAR_HEIGHT);
-		
-		// draw HP
-		g.setColor(ParkViewProtector.STATS_BAR_FG);
-		g.setFont(new Font("Courier New", Font.PLAIN, 12));
-		g.drawString("HP:     / " + player.getMaxHp(), 5,
-				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
-		g.drawString("" + player.getHp(), 33, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
-		
-		g.drawString("Speed: " + player.getSpeed(), 200, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
-		
-		g.drawString("Teacher Points:    / " + player.getMaxTp(), 400,
-				STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
-		g.drawString("" + player.getTp(), 512, STATS_BAR_HEIGHT - STAT_PAD_BOTTOM);
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpBarWidth, BAR_HEIGHT);
 		
 		// draw TP bar
 		int tpMaxWidth				= player.getMaxTp() * 2;
@@ -360,11 +359,13 @@ public class Game implements Serializable
 		
 		// background
 		g.setColor(ParkViewProtector.STATS_BAR_TP.darker().darker());
-		g.fillRect(STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpMaxWidth, BAR_HEIGHT);
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpMaxWidth,
+				BAR_HEIGHT);
 		
 		// main bar
 		g.setColor(ParkViewProtector.STATS_BAR_TP);
-		g.fillRect(STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpBarWidth, BAR_HEIGHT);
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpBarWidth,
+				BAR_HEIGHT);
 		
 		// finish drawing
 		g.dispose();
