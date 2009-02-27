@@ -110,7 +110,7 @@ public class Game implements Serializable
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			
-			student					= new Student(x, y, 5, 5, speed, 0, gender);
+			student					= new Student(x, y, 50, 5, speed, 0, gender);
 			
 			students.add(student);
 		}
@@ -145,6 +145,8 @@ public class Game implements Serializable
 			moveRandom(currStudent, MOVE_SPEED,
 					(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
 							MIN_NUM_MOVES + 1));
+
+			currStudent.decrementHitDelay(1);
 			
 			// couple with another student if possible
 			if(currStudent.getCharge() > 0)
@@ -195,7 +197,7 @@ public class Game implements Serializable
 				currAttack		= attacks.get(j);
 				
 				if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
-						currStudent.getCharge() > 0)
+						currStudent.getCharge() > 0 && currStudent.isHittable())
 				{
 					if(currAttack.getStatus()==Status.STUN)
 					{
@@ -206,10 +208,10 @@ public class Game implements Serializable
 					{
 						attacks.remove(j);
 					}
-					// FIXME: should be variable depending on strength
-					currStudent.adjustCharge(-1);
 					
-					break;
+					// FIXME: should be variable depending on strength
+					currStudent.adjustCharge(currAttack.getDamage()/3);
+					currStudent.setHitDelay(currAttack.getHitDelay());
 				}
 			}
 		}
@@ -227,6 +229,7 @@ public class Game implements Serializable
 			moveRandom(currCouple, MOVE_SPEED,
 					(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
 							MIN_NUM_MOVES + 1));
+			currCouple.decrementHitDelay(1);
 			
 			// did the couple hit the player? if so, decrease HP
 			if(currCouple.getBounds().intersects(player.getBounds()) &&
@@ -260,26 +263,38 @@ public class Game implements Serializable
 			{
 				currAttack		= attacks.get(j);
 				
-				if(currAttack.getBounds().intersects(currCouple.getBounds()))
+				if(currAttack.getBounds().intersects(currCouple.getBounds()) && currCouple.isHittable())
 				{
+					currCouple.adjustHp(currAttack.getDamage());
+					currCouple.setHitDelay(currAttack.getHitDelay());
+					
 					if(!currAttack.isAoE())
 					{
 						attacks.remove(j);
 					}
 					
-					male		= currCouple.getMale();
-					male.moveTo(currCouple.getBounds().x, currCouple.getBounds().y);
+					if(currAttack.getStatus()==Status.STUN)
+					{
+						currCouple.stun(currAttack.getStatusDuration());
+					}
 					
-					female		= currCouple.getFemale();
-					female.moveTo(currCouple.getBounds().x + DECOUPLE_SPACING,
-							currCouple.getBounds().y);
-					
-					// create students before removing couple
-					students.add(male);
-					students.add(female);
-					
-					couples.remove(i);
-					break;
+					if(currCouple.getHp() <=0)
+					{
+						male		= currCouple.getMale();
+						male.moveTo(currCouple.getBounds().x, currCouple.getBounds().y);
+						male.setHitDelay(currAttack.getHitDelay());
+						
+						female		= currCouple.getFemale();
+						female.moveTo(currCouple.getBounds().x + DECOUPLE_SPACING,
+								currCouple.getBounds().y);
+						female.setHitDelay(currAttack.getHitDelay());
+						
+						// create students before removing couple
+						students.add(male);
+						students.add(female);
+						
+						couples.remove(i);
+					}
 				}
 			}
 		}

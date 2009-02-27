@@ -125,7 +125,7 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void init()
 	{
-		DataStore.INSTANCE.getAudio("sounds/nof.wav");
+		DataStore.INSTANCE.getAudio("sounds/sine.wav");
 		
 		// add key handler class
 		addKeyListener(new KeyHandler());
