@@ -1,11 +1,9 @@
 import java.io.*;
-import java.io.FileOutputStream.*;
 import java.util.ArrayList;
 
 public class DataSaver
 {
 	private static final String FILE = "pvp.jpg"; //it stands for "java programmed game"!!;
-	private static final String ERROR = "Oops, I a-sploded!";
 	
 	public static void save(Game gamma)
 	{
@@ -29,13 +27,14 @@ public class DataSaver
 		FileInputStream fos = null;
 		ObjectInputStream ois = null;
 		Game ret = null;
+		
 		try
 		{
 			fos = new FileInputStream(FILE);
 			ois = new ObjectInputStream(fos);
 			try
 			{
-				ret = (Game)(ois.readObject());
+				ret = (Game) ois.readObject();
 			}
 			catch(Exception e)
 			{
@@ -47,6 +46,49 @@ public class DataSaver
 		{
 			e.printStackTrace();
 		}
+		
 		return ret;
+	}
+}
+
+class SavedData implements Serializable
+{
+	private Staff player;
+	private ArrayList<Student> students;
+	private ArrayList<Cupple> couples;
+	private ArrayList<Attack> attacks;
+	
+	private static final long serialVersionUID	= 1L;
+	
+	public SavedData()
+	{
+	}
+	
+	public SavedData(Game g)
+	{
+		/*player			= g.getPlayer();
+		students		= g.getStudents();
+		couples			= g.getCouples();
+		attacks			= g.getAttacks();*/
+	}
+	
+	public Staff getPlayer()
+	{
+		return player;
+	}
+	
+	public ArrayList<Student> getStudents()
+	{
+		return students;
+	}
+	
+	public ArrayList<Cupple> getCouples()
+	{
+		return couples;
+	}
+	
+	public ArrayList<Attack> getAttacks()
+	{
+		return attacks;
 	}
 }

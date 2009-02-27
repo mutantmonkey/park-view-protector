@@ -42,58 +42,47 @@ public class Stark extends Staff implements Serializable
 	{
 		
 	}
-	public String getAtkName(int name)
-	{
-		if(name==0)
-			return "physball";
-		else if(name==1)
-			return "meterstick";
-		else if(name==2)
-			return "goodnight";
-		return "attack";
-	}
 	
-	public int getAtkType(int i)
+	public Attack getAttack(int i)
 	{
-		if(i==0)
-			return 0;
-		else if(i==1)
-			return 0;
-		else if(i==2)
-			return 2;
-		return 0;
-	}
-	
-	public int getAtkSpee(int i)
-	{
-		if(i==0)
-			return 5;
-		else if(i==1)
-			return 0;
-		else if(i==2)
-			return 0;
-		return 0;
-	}
-	
-	public int getAtkDama(int i)
-	{
-		if(i==0)
-			return 1;
-		else if(i==1)
-			return 3;
-		else if(i==2)
-			return 1;
-		return 0;
-	}
-	
-	public int getDuration(int i)
-	{
-		if(i==0)
-			return 40;
-		else if(i==1)
-			return 10;
-		else if(i==2)
-			return 50;
-		return 0;
+		Attack attack;
+		String name="attack";
+		int damage=0, type=0, speed=0, duration=0, status=0, statusLength=0, stillTime=0, hits=1, hitsDelay=duration, reuse=duration;
+		boolean isStudent=false, AoE=false;
+		switch(i)
+		{
+			case 0:
+				name="physball";
+				type=Type.FRONT;
+				damage=5;
+				speed=5;
+				duration=40;
+				reuse=30;
+				break;
+			case 1:
+				name="meterstick";
+				type=Type.FRONT;
+				damage=10;
+				speed=0;
+				duration=30;
+				stillTime=duration;
+				reuse=duration;
+				AoE=true;
+				break;
+			case 2:
+				name="goodnight";
+				type=Type.CENTER;
+				damage=3;
+				speed=0;
+				duration=50;
+				stillTime=duration;
+				reuse=duration;
+				status=Status.STUN;
+				statusLength=100;
+				AoE=true;
+				break;
+		}
+		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitsDelay, reuse);
+		return attack;
 	}
 }

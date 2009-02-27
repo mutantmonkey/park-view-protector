@@ -24,6 +24,11 @@ public class ParkViewProtector extends Canvas
 	public static final Color COLOR_BG_2	= Color.white;
 	public static final Color COLOR_TEXT_2	= Color.black;
 	
+	public static final Color STATS_BAR_BG	= new Color((float) 0, (float) 0, (float) 0, (float)0.5);
+	public static final Color STATS_BAR_FG	= Color.white;
+	public static final Color STATS_BAR_HP	= new Color(255, 0, 255);
+	public static final Color STATS_BAR_TP	= new Color(0, 255, 0);
+	
 	protected JFrame window;
 	protected JPanel contentPanel;
 	
@@ -168,9 +173,9 @@ public class ParkViewProtector extends Canvas
 		return game;
 	}
 	
-	public void setGame(Game gamma)
+	public void setGame(Game g)
 	{
-		game							= gamma;
+		game							= g;
 	}
 	
 	public void quit()

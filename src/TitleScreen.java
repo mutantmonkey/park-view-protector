@@ -5,7 +5,6 @@
  */
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 
 public class TitleScreen extends Menu
@@ -109,8 +108,7 @@ public class TitleScreen extends Menu
 				break;
 			
 			case 2:
-				DataSaver ds = new DataSaver();
-				driver.setGame(ds.load());
+				driver.setGame(DataSaver.load());
 				
 				ParkViewProtector.showTitle	= false;
 				break;

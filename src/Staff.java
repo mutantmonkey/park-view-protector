@@ -26,7 +26,7 @@ public abstract class Staff extends Character implements Serializable
 	
 	private int tp;
 	private int maxTp;
-	public abstract void skill(int ski);
+	public abstract Attack getAttack(int i);
 	
 	// Creates a Staff member.
 	public Staff(int x, int y, int hp, int maxHp, double speed, int dmg, int tp, int maxTp)

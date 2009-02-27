@@ -22,6 +22,8 @@ public abstract class Movable
 	protected Sprite sprite;
 	protected int moveCount;
 	
+	protected int stunFrames	= 0;
+	
 	/**
 	 * Constructor
 	 * 
@@ -67,6 +69,13 @@ public abstract class Movable
 	 */
 	public void move(int distX, int distY)
 	{
+		// are we stunned?
+		if(stunFrames > 0)
+		{
+			stunFrames--;
+			return;
+		}
+		
 		// determine and change direction if necessary
 		if(distY > 0)	direction	= Direction.SOUTH;
 		if(distX < 0)	direction	= Direction.WEST;
@@ -86,6 +95,13 @@ public abstract class Movable
 	 */
 	public void move(int distance)
 	{
+		// are we stunned?
+		if(stunFrames > 0)
+		{
+			stunFrames--;
+			return;
+		}
+		
 		int dist		= (int) Math.round(distance * speed);
 		
 		// determine and change direction if necessary
@@ -159,6 +175,14 @@ public abstract class Movable
 	public void resetMoveCount()
 	{
 		moveCount	= 0;
+	}
+	
+	/**
+	 * Stuns an object for the number of frames specified
+	 */
+	public void stun(int frames)
+	{
+		stunFrames				= frames;
 	}
 	
 	/**
