@@ -5,7 +5,6 @@
  */
 
 import java.awt.*;
-import java.awt.image.BufferStrategy;
 
 public class TitleScreen extends Menu
 {
@@ -25,12 +24,10 @@ public class TitleScreen extends Menu
 	 * Constructor
 	 * 
 	 * @param p Driver class
-	 * @param g Graphics context
-	 * @param s Buffer strategy
 	 */
-	public TitleScreen(ParkViewProtector p, Graphics g, BufferStrategy s)
+	public TitleScreen(ParkViewProtector p)
 	{
-		super(p, g, s);
+		super(p);
 		
 		mainLogo					= DataStore.INSTANCE.getSprite("images/logo.png");
 	}

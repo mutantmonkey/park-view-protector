@@ -1,7 +1,3 @@
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-
 /**
  * Park View Protractor
  * 
@@ -11,9 +7,17 @@ import java.io.Serializable;
  *
  */
 
-public class Stark extends Staff implements Serializable
+public class Stark extends Staff
 {
 	public static final double SPEED= 1.0;
+	private static final long serialVersionUID = 1L;
+	
+	public Stark()
+	{
+		super();
+		
+		sprite = DataStore.INSTANCE.getSprite("images/staff/stark.png");
+	}
 	
 	/**
 	 * Create a new Stark

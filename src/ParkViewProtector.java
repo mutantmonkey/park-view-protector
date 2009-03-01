@@ -24,7 +24,7 @@ public class ParkViewProtector extends Canvas
 	public static final Color COLOR_BG_2	= Color.white;
 	public static final Color COLOR_TEXT_2	= Color.black;
 	
-	public static final Color STATS_BAR_BG	= new Color((float) 0, (float) 0, (float) 0, (float)0.5);
+	public static final Color STATS_BAR_BG	= new Color((float) 0, (float) 0, (float) 0, (float) 0.5);
 	public static final Color STATS_BAR_FG	= Color.white;
 	public static final Color STATS_BAR_HP	= new Color(255, 0, 255);
 	public static final Color STATS_BAR_TP	= new Color(0, 255, 0);
@@ -137,9 +137,9 @@ public class ParkViewProtector extends Canvas
 		createBufferStrategy(2);
 		strategy					= getBufferStrategy();
 		
-		title						= new TitleScreen(this, g, strategy);
-		game						= new Game(this, g, strategy);
-		menu						= new Menu(this, g, strategy);
+		title						= new TitleScreen(this);
+		game						= new Game(this);
+		menu						= new Menu(this);
 	}
 	
 	/**
@@ -176,6 +176,7 @@ public class ParkViewProtector extends Canvas
 	public void setGame(Game g)
 	{
 		game							= g;
+		game.init(this);
 	}
 	
 	public void quit()

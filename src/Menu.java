@@ -32,16 +32,13 @@ public class Menu
 	/**
 	 * Constructor
 	 * 
-	 * @param w Width of the game canvas
-	 * @param h Height of the game canvas
-	 * @param g Graphics canvas
-	 * @param strategy Buffer strategy
+	 * @param p Driver class
 	 */
-	public Menu(ParkViewProtector p, Graphics g, BufferStrategy strategy)
+	public Menu(ParkViewProtector p)
 	{
 		this.driver						= p;
-		this.g							= g;
-		this.strategy					= strategy;
+		this.g							= p.getGraphics();
+		this.strategy					= p.getBufferStrategy();
 	}
 	
 	public void show()

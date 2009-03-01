@@ -1,7 +1,7 @@
 /**
  * Main game
  * 
- * @author	James Schwinabart
+ * @author	Jamie of the Javateerz
  */
 
 import java.awt.*;
@@ -65,15 +65,20 @@ public class Game implements Serializable
 	 * @param g Graphics canvas
 	 * @param strategy Buffer strategy
 	 */
-	public Game(ParkViewProtector p, Graphics g, BufferStrategy strategy)
+	public Game(ParkViewProtector p)
 	{
-		this.driver							= p;
-		this.g								= g;
-		this.strategy						= strategy;
+		init(p);
 		
 		// initialize everything
 		initPlayer();
 		initStudents();
+	}
+	
+	public void init(ParkViewProtector p)
+	{
+		this.driver							= p;
+		this.g								= p.getGraphics();
+		this.strategy						= p.getBufferStrategy();
 	}
 	
 	/**
@@ -523,16 +528,16 @@ public class Game implements Serializable
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
 	{
 		player			= (Staff) os.readObject();
-		//students		= (ArrayList<Student>) os.readObject();
-		//couples			= (ArrayList<Cupple>) os.readObject();
-		//attacks			= (ArrayList<Attack>) os.readObject();
+		students		= (ArrayList<Student>) os.readObject();
+		couples			= (ArrayList<Cupple>) os.readObject();
+		attacks			= (ArrayList<Attack>) os.readObject();
 	}
 	
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
 		os.writeObject(player);
-		//os.writeObject(students);
-		//os.writeObject(couples);
-		//os.writeObject(attacks);
+		os.writeObject(students);
+		os.writeObject(couples);
+		os.writeObject(attacks);
 	}
 }

@@ -13,6 +13,8 @@ public abstract class Character extends Movable
 	protected int maxHp;
 	protected int damage;
 	
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * Stores the inventory for the character
 	 */
@@ -97,9 +99,9 @@ public abstract class Character extends Movable
 	
 	protected void validateState()
 	{
-		if(hp > maxHp)
+		/*if(hp > maxHp)
 		{
 			throw new IllegalArgumentException("HP cannot exceed max HP");
-		}
+		}*/
 	}
 }

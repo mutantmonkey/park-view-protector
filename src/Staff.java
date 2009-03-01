@@ -9,24 +9,24 @@
  * -Updated parameters. (TP=Teacher Points)
  * -Added doSkill. Unsure what this is gonna' do yet.
  * -Added useItem.
- * 
- * @serial
- * Yes, I know, this is probably not the best thing to do; classes that are extended usually
- * aren't supposed to be serializable. Sorry.
  */
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
-public abstract class Staff extends Character implements Serializable
+public abstract class Staff extends Character
 {
 	private static final long serialVersionUID = 1L;
 	
 	private int tp;
 	private int maxTp;
 	public abstract Attack getAttack(int i);
+	
+	public Staff()
+	{
+		super(0, 0, 50, 50, 1.0, 1);
+		tp = 12;
+		maxTp = 12;
+		
+		sprite = DataStore.INSTANCE.getSprite("images/placeholder.png");
+	}
 	
 	// Creates a Staff member.
 	public Staff(int x, int y, int hp, int maxHp, double speed, int dmg, int tp, int maxTp)

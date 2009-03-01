@@ -3,12 +3,14 @@
  * attacks
  *
  * @author	Jamie of the Javateerz
+ * @serial
  */
 
+import java.io.Serializable;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public abstract class Movable
+public abstract class Movable implements Serializable
 {
 	protected double speed;
 	
@@ -19,10 +21,12 @@ public abstract class Movable
 	// direction (0 = north, 1 = east, 2 = south, 3 = west)
 	protected int direction		= 2;
 	
-	protected Sprite sprite;
+	protected transient Sprite sprite;
 	protected int moveCount;
 	
 	protected int stunFrames	= 0;
+	
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * Constructor
