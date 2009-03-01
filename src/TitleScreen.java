@@ -101,13 +101,19 @@ public class TitleScreen extends Menu
 		switch(actionId)
 		{
 			case 1:
-				ParkViewProtector.showTitle	= false;
+				ParkViewProtector.showTitle		= false;
 				break;
 			
 			case 2:
-				driver.setGame(DataSaver.load());
+				Game gameData					= DataSaver.load();
 				
-				ParkViewProtector.showTitle	= false;
+				if(gameData != null)
+				{
+					driver.setGame(gameData);
+
+					ParkViewProtector.showTitle	= false;
+				}
+				
 				break;
 		}
 	}
