@@ -49,7 +49,7 @@ public class Stark extends Staff
 	{
 		Attack attack;
 		String name="attack";
-		int damage=0, type=0, speed=0, duration=0, status=0, statusLength=0, stillTime=0, hits=1, hitsDelay=duration, reuse=duration;
+		int damage=0, type=0, speed=0, duration=0, status=0, statusLength=0, stillTime=0, hits=1, hitDelay=duration, reuse=duration;
 		boolean isStudent=false, AoE=false;
 		switch(i)
 		{
@@ -70,6 +70,7 @@ public class Stark extends Staff
 				stillTime=duration;
 				reuse=duration;
 				AoE=true;
+				hitDelay=duration;
 				break;
 			case 2:
 				name="goodnight";
@@ -82,9 +83,10 @@ public class Stark extends Staff
 				status=Status.STUN;
 				statusLength=100;
 				AoE=true;
+				hitDelay=duration/3;
 				break;
 		}
-		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitsDelay, reuse);
+		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
 }

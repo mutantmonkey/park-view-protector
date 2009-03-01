@@ -14,7 +14,7 @@ public class Attack extends Movable
 {
 	private double speed;
 	private String name;
-	private int damage, duration, time=0, status, statusDuration, stillTime, hits, hitsDelay, reuse;
+	private int damage, duration, time=0, status, statusDuration, stillTime, hits, hitDelay, reuse;
 	//Target: True=Student, FLASE=Staff
 	private boolean isStudent, AoE;
 	private int type;
@@ -38,8 +38,8 @@ public class Attack extends Movable
 	 */
 	public Attack(int x, int y, double speed, int direction,
 			String name, boolean isStudent, boolean AoE, int damage, int duration,
-			int type, int statusEffect, int statusEffectLength, int stillTime,
-			int hits, int hitsDelay, int reuse)
+			int type, int statusEffect, int statusDuration, int stillTime,
+			int hits, int hitDelay, int reuse)
 	{
 		super(x,y,speed);
 		this.type=type;
@@ -52,7 +52,7 @@ public class Attack extends Movable
 		this.statusDuration=statusDuration;
 		this.AoE=AoE;
 		this.hits=hits;
-		this.hitsDelay=hitsDelay;
+		this.hitDelay=hitDelay;
 		this.reuse=reuse;
 		switchXY();
 	}
@@ -77,11 +77,15 @@ public class Attack extends Movable
 		}
 	}
 	
+	public int getDamage()
+	{
+		return damage;
+	}
+	
 	public int getDuration()
 	{
 		return duration;
 	}
-
 	
 	public int getTime()
 	{
@@ -107,10 +111,17 @@ public class Attack extends Movable
 	{
 		return reuse;
 	}
+	
 	public boolean isAoE()
 	{
 		return AoE;
 	}
+	
+	public int getHitDelay()
+	{
+		return hitDelay;
+	}
+	
 	public void move(int dist)
 	{
 		super.move(dist);
