@@ -379,34 +379,38 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// Move the player
 		////////////////////////////////////////////////////////////////////////////////////
-		// TODO: use physics for diagonal movement? (sqrt 2 * MOVE_SPEED^2)
-		//FIXME: diagonals=2 move calls
+		
+		int distX = 0, distY = 0;
+		
 		if(ParkViewProtector.upPressed && !ParkViewProtector.downPressed
 				&& player.getBounds().y > 0)
 		{
-			player.move(0, -MOVE_SPEED);
+			distY						= -MOVE_SPEED;
 		}
 		
 		if(ParkViewProtector.downPressed && !ParkViewProtector.upPressed
 				&& player.getBounds().y < ParkViewProtector.HEIGHT - player.getBounds().height)
 		{
-			player.move(0, MOVE_SPEED);
-			//downPressed				= false;
+			distY						= MOVE_SPEED;
 		}
 		
 		if(ParkViewProtector.leftPressed && !ParkViewProtector.rightPressed
 				&& player.getBounds().x > 0)
 		{
-			player.move(-MOVE_SPEED, 0);
-			//leftPressed				= false;
+			distX						= -MOVE_SPEED;
 		}
 		
 		if(ParkViewProtector.rightPressed && !ParkViewProtector.leftPressed
 				&& player.getBounds().x < ParkViewProtector.WIDTH - player.getBounds().width)
 		{
-			player.move(MOVE_SPEED, 0);
-			//rightPressed			= false;
+			distX						= MOVE_SPEED;
 		}
+		
+		player.move(distX, distY);
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		// Create attacks
+		////////////////////////////////////////////////////////////////////////////////////
 		
 		if(ParkViewProtector.attackPressed&&attackDelay == 0)
 		{
