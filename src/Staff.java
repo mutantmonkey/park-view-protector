@@ -11,6 +11,8 @@
  * -Added useItem.
  */
 
+import java.io.*;
+
 public abstract class Staff extends Character
 {
 	private static final long serialVersionUID = 1L;
@@ -92,13 +94,15 @@ public abstract class Staff extends Character
 		}
 	}
 	
-	/*private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
 	{
 		os.defaultReadObject();
+		
+		validateState();
 	}
 	
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
 		os.defaultWriteObject();
-	}*/
+	}
 }

@@ -12,13 +12,6 @@ public class Stark extends Staff
 	public static final double SPEED= 1.0;
 	private static final long serialVersionUID = 1L;
 	
-	public Stark()
-	{
-		super();
-		
-		sprite = DataStore.INSTANCE.getSprite("images/staff/stark.png");
-	}
-	
 	/**
 	 * Create a new Stark
 	 * 
@@ -34,6 +27,11 @@ public class Stark extends Staff
 	{
 		super(x, y, hp, maxHp, SPEED, damage, tp, maxTp);
 		
+		updateSprite();
+	}
+	
+	protected void updateSprite()
+	{
 		sprite = DataStore.INSTANCE.getSprite("images/staff/stark.png");
 	}
 	

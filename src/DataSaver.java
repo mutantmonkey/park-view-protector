@@ -1,17 +1,28 @@
 import java.io.*;
-import java.util.ArrayList;
+import javax.swing.JFileChooser;
 
 public class DataSaver
 {
+	private static JFileChooser fileChooser = new JFileChooser();
+	private static File file;
+	
 	private static final String FILE = "pvp.jpg"; //it stands for "java programmed game"!!;
 	
 	public static void save(Game gamma)
 	{
+		// open the file chooser dialog, return if cancel is clicked
+		if(fileChooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION)
+		{
+			return;
+		}
+		
+		file				= fileChooser.getSelectedFile();
+		
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
 		try
 		{
-			fos = new FileOutputStream(FILE);
+			fos = new FileOutputStream(file.getName());
 			oos = new ObjectOutputStream(fos);
 			oos.writeObject(gamma);
 			oos.close();
@@ -24,13 +35,21 @@ public class DataSaver
 	
 	public static Game load()
 	{
+		// open the file chooser dialog, return if cancel is clicked
+		if(fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+		{
+			return null;
+		}
+		
+		file				= fileChooser.getSelectedFile();
+		
 		FileInputStream fos = null;
 		ObjectInputStream ois = null;
 		Game ret = null;
 		
 		try
 		{
-			fos = new FileInputStream(FILE);
+			fos = new FileInputStream(file.getName());
 			ois = new ObjectInputStream(fos);
 			try
 			{
@@ -48,47 +67,5 @@ public class DataSaver
 		}
 		
 		return ret;
-	}
-}
-
-class SavedData implements Serializable
-{
-	private Staff player;
-	private ArrayList<Student> students;
-	private ArrayList<Cupple> couples;
-	private ArrayList<Attack> attacks;
-	
-	private static final long serialVersionUID	= 1L;
-	
-	public SavedData()
-	{
-	}
-	
-	public SavedData(Game g)
-	{
-		/*player			= g.getPlayer();
-		students		= g.getStudents();
-		couples			= g.getCouples();
-		attacks			= g.getAttacks();*/
-	}
-	
-	public Staff getPlayer()
-	{
-		return player;
-	}
-	
-	public ArrayList<Student> getStudents()
-	{
-		return students;
-	}
-	
-	public ArrayList<Cupple> getCouples()
-	{
-		return couples;
-	}
-	
-	public ArrayList<Attack> getAttacks()
-	{
-		return attacks;
 	}
 }

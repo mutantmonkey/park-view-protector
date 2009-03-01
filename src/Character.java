@@ -99,9 +99,11 @@ public abstract class Character extends Movable
 	
 	protected void validateState()
 	{
-		/*if(hp > maxHp)
+		super.validateState();
+		
+		if(hp > maxHp)
 		{
 			throw new IllegalArgumentException("HP cannot exceed max HP");
-		}*/
+		}
 	}
 }

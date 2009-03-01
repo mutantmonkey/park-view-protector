@@ -189,6 +189,13 @@ public abstract class Movable implements Serializable
 		stunFrames				= frames;
 	}
 	
+	protected abstract void updateSprite();
+	
+	protected void validateState()
+	{
+		updateSprite();
+	}
+	
 	/**
 	 * Called by main game loop, draws the object's sprite on the screen
 	 */

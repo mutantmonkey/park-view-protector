@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.awt.Rectangle;
-
 /**
  * Park View Protector
  *
@@ -8,6 +5,10 @@ import java.awt.Rectangle;
  * 
  * Creates an attack area
  */
+
+import java.util.ArrayList;
+import java.awt.Rectangle;
+import java.io.*;
 
 public class Attack extends Movable
 {
@@ -17,6 +18,8 @@ public class Attack extends Movable
 	//Target: True=Student, FLASE=Staff
 	private boolean isStudent, AoE;
 	private int type;
+	
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * 
@@ -52,6 +55,26 @@ public class Attack extends Movable
 		this.hitsDelay=hitsDelay;
 		this.reuse=reuse;
 		switchXY();
+	}
+	
+	protected void updateSprite()
+	{
+		if(direction==Direction.NORTH)
+		{
+			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_n.png");
+		}
+		else if(direction==Direction.SOUTH)
+		{
+			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_s.png");
+		}
+		else if(direction==Direction.WEST)
+		{
+			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_w.png");
+		}
+		else /*Implied else if for EAST*/
+		{
+			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_e.png");
+		}
 	}
 	
 	public int getDuration()
@@ -103,22 +126,7 @@ public class Attack extends Movable
 	
 	public void switchXY()
 	{
-		if(direction==Direction.NORTH)
-		{
-			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_n.png");
-		}
-		else if(direction==Direction.SOUTH)
-		{
-			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_s.png");
-		}
-		else if(direction==Direction.WEST)
-		{
-			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_w.png");
-		}
-		else /*Implied else if for EAST*/
-		{
-			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_e.png");
-		}
+		updateSprite();
 		
 		x = (x+10)-(int) this.getBounds().getWidth()/4;
 		y = (y+16)-(int) this.getBounds().getHeight()/4;
@@ -150,6 +158,18 @@ public class Attack extends Movable
 		{
 			//Impletment never
 		}
+	}
+	
+	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	{
+		os.defaultReadObject();
+		
+		validateState();
+	}
+	
+	private void writeObject(ObjectOutputStream os) throws IOException
+	{
+		os.defaultWriteObject();
 	}
 }
 
