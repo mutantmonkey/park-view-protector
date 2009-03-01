@@ -65,6 +65,16 @@ public class ParkViewProtector extends Canvas
 		// load logos
 		jtzLogo						= DataStore.INSTANCE.getSprite("images/javateerslogo.png");
 		
+		// set the Swing look and feel to the system one so the file selector looks native
+		try
+		{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error setting system look and feel");
+		}
+		
 		// create container JFrame (window)
 		window						= new JFrame("Park View Protector");
 		window.setPreferredSize(new Dimension(WIDTH, HEIGHT));
