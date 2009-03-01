@@ -238,7 +238,7 @@ public class Game implements Serializable
 			
 			// did the couple hit the player? if so, decrease HP
 			if(currCouple.getBounds().intersects(player.getBounds()) &&
-					Math.random() <= ATTACK_CHANCE)
+					Math.random() <= ATTACK_CHANCE && !currCouple.getStunned())
 			{
 				if(player.getHp() <= 0)
 				{

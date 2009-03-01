@@ -189,8 +189,26 @@ public abstract class Movable implements Serializable
 		stunFrames				= frames;
 	}
 	
+	/**
+	 * Is the object stunned?
+	 * 
+	 * @return
+	 */
+	public boolean getStunned()
+	{
+		return (stunFrames > 0);
+	}
+	
+	/**
+	 * Updates the sprite; this is called by validateState() to ensure
+	 * that the sprite is updated after a game is loaded
+	 */
 	protected abstract void updateSprite();
 	
+	/**
+	 * Ensures that the object is in a usable state after loading a
+	 * game
+	 */
 	protected void validateState()
 	{
 		updateSprite();
