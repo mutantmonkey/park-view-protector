@@ -6,7 +6,7 @@ public class DataSaver
 	private static JFileChooser fileChooser = new JFileChooser();
 	private static File file;
 	
-	private static final String FILE = "pvp.jpg"; //it stands for "java programmed game"!!;
+	//private static final String FILE = "pvp.jpg"; //it stands for "java programmed game"!!;
 	
 	public static void save(Game gamma)
 	{
@@ -22,7 +22,7 @@ public class DataSaver
 		ObjectOutputStream oos = null;
 		try
 		{
-			fos = new FileOutputStream(file.getName());
+			fos = new FileOutputStream(file.getPath());
 			oos = new ObjectOutputStream(fos);
 			oos.writeObject(gamma);
 			oos.close();
@@ -49,7 +49,7 @@ public class DataSaver
 		
 		try
 		{
-			fos = new FileInputStream(file.getName());
+			fos = new FileInputStream(file.getPath());
 			ois = new ObjectInputStream(fos);
 			try
 			{
