@@ -144,6 +144,7 @@ public class ParkViewProtector extends Canvas
 		{
 			OggClip bgMusic			= new OggClip(new FileInputStream("sounds/kicked.ogg"));
 			bgMusic.loop();
+			bgMusic.play();
 		}
 		catch(Exception e)
 		{
