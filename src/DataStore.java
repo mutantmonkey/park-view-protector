@@ -20,6 +20,7 @@ public enum DataStore
 {
 	INSTANCE;
 	
+	private HashMap<String, Clip> clips		= new HashMap<String, Clip>();
 	private HashMap<String, Sprite> sprites	= new HashMap<String, Sprite>();
 	
 	/**
@@ -28,54 +29,81 @@ public enum DataStore
 	 * @param file The audio clip to load
 	 * @return The audio clip
 	 */
-	public Clip getAudio(String file)
+	public Clip getAudioClip(String file)
 	{
+		// is the clip already cached?
+		if(clips.get(file) != null)
+		{
+			return clips.get(file);
+		}
+		
+		AudioInputStream stream;
+		Clip clip;
+		
 		// load the file
 		//URL url				= this.getClass().getClassLoader().getResource(file);
-		File url			= new File(file);
+		File url				= new File(file);
 		
-		AudioInputStream stream = null;
 		try
 		{
-			stream = AudioSystem.getAudioInputStream(url);
+			stream				= AudioSystem.getAudioInputStream(url);
 		}
-		catch(UnsupportedAudioFileException e1)
+		catch(UnsupportedAudioFileException e)
 		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			System.out.println("Unsupported audio file");
+			return null;
 		}
 		catch(IOException e)
 		{
 			System.out.println("Error loading audio clip: " + file);
+			return null;
 		}
 		
-		AudioFormat format	= stream.getFormat();
+		AudioFormat format		= stream.getFormat();
 		
-		Clip clip = null;
+		// convert ALAW and ULAW encodings
+		if(format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED)
+		{
+			format				= new AudioFormat(
+					AudioFormat.Encoding.PCM_SIGNED,
+					format.getSampleRate(),
+					format.getSampleSizeInBits() * 2,
+					format.getChannels(),
+					format.getFrameSize() * 2,
+					format.getFrameRate(),
+					true);
+			
+			stream				= AudioSystem.getAudioInputStream(format, stream);
+		}
 		
 		try
 		{
 			// Create the clip
-			DataLine.Info info = new DataLine.Info(
-				Clip.class, stream.getFormat(), ((int)stream.getFrameLength()*format.getFrameSize()));
-			clip = (Clip) AudioSystem.getLine(info);
+			DataLine.Info info	= new DataLine.Info(
+					Clip.class,
+					stream.getFormat(),
+					(int) (stream.getFrameLength() * format.getFrameSize()));
+			
+			clip				= (Clip) AudioSystem.getLine(info);
 			
 			// This method does not return until the audio file is completely loaded
 			clip.open(stream);
-			
-			// Start playing
-			clip.start();
 		}
 		catch(LineUnavailableException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		catch(IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
+		
+		// cache clip so it doesn't have to be loaded again
+		//clips.put(file, clip);
 		
 		return clip;
 	}

@@ -9,9 +9,13 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
+import java.io.FileInputStream;
 //import java.util.ArrayList;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
+
+import org.newdawn.easyogg.OggClip;
 
 public class ParkViewProtector extends Canvas
 {
@@ -115,7 +119,8 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void showOpening()
 	{
-		DataStore.INSTANCE.getAudio("sounds/clockhomestart.wav");
+		Clip openingClip					= DataStore.INSTANCE.getAudioClip("sounds/clockhomestart.wav");
+		openingClip.start();
 		
 		Graphics g						= getGraphics();
 		
@@ -135,7 +140,15 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void init()
 	{
-		DataStore.INSTANCE.getAudio("sounds/sine.wav");
+		try
+		{
+			OggClip bgMusic			= new OggClip(new FileInputStream("sounds/kicked.ogg"));
+			bgMusic.loop();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error playing audio file");
+		}
 		
 		// add key handler class
 		addKeyListener(new KeyHandler());
