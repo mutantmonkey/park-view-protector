@@ -3,12 +3,14 @@
  * attacks
  *
  * @author	Jamie of the Javateerz
+ * @serial
  */
 
+import java.io.Serializable;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public abstract class Movable
+public abstract class Movable implements Serializable
 {
 	protected double speed;
 	
@@ -19,8 +21,12 @@ public abstract class Movable
 	// direction (0 = north, 1 = east, 2 = south, 3 = west)
 	protected int direction		= 2;
 	
-	protected Sprite sprite;
+	protected transient Sprite sprite;
 	protected int moveCount;
+	
+	protected int stunFrames	= 0;
+	
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * Constructor
@@ -67,6 +73,13 @@ public abstract class Movable
 	 */
 	public void move(int distX, int distY)
 	{
+		// are we stunned?
+		if(stunFrames > 0)
+		{
+			stunFrames--;
+			return;
+		}
+		
 		// determine and change direction if necessary
 		if(distY > 0)	direction	= Direction.SOUTH;
 		if(distX < 0)	direction	= Direction.WEST;
@@ -86,6 +99,13 @@ public abstract class Movable
 	 */
 	public void move(int distance)
 	{
+		// are we stunned?
+		if(stunFrames > 0)
+		{
+			stunFrames--;
+			return;
+		}
+		
 		int dist		= (int) Math.round(distance * speed);
 		
 		// determine and change direction if necessary
@@ -159,6 +179,39 @@ public abstract class Movable
 	public void resetMoveCount()
 	{
 		moveCount	= 0;
+	}
+	
+	/**
+	 * Stuns an object for the number of frames specified
+	 */
+	public void stun(int frames)
+	{
+		stunFrames				= frames;
+	}
+	
+	/**
+	 * Is the object stunned?
+	 * 
+	 * @return
+	 */
+	public boolean getStunned()
+	{
+		return (stunFrames > 0);
+	}
+	
+	/**
+	 * Updates the sprite; this is called by validateState() to ensure
+	 * that the sprite is updated after a game is loaded
+	 */
+	protected abstract void updateSprite();
+	
+	/**
+	 * Ensures that the object is in a usable state after loading a
+	 * game
+	 */
+	protected void validateState()
+	{
+		updateSprite();
 	}
 	
 	/**

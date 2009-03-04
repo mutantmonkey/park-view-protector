@@ -1,19 +1,28 @@
 import java.io.*;
-import java.io.FileOutputStream.*;
-import java.util.ArrayList;
+import javax.swing.JFileChooser;
 
 public class DataSaver
 {
-	private static final String FILE = "pvp.jpg"; //it stands for "java programmed game"!!;
-	private static final String ERROR = "Oops, I a-sploded!";
+	private static JFileChooser fileChooser = new JFileChooser();
+	private static File file;
+	
+	//private static final String FILE = "pvp.jpg"; //it stands for "java programmed game"!!;
 	
 	public static void save(Game gamma)
 	{
+		// open the file chooser dialog, return if cancel is clicked
+		if(fileChooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION)
+		{
+			return;
+		}
+		
+		file				= fileChooser.getSelectedFile();
+		
 		FileOutputStream fos = null;
 		ObjectOutputStream oos = null;
 		try
 		{
-			fos = new FileOutputStream(FILE);
+			fos = new FileOutputStream(file.getPath());
 			oos = new ObjectOutputStream(fos);
 			oos.writeObject(gamma);
 			oos.close();
@@ -26,16 +35,25 @@ public class DataSaver
 	
 	public static Game load()
 	{
+		// open the file chooser dialog, return if cancel is clicked
+		if(fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+		{
+			return null;
+		}
+		
+		file				= fileChooser.getSelectedFile();
+		
 		FileInputStream fos = null;
 		ObjectInputStream ois = null;
 		Game ret = null;
+		
 		try
 		{
-			fos = new FileInputStream(FILE);
+			fos = new FileInputStream(file.getPath());
 			ois = new ObjectInputStream(fos);
 			try
 			{
-				ret = (Game)(ois.readObject());
+				ret = (Game) ois.readObject();
 			}
 			catch(Exception e)
 			{
@@ -47,6 +65,7 @@ public class DataSaver
 		{
 			e.printStackTrace();
 		}
+		
 		return ret;
 	}
 }

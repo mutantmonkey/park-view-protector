@@ -19,7 +19,7 @@ public class Cupple extends Character implements Serializable
 	
 	public Cupple(Student a,Student b)
 	{
-		super(a.x,a.y,a.hp+b.hp,a.maxHp,(a.speed+b.speed)/2,a.damage);
+		super(a.x,a.y,a.hp+b.hp,a.maxHp + b.maxHp,(a.speed+b.speed)/2,a.damage);
 		if(a.getGender() == 'm')
 		{
 			male = a;
@@ -32,7 +32,12 @@ public class Cupple extends Character implements Serializable
 		}
 		
 		// temp graphic
-		this.sprite	= DataStore.INSTANCE.getSprite("images/cupple.png");
+		updateSprite();
+	}
+	
+	protected void updateSprite()
+	{
+		sprite	= DataStore.INSTANCE.getSprite("images/cupple.png");
 	}
 	
 	public Student getMale()

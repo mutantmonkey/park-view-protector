@@ -49,7 +49,7 @@ public class Student extends Character implements Serializable
 	/**
 	 * Updates the sprite
 	 */
-	private void updateSprite()
+	protected void updateSprite()
 	{
 		sprite			= DataStore.INSTANCE.getSprite("images/student/" + type + "_" + gender + ".png");
 	}
@@ -90,11 +90,6 @@ public class Student extends Character implements Serializable
 	public void attack()
 	{
 		
-	}
-	
-	public void changeGraphic()
-	{
-		this.sprite		= DataStore.INSTANCE.getSprite("images/placeholder.png");
 	}
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException

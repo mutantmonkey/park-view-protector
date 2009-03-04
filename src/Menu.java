@@ -5,7 +5,6 @@
  */
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 
 public class Menu
@@ -13,6 +12,7 @@ public class Menu
 	public static final int TOP_SPACING				= 120;
 	public static final int LINE_SPACING			= 40;
 	public static final Font TEXT_FONT				= new Font("Dialog", Font.PLAIN, 32);
+	public static final Color BG_COLOR				= Color.black;
 	public static final Color TEXT_COLOR			= Color.white;
 	public static final Color SELECTED_TEXT_COLOR	= new Color(255, 0, 255);
 	
@@ -32,16 +32,13 @@ public class Menu
 	/**
 	 * Constructor
 	 * 
-	 * @param w Width of the game canvas
-	 * @param h Height of the game canvas
-	 * @param g Graphics canvas
-	 * @param strategy Buffer strategy
+	 * @param p Driver class
 	 */
-	public Menu(ParkViewProtector p, Graphics g, BufferStrategy strategy)
+	public Menu(ParkViewProtector p)
 	{
 		this.driver						= p;
-		this.g							= g;
-		this.strategy					= strategy;
+		this.g							= p.getGraphics();
+		this.strategy					= p.getBufferStrategy();
 	}
 	
 	public void show()
@@ -70,7 +67,7 @@ public class Menu
 		g									= (Graphics) strategy.getDrawGraphics();
 		
 		// draw the background
-		g.setColor(Color.black);
+		g.setColor(BG_COLOR);
 		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
 		
 		// set font and color

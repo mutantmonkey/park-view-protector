@@ -12,6 +12,9 @@ public abstract class Character extends Movable
 	protected int hp;
 	protected int maxHp;
 	protected int damage;
+	protected int hitDelay;
+	
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * Keeps track of items
@@ -49,6 +52,28 @@ public abstract class Character extends Movable
 	public int getHp()
 	{
 		return hp;
+	}
+	
+	public void decrementHitDelay(int amount)
+	{
+		if(hitDelay>0)
+		{
+			hitDelay-=amount;
+		}
+	}
+	
+	public void setHitDelay(int amount)
+	{
+		hitDelay=amount;
+	}
+	
+	public boolean isHittable()
+	{
+		if(hitDelay<=0)
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -113,6 +138,8 @@ public abstract class Character extends Movable
 	
 	protected void validateState()
 	{
+		super.validateState();
+		
 		if(hp > maxHp)
 		{
 			throw new IllegalArgumentException("HP cannot exceed max HP");

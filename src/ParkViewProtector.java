@@ -9,9 +9,13 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
+import java.io.FileInputStream;
 //import java.util.ArrayList;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
+
+import org.newdawn.easyogg.OggClip;
 
 public class ParkViewProtector extends Canvas
 {
@@ -23,6 +27,11 @@ public class ParkViewProtector extends Canvas
 	public static final Color COLOR_TEXT_1	= Color.white;
 	public static final Color COLOR_BG_2	= Color.white;
 	public static final Color COLOR_TEXT_2	= Color.black;
+	
+	public static final Color STATS_BAR_BG	= new Color((float) 0, (float) 0, (float) 0, (float) 0.5);
+	public static final Color STATS_BAR_FG	= Color.white;
+	public static final Color STATS_BAR_HP	= new Color(255, 0, 255);
+	public static final Color STATS_BAR_TP	= new Color(0, 255, 0);
 	
 	protected JFrame window;
 	protected JPanel contentPanel;
@@ -59,6 +68,16 @@ public class ParkViewProtector extends Canvas
 	{
 		// load logos
 		jtzLogo						= DataStore.INSTANCE.getSprite("images/javateerslogo.png");
+		
+		// set the Swing look and feel to the system one so the file selector looks native
+		try
+		{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error setting system look and feel");
+		}
 		
 		// create container JFrame (window)
 		window						= new JFrame("Park View Protector");
@@ -100,7 +119,8 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void showOpening()
 	{
-		DataStore.INSTANCE.getAudio("sounds/clockhomestart.wav");
+		Clip openingClip					= DataStore.INSTANCE.getAudioClip("sounds/clockhomestart.wav");
+		openingClip.start();
 		
 		Graphics g						= getGraphics();
 		
@@ -120,7 +140,16 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void init()
 	{
-		DataStore.INSTANCE.getAudio("sounds/nof.wav");
+		try
+		{
+			OggClip bgMusic			= new OggClip(new FileInputStream("sounds/kicked.ogg"));
+			bgMusic.loop();
+			bgMusic.play();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error playing audio file");
+		}
 		
 		// add key handler class
 		addKeyListener(new KeyHandler());
@@ -132,9 +161,9 @@ public class ParkViewProtector extends Canvas
 		createBufferStrategy(2);
 		strategy					= getBufferStrategy();
 		
-		title						= new TitleScreen(this, g, strategy);
-		game						= new Game(this, g, strategy);
-		menu						= new Menu(this, g, strategy);
+		title						= new TitleScreen(this);
+		game						= new Game(this);
+		menu						= new Menu(this);
 	}
 	
 	/**
@@ -168,9 +197,10 @@ public class ParkViewProtector extends Canvas
 		return game;
 	}
 	
-	public void setGame(Game gamma)
+	public void setGame(Game g)
 	{
-		game							= gamma;
+		game							= g;
+		game.init(this);
 	}
 	
 	public void quit()

@@ -5,8 +5,6 @@
  */
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferStrategy;
 
 public class TitleScreen extends Menu
 {
@@ -26,12 +24,10 @@ public class TitleScreen extends Menu
 	 * Constructor
 	 * 
 	 * @param p Driver class
-	 * @param g Graphics context
-	 * @param s Buffer strategy
 	 */
-	public TitleScreen(ParkViewProtector p, Graphics g, BufferStrategy s)
+	public TitleScreen(ParkViewProtector p)
 	{
-		super(p, g, s);
+		super(p);
 		
 		mainLogo					= DataStore.INSTANCE.getSprite("images/logo.png");
 	}
@@ -105,14 +101,19 @@ public class TitleScreen extends Menu
 		switch(actionId)
 		{
 			case 1:
-				ParkViewProtector.showTitle	= false;
+				ParkViewProtector.showTitle		= false;
 				break;
 			
 			case 2:
-				DataSaver ds = new DataSaver();
-				driver.setGame(ds.load());
+				Game gameData					= DataSaver.load();
 				
-				ParkViewProtector.showTitle	= false;
+				if(gameData != null)
+				{
+					driver.setGame(gameData);
+
+					ParkViewProtector.showTitle	= false;
+				}
+				
 				break;
 		}
 	}
