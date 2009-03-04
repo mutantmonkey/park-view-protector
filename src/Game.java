@@ -115,7 +115,7 @@ public class Game implements Serializable
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			
-			student					= new Student(x, y, 50, 5, speed, 0, gender);
+			student					= new Student(x, y, 5, 5, speed, 0, gender);
 			
 			students.add(student);
 		}
