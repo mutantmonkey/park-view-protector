@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.FileInputStream;
+import java.io.IOException;
 //import java.util.ArrayList;
 
 import javax.sound.sampled.Clip;
@@ -144,7 +145,6 @@ public class ParkViewProtector extends Canvas
 		{
 			OggClip bgMusic			= new OggClip(new FileInputStream("sounds/kicked.ogg"));
 			bgMusic.loop();
-			bgMusic.play();
 		}
 		catch(Exception e)
 		{
