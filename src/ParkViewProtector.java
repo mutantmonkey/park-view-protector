@@ -120,10 +120,10 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void showOpening()
 	{
-		Clip openingClip					= DataStore.INSTANCE.getAudioClip("sounds/clockhomestart.wav");
+		Clip openingClip			= DataStore.INSTANCE.getAudioClip("sounds/clockhomestart.wav");
 		openingClip.start();
 		
-		Graphics g						= getGraphics();
+		Graphics g					= getGraphics();
 		
 		// draw the background
 		g.setColor(Color.white);

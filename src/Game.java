@@ -160,6 +160,12 @@ public class Game implements Serializable
 				{
 					// don't do anything if it's us
 					if(i == j) continue;
+					
+					// no same-sex couples (for now at least)
+					if(currStudent.getGender() == students.get(j).getGender())
+					{
+						continue;
+					}
 
 					// did we hit another student with a charge?
 					if(currStudent.getBounds().intersects(students.get(j).getBounds())
