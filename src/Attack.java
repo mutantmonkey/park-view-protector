@@ -144,7 +144,6 @@ public class Attack extends Movable
 		
 		if(type==Type.FRONT)
 		{
-			System.out.println(getDirection());
 			if(direction==Direction.EAST)
 				x+=(int) Math.round(30);
 			else if(direction==Direction.WEST)

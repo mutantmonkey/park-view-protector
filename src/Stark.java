@@ -66,7 +66,7 @@ public class Stark extends Staff
 				type=Type.FRONT;
 				damage=10;
 				speed=0;
-				duration=30;
+				duration=20;
 				stillTime=duration;
 				reuse=duration;
 				AoE=true;
@@ -83,7 +83,7 @@ public class Stark extends Staff
 				status=Status.STUN;
 				statusLength=100;
 				AoE=true;
-				hitDelay=duration/3;
+				hitDelay=duration;
 				break;
 		}
 		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);

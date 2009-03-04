@@ -18,7 +18,7 @@ public class Game implements Serializable
 	
 	// delay (in number of frames) before another attack can be used
 	public static final int ATTACK_DELAY		= 20;
-	private int attackDelay						= 0;
+	private int attackDelay					= 0;
 	
 	public static final int MIN_STUDENTS		= 20;
 	public static final int MAX_STUDENTS		= 30;
@@ -45,7 +45,7 @@ public class Game implements Serializable
 	public static final int STATS_BAR_HEIGHT	= STAT_PAD_TOP + BAR_HEIGHT * 2 +
 													BAR_SPACING + STAT_PAD_BOTTOM;
 	
-	private static final long serialVersionUID	= 1L;
+	private static final long serialVersionUID	= 2L;
 	
 	private transient ParkViewProtector driver;
 	private transient Graphics g;
@@ -165,8 +165,8 @@ public class Game implements Serializable
 					if(currStudent.getBounds().intersects(students.get(j).getBounds())
 							&& students.get(j).getCharge() > 0)
 					{
-						charge				= currStudent.getCharge() +
-												students.get(j).getCharge();
+							charge				= currStudent.getCharge() +
+												students.get(j).getCharge()+1;
 						
 						if(Math.random() * COUPLE_CHANCE_MULTIPLIER < charge)
 						{
@@ -215,7 +215,9 @@ public class Game implements Serializable
 					}
 					
 					// FIXME: should be variable depending on strength
-					currStudent.adjustCharge(currAttack.getDamage()/3);
+					if(currStudent.getCharge()>-10)
+						currStudent.adjustCharge(-currAttack.getDamage()/3);
+					System.out.println("Student took "+ currAttack.getDamage()/3 + ", now has "+ currStudent.getCharge());
 					currStudent.setHitDelay(currAttack.getHitDelay());
 				}
 			}
@@ -282,7 +284,7 @@ public class Game implements Serializable
 					{
 						currCouple.stun(currAttack.getStatusDuration());
 					}
-					
+					//FIXME: If multiple attacks hit something or what?
 					if(currCouple.getHp() <=0)
 					{
 						male		= currCouple.getMale();
