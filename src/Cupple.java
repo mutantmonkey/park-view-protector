@@ -49,6 +49,17 @@ public class Cupple extends Character implements Serializable
 	{
 		return female;
 	}
+	
+	public void step(Game game)
+	{
+		// random movement
+		game.moveRandom(this);
+		
+		// decrement the hit delay
+		decrementHitDelay(1);
+		
+		game.handleAttacks(this);
+	}
 
 	public void attack()
 	{

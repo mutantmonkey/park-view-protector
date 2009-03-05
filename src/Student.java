@@ -84,9 +84,23 @@ public class Student extends Character implements Serializable
 		charge			   += amt;
 	}
 	
-	/**
-	 * Does an attack
-	 */
+	public void step(Game game)
+	{
+		// random movement
+		game.moveRandom(this);
+		
+		// decrement the hit delay
+		decrementHitDelay(1);
+		
+		// attempt coupling
+		if(charge > 0)
+		{
+			game.attemptCoupling(this);
+		}
+		
+		game.handleAttacks(this);
+	}
+	
 	public void attack()
 	{
 		

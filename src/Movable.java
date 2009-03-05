@@ -233,6 +233,65 @@ public abstract class Movable implements Serializable
 		
 		return rect;
 	}
+	
+	/**
+	 * Computes a new bounding box for the object moved the specified distance
+	 * 
+	 * @param distX X component
+	 * @param distY Y component
+	 * @return New bounding box
+	 */
+	public Rectangle getNewBounds(int distX, int distY)
+	{
+		int newX				= x;
+		int newY				= y;
+		
+		newX				   += (int) Math.round(distX * speed);
+		newY				   += (int) Math.round(distY * speed);
+		
+		Rectangle bounds		= new Rectangle(newX, newY, sprite.getWidth(), sprite.getHeight());
+		
+		return bounds;
+	}
+	
+	/**
+	 * Computes a new bounding box for the object moved the specified distance
+	 * 
+	 * @param distX X component
+	 * @param distY Y component
+	 * @return New bounding box
+	 */
+	public Rectangle getNewBounds(int distance)
+	{
+		int newX				= x;
+		int newY				= y;
+		
+		int dist				= (int) Math.round(distance * speed);
+		
+		// determine and change direction if necessary
+		switch(direction)
+		{
+			case Direction.NORTH:
+				newY	-= dist;
+				break;
+			
+			case Direction.EAST:
+				newX	+= dist;
+				break;
+				
+			case Direction.SOUTH:
+				newY	+= dist;
+				break;
+			
+			case Direction.WEST:
+				newX	-= dist;
+				break;
+		}
+		
+		Rectangle bounds		= new Rectangle(newX, newY, sprite.getWidth(), sprite.getHeight());
+		
+		return bounds;
+	}
 }
 
 class Direction
