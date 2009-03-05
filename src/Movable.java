@@ -223,7 +223,7 @@ public abstract class Movable implements Serializable
 	}
 	
 	/**
-	 * Gets the bounds of the object
+	 * Computes the bounding box for the object
 	 * 
 	 * @return Bounding box
 	 */

@@ -61,6 +61,7 @@ public class Game implements Serializable
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
+	private ArrayList<Wall> walls				= new ArrayList<Wall>();
 
 	/**
 	 * Constructor
@@ -76,6 +77,7 @@ public class Game implements Serializable
 		
 		// initialize everything
 		initPlayer();
+		initWalls();
 		initStudents();
 	}
 	
@@ -91,8 +93,18 @@ public class Game implements Serializable
 	 */
 	public void initPlayer()
 	{
-		// FIXME: magic numbers are bad (JASON: what is damage? where is it used?)
+		// FIXME: magic numbers are bad
+		// JASON: what is damage? where is it used? why is it needed?
 		player						= new Stark(0, STATS_BAR_HEIGHT, PLAYER_HP, PLAYER_HP, PLAYER_TP, PLAYER_TP, 1);
+	}
+	
+	/**
+	 * Create some walls
+	 */
+	public void initWalls()
+	{
+		walls.add(new Wall(300, 200, 4, 30));
+		walls.add(new Wall(200, 100, ParkViewProtector.WIDTH, 4));
 	}
 	
 	/**
@@ -216,6 +228,19 @@ public class Game implements Serializable
 				attacks.remove(i);
 				i--;
 			}
+		}
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		// Draw walls
+		////////////////////////////////////////////////////////////////////////////////////
+		
+		// set a color for walls
+		// FIXME: should we use sprites for walls?
+		g.setColor(ParkViewProtector.COLOR_BG_1);
+		
+		for(Wall w : walls)
+		{
+			w.draw(g);
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -409,7 +434,8 @@ public class Game implements Serializable
 	}
 	
 	/**
-	 * Loop through students and couples (and maybe walls soon too) to see the specified rectangle is available
+	 * Loop through students and couples (and maybe walls soon too) to see if the specified
+	 * rectangle is available
 	 * 
 	 * @return
 	 */
@@ -432,6 +458,15 @@ public class Game implements Serializable
 				return false;
 			}
 		}*/
+		
+		// walls
+		for(Wall w : walls)
+		{
+			if(newRect.intersects(w.getBounds()))
+			{
+				return false;
+			}
+		}
 		
 		return true;
 	}
@@ -491,7 +526,7 @@ public class Game implements Serializable
 					}
 					catch(Exception e)
 					{
-						System.out.println("Something went wrong when deleting someone :O");
+						driver.error("Something went wrong when deleting someone :O", false);
 					}
 					
 					return true;
@@ -651,14 +686,36 @@ public class Game implements Serializable
 		}
 	}
 	
-	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	/**
+	 * Read a save file
+	 * 
+	 * @param os Object input stream
+	 */
+	private void readObject(ObjectInputStream os)
 	{
-		player			= (Staff) os.readObject();
-		students		= (ArrayList<Student>) os.readObject();
-		couples			= (ArrayList<Cupple>) os.readObject();
-		attacks			= (ArrayList<Attack>) os.readObject();
+		try
+		{
+			player		= (Staff) os.readObject();
+			students	= (ArrayList<Student>) os.readObject();
+			couples		= (ArrayList<Cupple>) os.readObject();
+			attacks		= (ArrayList<Attack>) os.readObject();
+		}
+		catch(ClassNotFoundException e)
+		{
+			driver.error("Your save file appears to be corrupt. A ClassNotFoundException occurred.", true);
+		}
+		catch(IOException e)
+		{
+			driver.error("Unable to read the save file", true);
+		}
 	}
 	
+	/**
+	 * Write a save file
+	 * 
+	 * @param os Object output stream
+	 * @throws IOException
+	 */
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
 		os.writeObject(player);

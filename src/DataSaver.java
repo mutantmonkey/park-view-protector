@@ -61,6 +61,11 @@ public class DataSaver
 			}
 			ois.close();
 		}
+		catch(StreamCorruptedException e)
+		{
+			ParkViewProtector.error("Save file appears to be corrupt. Please ensure " +
+					"that it is a Park View Protector Java Programmed Game file.");
+		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
