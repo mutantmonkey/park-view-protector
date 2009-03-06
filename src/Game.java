@@ -454,21 +454,21 @@ public class Game implements Serializable
 	}
 	
 	/**
-	 * Loop through students and couples (and maybe walls soon too) to see if the specified
-	 * rectangle is available
+	 * Loop through students, couples, and walls to see if the specified rectangle is
+	 * available
 	 * 
 	 * @return
 	 */
 	public boolean canMove(Rectangle newRect)
 	{
 		// students
-		for(Student s : students)
+		/*for(Student s : students)
 		{
 			if(!s.getStunned() && newRect.intersects(s.getBounds()))
 			{
 				return false;
 			}
-		}
+		}*/
 		
 		// couples
 		/*for(Cupple c : couples)
