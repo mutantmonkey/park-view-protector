@@ -443,7 +443,9 @@ public class Game implements Serializable
 			obj.resetMoveCount();
 		}
 		
-		if(obj.getNewBounds(speed).intersects(player.getBounds()))
+		// check for collisions
+		if(obj.getNewBounds(speed).intersects(player.getBounds())
+				|| !canMove(obj.getNewBounds(speed)))
 		{
 			// collision, must choose new direction
 			obj.resetMoveCount();
