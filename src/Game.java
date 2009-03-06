@@ -251,6 +251,11 @@ public class Game implements Serializable
 				}
 			}
 			
+			if(ParkViewProtector.shiftPressed)
+			{
+				showCharges();
+			}
+			
 			// update students
 			/*for(int j = 0; j < students.size(); j++)
 			{

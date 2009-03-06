@@ -8,25 +8,22 @@ import java.awt.Graphics;
  * @author:	Javateerz...
  */
 
-public class Item
+public class Item extends Movable
 {
 	private char type; //'h' is for health restore, 't' is for teacher point restore
 	private Character user; //if it open on the field, the user is null
-	private Staff staff; // if it belongs to a staff member
-	
-	protected Sprite sprite; //graphic usage coming soon
-	
-	private int x;
-	private int y;
 	
 	private final int HP_AMT = -50; //data store
 	private final int TP_AMT = 10; //reference pointer pointers
 									//see advanced Starkiometry
 	
-	public Item(char type)
+	private static final long serialVersionUID = 1L;
+	
+	public Item(char type,int x,int y)
 	{
+		super(x,y,0);
 		this.type = type;
-		this.sprite	= DataStore.INSTANCE.getSprite("images/gItem.png");
+		updateSprite();
 	}
 	
 	/**
@@ -36,13 +33,10 @@ public class Item
 	 */
 	public Item(char type,Character c)
 	{
+		super(0,0,0);
 		this.type = type;
 		user = c;
-		if(c instanceof Staff)
-		{
-			staff = (Staff)c;
-		}
-		this.sprite	= DataStore.INSTANCE.getSprite("images/gItem.png");
+		updateSprite();
 	}
 	
 	public char getType()//gets name
@@ -73,21 +67,16 @@ public class Item
 		}
 		else if(type == 't')
 		{
-			if(staff != null)
+			if(user instanceof Staff)
 			{
-				staff.adjustTp(TP_AMT);
+				Staff s = (Staff)user;
+				s.adjustTp(TP_AMT);
 			}
 		}
 	}
 	
-	public void draw(Graphics g)//draws it...?
+	public void updateSprite()
 	{
-		sprite.draw(g, x, y);
-	}
-	
-	public void place(int x, int y)//places it...?
-	{
-		this.x = x;
-		this.y = y;
+		this.sprite	= DataStore.INSTANCE.getSprite("images/gItem.png");
 	}
 }
