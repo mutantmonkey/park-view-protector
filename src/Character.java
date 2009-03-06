@@ -11,10 +11,9 @@ public abstract class Character extends Movable
 	// stats
 	protected int hp;
 	protected int maxHp;
-	protected int damage;
 	protected int hitDelay;
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3L;
 	
 	/**
 	 * Stores the inventory for the character
@@ -31,13 +30,12 @@ public abstract class Character extends Movable
 	 * @param speed
 	 * @param damage
 	 */
-	public Character(int x, int y, int hp, int maxHp, double speed, int damage)
+	public Character(int x, int y, int hp, int maxHp, double speed)
 	{
 		super(x, y, speed);
 		
 		this.hp		= hp;
 		this.maxHp	= maxHp;
-		this.damage	= damage;
 	}
 	
 	/**
@@ -94,11 +92,6 @@ public abstract class Character extends Movable
 	{
 		return maxHp;
 	}
-	
-	/**
-	 * Does an attack
-	 */
-	public abstract void attack();
 	
 	/**
 	 * Removes an item from the character's inventory

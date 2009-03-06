@@ -45,7 +45,7 @@ public class Game implements Serializable
 	public static final int STATS_BAR_HEIGHT	= STAT_PAD_TOP + BAR_HEIGHT * 2 +
 													BAR_SPACING + STAT_PAD_BOTTOM;
 	
-	private static final long serialVersionUID	= 2L;
+	private static final long serialVersionUID	= 3L;
 	
 	private transient ParkViewProtector driver;
 	private transient Graphics g;
@@ -87,8 +87,7 @@ public class Game implements Serializable
 	public void initPlayer()
 	{
 		// FIXME: magic numbers are bad
-		player						= new Stark(0, STATS_BAR_HEIGHT, 100, 100, 10, 10, 1);
-		//player						= new Stark(0, STATS_BAR_HEIGHT, 0, 0, 10, 10, 1);
+		player						= new Stark(0, STATS_BAR_HEIGHT, 100, 100);
 	}
 	
 	/**
@@ -115,7 +114,7 @@ public class Game implements Serializable
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			
-			student					= new Student(x, y, 5, 5, speed, 0, gender);
+			student					= new Student(x, y, 5, 5, speed, gender);
 			
 			students.add(student);
 		}
@@ -202,7 +201,7 @@ public class Game implements Serializable
 				currAttack		= attacks.get(j);
 				
 				if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
-						currStudent.getCharge() > 0 && currStudent.isHittable())
+						currStudent.getCharge() > 0 && currStudent.isHittable() && currAttack.isStudent())
 				{
 					if(currAttack.getStatus()==Status.STUN)
 					{
@@ -270,7 +269,7 @@ public class Game implements Serializable
 			{
 				currAttack		= attacks.get(j);
 				
-				if(currAttack.getBounds().intersects(currCouple.getBounds()) && currCouple.isHittable())
+				if(currAttack.getBounds().intersects(currCouple.getBounds()) && currCouple.isHittable() && currAttack.isStudent())
 				{
 					currCouple.adjustHp(currAttack.getDamage());
 					currCouple.setHitDelay(currAttack.getHitDelay());
@@ -341,6 +340,27 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		
 		player.draw(g);
+		
+		for(int j = 0; j < attacks.size(); j++)
+		{
+			currAttack		= attacks.get(j);
+			
+			if(currAttack.getBounds().intersects(player.getBounds()) && player.isHittable() && !currAttack.isStudent())
+			{
+				player.adjustHp(currAttack.getDamage());
+				player.setHitDelay(currAttack.getHitDelay());
+				
+				if(!currAttack.isAoE())
+				{
+					attacks.remove(j);
+				}
+				
+				if(currAttack.getStatus()==Status.STUN)
+				{
+					player.stun(currAttack.getStatusDuration());
+				}
+			}
+		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw statistics

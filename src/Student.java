@@ -9,7 +9,7 @@ import java.io.*;
 
 public class Student extends Character implements Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	private String type	= "default";
 	
@@ -24,9 +24,9 @@ public class Student extends Character implements Serializable
 	 * @param spd		Speed of student
 	 * @param gender	Gender of student
 	 */
-	public Student(int x, int y, int hp, int maxHp, double spd, int dmg, char gender)
+	public Student(int x, int y, int hp, int maxHp, double spd, char gender)
 	{
-		super(x, y, hp, maxHp, spd, dmg);
+		super(x, y, hp, maxHp, spd);
 		
 		this.gender		= gender;
 		
