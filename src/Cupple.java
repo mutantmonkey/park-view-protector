@@ -9,7 +9,7 @@ import java.io.*;
 
 public class Cupple extends Character implements Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	private Student male;
 	private Student female;
@@ -19,7 +19,7 @@ public class Cupple extends Character implements Serializable
 	
 	public Cupple(Student a,Student b)
 	{
-		super(a.x,a.y,a.hp+b.hp,a.maxHp + b.maxHp,(a.speed+b.speed)/2,a.damage);
+		super(a.x,a.y,a.hp+b.hp,a.maxHp + b.maxHp,(a.speed+b.speed)/2);
 		if(a.getGender() == 'm')
 		{
 			male = a;

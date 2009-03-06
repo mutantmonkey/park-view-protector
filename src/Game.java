@@ -50,7 +50,7 @@ public class Game implements Serializable
 	public static final int PLAYER_HP			= 100;
 	public static final int PLAYER_TP			= 30;
 	
-	private static final long serialVersionUID	= 1L;
+	private static final long serialVersionUID	= 3L;
 	
 	private transient ParkViewProtector driver;
 	private transient Graphics g;
@@ -94,8 +94,7 @@ public class Game implements Serializable
 	public void initPlayer()
 	{
 		// FIXME: magic numbers are bad
-		// JASON: what is damage? where is it used? why is it needed?
-		player						= new Stark(0, STATS_BAR_HEIGHT, PLAYER_HP, PLAYER_HP, PLAYER_TP, PLAYER_TP, 1);
+		player						= new Stark(0, STATS_BAR_HEIGHT, PLAYER_HP, PLAYER_TP);
 	}
 	
 	/**
@@ -131,7 +130,7 @@ public class Game implements Serializable
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			
-			student					= new Student(x, y, 5, 5, speed, 0, gender);
+			student					= new Student(x, y, 5, 5, speed, gender);
 			
 			students.add(student);
 		}
@@ -248,6 +247,27 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		
 		player.draw(g);
+		
+		for(int j = 0; j < attacks.size(); j++)
+		{
+			currAttack		= attacks.get(j);
+			
+			if(currAttack.getBounds().intersects(player.getBounds()) && player.isHittable() && !currAttack.isStudent())
+			{
+				player.adjustHp(currAttack.getDamage());
+				player.setHitDelay(currAttack.getHitDelay());
+				
+				if(!currAttack.isAoE())
+				{
+					attacks.remove(j);
+				}
+				
+				if(currAttack.getStatus()==Status.STUN)
+				{
+					player.stun(currAttack.getStatusDuration());
+				}
+			}
+		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw statistics
@@ -553,7 +573,8 @@ public class Game implements Serializable
 			currAttack		= attacks.get(j);
 			
 			if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
-					currStudent.getCharge() > 0 && currStudent.isHittable())
+					currStudent.getCharge() > 0 && currStudent.isHittable() &&
+					currAttack.isStudent())
 			{
 				if(currAttack.getStatus()==Status.STUN)
 				{
@@ -566,7 +587,9 @@ public class Game implements Serializable
 				}
 				
 				// FIXME: should be variable depending on strength
-				currStudent.adjustCharge(currAttack.getDamage()/3);
+				if(currStudent.getCharge()>-10)
+					currStudent.adjustCharge(-currAttack.getDamage()/3);
+				System.out.println("Student took "+ currAttack.getDamage()/3 + ", now has "+ currStudent.getCharge());
 				currStudent.setHitDelay(currAttack.getHitDelay());
 				
 				return true;
@@ -594,7 +617,8 @@ public class Game implements Serializable
 		{
 			currAttack		= attacks.get(j);
 			
-			if(currAttack.getBounds().intersects(currCouple.getBounds()) && currCouple.isHittable())
+			if(currAttack.getBounds().intersects(currCouple.getBounds()) &&
+					currCouple.isHittable() && currAttack.isStudent())
 			{
 				currCouple.adjustHp(currAttack.getDamage());
 				currCouple.setHitDelay(currAttack.getHitDelay());
@@ -609,6 +633,7 @@ public class Game implements Serializable
 					currCouple.stun(currAttack.getStatusDuration());
 				}
 				
+				// FIXME: If multiple attacks hit something or what?
 				if(currCouple.getHp() <=0)
 				{
 					male		= currCouple.getMale();

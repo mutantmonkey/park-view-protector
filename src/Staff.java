@@ -5,35 +5,31 @@
  *
  * The player class.
  *
- * Update log
- * -Updated parameters. (TP=Teacher Points)
- * -Added doSkill. Unsure what this is gonna' do yet.
- * -Added useItem.
  */
 
 import java.io.*;
 
 public abstract class Staff extends Character
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	private int tp;
 	private int maxTp;
 	public abstract Attack getAttack(int i);
 	
-	public Staff()
+	/*public Staff()
 	{
 		super(0, 0, 50, 50, 1.0, 1);
 		tp = 12;
 		maxTp = 12;
 		
 		sprite = DataStore.INSTANCE.getSprite("images/placeholder.png");
-	}
+	}*/
 	
 	// Creates a Staff member.
-	public Staff(int x, int y, int hp, int maxHp, double speed, int dmg, int tp, int maxTp)
+	public Staff(int x, int y, int hp, int maxHp, double speed, int tp, int maxTp)
 	{
-		super(x, y, hp, maxHp, speed, dmg);
+		super(x, y, hp, maxHp, speed);
 		//tp=Teacher Points, Amount of points for use of skills
 		this.tp=tp;
 		this.maxTp=maxTp;

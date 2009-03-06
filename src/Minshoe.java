@@ -7,22 +7,22 @@
  *
  */
 
-public class Stark extends Staff
+public class Minshoe extends Staff
 {
-	private static final double SPEED= 2.1;
-	private static final int MAX_HP=100;
-	private static final int MAX_TP=100;
+	private static final double SPEED= 1.0;
+	private static final int MAX_TP = 0;
+	private static final int MAX_HP = 0;
 	private static final long serialVersionUID = 2L;
 	
-	public Stark(int x, int y, int hp, int tp)
+	public Minshoe(int x, int y, int hp, int tp)
 	{
 		super(x, y, hp, MAX_HP, SPEED, tp, MAX_TP);
 		updateSprite();
 	}
-	
+
 	protected void updateSprite()
 	{
-		sprite = DataStore.INSTANCE.getSprite("images/staff/stark.png");
+		sprite = DataStore.INSTANCE.getSprite("images/staff/minshoe.png");
 	}
 	
 	public Attack getAttack(int i)
@@ -62,13 +62,29 @@ public class Stark extends Staff
 		switch(i)
 		{
 			case 0:
-				name="physball";
-				damage=5;
+				name="tardy";
+				damage=20;
 				tp=tp;
 				type=Type.FRONT;
-				speed=5;
-				duration=40;
+				speed=0;
+				duration=1000;
 				reuse=duration;
+				stillTime=50;
+				hits=1;
+				hitDelay=duration;
+				status=status;
+				statusLength=statusLength;
+				isStudent=true;
+				AoE=AoE;
+				break;
+			case 1:
+				name="detention";
+				damage=damage;
+				tp=tp;
+				type=type;
+				speed=speed;
+				duration=duration;
+				reuse=reuse;
 				stillTime=stillTime;
 				hits=hits;
 				hitDelay=duration/hits;
@@ -77,37 +93,21 @@ public class Stark extends Staff
 				isStudent=isStudent;
 				AoE=AoE;
 				break;
-			case 1:
-				name="meterstick";
-				damage=10;
+			case 2:
+				name="announcement";
+				damage=damage;
 				tp=tp;
-				type=Type.FRONT;
-				speed=0;
-				duration=20;
-				reuse=duration;
-				stillTime=duration;
+				type=type;
+				speed=speed;
+				duration=duration;
+				reuse=reuse;
+				stillTime=stillTime;
 				hits=hits;
 				hitDelay=duration/hits;
 				status=status;
 				statusLength=statusLength;
 				isStudent=isStudent;
-				AoE=true;
-				break;
-			case 2:
-				name="goodnight";
-				damage=3;
-				tp=tp;
-				type=Type.CENTER;
-				speed=0;
-				duration=50;
-				reuse=duration;
-				stillTime=duration;
-				hits=hits;
-				hitDelay=duration/hits;
-				status=Status.STUN;
-				statusLength=100;
-				isStudent=true;
-				AoE=true;
+				AoE=AoE;
 				break;
 		}
 		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
