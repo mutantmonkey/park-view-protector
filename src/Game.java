@@ -47,7 +47,10 @@ public class Game implements Serializable
 	public static final int STATS_BAR_HEIGHT	= STAT_PAD_TOP + BAR_HEIGHT * 2 +
 													BAR_SPACING + STAT_PAD_BOTTOM;
 	
-	private static final long serialVersionUID	= 1L;
+	public static final int PLAYER_HP			= 100;
+	public static final int PLAYER_TP			= 30;
+	
+	private static final long serialVersionUID	= 3L;
 	
 	private transient ParkViewProtector driver;
 	private transient Graphics g;
@@ -58,6 +61,7 @@ public class Game implements Serializable
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
+	private ArrayList<Wall> walls				= new ArrayList<Wall>();
 
 	/**
 	 * Constructor
@@ -73,6 +77,7 @@ public class Game implements Serializable
 		
 		// initialize everything
 		initPlayer();
+		initWalls();
 		initStudents();
 	}
 	
@@ -89,8 +94,16 @@ public class Game implements Serializable
 	public void initPlayer()
 	{
 		// FIXME: magic numbers are bad
-		player						= new Stark(0, STATS_BAR_HEIGHT, 100, 100, 10, 10, 1);
-		//player						= new Stark(0, STATS_BAR_HEIGHT, 0, 0, 10, 10, 1);
+		player						= new Stark(0, STATS_BAR_HEIGHT, PLAYER_HP, PLAYER_TP);
+	}
+	
+	/**
+	 * Create some walls
+	 */
+	public void initWalls()
+	{
+		walls.add(new Wall(300, 200, 4, 30));
+		walls.add(new Wall(200, 100, ParkViewProtector.WIDTH, 4));
 	}
 	
 	/**
@@ -117,7 +130,7 @@ public class Game implements Serializable
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			
-			student					= new Student(x, y, 5, 5, speed, 0, gender);
+			student					= new Student(x, y, 5, 5, speed, gender);
 			
 			students.add(student);
 		}
@@ -128,10 +141,6 @@ public class Game implements Serializable
 		Student currStudent; 
 		Cupple currCouple;
 		Attack currAttack;
-		
-		Student male, female;
-		int student1, student2;
-		int charge;
 		
 		g						= (Graphics) strategy.getDrawGraphics();
 		
@@ -148,79 +157,7 @@ public class Game implements Serializable
 			currStudent			= students.get(i);
 			currStudent.draw(g);
 			
-			// random movement
-			moveRandom(currStudent, MOVE_SPEED,
-					(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
-							MIN_NUM_MOVES + 1));
-
-			currStudent.decrementHitDelay(1);
-			
-			// couple with another student if possible
-			if(currStudent.getCharge() > 0)
-			{
-				for(int j = 0; j < students.size(); j++)
-				{
-					// don't do anything if it's us
-					if(i == j) continue;
-
-					// did we hit another student with a charge?
-					if(currStudent.getBounds().intersects(students.get(j).getBounds())
-							&& students.get(j).getCharge() > 0)
-					{
-						charge				= currStudent.getCharge() +
-												students.get(j).getCharge();
-						
-						if(Math.random() * COUPLE_CHANCE_MULTIPLIER < charge)
-						{
-							couples.add(new Cupple(currStudent, students.get(j)));
-							
-							
-							student1			= i;
-							student2			= j;
-							
-							if(student2 > student1)
-							{
-								student2--;
-							}
-							
-							try
-							{
-								students.remove(student1);
-								students.remove(student2);
-							}
-							catch(Exception e)
-							{
-								System.out.println("Something went wrong when deleting someone :O");
-							}
-							break;
-						}
-					}
-				}
-			}
-			
-			// hit by an attack?
-			for(int j = 0; j < attacks.size(); j++)
-			{
-				currAttack		= attacks.get(j);
-				
-				if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
-						currStudent.getCharge() > 0 && currStudent.isHittable())
-				{
-					if(currAttack.getStatus()==Status.STUN)
-					{
-						currStudent.stun(currAttack.getStatusDuration());
-					}
-					
-					if(!currAttack.isAoE())
-					{
-						attacks.remove(j);
-					}
-					
-					// FIXME: should be variable depending on strength
-					currStudent.adjustCharge(currAttack.getDamage()/3);
-					currStudent.setHitDelay(currAttack.getHitDelay());
-				}
-			}
+			currStudent.step(this);
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -232,11 +169,7 @@ public class Game implements Serializable
 			currCouple			= couples.get(i);
 			currCouple.draw(g);
 			
-			// random movement
-			moveRandom(currCouple, MOVE_SPEED,
-					(int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
-							MIN_NUM_MOVES + 1));
-			currCouple.decrementHitDelay(1);
+			currCouple.step(this);
 			
 			// did the couple hit the player? if so, decrease HP
 			if(currCouple.getBounds().intersects(player.getBounds()) &&
@@ -269,46 +202,6 @@ public class Game implements Serializable
 					break;
 				}
 			}*/
-			
-			// hit by an attack?
-			for(int j = 0; j < attacks.size(); j++)
-			{
-				currAttack		= attacks.get(j);
-				
-				if(currAttack.getBounds().intersects(currCouple.getBounds()) && currCouple.isHittable())
-				{
-					currCouple.adjustHp(currAttack.getDamage());
-					currCouple.setHitDelay(currAttack.getHitDelay());
-					
-					if(!currAttack.isAoE())
-					{
-						attacks.remove(j);
-					}
-					
-					if(currAttack.getStatus()==Status.STUN)
-					{
-						currCouple.stun(currAttack.getStatusDuration());
-					}
-					
-					if(currCouple.getHp() <=0)
-					{
-						male		= currCouple.getMale();
-						male.moveTo(currCouple.getBounds().x, currCouple.getBounds().y);
-						male.setHitDelay(currAttack.getHitDelay());
-						
-						female		= currCouple.getFemale();
-						female.moveTo(currCouple.getBounds().x + DECOUPLE_SPACING,
-								currCouple.getBounds().y);
-						female.setHitDelay(currAttack.getHitDelay());
-						
-						// create students before removing couple
-						students.add(male);
-						students.add(female);
-						
-						couples.remove(i);
-					}
-				}
-			}
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -342,10 +235,44 @@ public class Game implements Serializable
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
+		// Draw walls
+		////////////////////////////////////////////////////////////////////////////////////
+		
+		// set a color for walls
+		// FIXME: should we use sprites for walls?
+		g.setColor(ParkViewProtector.COLOR_BG_1);
+		
+		for(Wall w : walls)
+		{
+			w.draw(g);
+		}
+		
+		////////////////////////////////////////////////////////////////////////////////////
 		// Draw player
 		////////////////////////////////////////////////////////////////////////////////////
 		
 		player.draw(g);
+		
+		for(int j = 0; j < attacks.size(); j++)
+		{
+			currAttack		= attacks.get(j);
+			
+			if(currAttack.getBounds().intersects(player.getBounds()) && player.isHittable() && !currAttack.isStudent())
+			{
+				player.adjustHp(currAttack.getDamage());
+				player.setHitDelay(currAttack.getHitDelay());
+				
+				if(!currAttack.isAoE())
+				{
+					attacks.remove(j);
+				}
+				
+				if(currAttack.getStatus()==Status.STUN)
+				{
+					player.stun(currAttack.getStatusDuration());
+				}
+			}
+		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw statistics
@@ -428,7 +355,14 @@ public class Game implements Serializable
 			distX						= MOVE_SPEED;
 		}
 		
-		player.move(distX, distY);
+		// if we are moving, check to see if location is clear, then move
+		if(distX != 0 || distY != 0)
+		{
+			if(canMove(player.getNewBounds(distX, distY)))
+			{
+				player.move(distX, distY);
+			}
+		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Create attacks
@@ -475,11 +409,13 @@ public class Game implements Serializable
 	 * Random movement
 	 * 
 	 * @param Movable Object to move
-	 * @param speed Speed to move at
-	 * @param changeMoves Number of moves to change the direction after
 	 */
-	public void moveRandom(Movable obj, int speed, int changeMoves)
+	public void moveRandom(Movable obj)
 	{
+		int speed					= MOVE_SPEED;
+		int changeMoves				= (int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
+				MIN_NUM_MOVES + 1);
+		
 		// change direction if the move count exceeds the number of moves to change after
 		if(obj.getMoveCount() <= 0 || obj.getMoveCount() > changeMoves)
 		{
@@ -512,9 +448,227 @@ public class Game implements Serializable
 			obj.resetMoveCount();
 		}
 		
-		obj.move(speed);
+		// check for collisions
+		if(obj.getNewBounds(speed).intersects(player.getBounds())
+				|| !canMove(obj.getNewBounds(speed)))
+		{
+			// collision, must choose new direction
+			obj.resetMoveCount();
+		}
+		else {
+			obj.move(speed);
+		}
 	}
 	
+	/**
+	 * Loop through students, couples, and walls to see if the specified rectangle is
+	 * available
+	 * 
+	 * @return
+	 */
+	public boolean canMove(Rectangle newRect)
+	{
+		// students
+		/*for(Student s : students)
+		{
+			if(!s.getStunned() && newRect.intersects(s.getBounds()))
+			{
+				return false;
+			}
+		}*/
+		
+		// couples
+		/*for(Cupple c : couples)
+		{
+			if(newRect.intersects(c.getBounds()))
+			{
+				return false;
+			}
+		}*/
+		
+		// walls
+		for(Wall w : walls)
+		{
+			if(newRect.intersects(w.getBounds()))
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Attempt to couple with another student
+	 * 
+	 * @param currStudent
+	 * @return Whether or not the coupling succeeded
+	 */
+	public boolean attemptCoupling(Student currStudent)
+	{
+		int charge, student1, student2;
+		Student testStudent;
+		
+		int i						= students.indexOf(currStudent);
+		
+		for(int j = 0; j < students.size(); j++)
+		{
+			testStudent				= students.get(j);
+			
+			// don't do anything if it's us
+			if(i == j)
+			{
+				continue;
+			}
+			
+			// no same-sex couples (for now at least)
+			if(currStudent.getGender() == testStudent.getGender())
+			{
+				continue;
+			}
+
+			// did we hit another student with a charge?
+			if(currStudent.getBounds().intersects(students.get(j).getBounds())
+					&& testStudent.getCharge() > 0)
+			{
+				charge				= currStudent.getCharge() +
+										testStudent.getCharge();
+				
+				if(Math.random() * COUPLE_CHANCE_MULTIPLIER < charge)
+				{
+					couples.add(new Cupple(currStudent, testStudent));
+					
+					student1			= i;
+					student2			= j;
+					
+					if(student2 > student1)
+					{
+						student2--;
+					}
+					
+					try
+					{
+						students.remove(student1);
+						students.remove(student2);
+					}
+					catch(Exception e)
+					{
+						driver.error("Something went wrong when deleting someone :O", false);
+					}
+					
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Handle any attacks on a student
+	 * 
+	 * @param obj
+	 * @return Whether or not the attack hit the student
+	 */
+	public boolean handleAttacks(Student currStudent)
+	{
+		Attack currAttack;
+		
+		// hit by an attack?
+		for(int j = 0; j < attacks.size(); j++)
+		{
+			currAttack		= attacks.get(j);
+			
+			if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
+					currStudent.getCharge() > 0 && currStudent.isHittable() &&
+					currAttack.isStudent())
+			{
+				if(currAttack.getStatus()==Status.STUN)
+				{
+					currStudent.stun(currAttack.getStatusDuration());
+				}
+				
+				if(!currAttack.isAoE())
+				{
+					attacks.remove(j);
+				}
+				
+				// FIXME: should be variable depending on strength
+				if(currStudent.getCharge()>-10)
+					currStudent.adjustCharge(-currAttack.getDamage()/3);
+				System.out.println("Student took "+ currAttack.getDamage()/3 + ", now has "+ currStudent.getCharge());
+				currStudent.setHitDelay(currAttack.getHitDelay());
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Handle any attacks on a couple
+	 * 
+	 * @param currCouple
+	 * @return Whether or not the attack hit the couple
+	 */
+	public boolean handleAttacks(Cupple currCouple)
+	{
+		Attack currAttack;
+		Student male, female;
+		
+		int i				= couples.indexOf(currCouple);
+		
+		// hit by an attack?
+		for(int j = 0; j < attacks.size(); j++)
+		{
+			currAttack		= attacks.get(j);
+			
+			if(currAttack.getBounds().intersects(currCouple.getBounds()) &&
+					currCouple.isHittable() && currAttack.isStudent())
+			{
+				currCouple.adjustHp(currAttack.getDamage());
+				currCouple.setHitDelay(currAttack.getHitDelay());
+				
+				if(!currAttack.isAoE())
+				{
+					attacks.remove(j);
+				}
+				
+				if(currAttack.getStatus()==Status.STUN)
+				{
+					currCouple.stun(currAttack.getStatusDuration());
+				}
+				
+				// FIXME: If multiple attacks hit something or what?
+				if(currCouple.getHp() <=0)
+				{
+					male		= currCouple.getMale();
+					male.moveTo(currCouple.getBounds().x, currCouple.getBounds().y);
+					male.setHitDelay(currAttack.getHitDelay());
+					
+					female		= currCouple.getFemale();
+					female.moveTo(currCouple.getBounds().x + DECOUPLE_SPACING,
+							currCouple.getBounds().y);
+					female.setHitDelay(currAttack.getHitDelay());
+					
+					// create students before removing couple
+					students.add(male);
+					students.add(female);
+					
+					couples.remove(i);
+				}
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * "Game over" message
+	 */
 	public void gameOver()
 	{
 		String msg				= "GAME OVER";
@@ -564,14 +718,36 @@ public class Game implements Serializable
 		}
 	}
 	
-	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
+	/**
+	 * Read a save file
+	 * 
+	 * @param os Object input stream
+	 */
+	private void readObject(ObjectInputStream os)
 	{
-		player			= (Staff) os.readObject();
-		students		= (ArrayList<Student>) os.readObject();
-		couples			= (ArrayList<Cupple>) os.readObject();
-		attacks			= (ArrayList<Attack>) os.readObject();
+		try
+		{
+			player		= (Staff) os.readObject();
+			students	= (ArrayList<Student>) os.readObject();
+			couples		= (ArrayList<Cupple>) os.readObject();
+			attacks		= (ArrayList<Attack>) os.readObject();
+		}
+		catch(ClassNotFoundException e)
+		{
+			driver.error("Your save file appears to be corrupt. A ClassNotFoundException occurred.", true);
+		}
+		catch(IOException e)
+		{
+			driver.error("Unable to read the save file", true);
+		}
 	}
 	
+	/**
+	 * Write a save file
+	 * 
+	 * @param os Object output stream
+	 * @throws IOException
+	 */
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
 		os.writeObject(player);

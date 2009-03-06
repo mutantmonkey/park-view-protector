@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.FileInputStream;
+import java.io.IOException;
 //import java.util.ArrayList;
 
 import javax.sound.sampled.Clip;
@@ -103,10 +104,7 @@ public class ParkViewProtector extends Canvas
 		{
 			public void windowClosing(WindowEvent e)
 			{
-				running				= false;
-				
-				window.dispose();
-				//System.exit(0);
+				quit();
 			}
 		});
 		
@@ -119,10 +117,18 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void showOpening()
 	{
-		Clip openingClip					= DataStore.INSTANCE.getAudioClip("sounds/clockhomestart.wav");
-		openingClip.start();
+		// try to play "Clock Home Start" startup clip
+		try
+		{
+			Clip openingClip		= DataStore.INSTANCE.getAudioClip("sounds/clockhomestart.wav");
+			openingClip.start();
+		}
+		catch(Exception e)
+		{
+			System.out.println("No clock home start!");
+		}
 		
-		Graphics g						= getGraphics();
+		Graphics g					= getGraphics();
 		
 		// draw the background
 		g.setColor(Color.white);
@@ -140,15 +146,15 @@ public class ParkViewProtector extends Canvas
 	 */
 	public void init()
 	{
+		// try to play background music
 		try
 		{
 			OggClip bgMusic			= new OggClip(new FileInputStream("sounds/kicked.ogg"));
 			bgMusic.loop();
-			bgMusic.play();
 		}
 		catch(Exception e)
 		{
-			System.out.println("Error playing audio file");
+			System.out.println("Error playing background music");
 		}
 		
 		// add key handler class
@@ -201,6 +207,37 @@ public class ParkViewProtector extends Canvas
 	{
 		game							= g;
 		game.init(this);
+	}
+	
+	/**
+	 * Display an error message
+	 * 
+	 * @param msg Message to display
+	 */
+	public void error(String msg, boolean fatal)
+	{
+		System.out.println("Error: " + msg);
+		
+		JOptionPane.showMessageDialog(window, msg, "Error", JOptionPane.ERROR_MESSAGE);
+		
+		if(fatal)
+		{
+			System.exit(0);
+		}
+	}
+	
+	/**
+	 * Display an error message and terminates the program
+	 * 
+	 * @param msg Message to display
+	 */
+	public static void error(String msg)
+	{
+		System.out.println("Fatal error: " + msg);
+		
+		JOptionPane.showMessageDialog(null, msg, "Park View Protector Error", JOptionPane.ERROR_MESSAGE);
+		
+		System.exit(0);
 	}
 	
 	public void quit()

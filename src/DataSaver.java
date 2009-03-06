@@ -1,4 +1,5 @@
 import java.io.*;
+
 import javax.swing.JFileChooser;
 
 public class DataSaver
@@ -55,11 +56,21 @@ public class DataSaver
 			{
 				ret = (Game) ois.readObject();
 			}
+			catch(InvalidClassException e)
+			{
+				ParkViewProtector.error("Sorry, that save file is not compatible with " +
+						"this version of Park View Protector.");
+			}
 			catch(Exception e)
 			{
 				e.printStackTrace();
 			}
 			ois.close();
+		}
+		catch(StreamCorruptedException e)
+		{
+			ParkViewProtector.error("That save file appears to be corrupt. Please ensure " +
+					"that it is a Park View Protector Java Programmed Game file.");
 		}
 		catch(Exception e)
 		{

@@ -19,7 +19,7 @@ public class Attack extends Movable
 	private boolean isStudent, AoE;
 	private int type;
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	/**
 	 * 
@@ -144,7 +144,6 @@ public class Attack extends Movable
 		
 		if(type==Type.FRONT)
 		{
-			System.out.println(getDirection());
 			if(direction==Direction.EAST)
 				x+=(int) Math.round(30);
 			else if(direction==Direction.WEST)
@@ -182,6 +181,11 @@ public class Attack extends Movable
 	{
 		os.defaultWriteObject();
 	}
+
+	public boolean isStudent()
+	{
+		return isStudent;
+	}
 }
 
 class Type
@@ -195,4 +199,5 @@ class Status
 {
 	public static final int STUN=1;
 	public static final int POISON=2;
+	public static final int IMMUNE=3;
 }

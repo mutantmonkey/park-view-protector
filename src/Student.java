@@ -9,7 +9,7 @@ import java.io.*;
 
 public class Student extends Character implements Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	private String type	= "default";
 	
@@ -24,9 +24,9 @@ public class Student extends Character implements Serializable
 	 * @param spd		Speed of student
 	 * @param gender	Gender of student
 	 */
-	public Student(int x, int y, int hp, int maxHp, double spd, int dmg, char gender)
+	public Student(int x, int y, int hp, int maxHp, double spd, char gender)
 	{
-		super(x, y, hp, maxHp, spd, dmg);
+		super(x, y, hp, maxHp, spd);
 		
 		this.gender		= gender;
 		
@@ -84,9 +84,57 @@ public class Student extends Character implements Serializable
 		charge			   += amt;
 	}
 	
-	/**
-	 * Does an attack
-	 */
+	public void step(Game game)
+	{
+		// random movement
+		game.moveRandom(this);
+		
+		// decrement the hit delay
+		decrementHitDelay(1);
+		
+		// attempt coupling
+		if(charge > 0)
+		{
+			game.attemptCoupling(this);
+		}
+		
+
+		// did we hit another student with a charge?
+		/*if(currStudent.getBounds().intersects(students.get(j).getBounds())
+				&& students.get(j).getCharge() > 0)
+		{
+				charge				= currStudent.getCharge() +
+									students.get(j).getCharge()+1;
+			
+			if(Math.random() * COUPLE_CHANCE_MULTIPLIER < charge)
+			{
+				couples.add(new Cupple(currStudent, students.get(j)));
+				
+				
+				student1			= i;
+				student2			= j;
+				
+				if(student2 > student1)
+				{
+					student2--;
+				}
+				
+				try
+				{
+					students.remove(student1);
+					students.remove(student2);
+				}
+				catch(Exception e)
+				{
+					System.out.println("Something went wrong when deleting someone :O");
+				}
+				break;
+			}
+		}*/
+		
+		game.handleAttacks(this);
+	}
+	
 	public void attack()
 	{
 		

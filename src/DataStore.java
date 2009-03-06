@@ -91,14 +91,14 @@ public enum DataStore
 		}
 		catch(LineUnavailableException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Line unavailable");
 			return null;
 		}
 		catch(IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Error loading audio clip: " + file);
 			return null;
 		}
 		
@@ -135,7 +135,8 @@ public enum DataStore
 		}
 		catch(IOException e)
 		{
-			System.out.println("Error loading sprite: " + file);
+			ParkViewProtector.error("Error loading sprite: " + file);
+			return null;
 		}
 		
 		// create an image using accelerated graphics (hardware rendering, prevents flickering)

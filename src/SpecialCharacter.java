@@ -7,22 +7,22 @@
  *
  */
 
-public class Stark extends Staff
+public class SpecialCharacter extends Staff
 {
-	private static final double SPEED= 2.1;
-	private static final int MAX_HP=100;
-	private static final int MAX_TP=100;
+	private static final double SPEED= 5.0;
+	private static final int MAX_HP = 0;
+	private static final int MAX_TP = 0;
 	private static final long serialVersionUID = 2L;
 	
-	public Stark(int x, int y, int hp, int tp)
+	public SpecialCharacter(int x, int y, int hp, int tp)
 	{
 		super(x, y, hp, MAX_HP, SPEED, tp, MAX_TP);
 		updateSprite();
 	}
-	
+
 	protected void updateSprite()
 	{
-		sprite = DataStore.INSTANCE.getSprite("images/staff/stark.png");
+		sprite = DataStore.INSTANCE.getSprite("images/staff/michael.png");
 	}
 	
 	public Attack getAttack(int i)
@@ -62,50 +62,50 @@ public class Stark extends Staff
 		switch(i)
 		{
 			case 0:
-				name="physball";
-				damage=5;
-				tp=tp;
-				type=Type.FRONT;
-				speed=5;
-				duration=40;
-				reuse=duration;
-				stillTime=stillTime;
-				hits=hits;
-				hitDelay=duration/hits;
-				status=status;
-				statusLength=statusLength;
-				isStudent=isStudent;
-				AoE=AoE;
-				break;
-			case 1:
-				name="meterstick";
-				damage=10;
+				name="honk";
+				damage=20;
 				tp=tp;
 				type=Type.FRONT;
 				speed=0;
 				duration=20;
-				reuse=duration;
-				stillTime=duration;
-				hits=hits;
+				reuse=40;
+				stillTime=10;
+				hits=1;
 				hitDelay=duration/hits;
-				status=status;
-				statusLength=statusLength;
-				isStudent=isStudent;
+				status=Status.STUN;
+				statusLength=40;
+				isStudent=true;
+				AoE=true;
+				break;
+			case 1:
+				name="heal"; //test purposes
+				damage=-3;
+				type=Type.CENTER;
+				tp=tp;
+				speed=0;
+				duration=40;
+				reuse=reuse;
+				stillTime=stillTime;
+				hits=20;
+				hitDelay=duration/hits;
+				status=Status.IMMUNE;
+				statusLength=100;
+				isStudent=false;
 				AoE=true;
 				break;
 			case 2:
-				name="goodnight";
-				damage=3;
+				name="squel";
+				damage=1;
 				tp=tp;
 				type=Type.CENTER;
 				speed=0;
-				duration=50;
-				reuse=duration;
-				stillTime=duration;
-				hits=hits;
+				duration=1;
+				reuse=50;
+				stillTime=20;
+				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=100;
+				statusLength=1000;
 				isStudent=true;
 				AoE=true;
 				break;
