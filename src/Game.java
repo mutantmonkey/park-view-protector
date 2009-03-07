@@ -581,7 +581,7 @@ public class Game implements Serializable
 			
 			if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
 					currStudent.getCharge() > 0 && currStudent.isHittable() &&
-					currAttack.isStudent())
+					!currAttack.isStudent())
 			{
 				if(currAttack.getStatus()==Status.STUN)
 				{
@@ -625,7 +625,7 @@ public class Game implements Serializable
 			currAttack		= attacks.get(j);
 			
 			if(currAttack.getBounds().intersects(currCouple.getBounds()) &&
-					currCouple.isHittable() && currAttack.isStudent())
+					currCouple.isHittable() && !currAttack.isStudent())
 			{
 				currCouple.adjustHp(currAttack.getDamage());
 				currCouple.setHitDelay(currAttack.getHitDelay());
