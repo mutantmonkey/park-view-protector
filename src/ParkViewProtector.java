@@ -147,7 +147,7 @@ public class ParkViewProtector extends Canvas
 		// try to play background music
 		try
 		{
-			OggClip bgMusic			= new OggClip("../sounds/kicked.ogg");
+			OggClip bgMusic			= new OggClip("kicked.ogg");
 			bgMusic.loop();
 		}
 		catch(Exception e)
