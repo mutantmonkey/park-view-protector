@@ -47,6 +47,8 @@ public class Game implements Serializable
 	public static final int STATS_BAR_HEIGHT	= STAT_PAD_TOP + BAR_HEIGHT * 2 +
 													BAR_SPACING + STAT_PAD_BOTTOM;
 	
+	public static final int PLAYER_X			= 0;
+	public static final int PLAYER_Y			= STATS_BAR_HEIGHT;
 	public static final int PLAYER_HP			= 100;
 	public static final int PLAYER_TP			= 30;
 	
@@ -93,8 +95,7 @@ public class Game implements Serializable
 	 */
 	public void initPlayer()
 	{
-		// FIXME: magic numbers are bad
-		player						= new Stark(0, STATS_BAR_HEIGHT, PLAYER_HP, PLAYER_TP);
+		player						= new Stark(PLAYER_X, PLAYER_Y, PLAYER_HP, PLAYER_TP);
 	}
 	
 	/**
@@ -131,6 +132,15 @@ public class Game implements Serializable
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			
 			student					= new Student(x, y, 5, 5, speed, gender);
+			
+			// make sure that the student is not spawned on top of a wall)
+			while(!canMove(student.getBounds()))
+			{
+				x					= (int) (Math.random() * ParkViewProtector.WIDTH) + 1;
+				y					= (int) (Math.random() * ParkViewProtector.HEIGHT) + 1;
+				
+				student.moveTo(x, y);
+			}
 			
 			students.add(student);
 		}
@@ -238,10 +248,6 @@ public class Game implements Serializable
 		// Draw walls
 		////////////////////////////////////////////////////////////////////////////////////
 		
-		// set a color for walls
-		// FIXME: should we use sprites for walls?
-		g.setColor(ParkViewProtector.COLOR_BG_1);
-		
 		for(Wall w : walls)
 		{
 			w.draw(g);
@@ -279,7 +285,7 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// these are painted last to ensure that they are always on top
 
-		// background rectangle (TODO: make it translucent!)
+		// background rectangle
 		g.setColor(ParkViewProtector.STATS_BAR_BG);
 		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
 		
