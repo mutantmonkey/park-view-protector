@@ -66,7 +66,7 @@ public class ParkViewProtector extends Canvas
 	public ParkViewProtector()
 	{
 		// load logos
-		jtzLogo						= DataStore.INSTANCE.getSprite("images/javateerslogo.png");
+		jtzLogo						= DataStore.INSTANCE.getSprite("javateerslogo.png");
 		
 		// set the Swing look and feel to the system one so the file selector looks native
 		try
@@ -118,7 +118,7 @@ public class ParkViewProtector extends Canvas
 		// try to play "Clock Home Start" startup clip
 		try
 		{
-			Clip openingClip		= DataStore.INSTANCE.getAudioClip("sounds/clockhomestart.wav");
+			Clip openingClip		= DataStore.INSTANCE.getAudioClip("clockhomestart.wav");
 			openingClip.start();
 		}
 		catch(Exception e)
@@ -147,7 +147,7 @@ public class ParkViewProtector extends Canvas
 		// try to play background music
 		try
 		{
-			OggClip bgMusic			= new OggClip(new FileInputStream("sounds/kicked.ogg"));
+			OggClip bgMusic			= new OggClip("../sounds/kicked.ogg");
 			bgMusic.loop();
 		}
 		catch(Exception e)

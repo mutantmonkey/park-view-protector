@@ -29,7 +29,7 @@ public class TitleScreen extends Menu
 	{
 		super(p);
 		
-		mainLogo					= DataStore.INSTANCE.getSprite("images/logo.png");
+		mainLogo					= DataStore.INSTANCE.getSprite("logo.png");
 	}
 	
 	public void show()

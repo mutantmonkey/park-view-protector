@@ -22,7 +22,7 @@ public class Minshoe extends Staff
 
 	protected void updateSprite()
 	{
-		sprite = DataStore.INSTANCE.getSprite("images/staff/minshoe.png");
+		sprite = DataStore.INSTANCE.getSprite("staff/minshoe.png");
 	}
 	
 	public Attack getAttack(int i)

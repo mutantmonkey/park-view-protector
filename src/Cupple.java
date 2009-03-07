@@ -37,7 +37,7 @@ public class Cupple extends Character implements Serializable
 	
 	protected void updateSprite()
 	{
-		sprite	= DataStore.INSTANCE.getSprite("images/cupple.png");
+		sprite	= DataStore.INSTANCE.getSprite("cupple.png");
 	}
 	
 	public Student getMale()

@@ -23,7 +23,7 @@ public abstract class Staff extends Character
 		tp = 12;
 		maxTp = 12;
 		
-		sprite = DataStore.INSTANCE.getSprite("images/placeholder.png");
+		sprite = DataStore.INSTANCE.getSprite("placeholder.png");
 	}*/
 	
 	// Creates a Staff member.

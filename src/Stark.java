@@ -22,7 +22,7 @@ public class Stark extends Staff
 	
 	protected void updateSprite()
 	{
-		sprite = DataStore.INSTANCE.getSprite("images/staff/stark.png");
+		sprite = DataStore.INSTANCE.getSprite("staff/stark.png");
 	}
 	
 	public Attack getAttack(int i)

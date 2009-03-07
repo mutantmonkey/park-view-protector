@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.image.*;
 
 import java.io.*;
-//import java.net.URL;
+import java.net.URL;
 import java.util.HashMap;
 
 import javax.imageio.*;
@@ -41,8 +41,8 @@ public enum DataStore
 		Clip clip;
 		
 		// load the file
-		//URL url				= this.getClass().getClassLoader().getResource(file);
-		File url				= new File(file);
+		URL url					= Thread.currentThread().getContextClassLoader().getResource(file);
+		//File url				= new File(file);
 		
 		try
 		{
@@ -123,15 +123,15 @@ public enum DataStore
 		}
 		
 		// load the file
-		//URL url				= this.getClass().getClassLoader().getResource(file);
-		File url			= new File(file);
+		URL url					= Thread.currentThread().getContextClassLoader().getResource(file);
+		//File url				= new File(file);
 		
-		BufferedImage img	= null;
+		BufferedImage img		= null;
 		
 		// try to load the image
 		try
 		{
-			img				= ImageIO.read(url);
+			img					= ImageIO.read(url);
 		}
 		catch(IOException e)
 		{
@@ -143,12 +143,12 @@ public enum DataStore
 		GraphicsConfiguration gc	= GraphicsEnvironment.getLocalGraphicsEnvironment().
 			getDefaultScreenDevice().getDefaultConfiguration();
 		
-		Image image			= gc.createCompatibleImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
+		Image image				= gc.createCompatibleImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
 		
 		// draw image into accelerated image
 		image.getGraphics().drawImage(img, 0, 0, null);
 		
-		Sprite sprite		= new Sprite(image);
+		Sprite sprite			= new Sprite(image);
 		
 		// cache the sprite so it doesn't have to be loaded again
 		sprites.put(file, sprite);

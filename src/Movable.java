@@ -42,7 +42,7 @@ public abstract class Movable implements Serializable
 		
 		this.speed	= speed;
 		
-		this.sprite	= DataStore.INSTANCE.getSprite("images/placeholder.png");
+		this.sprite	= DataStore.INSTANCE.getSprite("placeholder.png");
 	}
 	
 	/**

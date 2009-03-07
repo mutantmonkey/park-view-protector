@@ -45,7 +45,7 @@ public class Wall extends Movable
 			orient			= 'v';
 		}
 		
-		sprite				= DataStore.INSTANCE.getSprite("images/wall_" + orient + ".png");
+		sprite				= DataStore.INSTANCE.getSprite("wall_" + orient + ".png");
 	}
 	
 	/**

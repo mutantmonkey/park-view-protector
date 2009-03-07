@@ -61,19 +61,19 @@ public class Attack extends Movable
 	{
 		if(direction==Direction.NORTH)
 		{
-			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_n.png");
+			this.sprite		= DataStore.INSTANCE.getSprite(name+"_n.png");
 		}
 		else if(direction==Direction.SOUTH)
 		{
-			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_s.png");
+			this.sprite		= DataStore.INSTANCE.getSprite(name+"_s.png");
 		}
 		else if(direction==Direction.WEST)
 		{
-			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_w.png");
+			this.sprite		= DataStore.INSTANCE.getSprite(name+"_w.png");
 		}
 		else /*Implied else if for EAST*/
 		{
-			this.sprite		= DataStore.INSTANCE.getSprite("images/"+name+"_e.png");
+			this.sprite		= DataStore.INSTANCE.getSprite(name+"_e.png");
 		}
 	}
 	

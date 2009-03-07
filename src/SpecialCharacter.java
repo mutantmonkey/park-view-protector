@@ -22,7 +22,7 @@ public class SpecialCharacter extends Staff
 
 	protected void updateSprite()
 	{
-		sprite = DataStore.INSTANCE.getSprite("images/staff/michael.png");
+		sprite = DataStore.INSTANCE.getSprite("staff/michael.png");
 	}
 	
 	public Attack getAttack(int i)
