@@ -10,8 +10,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.FileInputStream;
-import java.io.IOException;
-//import java.util.ArrayList;
 
 import javax.sound.sampled.Clip;
 import javax.swing.*;
