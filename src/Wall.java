@@ -34,8 +34,18 @@ public class Wall extends Movable
 	
 	protected void updateSprite()
 	{
-		// no sprite is actually shown at the moment (FIXME: then this shouldn't be here)
-		sprite				= DataStore.INSTANCE.getSprite("images/wall_h.png");
+		char orient;
+		
+		// determine orientation
+		if(width > height)
+		{
+			orient			= 'h';
+		}
+		else {
+			orient			= 'v';
+		}
+		
+		sprite				= DataStore.INSTANCE.getSprite("images/wall_" + orient + ".png");
 	}
 	
 	/**
@@ -43,7 +53,23 @@ public class Wall extends Movable
 	 */
 	public void draw(Graphics g)
 	{
-		g.fillRect(x, y, width, height);
+		if(width > height)			// horizontal
+		{
+			int spriteWidth		= sprite.getWidth();
+			
+			for(int i = 0; i < width; i += spriteWidth)
+			{
+				sprite.draw(g, x + i, y);
+			}
+		}
+		else {						// vertical
+			int spriteHeight	= sprite.getHeight();
+			
+			for(int i = 0; i < height; i += spriteHeight)
+			{
+				sprite.draw(g, x, y + i);
+			}
+		}
 	}
 	
 	/**

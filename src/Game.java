@@ -630,6 +630,8 @@ public class Game implements Serializable
 				currCouple.adjustHp(currAttack.getDamage());
 				currCouple.setHitDelay(currAttack.getHitDelay());
 				
+				System.out.println(currAttack.isAoE());
+				
 				if(!currAttack.isAoE())
 				{
 					attacks.remove(j);
