@@ -53,8 +53,8 @@ public class Game implements Serializable
 	public static final int STATS_BAR_HEIGHT	= STAT_PAD_TOP + BAR_HEIGHT * 2 +
 													BAR_SPACING + STAT_PAD_BOTTOM;
 	
-	public static final int PLAYER_X			= 0;
-	public static final int PLAYER_Y			= STATS_BAR_HEIGHT;
+	public static final int PLAYER_X			= 10;
+	public static final int PLAYER_Y			= STATS_BAR_HEIGHT + 10;
 	public static final int PLAYER_HP			= 50;
 	public static final int PLAYER_TP			= 400;
 	
@@ -109,8 +109,8 @@ public class Game implements Serializable
 	 */
 	public void initWalls()
 	{
-		walls.add(new Wall(300, 200, 4, 30));
-		walls.add(new Wall(200, 100, ParkViewProtector.WIDTH, 4));
+		walls.add(new Wall(100, 0, ParkViewProtector.WIDTH - 60, 4));
+		walls.add(new Wall(100, 3, 4, 300));
 	}
 	
 	/**

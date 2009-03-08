@@ -52,7 +52,7 @@ public class Cupple extends Character implements Serializable
 	
 	public void step(Game game)
 	{
-		// random movement
+		// random movement (FIXME: couples should instead move towards walls)
 		game.moveRandom(this);
 		
 		// decrement the hit delay

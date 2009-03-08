@@ -55,7 +55,7 @@ public class Wall extends Movable
 	{
 		if(width > height)			// horizontal
 		{
-			int spriteWidth		= sprite.getWidth();
+			int spriteWidth		= sprite.getWidth() - 1;
 			
 			for(int i = 0; i < width; i += spriteWidth)
 			{
@@ -63,7 +63,7 @@ public class Wall extends Movable
 			}
 		}
 		else {						// vertical
-			int spriteHeight	= sprite.getHeight();
+			int spriteHeight	= sprite.getHeight() - 1;
 			
 			for(int i = 0; i < height; i += spriteHeight)
 			{
