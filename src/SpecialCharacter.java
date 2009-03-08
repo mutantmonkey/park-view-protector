@@ -10,9 +10,9 @@
 public class SpecialCharacter extends Staff
 {
 	private static final double SPEED= 5.0;
-	private static final int MAX_HP = 0;
-	private static final int MAX_TP = 0;
-	private static final long serialVersionUID = 2L;
+	private static final int MAX_HP = 50;
+	private static final int MAX_TP = 400;
+	private static final long serialVersionUID = 3L;
 	
 	public SpecialCharacter(int x, int y, int hp, int tp)
 	{
@@ -40,7 +40,7 @@ public class SpecialCharacter extends Staff
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
-		boolean 	isStudent=false,
+		boolean 	isStudent=true,
 					AoE=false;
 		/*
 		 * FORMAT
@@ -64,7 +64,7 @@ public class SpecialCharacter extends Staff
 			case 0:
 				name="honk";
 				damage=20;
-				tp=tp;
+				tp=10;
 				type=Type.FRONT;
 				speed=0;
 				duration=20;
@@ -74,17 +74,17 @@ public class SpecialCharacter extends Staff
 				hitDelay=duration/hits;
 				status=Status.STUN;
 				statusLength=40;
-				isStudent=true;
+				isStudent=isStudent;
 				AoE=true;
 				break;
 			case 1:
-				name="heal"; //test purposes
+				name="cake"; //test purposes
 				damage=-3;
 				type=Type.CENTER;
-				tp=tp;
+				tp=250;
 				speed=0;
 				duration=40;
-				reuse=reuse;
+				reuse=10;
 				stillTime=stillTime;
 				hits=20;
 				hitDelay=duration/hits;
@@ -106,11 +106,11 @@ public class SpecialCharacter extends Staff
 				hitDelay=duration/hits;
 				status=Status.STUN;
 				statusLength=1000;
-				isStudent=true;
+				isStudent=isStudent;
 				AoE=true;
 				break;
 		}
-		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
 }

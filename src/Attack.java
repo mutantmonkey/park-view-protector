@@ -14,12 +14,12 @@ public class Attack extends Movable
 {
 	private double speed;
 	private String name;
-	private int damage, duration, time=0, status, statusDuration, stillTime, hits, hitDelay, reuse;
+	private int damage, tp, duration, time=0, status, statusDuration, stillTime, hits, hitDelay, reuse;
 	//Target: True=Student, FLASE=Staff
 	private boolean isStudent, AoE;
 	private int type;
 	
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 	
 	/**
 	 * 
@@ -37,7 +37,7 @@ public class Attack extends Movable
 	 * @param stillTime: Time the character stands still
 	 */
 	public Attack(int x, int y, double speed, int direction,
-			String name, boolean isStudent, boolean AoE, int damage, int duration,
+			String name, boolean isStudent, boolean AoE, int damage, int tp, int duration,
 			int type, int statusEffect, int statusDuration, int stillTime,
 			int hits, int hitDelay, int reuse)
 	{
@@ -45,6 +45,7 @@ public class Attack extends Movable
 		this.type=type;
 		this.name=name;
 		this.damage=damage;
+		this.tp=tp;
 		this.duration=duration;
 		this.direction=direction;
 		this.stillTime=stillTime;
@@ -54,32 +55,72 @@ public class Attack extends Movable
 		this.hits=hits;
 		this.hitDelay=hitDelay;
 		this.reuse=reuse;
+		this.isStudent=isStudent;
 		switchXY();
 	}
 	
 	protected void updateSprite()
 	{
-		if(direction==Direction.NORTH)
+		try
 		{
-			this.sprite		= DataStore.INSTANCE.getSprite(name+"_n.png");
+			if(direction==Direction.NORTH)
+			{
+				this.sprite		= DataStore.INSTANCE.getSprite("attack/"+name+"_n.png");
+			}
+			else if(direction==Direction.SOUTH)
+			{
+				this.sprite		= DataStore.INSTANCE.getSprite("attack/"+name+"_s.png");
+			}
+			else if(direction==Direction.WEST)
+			{
+				this.sprite		= DataStore.INSTANCE.getSprite("attack/"+name+"_w.png");
+			}
+			else
+			{
+				this.sprite		= DataStore.INSTANCE.getSprite("attack/"+name+"_e.png");
+			}
 		}
-		else if(direction==Direction.SOUTH)
+		catch(Exception e)
 		{
-			this.sprite		= DataStore.INSTANCE.getSprite(name+"_s.png");
+			try
+			{
+				this.sprite		= DataStore.INSTANCE.getSprite("attack/"+name+".png");
+			}
+			catch(Exception e1)
+			{
+				if(direction==Direction.NORTH)
+				{
+					this.sprite		= DataStore.INSTANCE.getSprite("attack/attack"+"_n.png");
+				}
+				else if(direction==Direction.SOUTH)
+				{
+					this.sprite		= DataStore.INSTANCE.getSprite("attack/attack"+"_s.png");
+				}
+				else if(direction==Direction.WEST)
+				{
+					this.sprite		= DataStore.INSTANCE.getSprite("attack/attack"+"_w.png");
+				}
+				else
+				{
+					this.sprite		= DataStore.INSTANCE.getSprite("attack/attack"+"_e.png");
+				}
+			}
 		}
-		else if(direction==Direction.WEST)
-		{
-			this.sprite		= DataStore.INSTANCE.getSprite(name+"_w.png");
-		}
-		else /*Implied else if for EAST*/
-		{
-			this.sprite		= DataStore.INSTANCE.getSprite(name+"_e.png");
-		}
+	}
+
+	public String getName()
+	{
+		return name;
 	}
 	
 	public int getDamage()
 	{
 		return damage;
+	}
+	
+	public int getTp()
+	{
+		return tp;
 	}
 	
 	public int getDuration()

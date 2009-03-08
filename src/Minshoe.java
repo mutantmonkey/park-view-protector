@@ -12,7 +12,7 @@ public class Minshoe extends Staff
 	private static final double SPEED= 1.0;
 	private static final int MAX_TP = 0;
 	private static final int MAX_HP = 0;
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 	
 	public Minshoe(int x, int y, int hp, int tp)
 	{
@@ -110,7 +110,7 @@ public class Minshoe extends Staff
 				AoE=AoE;
 				break;
 		}
-		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
 }

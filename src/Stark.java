@@ -12,7 +12,7 @@ public class Stark extends Staff
 	private static final double SPEED= 2.1;
 	private static final int MAX_HP=100;
 	private static final int MAX_TP=100;
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 	
 	public Stark(int x, int y, int hp, int tp)
 	{
@@ -40,7 +40,7 @@ public class Stark extends Staff
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
-		boolean 	isStudent=false,
+		boolean 	isStudent=true,
 					AoE=false;
 		/*
 		 * FORMAT
@@ -64,7 +64,7 @@ public class Stark extends Staff
 			case 0:
 				name="physball";
 				damage=5;
-				tp=tp;
+				tp=10;
 				type=Type.FRONT;
 				speed=5;
 				duration=40;
@@ -80,7 +80,7 @@ public class Stark extends Staff
 			case 1:
 				name="meterstick";
 				damage=10;
-				tp=tp;
+				tp=10;
 				type=Type.FRONT;
 				speed=0;
 				duration=20;
@@ -96,7 +96,7 @@ public class Stark extends Staff
 			case 2:
 				name="goodnight";
 				damage=3;
-				tp=tp;
+				tp=30;
 				type=Type.CENTER;
 				speed=0;
 				duration=50;
@@ -106,11 +106,11 @@ public class Stark extends Staff
 				hitDelay=duration/hits;
 				status=Status.STUN;
 				statusLength=100;
-				isStudent=true;
+				isStudent=isStudent;
 				AoE=true;
 				break;
 		}
-		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
 }

@@ -13,7 +13,7 @@ public abstract class Character extends Movable
 	protected int maxHp;
 	protected int hitDelay;
 	
-	private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 4L;
 	
 	/**
 	 * Keeps track of items
@@ -51,6 +51,11 @@ public abstract class Character extends Movable
 		return hp;
 	}
 	
+	public void setHp(int amount)
+	{
+		hp=amount;
+	}
+	
 	public void decrementHitDelay(int amount)
 	{
 		if(hitDelay>0)
@@ -62,6 +67,11 @@ public abstract class Character extends Movable
 	public void setHitDelay(int amount)
 	{
 		hitDelay=amount;
+	}
+	
+	public int getHitDelay()
+	{
+		return hitDelay;
 	}
 	
 	public boolean isHittable()

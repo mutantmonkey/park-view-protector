@@ -9,6 +9,8 @@ import java.awt.image.BufferStrategy;
 import java.io.*;
 import java.util.ArrayList;
 
+import javax.sound.sampled.Clip;
+
 public class Game implements Serializable
 {
 	public static final int SPEED_THROTTLE		= 10;
@@ -19,6 +21,10 @@ public class Game implements Serializable
 	// delay (in number of frames) before another attack can be used
 	public static final int ATTACK_DELAY		= 20;
 	private int attackDelay						= 0;
+	public static final int TP_REGEN			= 5;
+	public static int tpRegen					= 0;
+	public static final int CHARGE_REGEN		= 50;
+	public static int chargeRegen				= 0;
 	
 	public static final int MIN_STUDENTS		= 20;
 	public static final int MAX_STUDENTS		= 30;
@@ -49,10 +55,10 @@ public class Game implements Serializable
 	
 	public static final int PLAYER_X			= 0;
 	public static final int PLAYER_Y			= STATS_BAR_HEIGHT;
-	public static final int PLAYER_HP			= 100;
-	public static final int PLAYER_TP			= 30;
+	public static final int PLAYER_HP			= 50;
+	public static final int PLAYER_TP			= 400;
 	
-	private static final long serialVersionUID	= 3L;
+	private static final long serialVersionUID	= 4L;
 	
 	private transient ParkViewProtector driver;
 	private transient Graphics g;
@@ -95,7 +101,7 @@ public class Game implements Serializable
 	 */
 	public void initPlayer()
 	{
-		player						= new Stark(PLAYER_X, PLAYER_Y, PLAYER_HP, PLAYER_TP);
+		player						= new SpecialCharacter(PLAYER_X, PLAYER_Y, PLAYER_HP, PLAYER_TP);
 	}
 	
 	/**
@@ -166,6 +172,12 @@ public class Game implements Serializable
 		{
 			currStudent			= students.get(i);
 			currStudent.draw(g);
+			chargeRegen+=1;
+			if(chargeRegen>=CHARGE_REGEN)
+			{
+				chargeRegen=0;
+				currStudent.adjustCharge(1);
+			}
 			
 			currStudent.step(this);
 		}
@@ -258,6 +270,13 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		
 		player.draw(g);
+		player.decrementHitDelay(1);
+		tpRegen+=1;
+		if(tpRegen>=TP_REGEN)
+		{
+			player.adjustTp(1);
+			tpRegen=0;
+		}
 		
 		for(int j = 0; j < attacks.size(); j++)
 		{
@@ -266,6 +285,8 @@ public class Game implements Serializable
 			if(currAttack.getBounds().intersects(player.getBounds()) && player.isHittable() && !currAttack.isStudent())
 			{
 				player.adjustHp(currAttack.getDamage());
+				if(player.getHp()>player.getMaxHp())
+					player.setHp(player.getMaxHp());
 				player.setHitDelay(currAttack.getHitDelay());
 				
 				if(!currAttack.isAoE())
@@ -390,13 +411,28 @@ public class Game implements Serializable
 			{
 				attackKey=2;
 			}
+
 			testAttack			= player.getAttack(attackKey);
-			player.stun(testAttack.getStillTime());
-			testAttack.switchXY();
-			attacks.add(testAttack);
-			
-			// set delay
-			attackDelay			= testAttack.getReuse();
+			if(player.getTp()>testAttack.getTp())
+			{
+				player.stun(testAttack.getStillTime());
+				player.adjustTp(-testAttack.getTp());
+				testAttack.switchXY();
+				attacks.add(testAttack);
+				
+				try
+				{
+					Clip soundClip		= DataStore.INSTANCE.getAudioClip(testAttack.getName()+".wav");
+					soundClip.start();
+				}
+				catch(Exception e)
+				{
+					System.out.println("The attack has no sound.");
+				}
+				
+				// set delay
+				attackDelay			= testAttack.getReuse();
+			}
 			
 		}
 		// decrease delay if there is one
@@ -587,7 +623,7 @@ public class Game implements Serializable
 			
 			if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
 					currStudent.getCharge() > 0 && currStudent.isHittable() &&
-					!currAttack.isStudent())
+					currAttack.isStudent())
 			{
 				if(currAttack.getStatus()==Status.STUN)
 				{
@@ -631,12 +667,10 @@ public class Game implements Serializable
 			currAttack		= attacks.get(j);
 			
 			if(currAttack.getBounds().intersects(currCouple.getBounds()) &&
-					currCouple.isHittable() && !currAttack.isStudent())
+					currCouple.isHittable() && currAttack.isStudent())
 			{
 				currCouple.adjustHp(currAttack.getDamage());
 				currCouple.setHitDelay(currAttack.getHitDelay());
-				
-				System.out.println(currAttack.isAoE());
 				
 				if(!currAttack.isAoE())
 				{
