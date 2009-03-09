@@ -23,9 +23,9 @@ public class Menu
 	private MenuItem[] items			= {
 			new MenuItem("Back", 1),
 			new MenuItem("Options", 2),
-			new MenuItem("Quit Game", 3),
 			new MenuItem("Save Game", 4),
-			new MenuItem("Load Game", 5)
+			//new MenuItem("Load Game", 5),
+			new MenuItem("Quit Game", 9),
 		};
 	protected int selectedItem			= 0;
 	
@@ -113,16 +113,26 @@ public class Menu
 				ParkViewProtector.showMenu	= false;
 				break;
 			
-			case 3:
-				driver.quit();
-				break;
-			
 			case 4:
 				DataSaver.save(driver.getGame());
 				break;
 			
 			case 5:
-				driver.setGame(DataSaver.load());
+				// FIXME: Loading from the menu screen is broken
+				
+				Game gameData				= DataSaver.load();
+				
+				if(gameData != null)
+				{
+					driver.setGame(gameData);
+
+					ParkViewProtector.showTitle	= false;
+				}
+				
+				break;
+				
+			case 9:
+				driver.quit();
 				break;
 		}
 	}

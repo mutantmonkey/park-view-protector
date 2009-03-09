@@ -1,7 +1,10 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ItemBin
+public class ItemBin implements Serializable
 {
+	private static final long serialVersionUID	= 1L;
+	
 	public ArrayList<Item> items;
 	public int[] inv;
 	public Character holder;
