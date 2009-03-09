@@ -9,10 +9,10 @@
 
 public class Stark extends Staff
 {
-	private static final double SPEED= 2.1;
+	private static final double SPEED= 2.0;
 	private static final int MAX_HP=100;
 	private static final int MAX_TP=100;
-	private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 4L;
 	
 	public Stark(int x, int y, int hp, int tp)
 	{

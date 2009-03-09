@@ -23,7 +23,7 @@ public class Game implements Serializable
 	private int attackDelay						= 0;
 	public static final int TP_REGEN			= 5;
 	public static int tpRegen					= 0;
-	public static final int CHARGE_REGEN		= 50;
+	public static final int CHARGE_REGEN		= 200;
 	public static int chargeRegen				= 0;
 	
 	public static final int MIN_STUDENTS		= 20;
@@ -56,9 +56,11 @@ public class Game implements Serializable
 	public static final int PLAYER_X			= 10;
 	public static final int PLAYER_Y			= STATS_BAR_HEIGHT + 10;
 	public static final int PLAYER_HP			= 50;
-	public static final int PLAYER_TP			= 400;
+	public static final int PLAYER_TP			= 300;
+	public static double hpPercent;
+	public static double tpPercent;
 	
-	private static final long serialVersionUID	= 4L;
+	private static final long serialVersionUID	= 5L;
 	
 	private transient ParkViewProtector driver;
 	private transient Graphics g;
@@ -274,8 +276,21 @@ public class Game implements Serializable
 		tpRegen+=1;
 		if(tpRegen>=TP_REGEN)
 		{
-			player.adjustTp(1);
+			if(player.getTp()<player.getMaxTp())
+				player.adjustTp(player.getMaxTp()/100);
 			tpRegen=0;
+		}
+		
+		hpPercent=(double)player.getHp()/(double)player.getMaxHp();
+		tpPercent=(double)player.getTp()/(double)player.getMaxTp();
+		if(ParkViewProtector.onePressed && !(player instanceof Stark))
+		{
+			player=new Stark((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.STARK_HP*hpPercent), (int)((double)Stats.STARK_TP*tpPercent));
+		}
+		
+		if(ParkViewProtector.twoPressed && !(player instanceof SpecialCharacter))
+		{
+			player=new SpecialCharacter((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.SPECIAL_HP*hpPercent), (int) ((double)Stats.SPECIAL_TP*tpPercent));
 		}
 		
 		for(int j = 0; j < attacks.size(); j++)

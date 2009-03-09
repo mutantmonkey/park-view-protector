@@ -19,7 +19,7 @@ public class Attack extends Movable
 	private boolean isStudent, AoE;
 	private int type;
 	
-	private static final long serialVersionUID = 3L;
+	private static final long serialVersionUID = 4L;
 	
 	/**
 	 * 

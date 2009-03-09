@@ -11,10 +11,10 @@ import java.io.*;
 
 public abstract class Staff extends Character
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 	
 	private int tp;
-	private int maxTp;
+	private static int maxTp;
 	public abstract Attack getAttack(int i);
 	
 	/*public Staff()
@@ -101,4 +101,12 @@ public abstract class Staff extends Character
 	{
 		os.defaultWriteObject();
 	}
+}
+
+class Stats
+{
+	public static final int STARK_HP=100;
+	public static final int STARK_TP=100;
+	public static final int SPECIAL_HP=50;
+	public static final int SPECIAL_TP=300;
 }

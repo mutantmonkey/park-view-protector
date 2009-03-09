@@ -11,8 +11,8 @@ public class SpecialCharacter extends Staff
 {
 	private static final double SPEED= 5.0;
 	private static final int MAX_HP = 50;
-	private static final int MAX_TP = 400;
-	private static final long serialVersionUID = 3L;
+	private static final int MAX_TP = 300;
+	private static final long serialVersionUID = 4L;
 	
 	public SpecialCharacter(int x, int y, int hp, int tp)
 	{
@@ -96,7 +96,7 @@ public class SpecialCharacter extends Staff
 			case 2:
 				name="squel";
 				damage=1;
-				tp=tp;
+				tp=25;
 				type=Type.CENTER;
 				speed=0;
 				duration=1;

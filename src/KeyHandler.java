@@ -113,6 +113,13 @@ public class KeyHandler extends KeyAdapter
 			case KeyEvent.VK_SHIFT:
 				ParkViewProtector.shiftPressed		= true;
 				break;
+				
+			case KeyEvent.VK_1:
+				ParkViewProtector.onePressed		= true;
+				break;
+			case KeyEvent.VK_2:
+				ParkViewProtector.twoPressed		= true;
+				break;
 		}
 	}
 	
@@ -210,6 +217,13 @@ public class KeyHandler extends KeyAdapter
 				
 			case KeyEvent.VK_SHIFT:
 				ParkViewProtector.shiftPressed		= false;
+				break;
+				
+			case KeyEvent.VK_1:
+				ParkViewProtector.onePressed		= false;
+				break;
+			case KeyEvent.VK_2:
+				ParkViewProtector.twoPressed		= false;
 				break;
 		}
 	}
