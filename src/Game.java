@@ -709,6 +709,62 @@ public class Game implements Serializable
 	}
 	
 	/**
+	 * Finds the index of the wall that is closest to the object
+	 * 
+	 * @param Movable Object to use
+	 */
+	public int findNearestWall(Movable obj)
+	{
+		Wall nearestWall			= null;
+		int smallestDist			= Integer.MAX_VALUE;
+		int outcode, distX, distY, dist;
+		
+		for(Wall wall : walls)
+		{
+			// compute X distance
+			if(wall.getBounds().getX() <= obj.getBounds().getX())
+			{
+				// wall lies to the left
+				distX					= (int) (obj.getBounds().getX() - wall.getBounds().getX());
+			}
+			else {
+				// wall lies to the right
+				distX					= (int) (wall.getBounds().getX() - obj.getBounds().getX());
+			}
+			
+			// compute Y distance
+			if(wall.getBounds().getY() <= obj.getBounds().getY())
+			{
+				// wall lies above
+				distY					= (int) (obj.getBounds().getY() - wall.getBounds().getY());
+			}
+			else {
+				// wall lies below
+				distY					= (int) (wall.getBounds().getY() - obj.getBounds().getY());
+			}
+			
+			// compute distance between wall and object
+			dist						= (int) Math.sqrt(distX * distX + distY * distY);
+			
+			if(dist < smallestDist)
+			{
+				nearestWall				= wall;
+				smallestDist			= dist;
+			}
+		}
+		
+		return walls.indexOf(nearestWall);
+	}
+	
+	/**
+	 * Returns the specified wall
+	 */
+	public Wall getWall(int wallId)
+	{
+		return walls.get(wallId);
+	}
+	
+	/**
 	 * "Game over" message
 	 */
 	public void gameOver()
