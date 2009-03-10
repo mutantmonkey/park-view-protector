@@ -20,14 +20,14 @@ public class Menu
 	protected Graphics g;
 	protected BufferStrategy strategy;
 	
-	private MenuItem[] items			= {
+	private MenuItem[] items						= {
 			new MenuItem("Back", 1),
 			new MenuItem("Options", 2),
 			new MenuItem("Save Game", 4),
 			new MenuItem("Load Game", 5),
 			new MenuItem("Quit Game", 9),
 		};
-	protected int selectedItem			= 0;
+	protected int selectedItem						= 0;
 	
 	/**
 	 * Constructor
@@ -36,9 +36,9 @@ public class Menu
 	 */
 	public Menu(ParkViewProtector p)
 	{
-		this.driver						= p;
-		this.g							= p.getGraphics();
-		this.strategy					= p.getBufferStrategy();
+		this.driver								= p;
+		this.g									= p.getGraphics();
+		this.strategy							= p.getBufferStrategy();
 	}
 	
 	public void show()
@@ -110,15 +110,19 @@ public class Menu
 		switch(actionId)
 		{
 			case 1:
-				ParkViewProtector.showMenu	= false;
+				ParkViewProtector.showMenu		= false;
 				break;
 			
+			case 2:
+				ParkViewProtector.showOptions	= true;
+				break;
+				
 			case 4:
 				DataSaver.save(driver.getGame());
 				break;
 			
 			case 5:
-				Game gameData				= DataSaver.load();
+				Game gameData					= DataSaver.load();
 				
 				if(gameData != null)
 				{
@@ -127,7 +131,7 @@ public class Menu
 					ParkViewProtector.showTitle	= false;
 				}
 				
-				ParkViewProtector.showMenu	= false;
+				ParkViewProtector.showMenu		= false;
 				
 				break;
 				

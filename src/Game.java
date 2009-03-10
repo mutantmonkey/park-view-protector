@@ -41,7 +41,7 @@ public class Game implements Serializable
 	public static final int MIN_NUM_MOVES		= 10;
 	public static final int MAX_NUM_MOVES		= 400;
 	
-	public static final int DECOUPLE_SPACING	= 80;
+	public static final int DECOUPLE_SPACING	= 40;
 	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
 	
 	public static final int STAT_PAD_TOP		= 10;

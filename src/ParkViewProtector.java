@@ -38,6 +38,7 @@ public class ParkViewProtector extends Canvas
 	private boolean running					= true;
 	public static boolean showTitle			= true;
 	public static boolean showMenu			= false;
+	public static boolean showOptions		= false;
 	
 	// which keys are pressed
 	public static boolean upPressed			= false;
@@ -63,7 +64,8 @@ public class ParkViewProtector extends Canvas
 	
 	private TitleScreen title;
 	private Game game;
-	private Menu menu; 
+	private Menu menu;
+	private OptionsMenu optMenu;
 	
 	public ParkViewProtector()
 	{
@@ -170,6 +172,7 @@ public class ParkViewProtector extends Canvas
 		title						= new TitleScreen(this);
 		game						= new Game(this);
 		menu						= new Menu(this);
+		optMenu						= new OptionsMenu(this);
 	}
 	
 	/**
@@ -182,6 +185,10 @@ public class ParkViewProtector extends Canvas
 			if(showTitle)
 			{
 				title.show();
+			}
+			else if(showOptions)
+			{
+				optMenu.show();
 			}
 			else if(showMenu)
 			{
