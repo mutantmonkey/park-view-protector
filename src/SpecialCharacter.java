@@ -69,7 +69,7 @@ public class SpecialCharacter extends Staff
 				speed=0;
 				duration=20;
 				reuse=40;
-				stillTime=10;
+				stillTime=20;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
@@ -101,7 +101,7 @@ public class SpecialCharacter extends Staff
 				speed=0;
 				duration=1;
 				reuse=50;
-				stillTime=20;
+				stillTime=40;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
