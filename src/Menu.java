@@ -24,7 +24,7 @@ public class Menu
 			new MenuItem("Back", 1),
 			new MenuItem("Options", 2),
 			new MenuItem("Save Game", 4),
-			//new MenuItem("Load Game", 5),
+			new MenuItem("Load Game", 5),
 			new MenuItem("Quit Game", 9),
 		};
 	protected int selectedItem			= 0;
@@ -118,8 +118,6 @@ public class Menu
 				break;
 			
 			case 5:
-				// FIXME: Loading from the menu screen is broken
-				
 				Game gameData				= DataSaver.load();
 				
 				if(gameData != null)
@@ -128,6 +126,8 @@ public class Menu
 
 					ParkViewProtector.showTitle	= false;
 				}
+				
+				ParkViewProtector.showMenu	= false;
 				
 				break;
 				
