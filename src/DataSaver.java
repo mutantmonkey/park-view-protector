@@ -61,6 +61,11 @@ public class DataSaver
 				ParkViewProtector.error("Sorry, that save file is not compatible with " +
 						"this version of Park View Protector.");
 			}
+			catch(IllegalArgumentException e)
+			{
+				ParkViewProtector.error("Sorry, that save file cannot be used; it appears " +
+						"to be corrupt. The error message was '" + e.getMessage() + "'");
+			}
 			catch(Exception e)
 			{
 				e.printStackTrace();
