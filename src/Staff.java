@@ -14,7 +14,7 @@ public abstract class Staff extends Character
 	private static final long serialVersionUID = 3L;
 	
 	private int tp;
-	private static int maxTp;
+	private int maxTp;
 	public abstract Attack getAttack(int i);
 	
 	/*public Staff()
