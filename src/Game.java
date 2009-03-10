@@ -845,8 +845,9 @@ public class Game implements Serializable
 			couples		= (ArrayList<Cupple>) os.readObject();
 			attacks		= (ArrayList<Attack>) os.readObject();
 			
-			// FIXME: see below
-			walls		= (ArrayList<Wall>) os.readObject();
+			// FIXME: there has to be a better way to do this
+			walls		= new ArrayList<Wall>();
+			initWalls();
 		}
 		catch(ClassNotFoundException e)
 		{
@@ -870,8 +871,5 @@ public class Game implements Serializable
 		os.writeObject(students);
 		os.writeObject(couples);
 		os.writeObject(attacks);
-		
-		// FIXME: should we instead just save a level number and regenerate the walls each load?
-		os.writeObject(walls);
 	}
 }
