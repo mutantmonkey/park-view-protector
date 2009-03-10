@@ -60,13 +60,14 @@ public class Game implements Serializable
 	public static double hpPercent;
 	public static double tpPercent;
 	
-	private static final long serialVersionUID	= 5L;
+	private static final long serialVersionUID	= 6L;
 	
 	private transient ParkViewProtector driver;
 	private transient Graphics g;
 	private transient BufferStrategy strategy;
 	
 	// objects on the screen
+	private int level							= 1;
 	private Staff player;
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
@@ -111,8 +112,14 @@ public class Game implements Serializable
 	 */
 	public void initWalls()
 	{
-		walls.add(new Wall(100, 0, ParkViewProtector.WIDTH - 60, 4));
-		walls.add(new Wall(100, 3, 4, 300));
+		switch(level)
+		{
+			default:
+				walls.add(new Wall(100, 0, ParkViewProtector.WIDTH - 60, 4));
+				walls.add(new Wall(100, 3, 4, 300));
+				
+				break;
+		}
 	}
 	
 	/**
@@ -334,6 +341,7 @@ public class Game implements Serializable
 		g.drawString("HP:", STAT_PAD_TOP, STAT_PAD_TOP + textCenter);
 		g.drawString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING + textCenter);
 		g.drawString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP + BAR_HEIGHT);
+		g.drawString("Level: " + level, 500, STAT_PAD_TOP + BAR_HEIGHT);
 		
 		// draw HP bar
 		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
@@ -840,6 +848,7 @@ public class Game implements Serializable
 	{
 		try
 		{
+			level		= os.readInt();
 			player		= (Staff) os.readObject();
 			students	= (ArrayList<Student>) os.readObject();
 			couples		= (ArrayList<Cupple>) os.readObject();
@@ -867,6 +876,7 @@ public class Game implements Serializable
 	 */
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
+		os.writeInt(level);
 		os.writeObject(player);
 		os.writeObject(students);
 		os.writeObject(couples);
