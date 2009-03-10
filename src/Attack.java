@@ -15,7 +15,7 @@ public class Attack extends Movable
 	private double speed;
 	private String name;
 	private int damage, tp, duration, time=0, status, statusDuration, stillTime, hits, hitDelay, reuse;
-	//Target: True=Student, FLASE=Staff
+	//Target: True=Student, False=Staff
 	private boolean isStudent, AoE;
 	private int type;
 	
@@ -23,18 +23,23 @@ public class Attack extends Movable
 	
 	/**
 	 * 
-	 * @param x
-	 * @param y
-	 * @param speed
-	 * @param direction
-	 * @param name: String to find the filename
-	 * @param isStudent: boolean to check if the attack damages the student of player
-	 * @param damage: int of damage to deal to character
-	 * @param duration: Duration of attack
-	 * @param type: Where the attack appears in relation of the character
-	 * @param statusEffect: What status effect is caused by this attack
-	 * @param statusEffectLength: Length of the status effect
-	 * @param stillTime: Time the character stands still
+	 * @param x	: The x coordinate
+	 * @param y: The y coordinate
+	 * @param speed: The speed the attack travels
+	 * @param direction: Direction of the attack
+	 * @param name: Name of the attack
+	 * @param isStudent: If true, the attack effects students
+	 * @param AoE: If true, the attack will not disappear upon hitting a target
+	 * @param damage: The damage the attack will deal
+	 * @param tp: The amount of TP the attack consumes
+	 * @param duration: The duration the attack stays on screen
+	 * @param type: The placement of the attack
+	 * @param statusEffect: The status effect the attack induces
+	 * @param statusDuration: The length of the status effect
+	 * @param stillTime: The duration the attack makes the user stand still
+	 * @param hits: The number of hits the attack deals
+	 * @param hitDelay: The time before the target can be hit again after being hit
+	 * @param reuse: The time the user can perform another attack
 	 */
 	public Attack(int x, int y, double speed, int direction,
 			String name, boolean isStudent, boolean AoE, int damage, int tp, int duration,
@@ -59,6 +64,9 @@ public class Attack extends Movable
 		switchXY();
 	}
 	
+	/**
+	 * Sets the attack's graphic
+	 */
 	protected void updateSprite()
 	{
 		try
@@ -108,67 +116,118 @@ public class Attack extends Movable
 		}
 	}
 
+	/**
+	 * 
+	 * @return The name of the attack
+	 */
 	public String getName()
 	{
 		return name;
 	}
 	
+	/**
+	 * 
+	 * @return The damage the attack deals
+	 */
 	public int getDamage()
 	{
 		return damage;
 	}
 	
+	/**
+	 * 
+	 * @return The TP attack consumes
+	 */
 	public int getTp()
 	{
 		return tp;
 	}
 	
+	/**
+	 * 
+	 * @return The duration the attack stays on screen
+	 */
 	public int getDuration()
 	{
 		return duration;
 	}
 	
-	public int getTime()
-	{
-		return time;
-	}
-	
+	/**
+	 * 
+	 * @return The status effect the attack induces
+	 */
 	public int getStatus()
 	{
 		return status;
 	}
 	
+	/**
+	 * 
+	 * @return The duration of the status effect
+	 */
 	public int getStatusDuration()
 	{
 		return statusDuration;
 	}
 	
+	/**
+	 * 
+	 * @return The duration that the user cannot perform an action
+	 */
 	public int getStillTime()
 	{
 		return stillTime;
 	}
 	
+	/**
+	 * 
+	 * @return The duration before the user can perform another attack
+	 */
 	public int getReuse()
 	{
 		return reuse;
 	}
 	
+	/**
+	 * 
+	 * @return If true, the attack will not disappear upon hitting a target
+	 */
 	public boolean isAoE()
 	{
 		return AoE;
 	}
 	
+	/**
+	 * 
+	 * @return The duration before the target will get hit again by the same attack
+	 */
 	public int getHitDelay()
 	{
 		return hitDelay;
 	}
 	
+	/**
+	 * 
+	 * @return If true, only students will take damage
+	 */
+	public boolean isStudent()
+	{
+		return isStudent;
+	}
+	
+	/**
+	 * Moves the attack and increases time by 1.
+	 */
 	public void move(int dist)
 	{
 		super.move(dist);
 		time++;
 	}
 	
+	/**
+	 * 
+	 * @return If the attack has completed
+	 */
 	public boolean over()
 	{
 		if(time>duration)
@@ -176,6 +235,9 @@ public class Attack extends Movable
 		return false;
 	}
 	
+	/**
+	 * Sets the direction of the attack and center it on the player
+	 */
 	public void switchXY()
 	{
 		updateSprite();
@@ -223,12 +285,13 @@ public class Attack extends Movable
 		os.defaultWriteObject();
 	}
 
-	public boolean isStudent()
-	{
-		return isStudent;
-	}
 }
 
+/**
+ * 
+ * Attack type placement variables
+ *
+ */
 class Type
 {
 	public static final int FRONT=0;
@@ -236,6 +299,11 @@ class Type
 	public static final int CENTER=2;	
 }
 
+/**
+ * 
+ * Status effect variables
+ *
+ */
 class Status
 {
 	public static final int STUN=1;
