@@ -213,6 +213,7 @@ public class ParkViewProtector extends Canvas
 	 * Display an error message
 	 * 
 	 * @param msg Message to display
+	 * @param fatal Should the program be terminated?
 	 */
 	public void error(String msg, boolean fatal)
 	{
