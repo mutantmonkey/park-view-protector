@@ -56,6 +56,8 @@ public class Item extends Movable
 	
 	public void resetUser()
 	{
+		x = user.x;
+		y = user.y;
 		user = null;
 	}
 	

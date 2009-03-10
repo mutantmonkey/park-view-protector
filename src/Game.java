@@ -58,6 +58,7 @@ public class Game implements Serializable
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
+	private ArrayList<Item> items				= new ArrayList<Item>();
 
 	/**
 	 * Constructor
@@ -74,6 +75,7 @@ public class Game implements Serializable
 		// initialize everything
 		initPlayer();
 		initStudents();
+		initItems();
 	}
 	
 	public void init(ParkViewProtector p)
@@ -120,6 +122,15 @@ public class Game implements Serializable
 			student					= new Student(x, y, 5, 5, speed, 0, gender);
 			
 			students.add(student);
+		}
+	}
+	
+	public void initItems()
+	{
+		for(int i = 0;i < students.size();i++)
+		{
+			items.add(new Item('h',0,0));
+			students.get(i).pickItem(items.get(i));
 		}
 	}
 	
@@ -194,6 +205,18 @@ public class Game implements Serializable
 							}
 							break;
 						}
+					}
+				}
+			}
+			else
+			{
+				//if the student has no charge and it still has an inventory, DROP THAT INVENTORY!
+				if(currStudent.bin.items.size() > 0)
+				{
+					System.out.println("Dropping inventory!");
+					while(currStudent.bin.items.size() > 0)
+					{
+						currStudent.bin.dropItem(currStudent.bin.items.get(0));
 					}
 				}
 			}
@@ -429,6 +452,22 @@ public class Game implements Serializable
 		}
 		
 		player.move(distX, distY);
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		//  Draw Items
+		///////////////////////////////////////////////////////////////////////////////////
+		
+		for(int i = 0;i < items.size();i++)
+		{
+			if(items.get(i).getUser() == null)
+			{
+				items.get(i).draw(g);
+				if(items.get(i).getBounds().intersects(player.getBounds()))
+				{
+					player.pickItem(items.get(i));
+				}
+			}
+		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Create attacks
