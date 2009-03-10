@@ -732,7 +732,7 @@ public class Game implements Serializable
 	{
 		Wall nearestWall			= null;
 		int smallestDist			= Integer.MAX_VALUE;
-		int outcode, distX, distY, dist;
+		int distX, distY, dist;
 		
 		for(Wall wall : walls)
 		{
