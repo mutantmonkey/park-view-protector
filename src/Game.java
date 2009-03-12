@@ -72,7 +72,7 @@ public class Game implements Serializable
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
-	private ArrayList<Wall> walls				= new ArrayList<Wall>();
+	private ArrayList<Wall> walls;
 
 	/**
 	 * Constructor
@@ -112,6 +112,8 @@ public class Game implements Serializable
 	 */
 	public void initWalls()
 	{
+		walls						= new ArrayList<Wall>();
+		
 		switch(level)
 		{
 			default:
@@ -854,8 +856,6 @@ public class Game implements Serializable
 			couples		= (ArrayList<Cupple>) os.readObject();
 			attacks		= (ArrayList<Attack>) os.readObject();
 			
-			// FIXME: there has to be a better way to do this
-			walls		= new ArrayList<Wall>();
 			initWalls();
 		}
 		catch(ClassNotFoundException e)
