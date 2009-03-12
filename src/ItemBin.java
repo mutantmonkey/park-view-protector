@@ -5,7 +5,7 @@ public class ItemBin implements Serializable
 {
 	private static final long serialVersionUID	= 1L;
 	
-	public ArrayList<Item> items;
+	public ArrayList<Item> items = new ArrayList<Item>();
 	public int[] inv;
 	public Character holder;
 	
@@ -26,6 +26,7 @@ public class ItemBin implements Serializable
 			inv[1]++;
 		}
 		item.setUser(holder);
+		System.out.println("Item - get!");
 		items.add(item);
 	}
 	
@@ -83,9 +84,9 @@ public class ItemBin implements Serializable
 	
 	public void dropInv()
 	{
-		for(int i = 0;i < items.size();i++)
+		if(items.size() > 0)
 		{
-			dropItem(items.get(i));
+			dropItem(items.get(0));
 		}
 	}
 }

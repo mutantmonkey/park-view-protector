@@ -56,6 +56,8 @@ public class Item extends Movable
 	
 	public void resetUser()
 	{
+		x = user.x;
+		y = user.y;
 		user = null;
 	}
 	
@@ -73,6 +75,11 @@ public class Item extends Movable
 				s.adjustTp(TP_AMT);
 			}
 		}
+	}
+	
+	public String toString()
+	{
+		return "" + type + " x: " + x + " y: " + y;
 	}
 	
 	public void updateSprite()

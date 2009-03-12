@@ -73,6 +73,7 @@ public class Game implements Serializable
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
 	private ArrayList<Wall> walls				= new ArrayList<Wall>();
+	private ArrayList<Item> items				= new ArrayList<Item>();
 
 	/**
 	 * Constructor
@@ -90,6 +91,7 @@ public class Game implements Serializable
 		initPlayer();
 		initWalls();
 		initStudents();
+		initItems();
 	}
 	
 	public void init(ParkViewProtector p)
@@ -161,6 +163,14 @@ public class Game implements Serializable
 		}
 	}
 	
+	public void initItems()
+	{
+		for(int i = 0;i < students.size();i++)
+		{
+			students.get(i).pickItem(new Item('h',0,0));
+		}
+	}
+	
 	public void show()
 	{
 		Student currStudent; 
@@ -186,6 +196,16 @@ public class Game implements Serializable
 			{
 				chargeRegen=0;
 				currStudent.adjustCharge(1);
+			}
+			
+			//if the student has no charge and it still has an inventory, DROP THAT INVENTORY!
+			if(currStudent.getCharge() == 0 && currStudent.bin.items.size() > 0)
+			{
+				while(currStudent.bin.items.size() > 0)
+				{
+					items.add(currStudent.bin.items.get(0));
+					currStudent.bin.dropItem(currStudent.bin.items.get(0));
+				}
 			}
 			
 			currStudent.step(this);
@@ -219,6 +239,7 @@ public class Game implements Serializable
 			{
 				showCharges();
 			}
+			
 			
 			// update students
 			/*for(int j = 0; j < students.size(); j++)
@@ -321,6 +342,22 @@ public class Game implements Serializable
 					player.stun(currAttack.getStatusDuration());
 				}
 			}
+		}
+		
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		//  Draw Items
+		///////////////////////////////////////////////////////////////////////////////////
+		
+		for(int i = 0;i < items.size();i++)
+		{
+				items.get(i).draw(g);
+				if(items.get(i).getBounds().intersects(player.getBounds()))
+				{
+					player.pickItem(items.get(i));
+					System.out.println("Staff items++: " + player.bin.items.size());
+					items.remove(items.get(i));
+				}
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
