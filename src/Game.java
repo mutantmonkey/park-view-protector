@@ -836,7 +836,7 @@ public class Game implements Serializable
 		{
 			if(students.get(i).getCharge() > 0)
 			{
-				g.drawRect(students.get(i).x, students.get(i).y, 40, 64);
+				students.get(i).showCharge(g);
 			}
 		}
 	}

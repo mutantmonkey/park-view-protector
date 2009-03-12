@@ -15,8 +15,8 @@ public abstract class Movable implements Serializable
 	protected double speed;
 	
 	// placement
-	protected int x;
-	protected int y;
+	protected double x;
+	protected double y;
 	
 	// direction (0 = north, 1 = east, 2 = south, 3 = west)
 	protected int direction		= 2;
@@ -26,7 +26,7 @@ public abstract class Movable implements Serializable
 	
 	protected int stunFrames	= 0;
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	/**
 	 * Constructor
@@ -35,7 +35,7 @@ public abstract class Movable implements Serializable
 	 * @param y
 	 * @param speed
 	 */
-	public Movable(int x, int y, double speed)
+	public Movable(double x, double y, double speed)
 	{
 		this.x		= x;
 		this.y		= y;
@@ -86,8 +86,10 @@ public abstract class Movable implements Serializable
 		if(distY < 0)	direction	= Direction.NORTH;
 		if(distX > 0)	direction	= Direction.EAST;
 		
-		x		   += (int) Math.round(distX * speed);
-		y		   += (int) Math.round(distY * speed);
+		System.out.println("Direction: " + direction);
+		
+		x		   += distX * speed;
+		y		   += distY * speed;
 		
 		moveCount++;
 	}
@@ -106,8 +108,8 @@ public abstract class Movable implements Serializable
 			return;
 		}
 		
-		int dist		= (int) Math.round(distance * speed);
-		
+		double dist		= distance * speed;
+
 		// determine and change direction if necessary
 		switch(direction)
 		{
@@ -137,7 +139,7 @@ public abstract class Movable implements Serializable
 	 * @param x
 	 * @param y
 	 */
-	public void moveTo(int x, int y)
+	public void moveTo(double x, double y)
 	{
 		this.x			= x;
 		this.y			= y;
@@ -219,7 +221,7 @@ public abstract class Movable implements Serializable
 	 */
 	public void draw(Graphics g)
 	{
-		sprite.draw(g, x, y);
+		sprite.draw(g, (int) x, (int) y);
 	}
 	
 	/**
@@ -229,7 +231,8 @@ public abstract class Movable implements Serializable
 	 */
 	public Rectangle getBounds()
 	{
-		Rectangle rect			= new Rectangle(x, y, sprite.getWidth(), sprite.getHeight());
+		Rectangle rect			= new Rectangle((int) x, (int) y, sprite.getWidth(),
+				sprite.getHeight());
 		
 		return rect;
 	}
@@ -243,13 +246,14 @@ public abstract class Movable implements Serializable
 	 */
 	public Rectangle getNewBounds(int distX, int distY)
 	{
-		int newX				= x;
-		int newY				= y;
+		int newX				= (int) x;
+		int newY				= (int) y;
 		
-		newX				   += (int) Math.round(distX * speed);
-		newY				   += (int) Math.round(distY * speed);
+		newX				   += (int) (distX * speed);
+		newY				   += (int) (distY * speed);
 		
-		Rectangle bounds		= new Rectangle(newX, newY, sprite.getWidth(), sprite.getHeight());
+		Rectangle bounds		= new Rectangle(newX, newY, sprite.getWidth(),
+				sprite.getHeight());
 		
 		return bounds;
 	}
@@ -263,10 +267,10 @@ public abstract class Movable implements Serializable
 	 */
 	public Rectangle getNewBounds(int distance)
 	{
-		int newX				= x;
-		int newY				= y;
+		int newX				= (int) x;
+		int newY				= (int) y;
 		
-		int dist				= (int) Math.round(distance * speed);
+		int dist				= (int) (distance * speed);
 		
 		// determine and change direction if necessary
 		switch(direction)
@@ -288,7 +292,8 @@ public abstract class Movable implements Serializable
 				break;
 		}
 		
-		Rectangle bounds		= new Rectangle(newX, newY, sprite.getWidth(), sprite.getHeight());
+		Rectangle bounds		= new Rectangle(newX, newY, sprite.getWidth(),
+				sprite.getHeight());
 		
 		return bounds;
 	}

@@ -37,6 +37,7 @@ public class Cupple extends Character
 	public Cupple(Student a,Student b)
 	{
 		super(a.x,a.y,a.hp+b.hp,a.maxHp + b.maxHp, (a.speed+b.speed) * SPEED_MULTIPLIER);
+		
 		if(a.getGender() == 'm')
 		{
 			male = a;
@@ -85,6 +86,9 @@ public class Cupple extends Character
 			{
 				Wall wall	= game.getWall(wallId);
 				moveToward(wall);
+			}
+			else {
+				
 			}
 		}
 		else {
