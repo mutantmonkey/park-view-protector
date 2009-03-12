@@ -160,8 +160,7 @@ public class Game implements Serializable
 	{
 		for(int i = 0;i < students.size();i++)
 		{
-			items.add(new Item('h',0,0));
-			students.get(i).pickItem(items.get(i));
+			students.get(i).pickItem(new Item('h',0,0));
 		}
 	}
 	
@@ -195,9 +194,9 @@ public class Game implements Serializable
 			//if the student has no charge and it still has an inventory, DROP THAT INVENTORY!
 			if(currStudent.getCharge() == 0 && currStudent.bin.items.size() > 0)
 			{
-				System.out.println("Dropping inventory!");
 				while(currStudent.bin.items.size() > 0)
 				{
+					items.add(currStudent.bin.items.get(0));
 					currStudent.bin.dropItem(currStudent.bin.items.get(0));
 				}
 			}
@@ -338,6 +337,22 @@ public class Game implements Serializable
 			}
 		}
 		
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		//  Draw Items
+		///////////////////////////////////////////////////////////////////////////////////
+		
+		for(int i = 0;i < items.size();i++)
+		{
+				items.get(i).draw(g);
+				if(items.get(i).getBounds().intersects(player.getBounds()))
+				{
+					player.pickItem(items.get(i));
+					System.out.println("Staff items++: " + player.bin.items.size());
+					items.remove(items.get(i));
+				}
+		}
+		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw statistics
 		////////////////////////////////////////////////////////////////////////////////////
@@ -425,23 +440,6 @@ public class Game implements Serializable
 			if(canMove(player.getNewBounds(distX, distY)))
 			{
 				player.move(distX, distY);
-			}
-		}
-		
-		////////////////////////////////////////////////////////////////////////////////////
-		//  Draw Items
-		///////////////////////////////////////////////////////////////////////////////////
-		
-		for(int i = 0;i < items.size();i++)
-		{
-			if(items.get(i).getUser() == null)
-			{
-				items.get(i).draw(g);
-				if(items.get(i).getBounds().intersects(player.getBounds()))
-				{
-					//player.pickItem(items.get(i));
-					//System.out.println("Staff items++: " + player.bin.items.size());
-				}
 			}
 		}
 		
