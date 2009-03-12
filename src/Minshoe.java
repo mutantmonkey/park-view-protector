@@ -20,10 +20,10 @@ public class Minshoe extends Staff
 		updateSprite();
 	}
 
-	protected void updateSprite()
+	/*protected void updateSprite()
 	{
 		sprite = DataStore.INSTANCE.getSprite("staff/minshoe.png");
-	}
+	}*/
 	
 	public Attack getAttack(int i)
 	{

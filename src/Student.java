@@ -93,6 +93,8 @@ public class Student extends Character implements Serializable
 		// decrement the hit delay
 		decrementHitDelay(1);
 		
+		game.recharge(this);
+		
 		// attempt coupling
 		if(charge > 0)
 		{

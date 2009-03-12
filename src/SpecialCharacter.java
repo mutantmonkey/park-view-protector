@@ -3,7 +3,6 @@
  * 
  * @author Jason of Javateerz
  *
- * The jawesomeest charater in the hole game
  *
  */
 

@@ -183,13 +183,6 @@ public class Game implements Serializable
 		{
 			currStudent			= students.get(i);
 			currStudent.draw(g);
-			chargeRegen+=1;
-			if(chargeRegen>=CHARGE_REGEN)
-			{
-				chargeRegen=0;
-				currStudent.adjustCharge(1);
-			}
-			
 			currStudent.step(this);
 		}
 		
@@ -281,49 +274,7 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		
 		player.draw(g);
-		player.decrementHitDelay(1);
-		tpRegen+=1;
-		if(tpRegen>=TP_REGEN)
-		{
-			if(player.getTp()<player.getMaxTp())
-				player.adjustTp(player.getMaxTp()/100);
-			tpRegen=0;
-		}
-		
-		hpPercent=(double)player.getHp()/(double)player.getMaxHp();
-		tpPercent=(double)player.getTp()/(double)player.getMaxTp();
-		if(ParkViewProtector.onePressed && !(player instanceof Stark))
-		{
-			player=new Stark((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.STARK_HP*hpPercent), (int)((double)Stats.STARK_TP*tpPercent));
-		}
-		
-		if(ParkViewProtector.twoPressed && !(player instanceof SpecialCharacter))
-		{
-			player=new SpecialCharacter((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.SPECIAL_HP*hpPercent), (int) ((double)Stats.SPECIAL_TP*tpPercent));
-		}
-		
-		for(int j = 0; j < attacks.size(); j++)
-		{
-			currAttack		= attacks.get(j);
-			
-			if(currAttack.getBounds().intersects(player.getBounds()) && player.isHittable() && !currAttack.isStudent())
-			{
-				player.adjustHp(currAttack.getDamage());
-				if(player.getHp()>player.getMaxHp())
-					player.setHp(player.getMaxHp());
-				player.setHitDelay(currAttack.getHitDelay());
-				
-				if(!currAttack.isAoE())
-				{
-					attacks.remove(j);
-				}
-				
-				if(currAttack.getStatus()==Status.STUN)
-				{
-					player.stun(currAttack.getStatusDuration());
-				}
-			}
-		}
+		player.step(this);
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw statistics
@@ -420,49 +371,7 @@ public class Game implements Serializable
 		// Create attacks
 		////////////////////////////////////////////////////////////////////////////////////
 		
-		if(ParkViewProtector.attackPressed&&attackDelay == 0)
-		{
-			Attack testAttack;
-			int attackKey=0;
-			if(ParkViewProtector.zPressed)
-			{
-				attackKey=0;
-			}
-			else if(ParkViewProtector.xPressed)
-			{
-				attackKey=1;
-			}
-			else if(ParkViewProtector.cPressed)
-			{
-				attackKey=2;
-			}
-
-			testAttack			= player.getAttack(attackKey);
-			if(player.getTp()>testAttack.getTp())
-			{
-				player.stun(testAttack.getStillTime());
-				player.adjustTp(-testAttack.getTp());
-				testAttack.switchXY();
-				attacks.add(testAttack);
-				
-				try
-				{
-					Clip soundClip		= DataStore.INSTANCE.getAudioClip(testAttack.getName()+".wav");
-					soundClip.start();
-				}
-				catch(Exception e)
-				{
-					System.out.println("The attack has no sound.");
-				}
-				
-				// set delay
-				attackDelay			= testAttack.getReuse();
-			}
-			
-		}
-		// decrease delay if there is one
-		if(attackDelay > 0)
-			attackDelay--;
+		playerAttack();
 		
 		// keep the game from running too fast
 		try
@@ -566,6 +475,107 @@ public class Game implements Serializable
 	}
 	
 	/**
+	 * Switches the player's character to another
+	 */
+	public void switchChar()
+	{
+		if(ParkViewProtector.switchCharPressed)
+		{
+			hpPercent=(double)player.getHp()/(double)player.getMaxHp();
+			tpPercent=(double)player.getTp()/(double)player.getMaxTp();
+			if(ParkViewProtector.onePressed && !(player instanceof Stark))
+			{
+				player=new Stark((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.STARK_HP*hpPercent), (int)((double)Stats.STARK_TP*tpPercent));
+			}
+			
+			if(ParkViewProtector.twoPressed && !(player instanceof SpecialCharacter))
+			{
+				player=new SpecialCharacter((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.SPECIAL_HP*hpPercent), (int) ((double)Stats.SPECIAL_TP*tpPercent));
+			}
+		}
+	}
+	
+	
+	/**
+	 * Handles players attacks
+	 */
+	public void playerAttack()
+	{
+		if(ParkViewProtector.attackPressed&&attackDelay == 0)
+		{
+			Attack playerAttack;
+			int attackKey=0;
+			if(ParkViewProtector.zPressed)
+			{
+				attackKey=0;
+			}
+			else if(ParkViewProtector.xPressed)
+			{
+				attackKey=1;
+			}
+			else if(ParkViewProtector.cPressed)
+			{
+				attackKey=2;
+			}
+		
+			playerAttack			= player.getAttack(attackKey);
+			if(player.getTp()>=playerAttack.getTp())
+			{
+				player.stun(playerAttack.getStillTime());
+				player.adjustTp(-playerAttack.getTp());
+				playerAttack.switchXY();
+				attacks.add(playerAttack);
+				
+				try
+				{
+					Clip soundClip		= DataStore.INSTANCE.getAudioClip(playerAttack.getName()+".wav");
+					soundClip.start();
+				}
+				catch(Exception e)
+				{
+					System.out.println("The attack has no sound.");
+				}
+				
+				// set delay
+				attackDelay			= playerAttack.getReuse();
+			}
+			
+		}
+		
+		// decrease delay if there is one
+		if(attackDelay > 0)
+			attackDelay--;
+	}
+	
+	/**
+	 * Regenerate the player's TP
+	 */
+	public void tpRegen()
+	{
+		tpRegen+=1;
+		if(tpRegen>=TP_REGEN)
+		{
+			if(player.getTp()<player.getMaxTp())
+				player.adjustTp(2);
+			tpRegen=0;
+		}
+	}
+	
+	
+	/**
+	 * Recharge students
+	 */
+	public void recharge(Student student)
+	{
+		chargeRegen+=1;
+		if(chargeRegen>=CHARGE_REGEN)
+		{
+			chargeRegen=0;
+			student.adjustCharge(1);
+		}
+	}
+	
+	/**
 	 * Attempt to couple with another student
 	 * 
 	 * @param currStudent
@@ -631,6 +641,37 @@ public class Game implements Serializable
 		return false;
 	}
 	
+	public boolean handleAttack()
+	{
+		Attack currAttack;
+		
+		for(int j = 0; j < attacks.size(); j++)
+		{
+			currAttack		= attacks.get(j);
+			
+			if(currAttack.getBounds().intersects(player.getBounds()) && player.isHittable() && !currAttack.isStudent())
+			{
+				player.adjustHp(currAttack.getDamage());
+				if(player.getHp()>player.getMaxHp())
+					player.setHp(player.getMaxHp());
+				player.setHitDelay(currAttack.getHitDelay());
+				
+				if(!currAttack.isAoE())
+				{
+					attacks.remove(j);
+				}
+				
+				if(currAttack.getStatus()==Status.STUN)
+				{
+					player.stun(currAttack.getStatusDuration());
+				}
+				
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Handle any attacks on a student
 	 * 
@@ -646,6 +687,7 @@ public class Game implements Serializable
 		{
 			currAttack		= attacks.get(j);
 			
+			//The student takes damage in this if loop
 			if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
 					currStudent.getCharge() > 0 && currStudent.isHittable() &&
 					currAttack.isStudent())
