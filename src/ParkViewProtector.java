@@ -62,6 +62,8 @@ public class ParkViewProtector extends Canvas
 	private Graphics g;
 	private BufferStrategy strategy;
 	
+	private OggClip bgMusic;
+	
 	private TitleScreen title;
 	private Game game;
 	private Menu menu;
@@ -151,7 +153,7 @@ public class ParkViewProtector extends Canvas
 		// try to play background music
 		try
 		{
-			OggClip bgMusic			= new OggClip("kicked.ogg");
+			bgMusic					= new OggClip("kicked.ogg");
 			bgMusic.loop();
 		}
 		catch(Exception e)
@@ -251,6 +253,9 @@ public class ParkViewProtector extends Canvas
 	public void quit()
 	{
 		running							= false;
+		
+		bgMusic.stop();
+		
 		window.dispose();
 	}
 	
