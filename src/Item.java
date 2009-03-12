@@ -77,6 +77,11 @@ public class Item extends Movable
 		}
 	}
 	
+	public String toString()
+	{
+		return "" + type + " x: " + x + " y: " + y;
+	}
+	
 	public void updateSprite()
 	{
 		this.sprite	= DataStore.INSTANCE.getSprite("gItem.png");

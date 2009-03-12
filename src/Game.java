@@ -191,16 +191,14 @@ public class Game implements Serializable
 				chargeRegen=0;
 				currStudent.adjustCharge(1);
 			}
-			else
+			
+			//if the student has no charge and it still has an inventory, DROP THAT INVENTORY!
+			if(currStudent.getCharge() == 0 && currStudent.bin.items.size() > 0)
 			{
-				//if the student has no charge and it still has an inventory, DROP THAT INVENTORY!
-				if(currStudent.bin.items.size() > 0)
+				System.out.println("Dropping inventory!");
+				while(currStudent.bin.items.size() > 0)
 				{
-					System.out.println("Dropping inventory!");
-					while(currStudent.bin.items.size() > 0)
-					{
-						currStudent.bin.dropItem(currStudent.bin.items.get(0));
-					}
+					currStudent.bin.dropItem(currStudent.bin.items.get(0));
 				}
 			}
 			
@@ -235,6 +233,7 @@ public class Game implements Serializable
 			{
 				showCharges();
 			}
+			
 			
 			// update students
 			/*for(int j = 0; j < students.size(); j++)
@@ -440,7 +439,8 @@ public class Game implements Serializable
 				items.get(i).draw(g);
 				if(items.get(i).getBounds().intersects(player.getBounds()))
 				{
-					player.pickItem(items.get(i));
+					//player.pickItem(items.get(i));
+					//System.out.println("Staff items++: " + player.bin.items.size());
 				}
 			}
 		}
