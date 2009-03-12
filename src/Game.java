@@ -281,48 +281,7 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// these are painted last to ensure that they are always on top
 
-		// background rectangle
-		g.setColor(ParkViewProtector.STATS_BAR_BG);
-		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
-		
-		// draw labels
-		g.setColor(ParkViewProtector.STATS_BAR_FG);
-		g.setFont(new Font("System", Font.PLAIN, 10));
-		
-		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;
-		
-		g.drawString("HP:", STAT_PAD_TOP, STAT_PAD_TOP + textCenter);
-		g.drawString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING + textCenter);
-		g.drawString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP + BAR_HEIGHT);
-		g.drawString("Level: " + level, 500, STAT_PAD_TOP + BAR_HEIGHT);
-		
-		// draw HP bar
-		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
-		int hpBarWidth				= (int) (((double) player.getHp() / player.getMaxHp())
-											* hpMaxWidth);
-		
-		// background
-		g.setColor(ParkViewProtector.STATS_BAR_HP.darker().darker());
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpMaxWidth, BAR_HEIGHT);
-		
-		// main bar
-		g.setColor(ParkViewProtector.STATS_BAR_HP);
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpBarWidth, BAR_HEIGHT);
-		
-		// draw TP bar
-		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
-		int tpBarWidth				= (int) (((double) player.getTp() / player.getMaxTp())
-											* tpMaxWidth);
-		
-		// background
-		g.setColor(ParkViewProtector.STATS_BAR_TP.darker().darker());
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpMaxWidth,
-				BAR_HEIGHT);
-		
-		// main bar
-		g.setColor(ParkViewProtector.STATS_BAR_TP);
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpBarWidth,
-				BAR_HEIGHT);
+		drawStatistics();
 		
 		// finish drawing
 		g.dispose();
@@ -379,6 +338,55 @@ public class Game implements Serializable
 			Thread.sleep(SPEED_THROTTLE);
 		}
 		catch(Exception e) {}
+	}
+	
+	/**
+	 * Draw statistics
+	 */
+	public void drawStatistics()
+	{
+		// background rectangle
+		g.setColor(ParkViewProtector.STATS_BAR_BG);
+		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
+		
+		// draw labels
+		g.setColor(ParkViewProtector.STATS_BAR_FG);
+		g.setFont(new Font("System", Font.PLAIN, 10));
+		
+		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;
+		
+		g.drawString("HP:", STAT_PAD_TOP, STAT_PAD_TOP + textCenter);
+		g.drawString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING + textCenter);
+		g.drawString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP + BAR_HEIGHT);
+		g.drawString("Level: " + level, 500, STAT_PAD_TOP + BAR_HEIGHT);
+		
+		// draw HP bar
+		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
+		int hpBarWidth				= (int) (((double) player.getHp() / player.getMaxHp())
+											* hpMaxWidth);
+		
+		// background
+		g.setColor(ParkViewProtector.STATS_BAR_HP.darker().darker());
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpMaxWidth, BAR_HEIGHT);
+		
+		// main bar
+		g.setColor(ParkViewProtector.STATS_BAR_HP);
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpBarWidth, BAR_HEIGHT);
+		
+		// draw TP bar
+		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
+		int tpBarWidth				= (int) (((double) player.getTp() / player.getMaxTp())
+											* tpMaxWidth);
+		
+		// background
+		g.setColor(ParkViewProtector.STATS_BAR_TP.darker().darker());
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpMaxWidth,
+				BAR_HEIGHT);
+		
+		// main bar
+		g.setColor(ParkViewProtector.STATS_BAR_TP);
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpBarWidth,
+				BAR_HEIGHT);
 	}
 	
 	/**
@@ -641,6 +649,11 @@ public class Game implements Serializable
 		return false;
 	}
 	
+	/**
+	 * Handle attacks
+	 * 
+	 * @return Whether or not the attack hit the player
+	 */
 	public boolean handleAttack()
 	{
 		Attack currAttack;
@@ -870,6 +883,9 @@ public class Game implements Serializable
 		driver.quit();
 	}
 	
+	/**
+	 * Shows the charges of the students
+	 */
 	public void showCharges()
 	{
 		g.setColor(ParkViewProtector.COLOR_BG_1);

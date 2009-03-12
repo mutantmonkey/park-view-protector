@@ -86,8 +86,6 @@ public abstract class Movable implements Serializable
 		if(distY < 0)	direction	= Direction.NORTH;
 		if(distX > 0)	direction	= Direction.EAST;
 		
-		System.out.println("Direction: " + direction);
-		
 		x		   += distX * speed;
 		y		   += distY * speed;
 		
