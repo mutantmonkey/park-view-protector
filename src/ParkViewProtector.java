@@ -51,6 +51,7 @@ public class ParkViewProtector extends Canvas
 	public static boolean zPressed			= false;
 	public static boolean xPressed			= false;
 	public static boolean cPressed			= false;
+	public static boolean switchCharPressed	= false;
 	public static boolean onePressed		= false;
 	public static boolean twoPressed		= false;
 	

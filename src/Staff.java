@@ -35,6 +35,11 @@ public abstract class Staff extends Character
 		this.maxTp=maxTp;
 	}
 	
+	protected void updateSprite()
+	{
+		sprite = DataStore.INSTANCE.getSprite("placeholder.png");
+	}
+	
 	//The character uses an item class uses an item
 	public void useItem(int item)
 	{
@@ -78,6 +83,14 @@ public abstract class Staff extends Character
 	public void setMaxTp(int amount)
 	{
 		maxTp=amount;
+	}
+	
+	public void step(Game game)
+	{
+		decrementHitDelay(1);
+		game.tpRegen();
+		game.switchChar();
+		game.handleAttack();
 	}
 	
 	protected void validateState()
