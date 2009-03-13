@@ -389,13 +389,15 @@ public class Game implements Serializable
 		// draw HP bar
 		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
 
-		Bar hpBar					= new Bar(ParkViewProtector.STATS_BAR_HP, hpMaxWidth, (double) player.getHp() / player.getMaxHp());
+		Bar hpBar					= new Bar(ParkViewProtector.STATS_BAR_HP, hpMaxWidth,
+				(double) player.getHp() / player.getMaxHp());
 		hpBar.draw(g, STAT_PAD_LEFT_BAR, STAT_PAD_TOP);
 		
 		// draw TP bar
 		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
 		
-		Bar tpBar					= new Bar(ParkViewProtector.STATS_BAR_TP, tpMaxWidth, (double) player.getTp() / player.getMaxTp());
+		Bar tpBar					= new Bar(ParkViewProtector.STATS_BAR_TP, tpMaxWidth,
+				(double) player.getTp() / player.getMaxTp());
 		tpBar.draw(g, STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
 	}
 	
@@ -859,24 +861,9 @@ public class Game implements Serializable
 	 */
 	public void gameOver()
 	{
-		String msg				= "GAME OVER";
+		Sprite gameOver					= DataStore.INSTANCE.getSprite("game_over.png");
 		
-		// draw the background
-		g.setColor(ParkViewProtector.COLOR_BG_1);
-		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
-		
-		// get width of string
-		int x					= ParkViewProtector.WIDTH / 2;
-		x					   -= g.getFontMetrics().stringWidth(msg);
-		int y					= ParkViewProtector.HEIGHT / 2;
-		y					   -= g.getFontMetrics().getHeight();
-		
-		System.out.println("Put it at (" + x + ", " + y + ")");
-		
-		// draw text
-		g.setFont(new Font("System", Font.BOLD, 32));
-		g.setColor(ParkViewProtector.COLOR_TEXT_1);
-		g.drawString(msg, x, y);
+		gameOver.draw(g, 0, 0);
 		
 		// finish drawing
 		g.dispose();
