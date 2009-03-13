@@ -388,31 +388,15 @@ public class Game implements Serializable
 		
 		// draw HP bar
 		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
-		int hpBarWidth				= (int) (((double) player.getHp() / player.getMaxHp())
-											* hpMaxWidth);
-		
-		// background
-		g.setColor(ParkViewProtector.STATS_BAR_HP.darker().darker());
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpMaxWidth, BAR_HEIGHT);
-		
-		// main bar
-		g.setColor(ParkViewProtector.STATS_BAR_HP);
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpBarWidth, BAR_HEIGHT);
+
+		Bar hpBar					= new Bar(ParkViewProtector.STATS_BAR_HP, hpMaxWidth, (double) player.getHp() / player.getMaxHp());
+		hpBar.draw(g, STAT_PAD_LEFT_BAR, STAT_PAD_TOP);
 		
 		// draw TP bar
 		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
-		int tpBarWidth				= (int) (((double) player.getTp() / player.getMaxTp())
-											* tpMaxWidth);
 		
-		// background
-		g.setColor(ParkViewProtector.STATS_BAR_TP.darker().darker());
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpMaxWidth,
-				BAR_HEIGHT);
-		
-		// main bar
-		g.setColor(ParkViewProtector.STATS_BAR_TP);
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpBarWidth,
-				BAR_HEIGHT);
+		Bar tpBar					= new Bar(ParkViewProtector.STATS_BAR_TP, tpMaxWidth, (double) player.getTp() / player.getMaxTp());
+		tpBar.draw(g, STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
 	}
 	
 	/**
