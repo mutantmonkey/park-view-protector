@@ -116,9 +116,11 @@ public class KeyHandler extends KeyAdapter
 				
 			case KeyEvent.VK_1:
 				ParkViewProtector.onePressed		= true;
+				ParkViewProtector.switchCharPressed	= true;
 				break;
 			case KeyEvent.VK_2:
 				ParkViewProtector.twoPressed		= true;
+				ParkViewProtector.switchCharPressed	= true;
 				break;
 		}
 	}
@@ -221,9 +223,11 @@ public class KeyHandler extends KeyAdapter
 				
 			case KeyEvent.VK_1:
 				ParkViewProtector.onePressed		= false;
+				ParkViewProtector.switchCharPressed	= false;
 				break;
 			case KeyEvent.VK_2:
 				ParkViewProtector.twoPressed		= false;
+				ParkViewProtector.switchCharPressed	= false;
 				break;
 		}
 	}

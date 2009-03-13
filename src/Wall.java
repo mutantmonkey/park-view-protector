@@ -59,7 +59,7 @@ public class Wall extends Movable
 			
 			for(int i = 0; i < width; i += spriteWidth)
 			{
-				sprite.draw(g, x + i, y);
+				sprite.draw(g, (int) x + i, (int) y);
 			}
 		}
 		else {						// vertical
@@ -67,7 +67,7 @@ public class Wall extends Movable
 			
 			for(int i = 0; i < height; i += spriteHeight)
 			{
-				sprite.draw(g, x, y + i);
+				sprite.draw(g, (int) x, (int) y + i);
 			}
 		}
 	}
@@ -79,7 +79,7 @@ public class Wall extends Movable
 	 */
 	public Rectangle getBounds()
 	{
-		Rectangle ret		= new Rectangle(x, y, width, height);
+		Rectangle ret		= new Rectangle((int) x, (int) y, width, height);
 		
 		return ret;
 	}

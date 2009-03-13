@@ -32,7 +32,7 @@ public abstract class Character extends Movable
 	 * @param speed
 	 * @param damage
 	 */
-	public Character(int x, int y, int hp, int maxHp, double speed)
+	public Character(double x, double y, int hp, int maxHp, double speed)
 	{
 		super(x, y, speed);
 		

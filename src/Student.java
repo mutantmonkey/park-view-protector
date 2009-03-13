@@ -5,6 +5,7 @@
  * @serial
  */
 
+import java.awt.Graphics;
 import java.io.*;
 
 public class Student extends Character implements Serializable
@@ -92,6 +93,8 @@ public class Student extends Character implements Serializable
 		// decrement the hit delay
 		decrementHitDelay(1);
 		
+		game.recharge(this);
+		
 		// attempt coupling
 		if(charge > 0)
 		{
@@ -138,6 +141,12 @@ public class Student extends Character implements Serializable
 	public void attack()
 	{
 		
+	}
+	
+	public void showCharge(Graphics g)
+	{
+		g.drawRect((int) x, (int) y, (int) getBounds().getWidth(),
+				(int) getBounds().getHeight());
 	}
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException

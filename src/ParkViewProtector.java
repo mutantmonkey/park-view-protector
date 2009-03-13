@@ -52,6 +52,7 @@ public class ParkViewProtector extends Canvas
 	public static boolean zPressed			= false;
 	public static boolean xPressed			= false;
 	public static boolean cPressed			= false;
+	public static boolean switchCharPressed	= false;
 	public static boolean onePressed		= false;
 	public static boolean twoPressed		= false;
 	
@@ -61,6 +62,8 @@ public class ParkViewProtector extends Canvas
 	// graphics
 	private Graphics g;
 	private BufferStrategy strategy;
+	
+	private OggClip bgMusic;
 	
 	private TitleScreen title;
 	private Game game;
@@ -151,7 +154,7 @@ public class ParkViewProtector extends Canvas
 		// try to play background music
 		try
 		{
-			OggClip bgMusic			= new OggClip("kicked.ogg");
+			bgMusic					= new OggClip("kicked.ogg");
 			bgMusic.loop();
 		}
 		catch(Exception e)
@@ -251,6 +254,9 @@ public class ParkViewProtector extends Canvas
 	public void quit()
 	{
 		running							= false;
+		
+		bgMusic.stop();
+		
 		window.dispose();
 	}
 	

@@ -72,8 +72,8 @@ public class Game implements Serializable
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
-	private ArrayList<Wall> walls				= new ArrayList<Wall>();
 	private ArrayList<Item> items				= new ArrayList<Item>();
+	private ArrayList<Wall> walls;
 
 	/**
 	 * Constructor
@@ -114,6 +114,8 @@ public class Game implements Serializable
 	 */
 	public void initWalls()
 	{
+		walls						= new ArrayList<Wall>();
+		
 		switch(level)
 		{
 			default:
@@ -191,23 +193,6 @@ public class Game implements Serializable
 		{
 			currStudent			= students.get(i);
 			currStudent.draw(g);
-			chargeRegen+=1;
-			if(chargeRegen>=CHARGE_REGEN)
-			{
-				chargeRegen=0;
-				currStudent.adjustCharge(1);
-			}
-			
-			//if the student has no charge and it still has an inventory, DROP THAT INVENTORY!
-			if(currStudent.getCharge() == 0 && currStudent.bin.items.size() > 0)
-			{
-				while(currStudent.bin.items.size() > 0)
-				{
-					items.add(currStudent.bin.items.get(0));
-					currStudent.bin.dropItem(currStudent.bin.items.get(0));
-				}
-			}
-			
 			currStudent.step(this);
 		}
 		
@@ -239,7 +224,6 @@ public class Game implements Serializable
 			{
 				showCharges();
 			}
-			
 			
 			// update students
 			/*for(int j = 0; j < students.size(); j++)
@@ -300,54 +284,12 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		
 		player.draw(g);
-		player.decrementHitDelay(1);
-		tpRegen+=1;
-		if(tpRegen>=TP_REGEN)
-		{
-			if(player.getTp()<player.getMaxTp())
-				player.adjustTp(player.getMaxTp()/100);
-			tpRegen=0;
-		}
-		
-		hpPercent=(double)player.getHp()/(double)player.getMaxHp();
-		tpPercent=(double)player.getTp()/(double)player.getMaxTp();
-		if(ParkViewProtector.onePressed && !(player instanceof Stark))
-		{
-			player=new Stark((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.STARK_HP*hpPercent), (int)((double)Stats.STARK_TP*tpPercent));
-		}
-		
-		if(ParkViewProtector.twoPressed && !(player instanceof SpecialCharacter))
-		{
-			player=new SpecialCharacter((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.SPECIAL_HP*hpPercent), (int) ((double)Stats.SPECIAL_TP*tpPercent));
-		}
-		
-		for(int j = 0; j < attacks.size(); j++)
-		{
-			currAttack		= attacks.get(j);
-			
-			if(currAttack.getBounds().intersects(player.getBounds()) && player.isHittable() && !currAttack.isStudent())
-			{
-				player.adjustHp(currAttack.getDamage());
-				if(player.getHp()>player.getMaxHp())
-					player.setHp(player.getMaxHp());
-				player.setHitDelay(currAttack.getHitDelay());
-				
-				if(!currAttack.isAoE())
-				{
-					attacks.remove(j);
-				}
-				
-				if(currAttack.getStatus()==Status.STUN)
-				{
-					player.stun(currAttack.getStatusDuration());
-				}
-			}
-		}
-		
+		player.step(this);
 		
 		////////////////////////////////////////////////////////////////////////////////////
-		//  Draw Items
+		// Draw items
 		///////////////////////////////////////////////////////////////////////////////////
+		// FIXME: these should probably be drawn before everything else
 		
 		for(int i = 0;i < items.size();i++)
 		{
@@ -365,48 +307,7 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// these are painted last to ensure that they are always on top
 
-		// background rectangle
-		g.setColor(ParkViewProtector.STATS_BAR_BG);
-		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
-		
-		// draw labels
-		g.setColor(ParkViewProtector.STATS_BAR_FG);
-		g.setFont(new Font("System", Font.PLAIN, 10));
-		
-		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;
-		
-		g.drawString("HP:", STAT_PAD_TOP, STAT_PAD_TOP + textCenter);
-		g.drawString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING + textCenter);
-		g.drawString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP + BAR_HEIGHT);
-		g.drawString("Level: " + level, 500, STAT_PAD_TOP + BAR_HEIGHT);
-		
-		// draw HP bar
-		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
-		int hpBarWidth				= (int) (((double) player.getHp() / player.getMaxHp())
-											* hpMaxWidth);
-		
-		// background
-		g.setColor(ParkViewProtector.STATS_BAR_HP.darker().darker());
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpMaxWidth, BAR_HEIGHT);
-		
-		// main bar
-		g.setColor(ParkViewProtector.STATS_BAR_HP);
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpBarWidth, BAR_HEIGHT);
-		
-		// draw TP bar
-		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
-		int tpBarWidth				= (int) (((double) player.getTp() / player.getMaxTp())
-											* tpMaxWidth);
-		
-		// background
-		g.setColor(ParkViewProtector.STATS_BAR_TP.darker().darker());
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpMaxWidth,
-				BAR_HEIGHT);
-		
-		// main bar
-		g.setColor(ParkViewProtector.STATS_BAR_TP);
-		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpBarWidth,
-				BAR_HEIGHT);
+		drawStatistics();
 		
 		// finish drawing
 		g.dispose();
@@ -455,49 +356,7 @@ public class Game implements Serializable
 		// Create attacks
 		////////////////////////////////////////////////////////////////////////////////////
 		
-		if(ParkViewProtector.attackPressed&&attackDelay == 0)
-		{
-			Attack testAttack;
-			int attackKey=0;
-			if(ParkViewProtector.zPressed)
-			{
-				attackKey=0;
-			}
-			else if(ParkViewProtector.xPressed)
-			{
-				attackKey=1;
-			}
-			else if(ParkViewProtector.cPressed)
-			{
-				attackKey=2;
-			}
-
-			testAttack			= player.getAttack(attackKey);
-			if(player.getTp()>testAttack.getTp())
-			{
-				player.stun(testAttack.getStillTime());
-				player.adjustTp(-testAttack.getTp());
-				testAttack.switchXY();
-				attacks.add(testAttack);
-				
-				try
-				{
-					Clip soundClip		= DataStore.INSTANCE.getAudioClip(testAttack.getName()+".wav");
-					soundClip.start();
-				}
-				catch(Exception e)
-				{
-					System.out.println("The attack has no sound.");
-				}
-				
-				// set delay
-				attackDelay			= testAttack.getReuse();
-			}
-			
-		}
-		// decrease delay if there is one
-		if(attackDelay > 0)
-			attackDelay--;
+		playerAttack();
 		
 		// keep the game from running too fast
 		try
@@ -505,6 +364,55 @@ public class Game implements Serializable
 			Thread.sleep(SPEED_THROTTLE);
 		}
 		catch(Exception e) {}
+	}
+	
+	/**
+	 * Draw statistics
+	 */
+	public void drawStatistics()
+	{
+		// background rectangle
+		g.setColor(ParkViewProtector.STATS_BAR_BG);
+		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
+		
+		// draw labels
+		g.setColor(ParkViewProtector.STATS_BAR_FG);
+		g.setFont(new Font("System", Font.PLAIN, 10));
+		
+		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;
+		
+		g.drawString("HP:", STAT_PAD_TOP, STAT_PAD_TOP + textCenter);
+		g.drawString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING + textCenter);
+		g.drawString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP + BAR_HEIGHT);
+		g.drawString("Level: " + level, 500, STAT_PAD_TOP + BAR_HEIGHT);
+		
+		// draw HP bar
+		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
+		int hpBarWidth				= (int) (((double) player.getHp() / player.getMaxHp())
+											* hpMaxWidth);
+		
+		// background
+		g.setColor(ParkViewProtector.STATS_BAR_HP.darker().darker());
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpMaxWidth, BAR_HEIGHT);
+		
+		// main bar
+		g.setColor(ParkViewProtector.STATS_BAR_HP);
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP, hpBarWidth, BAR_HEIGHT);
+		
+		// draw TP bar
+		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
+		int tpBarWidth				= (int) (((double) player.getTp() / player.getMaxTp())
+											* tpMaxWidth);
+		
+		// background
+		g.setColor(ParkViewProtector.STATS_BAR_TP.darker().darker());
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpMaxWidth,
+				BAR_HEIGHT);
+		
+		// main bar
+		g.setColor(ParkViewProtector.STATS_BAR_TP);
+		g.fillRect(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING, tpBarWidth,
+				BAR_HEIGHT);
 	}
 	
 	/**
@@ -601,6 +509,107 @@ public class Game implements Serializable
 	}
 	
 	/**
+	 * Switches the player's character to another
+	 */
+	public void switchChar()
+	{
+		if(ParkViewProtector.switchCharPressed)
+		{
+			hpPercent=(double)player.getHp()/(double)player.getMaxHp();
+			tpPercent=(double)player.getTp()/(double)player.getMaxTp();
+			if(ParkViewProtector.onePressed && !(player instanceof Stark))
+			{
+				player=new Stark((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.STARK_HP*hpPercent), (int)((double)Stats.STARK_TP*tpPercent));
+			}
+			
+			if(ParkViewProtector.twoPressed && !(player instanceof SpecialCharacter))
+			{
+				player=new SpecialCharacter((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.SPECIAL_HP*hpPercent), (int) ((double)Stats.SPECIAL_TP*tpPercent));
+			}
+		}
+	}
+	
+	
+	/**
+	 * Handles players attacks
+	 */
+	public void playerAttack()
+	{
+		if(ParkViewProtector.attackPressed&&attackDelay == 0)
+		{
+			Attack playerAttack;
+			int attackKey=0;
+			if(ParkViewProtector.zPressed)
+			{
+				attackKey=0;
+			}
+			else if(ParkViewProtector.xPressed)
+			{
+				attackKey=1;
+			}
+			else if(ParkViewProtector.cPressed)
+			{
+				attackKey=2;
+			}
+		
+			playerAttack			= player.getAttack(attackKey);
+			if(player.getTp()>=playerAttack.getTp())
+			{
+				player.stun(playerAttack.getStillTime());
+				player.adjustTp(-playerAttack.getTp());
+				playerAttack.switchXY();
+				attacks.add(playerAttack);
+				
+				try
+				{
+					Clip soundClip		= DataStore.INSTANCE.getAudioClip(playerAttack.getName()+".wav");
+					soundClip.start();
+				}
+				catch(Exception e)
+				{
+					System.out.println("The attack has no sound.");
+				}
+				
+				// set delay
+				attackDelay			= playerAttack.getReuse();
+			}
+			
+		}
+		
+		// decrease delay if there is one
+		if(attackDelay > 0)
+			attackDelay--;
+	}
+	
+	/**
+	 * Regenerate the player's TP
+	 */
+	public void tpRegen()
+	{
+		tpRegen+=1;
+		if(tpRegen>=TP_REGEN)
+		{
+			if(player.getTp()<player.getMaxTp())
+				player.adjustTp(2);
+			tpRegen=0;
+		}
+	}
+	
+	
+	/**
+	 * Recharge students
+	 */
+	public void recharge(Student student)
+	{
+		chargeRegen+=1;
+		if(chargeRegen>=CHARGE_REGEN)
+		{
+			chargeRegen=0;
+			student.adjustCharge(1);
+		}
+	}
+	
+	/**
 	 * Attempt to couple with another student
 	 * 
 	 * @param currStudent
@@ -667,6 +676,42 @@ public class Game implements Serializable
 	}
 	
 	/**
+	 * Handle attacks
+	 * 
+	 * @return Whether or not the attack hit the player
+	 */
+	public boolean handleAttack()
+	{
+		Attack currAttack;
+		
+		for(int j = 0; j < attacks.size(); j++)
+		{
+			currAttack		= attacks.get(j);
+			
+			if(currAttack.getBounds().intersects(player.getBounds()) && player.isHittable() && !currAttack.isStudent())
+			{
+				player.adjustHp(currAttack.getDamage());
+				if(player.getHp()>player.getMaxHp())
+					player.setHp(player.getMaxHp());
+				player.setHitDelay(currAttack.getHitDelay());
+				
+				if(!currAttack.isAoE())
+				{
+					attacks.remove(j);
+				}
+				
+				if(currAttack.getStatus()==Status.STUN)
+				{
+					player.stun(currAttack.getStatusDuration());
+				}
+				
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Handle any attacks on a student
 	 * 
 	 * @param obj
@@ -681,6 +726,7 @@ public class Game implements Serializable
 		{
 			currAttack		= attacks.get(j);
 			
+			//The student takes damage in this if loop
 			if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
 					currStudent.getCharge() > 0 && currStudent.isHittable() &&
 					currAttack.isStudent())
@@ -863,6 +909,9 @@ public class Game implements Serializable
 		driver.quit();
 	}
 	
+	/**
+	 * Shows the charges of the students
+	 */
 	public void showCharges()
 	{
 		g.setColor(ParkViewProtector.COLOR_BG_1);
@@ -871,7 +920,7 @@ public class Game implements Serializable
 		{
 			if(students.get(i).getCharge() > 0)
 			{
-				g.drawRect(students.get(i).x, students.get(i).y, 40, 64);
+				students.get(i).showCharge(g);
 			}
 		}
 	}
@@ -891,8 +940,6 @@ public class Game implements Serializable
 			couples		= (ArrayList<Cupple>) os.readObject();
 			attacks		= (ArrayList<Attack>) os.readObject();
 			
-			// FIXME: there has to be a better way to do this
-			walls		= new ArrayList<Wall>();
 			initWalls();
 		}
 		catch(ClassNotFoundException e)

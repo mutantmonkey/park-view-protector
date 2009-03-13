@@ -41,7 +41,7 @@ public class Attack extends Movable
 	 * @param hitDelay: The time before the target can be hit again after being hit
 	 * @param reuse: The time the user can perform another attack
 	 */
-	public Attack(int x, int y, double speed, int direction,
+	public Attack(double x, double y, double speed, int direction,
 			String name, boolean isStudent, boolean AoE, int damage, int tp, int duration,
 			int type, int statusEffect, int statusDuration, int stillTime,
 			int hits, int hitDelay, int reuse)
