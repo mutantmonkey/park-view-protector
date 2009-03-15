@@ -18,7 +18,7 @@ public class TitleScreen extends Menu
 			new MenuItem("Load Game", 2),
 		};
 	
-	Sprite mainLogo;
+	private Sprite mainLogo;
 	
 	/**
 	 * Constructor
@@ -34,11 +34,6 @@ public class TitleScreen extends Menu
 	
 	public void show()
 	{
-		g							= (Graphics) strategy.getDrawGraphics();
-		
-		// draw logo
-		mainLogo.draw(g, 0, 0);
-		
 		// handle key presses
 		if(ParkViewProtector.upPressed && selectedItem > 0)
 		{
@@ -59,6 +54,11 @@ public class TitleScreen extends Menu
 			ParkViewProtector.showMenu		= false;
 			ParkViewProtector.escPressed	= false;
 		}
+		
+		g							= (Graphics) strategy.getDrawGraphics();
+		
+		// draw logo
+		mainLogo.draw(g, 0, 0);
 		
 		// set font and color
 		g.setFont(TEXT_FONT);

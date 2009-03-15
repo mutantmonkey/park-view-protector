@@ -19,6 +19,8 @@ public class OptionsMenu extends Menu
 			new FloatOption("Effects Volume"	, 0.9F),
 		};
 	
+	private Sprite optionsBg;
+	
 	/**
 	 * Constructor
 	 * 
@@ -27,6 +29,8 @@ public class OptionsMenu extends Menu
 	public OptionsMenu(ParkViewProtector p)
 	{
 		super(p);
+		
+		optionsBg							= DataStore.INSTANCE.getSprite("options.png");
 	}
 	
 	public void show()
@@ -70,8 +74,7 @@ public class OptionsMenu extends Menu
 		g									= (Graphics) strategy.getDrawGraphics();
 		
 		// draw the background
-		g.setColor(BG_COLOR);
-		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
+		optionsBg.draw(g, 0, 0);
 		
 		// set font and color
 		g.setFont(TEXT_FONT);
