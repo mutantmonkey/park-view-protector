@@ -53,6 +53,16 @@ public class Bar
 	}
 	
 	/**
+	 * Adjust the percentage filled
+	 * 
+	 * @param width
+	 */
+	public void setFilled(double percent)
+	{
+		this.width				= (int) (percent * maxWidth);
+	}
+	
+	/**
 	 * Draw the bar at the given position
 	 * 
 	 * @param g Graphics context

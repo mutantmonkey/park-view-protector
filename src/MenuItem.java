@@ -7,45 +7,42 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class MenuItem extends JLabel
+public class MenuItem extends OptionItem
 {
-	private String label;
 	private int action;
 	
 	/**
 	 * Creates a new menu item with the specified label
 	 * 
-	 * @param name
+	 * @param label
 	 */
 	public MenuItem(String label)
 	{
-		this.label			= label;
+		super(label);
+		
 		this.action			= 0;
 	}
 	
 	/**
 	 * Creates a new menu item with the specified label
 	 * 
-	 * @param name
+	 * @param label
 	 */
 	public MenuItem(String label, int action)
 	{
-		this.label			= label;
+		super(label);
+		
 		this.action			= action;
 	}
 	
-	/**
-	 * Gets the bounds of the menu item
-	 * 
-	 * @param g Graphics context
-	 * @return Bounding box
-	 */
-	public Rectangle getBounds(Graphics g)
+	public void leftPressed()
 	{
-		int width			= g.getFontMetrics().stringWidth(label);
-		int height			= g.getFontMetrics().getHeight();
-		
-		return new Rectangle(width, height);
+		// do nothing
+	}
+	
+	public void rightPressed()
+	{
+		// do nothing
 	}
 	
 	/**
@@ -72,17 +69,5 @@ public class MenuItem extends JLabel
 		x				   -= width / 2;
 		
 		draw(g, x, y);
-	}
-	
-	/**
-	 * Draws the menu item on the graphics context
-	 *  
-	 * @param g Graphics context
-	 * @param x X position
-	 * @param y Y position
-	 */
-	public void draw(Graphics g, int x, int y)
-	{
-		g.drawString(label, x, y);
 	}
 }

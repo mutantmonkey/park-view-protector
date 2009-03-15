@@ -10,9 +10,13 @@ import java.awt.image.BufferStrategy;
 public class OptionsMenu extends Menu
 {
 	public static final int LEFT_SPACING	= 60;
+	public static final int RIGHT_SPACING	= 60;
 	
-	private MenuItem[] items				= {
-			new MenuItem("Back", 1),
+	private OptionItem[] items				= {
+			new MenuItem("Back"					, 1),
+			
+			new FloatOption("Music Volume"		, 0.6F),
+			new FloatOption("Effects Volume"	, 0.9F),
 		};
 	
 	/**
@@ -36,16 +40,31 @@ public class OptionsMenu extends Menu
 		{
 			selectedItem++;
 		}
-		else if(ParkViewProtector.enterPressed)
-		{
-			execute(items[selectedItem].getAction());
-			
-			ParkViewProtector.enterPressed	= false;
-		}
 		else if(ParkViewProtector.escPressed)
 		{
 			ParkViewProtector.showMenu		= false;
 			ParkViewProtector.escPressed	= false;
+		}
+		
+		// menu items are different
+		if(items[selectedItem] instanceof MenuItem)
+		{
+			if(ParkViewProtector.enterPressed)
+			{
+				execute(((MenuItem) items[selectedItem]).getAction());
+				
+				ParkViewProtector.enterPressed	= false;
+			}
+		}
+		else {
+			if(ParkViewProtector.leftPressed)
+			{
+				items[selectedItem].leftPressed();
+			}
+			else if(ParkViewProtector.rightPressed)
+			{
+				items[selectedItem].rightPressed();
+			}
 		}
 		
 		g									= (Graphics) strategy.getDrawGraphics();
