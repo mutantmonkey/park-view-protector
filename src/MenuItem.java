@@ -35,11 +35,17 @@ public class MenuItem extends OptionItem
 		this.action			= action;
 	}
 	
+	/**
+	 * Action for when the left key is pressed
+	 */
 	public void leftPressed()
 	{
 		// do nothing
 	}
 	
+	/**
+	 * Action for when the right key is pressed
+	 */
 	public void rightPressed()
 	{
 		// do nothing
