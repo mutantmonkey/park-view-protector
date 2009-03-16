@@ -126,8 +126,7 @@ public class ParkViewProtector extends Canvas
 		// try to play "Clock Home Start" startup clip
 		try
 		{
-			Clip openingClip		= DataStore.INSTANCE.getAudioClip("clockhomestart.wav");
-			openingClip.start();
+			playSound("clockhomestart.wav");
 		}
 		catch(Exception e)
 		{
@@ -240,6 +239,21 @@ public class ParkViewProtector extends Canvas
 		{
 			bgMusic.setGain(value);
 		}
+	}
+	
+	/**
+	 * Play a sound
+	 * 
+	 * @param file File name
+	 */
+	public static void playSound(String file)
+	{
+		Clip soundClip		= DataStore.INSTANCE.getAudioClip(file);
+		
+		// TODO: add volume control
+		//soundClip.setGain(Options.INSTANCE.getFloat("sfx_volume", 1.0f));
+		
+		soundClip.start();
 	}
 	
 	/**

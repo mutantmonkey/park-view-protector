@@ -550,8 +550,7 @@ public class Game implements Serializable
 				
 				try
 				{
-					Clip soundClip		= DataStore.INSTANCE.getAudioClip(playerAttack.getName()+".wav");
-					soundClip.start();
+					ParkViewProtector.playSound(playerAttack.getName()+".wav");
 				}
 				catch(Exception e)
 				{

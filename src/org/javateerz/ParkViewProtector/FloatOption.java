@@ -11,7 +11,7 @@ import java.awt.Graphics;
 public class FloatOption extends OptionItem
 {
 	public static final int BAR_WIDTH		= 200;
-	public static final float ACCURACY		= 0.05f;
+	public static final float ACCURACY		= 0.03f;
 	
 	private float value;
 	private Bar optionBar;
