@@ -11,8 +11,6 @@ import java.awt.image.BufferStrategy;
 import java.io.*;
 import java.util.ArrayList;
 
-import javax.sound.sampled.Clip;
-
 public class Game implements Serializable
 {
 	public static final int SPEED_THROTTLE		= 10;
