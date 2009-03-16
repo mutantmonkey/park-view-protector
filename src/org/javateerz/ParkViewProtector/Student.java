@@ -151,6 +151,12 @@ public class Student extends Character implements Serializable
 				(int) getBounds().getHeight());
 	}
 	
+	public void showChargeBar(Graphics g)
+	{
+		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()),charge*.01);
+		chargeBar.draw(g,(int)x,(int)y);
+	}
+	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
 	{
 		os.defaultReadObject();
