@@ -22,10 +22,10 @@ public class Game implements Serializable
 	
 	// delay (in number of frames) before another attack can be used
 	public static final int ATTACK_DELAY		= 20;
-	private int attackDelay						= 0;
+	private int attackDelay					= 0;
 	public static final int TP_REGEN			= 5;
 	public static int tpRegen					= 0;
-	public static final int CHARGE_REGEN		= 200;
+	public static final int CHARGE_REGEN		= 10;
 	public static int chargeRegen				= 0;
 	
 	public static final int MIN_STUDENTS		= 20;
@@ -593,7 +593,8 @@ public class Game implements Serializable
 		if(chargeRegen>=CHARGE_REGEN)
 		{
 			chargeRegen=0;
-			student.adjustCharge(1);
+			if(student.getCharge()<100)
+				student.adjustCharge(1);
 		}
 	}
 	
@@ -732,7 +733,7 @@ public class Game implements Serializable
 				// FIXME: should be variable depending on strength
 				if(currStudent.getCharge()>-10)
 					currStudent.adjustCharge(-currAttack.getDamage()/3);
-				System.out.println("Student took "+ currAttack.getDamage()/3 + ", now has "+ currStudent.getCharge());
+				//System.out.println("Student took "+ currAttack.getDamage()/3 + ", now has "+ currStudent.getCharge());
 				currStudent.setHitDelay(currAttack.getHitDelay());
 				
 				return true;
@@ -782,11 +783,13 @@ public class Game implements Serializable
 					male		= currCouple.getMale();
 					male.moveTo(currCouple.getBounds().x, currCouple.getBounds().y);
 					male.setHitDelay(currAttack.getHitDelay());
+					male.setCharge(-10);
 					
 					female		= currCouple.getFemale();
 					female.moveTo(currCouple.getBounds().x + DECOUPLE_SPACING,
 							currCouple.getBounds().y);
 					female.setHitDelay(currAttack.getHitDelay());
+					female.setCharge(-10);
 					
 					// create students before removing couple
 					students.add(male);

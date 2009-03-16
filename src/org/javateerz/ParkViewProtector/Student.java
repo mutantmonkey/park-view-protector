@@ -87,6 +87,11 @@ public class Student extends Character implements Serializable
 		charge			   += amt;
 	}
 	
+	public void setCharge(int amt)
+	{
+		charge=amt;
+	}
+	
 	public void step(Game game)
 	{
 		// random movement
@@ -153,7 +158,7 @@ public class Student extends Character implements Serializable
 	
 	public void showChargeBar(Graphics g)
 	{
-		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()),charge*.01);
+		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()), (double)charge/100);
 		chargeBar.draw(g,(int)x,(int)y);
 	}
 	
