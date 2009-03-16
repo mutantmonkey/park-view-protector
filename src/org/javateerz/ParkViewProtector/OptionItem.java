@@ -4,11 +4,14 @@
  * @author	James Schwinabart
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.awt.*;
 
 public abstract class OptionItem
 {
 	protected String label;
+	protected String key;
 	
 	/**
 	 * Creates a new item with the specified label
@@ -21,6 +24,18 @@ public abstract class OptionItem
 	}
 	
 	/**
+	 * Creates a new item with the specified label and key
+	 * 
+	 * @param label
+	 * @param key
+	 */
+	public OptionItem(String label, String key)
+	{
+		this.label			= label;
+		this.key			= key;
+	}
+	
+	/**
 	 * Action for when the left key is pressed
 	 */
 	public abstract void leftPressed();
@@ -29,6 +44,11 @@ public abstract class OptionItem
 	 * Action for when the right key is pressed
 	 */
 	public abstract void rightPressed();
+	
+	/**
+	 * Updates the option
+	 */
+	public abstract void update(ParkViewProtector p);
 	
 	/**
 	 * Gets the bounds of the item

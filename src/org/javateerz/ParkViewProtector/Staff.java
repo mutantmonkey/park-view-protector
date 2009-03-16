@@ -7,6 +7,8 @@
  *
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.io.*;
 
 public abstract class Staff extends Character

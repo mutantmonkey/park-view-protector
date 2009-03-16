@@ -1,3 +1,5 @@
+package org.javateerz.ParkViewProtector;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 

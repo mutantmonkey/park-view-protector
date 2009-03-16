@@ -4,9 +4,12 @@
  * @author	James Schwinabart
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.awt.*;
 import javax.swing.*;
 
+// TODO: I think having MenuItem extend OptionItem was a bad idea
 public class MenuItem extends OptionItem
 {
 	private int action;
@@ -47,6 +50,14 @@ public class MenuItem extends OptionItem
 	 * Action for when the right key is pressed
 	 */
 	public void rightPressed()
+	{
+		// do nothing
+	}
+	
+	/**
+	 * Action to update
+	 */
+	public void update(ParkViewProtector p)
 	{
 		// do nothing
 	}

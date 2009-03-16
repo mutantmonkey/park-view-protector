@@ -1,5 +1,3 @@
-import java.awt.Graphics;
-
 /**
  * Behold...
  * 
@@ -7,6 +5,8 @@ import java.awt.Graphics;
  * 
  * @author:	Javateerz...
  */
+
+package org.javateerz.ParkViewProtector;
 
 public class Item extends Movable
 {

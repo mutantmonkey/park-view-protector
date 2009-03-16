@@ -4,20 +4,16 @@
  * @author	James Schwinabart
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.awt.*;
-import java.awt.image.BufferStrategy;
 
 public class OptionsMenu extends Menu
 {
 	public static final int LEFT_SPACING	= 60;
 	public static final int RIGHT_SPACING	= 60;
 	
-	private OptionItem[] items				= {
-			new MenuItem("Back"					, 1),
-			
-			new FloatOption("Music Volume"		, 0.6F),
-			new FloatOption("Effects Volume"	, 0.9F),
-		};
+	private OptionItem[] items;
 	
 	private Sprite optionsBg;
 	
@@ -29,6 +25,19 @@ public class OptionsMenu extends Menu
 	public OptionsMenu(ParkViewProtector p)
 	{
 		super(p);
+		
+		items		= new OptionItem[3];
+		int i		= 0;
+		
+		items[i]	= new MenuItem("Back", 1);
+		
+		i++;
+		items[i]	= new FloatOption("Music Volume"		, "music_volume",
+				Options.INSTANCE.getFloat("music_volume", 0.8f));
+		
+		i++;
+		items[i]	= new FloatOption("Effects Volume"	, "sfx_volume",
+				Options.INSTANCE.getFloat("music_volume", 1.0f));
 		
 		optionsBg							= DataStore.INSTANCE.getSprite("options.png");
 	}
@@ -64,10 +73,12 @@ public class OptionsMenu extends Menu
 			if(ParkViewProtector.leftPressed)
 			{
 				items[selectedItem].leftPressed();
+				items[selectedItem].update(driver);
 			}
 			else if(ParkViewProtector.rightPressed)
 			{
 				items[selectedItem].rightPressed();
+				items[selectedItem].update(driver);
 			}
 		}
 		

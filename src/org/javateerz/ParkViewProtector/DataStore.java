@@ -5,6 +5,8 @@
  * @author	Jamie of the Javateerz
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.awt.*;
 import java.awt.image.*;
 

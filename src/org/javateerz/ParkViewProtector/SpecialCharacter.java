@@ -6,6 +6,8 @@
  *
  */
 
+package org.javateerz.ParkViewProtector;
+
 public class SpecialCharacter extends Staff
 {
 	private static final double SPEED= 5.0;

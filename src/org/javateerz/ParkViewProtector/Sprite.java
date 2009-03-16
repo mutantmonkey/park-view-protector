@@ -4,6 +4,8 @@
  * @author	Jamie of the Javateerz
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.awt.*;
 
 public class Sprite

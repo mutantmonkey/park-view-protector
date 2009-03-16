@@ -1,35 +1,46 @@
 /**
- * Game title screen
+ * Game menu
  * 
  * @author	James Schwinabart
  */
 
-import java.awt.*;
+package org.javateerz.ParkViewProtector;
 
-public class TitleScreen extends Menu
+import java.awt.*;
+import java.awt.image.BufferStrategy;
+
+public class Menu
 {
-	public static final int RIGHT_SPACING	= 20;
+	public static final int TOP_SPACING				= 120;
+	public static final int LINE_SPACING			= 40;
+	public static final Font TEXT_FONT				= new Font("Dialog", Font.PLAIN, 32);
+	public static final Color BG_COLOR				= Color.black;
+	public static final Color TEXT_COLOR			= Color.white;
+	public static final Color SELECTED_TEXT_COLOR	= new Color(255, 0, 255);
 	
-	public static final Color SELECTED_TEXT_COLOR	= Color.white;
-	public static final Color TEXT_COLOR			= new Color(255, 150, 255);
+	protected ParkViewProtector driver;
+	protected Graphics g;
+	protected BufferStrategy strategy;
 	
-	private MenuItem[] items			= {
-			new MenuItem("New Game", 1),
-			new MenuItem("Load Game", 2),
+	private MenuItem[] items						= {
+			new MenuItem("Back", 1),
+			new MenuItem("Options", 2),
+			new MenuItem("Save Game", 4),
+			new MenuItem("Load Game", 5),
+			new MenuItem("Quit Game", 9),
 		};
-	
-	private Sprite mainLogo;
+	protected int selectedItem						= 0;
 	
 	/**
 	 * Constructor
 	 * 
 	 * @param p Driver class
 	 */
-	public TitleScreen(ParkViewProtector p)
+	public Menu(ParkViewProtector p)
 	{
-		super(p);
-		
-		mainLogo					= DataStore.INSTANCE.getSprite("logo.png");
+		this.driver								= p;
+		this.g									= p.getGraphics();
+		this.strategy							= p.getBufferStrategy();
 	}
 	
 	public void show()
@@ -55,10 +66,11 @@ public class TitleScreen extends Menu
 			ParkViewProtector.escPressed	= false;
 		}
 		
-		g							= (Graphics) strategy.getDrawGraphics();
+		g									= (Graphics) strategy.getDrawGraphics();
 		
-		// draw logo
-		mainLogo.draw(g, 0, 0);
+		// draw the background
+		g.setColor(BG_COLOR);
+		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
 		
 		// set font and color
 		g.setFont(TEXT_FONT);
@@ -75,8 +87,7 @@ public class TitleScreen extends Menu
 				g.setColor(TEXT_COLOR);
 			}
 			
-			items[i].draw(g, ParkViewProtector.WIDTH - items[i].getBounds(g).width - RIGHT_SPACING,
-					TOP_SPACING + (i + 1) * LINE_SPACING);
+			items[i].drawCentered(g, ParkViewProtector.WIDTH / 2, TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
 		
 		// finish drawing
@@ -101,10 +112,18 @@ public class TitleScreen extends Menu
 		switch(actionId)
 		{
 			case 1:
-				ParkViewProtector.showTitle		= false;
+				ParkViewProtector.showMenu		= false;
 				break;
 			
 			case 2:
+				ParkViewProtector.showOptions	= true;
+				break;
+				
+			case 4:
+				DataSaver.save(driver.getGame());
+				break;
+			
+			case 5:
 				Game gameData					= DataSaver.load();
 				
 				if(gameData != null)
@@ -114,6 +133,12 @@ public class TitleScreen extends Menu
 					ParkViewProtector.showTitle	= false;
 				}
 				
+				ParkViewProtector.showMenu		= false;
+				
+				break;
+				
+			case 9:
+				driver.quit();
 				break;
 		}
 	}

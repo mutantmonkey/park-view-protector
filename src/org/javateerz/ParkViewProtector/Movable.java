@@ -6,6 +6,8 @@
  * @serial
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.io.Serializable;
 import java.awt.Graphics;
 import java.awt.Rectangle;

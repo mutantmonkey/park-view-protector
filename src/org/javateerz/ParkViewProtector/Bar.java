@@ -5,6 +5,8 @@
  * @author	James Schwinabart
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.awt.*;
 
 public class Bar

@@ -8,6 +8,8 @@
  * @author	Jamie of the Javateerz
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.awt.event.*;
 
 public class KeyHandler extends KeyAdapter

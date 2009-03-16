@@ -5,6 +5,8 @@
  * @serial
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.awt.Graphics;
 import java.io.*;
 

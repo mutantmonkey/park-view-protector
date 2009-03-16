@@ -6,10 +6,11 @@
  * @author	Jamie of the Javateerz
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.io.FileInputStream;
 
 import javax.sound.sampled.Clip;
 import javax.swing.*;
@@ -27,7 +28,7 @@ public class ParkViewProtector extends Canvas
 	public static final Color COLOR_BG_2	= Color.white;
 	public static final Color COLOR_TEXT_2	= Color.black;
 	
-	public static final Color STATS_BAR_BG	= new Color(0F, 0F, 0F, 0.5F);
+	public static final Color STATS_BAR_BG	= new Color(0f, 0f, 0f, 0.5f);
 	public static final Color STATS_BAR_FG	= Color.white;
 	public static final Color STATS_BAR_HP	= new Color(255, 0, 255);
 	public static final Color STATS_BAR_TP	= new Color(0, 255, 0);
@@ -57,7 +58,7 @@ public class ParkViewProtector extends Canvas
 	public static boolean twoPressed		= false;
 	
 	// logos
-	Sprite jtzLogo;
+	private Sprite jtzLogo;
 	
 	// graphics
 	private Graphics g;
@@ -155,6 +156,7 @@ public class ParkViewProtector extends Canvas
 		try
 		{
 			bgMusic					= new OggClip("kicked.ogg");
+			bgMusic.setGain(Options.INSTANCE.getFloat("music_volume", 0.8f));
 			bgMusic.loop();
 		}
 		catch(Exception e)
@@ -213,10 +215,31 @@ public class ParkViewProtector extends Canvas
 		return game;
 	}
 	
+	/**
+	 * Sets the instance of Game that will be run by ParkViewProtector
+	 * 
+	 * @param g An instance of Game
+	 */
 	public void setGame(Game g)
 	{
 		game							= g;
 		game.init(this);
+	}
+	
+	/**
+	 * Update a float option
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	public void setFloat(String key, float value)
+	{
+		Options.INSTANCE.putFloat(key, value);
+		
+		if(key == "music_volume")
+		{
+			bgMusic.setGain(value);
+		}
 	}
 	
 	/**

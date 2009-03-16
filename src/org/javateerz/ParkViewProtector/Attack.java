@@ -6,6 +6,8 @@
  * Creates an attack area
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.util.ArrayList;
 import java.awt.Rectangle;
 import java.io.*;

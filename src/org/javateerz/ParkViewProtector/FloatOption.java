@@ -4,12 +4,14 @@
  * @author	James Schwinabart
  */
 
+package org.javateerz.ParkViewProtector;
+
 import java.awt.Graphics;
 
 public class FloatOption extends OptionItem
 {
 	public static final int BAR_WIDTH		= 200;
-	public static final float ACCURACY		= 0.05F;
+	public static final float ACCURACY		= 0.05f;
 	
 	private float value;
 	private Bar optionBar;
@@ -20,12 +22,13 @@ public class FloatOption extends OptionItem
 	 * @param label
 	 * @param value
 	 */
-	public FloatOption(String label, float value)
+	public FloatOption(String label, String key, float value)
 	{
-		super(label);
+		super(label, key);
 		
 		this.value				= value;
-		this.optionBar			= new Bar(ParkViewProtector.COLOR_BG_1, BAR_WIDTH, (double) value);
+		this.optionBar			= new Bar(ParkViewProtector.COLOR_BG_1, BAR_WIDTH,
+				(double) value);
 	}
 	
 	/**
@@ -33,13 +36,10 @@ public class FloatOption extends OptionItem
 	 */
 	public void leftPressed()
 	{
-		if(value > 0)
+		if(value >= ACCURACY)
 		{
 			value			   -= ACCURACY;
 		}
-		
-		// update option bar to show new value
-		optionBar.setFilled(value);
 	}
 	
 	/**
@@ -47,13 +47,32 @@ public class FloatOption extends OptionItem
 	 */
 	public void rightPressed()
 	{
-		if(value < 1.0)
+		if(value <= 1.0 - ACCURACY)
 		{
 			value			   += ACCURACY;
 		}
-		
+	}
+	
+	/**
+	 * Updates the option
+	 */
+	public void update(ParkViewProtector p)
+	{
 		// update option bar to show new value
 		optionBar.setFilled(value);
+		
+		// update preference
+		p.setFloat(key, value);
+	}
+	
+	/**
+	 * Returns the current value of the option
+	 * 
+	 * @return
+	 */
+	public float getValue()
+	{
+		return value;
 	}
 	
 	/**
@@ -67,7 +86,8 @@ public class FloatOption extends OptionItem
 	{
 		super.draw(g, x, y);
 		
-		x						= ParkViewProtector.WIDTH - OptionsMenu.RIGHT_SPACING - BAR_WIDTH;
+		x						= ParkViewProtector.WIDTH - OptionsMenu.RIGHT_SPACING
+									- BAR_WIDTH;
 		y						= (int) (y - getBounds(g).getHeight() / 2);
 		
 		optionBar.draw(g, x, y);
