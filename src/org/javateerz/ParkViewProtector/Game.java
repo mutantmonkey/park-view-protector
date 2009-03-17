@@ -220,7 +220,7 @@ public class Game implements Serializable
 				}
 			}
 			
-			if(ParkViewProtector.shiftPressed)
+			if(Keyboard.isPressed(Keyboard.SHOW_CHARGES))
 			{
 				showCharges();
 			}
@@ -319,26 +319,24 @@ public class Game implements Serializable
 		
 		int distX = 0, distY = 0;
 		
-		if(ParkViewProtector.upPressed && !ParkViewProtector.downPressed
-				&& player.getBounds().y > 0)
+		if(Keyboard.isPressed(Keyboard.UP) && player.getBounds().y > 0)
 		{
 			distY						= -MOVE_SPEED;
 		}
 		
-		if(ParkViewProtector.downPressed && !ParkViewProtector.upPressed
-				&& player.getBounds().y < ParkViewProtector.HEIGHT - player.getBounds().height)
+		if(Keyboard.isPressed(Keyboard.DOWN) && player.getBounds().y < ParkViewProtector.HEIGHT
+				- player.getBounds().height)
 		{
 			distY						= MOVE_SPEED;
 		}
 		
-		if(ParkViewProtector.leftPressed && !ParkViewProtector.rightPressed
-				&& player.getBounds().x > 0)
+		if(Keyboard.isPressed(Keyboard.LEFT) && player.getBounds().x > 0)
 		{
 			distX						= -MOVE_SPEED;
 		}
 		
-		if(ParkViewProtector.rightPressed && !ParkViewProtector.leftPressed
-				&& player.getBounds().x < ParkViewProtector.WIDTH - player.getBounds().width)
+		if(Keyboard.isPressed(Keyboard.RIGHT) && player.getBounds().x < ParkViewProtector.WIDTH
+				- player.getBounds().width)
 		{
 			distX						= MOVE_SPEED;
 		}
@@ -499,16 +497,16 @@ public class Game implements Serializable
 	 */
 	public void switchChar()
 	{
-		if(ParkViewProtector.switchCharPressed)
+		if(Keyboard.isPressed(Keyboard.CHAR1) || Keyboard.isPressed(Keyboard.CHAR2))
 		{
 			hpPercent=(double)player.getHp()/(double)player.getMaxHp();
 			tpPercent=(double)player.getTp()/(double)player.getMaxTp();
-			if(ParkViewProtector.onePressed && !(player instanceof Stark))
+			if(Keyboard.isPressed(Keyboard.CHAR1) && !(player instanceof Stark))
 			{
 				player=new Stark((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.STARK_HP*hpPercent), (int)((double)Stats.STARK_TP*tpPercent));
 			}
 			
-			if(ParkViewProtector.twoPressed && !(player instanceof SpecialCharacter))
+			if(Keyboard.isPressed(Keyboard.CHAR2) && !(player instanceof SpecialCharacter))
 			{
 				player=new SpecialCharacter((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.SPECIAL_HP*hpPercent), (int) ((double)Stats.SPECIAL_TP*tpPercent));
 			}
@@ -521,19 +519,20 @@ public class Game implements Serializable
 	 */
 	public void playerAttack()
 	{
-		if(ParkViewProtector.attackPressed&&attackDelay == 0)
+		if((Keyboard.isPressed(Keyboard.ATTACK1) || Keyboard.isPressed(Keyboard.ATTACK2)
+				|| Keyboard.isPressed(Keyboard.ATTACK3)) && attackDelay == 0)
 		{
 			Attack playerAttack;
 			int attackKey=0;
-			if(ParkViewProtector.zPressed)
+			if(Keyboard.isPressed(Keyboard.ATTACK1))
 			{
 				attackKey=0;
 			}
-			else if(ParkViewProtector.xPressed)
+			else if(Keyboard.isPressed(Keyboard.ATTACK2))
 			{
 				attackKey=1;
 			}
-			else if(ParkViewProtector.cPressed)
+			else if(Keyboard.isPressed(Keyboard.ATTACK3))
 			{
 				attackKey=2;
 			}

@@ -41,22 +41,6 @@ public class ParkViewProtector extends Canvas
 	public static boolean showMenu			= false;
 	public static boolean showOptions		= false;
 	
-	// which keys are pressed
-	public static boolean upPressed			= false;
-	public static boolean downPressed		= false;
-	public static boolean leftPressed		= false;
-	public static boolean rightPressed		= false;
-	public static boolean attackPressed		= false;
-	public static boolean escPressed		= false;
-	public static boolean enterPressed		= false;
-	public static boolean shiftPressed		= false;
-	public static boolean zPressed			= false;
-	public static boolean xPressed			= false;
-	public static boolean cPressed			= false;
-	public static boolean switchCharPressed	= false;
-	public static boolean onePressed		= false;
-	public static boolean twoPressed		= false;
-	
 	// logos
 	private Sprite jtzLogo;
 	
@@ -166,7 +150,7 @@ public class ParkViewProtector extends Canvas
 		}
 		
 		// add key handler class
-		addKeyListener(new KeyHandler());
+		addKeyListener(new Keyboard());
 		
 		// request focus so we will get events without a click
 		requestFocus();

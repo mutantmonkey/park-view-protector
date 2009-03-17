@@ -37,30 +37,37 @@ public class TitleScreen extends Menu
 	public void show()
 	{
 		// handle key presses
-		if(ParkViewProtector.upPressed && selectedItem > 0)
+		if(Keyboard.isPressed(Keyboard.NAV_UP) && selectedItem > 0)
 		{
 			selectedItem--;
 		}
-		else if(ParkViewProtector.downPressed && selectedItem < items.length - 1)
+		else if(Keyboard.isPressed(Keyboard.NAV_DOWN) && selectedItem < items.length - 1)
 		{
 			selectedItem++;
 		}
-		else if(ParkViewProtector.enterPressed)
+		else if(Keyboard.isPressed(Keyboard.ENTER))
 		{
 			execute(items[selectedItem].getAction());
 			
-			ParkViewProtector.enterPressed	= false;
+			// FIXME: should this actually be here?
+			Keyboard.setReleased(Keyboard.ENTER);
 		}
-		else if(ParkViewProtector.escPressed)
+		else if(Keyboard.isPressed(Keyboard.BACK))
 		{
 			ParkViewProtector.showMenu		= false;
-			ParkViewProtector.escPressed	= false;
+			
+			// FIXME: see above
+			Keyboard.setReleased(Keyboard.BACK);
 		}
 		
 		g							= (Graphics) strategy.getDrawGraphics();
 		
 		// draw logo
 		mainLogo.draw(g, 0, 0);
+		
+		// FIXME: remove this notice about the new keys
+		g.setColor(SELECTED_TEXT_COLOR);
+		g.drawString("NOTICE: Keys have changed. Use w, a, s, and d to move; j, k, and l to attack", 50, 50);
 		
 		// set font and color
 		g.setFont(TEXT_FONT);
