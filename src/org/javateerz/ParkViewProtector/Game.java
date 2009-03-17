@@ -145,8 +145,8 @@ public class Game implements Serializable
 		
 		for(int i = 0; i < numStudents; i++)
 		{
-			x						= (int) (Math.random() * ParkViewProtector.WIDTH) + 1;
-			y						= (int) (Math.random() * ParkViewProtector.HEIGHT) + 1;
+			x						= (int) (Math.random() * ParkViewProtector.WIDTH);
+			y						= (int) (Math.random() * ParkViewProtector.HEIGHT);
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			

@@ -86,6 +86,8 @@ public class ParkViewProtector extends Canvas
 			System.out.println("Error setting system look and feel");
 		}
 		
+		// TODO: add fullscreen support (may require switch from AWT)
+		
 		// create container JFrame (window)
 		window						= new JFrame("Park View Protector");
 		window.setPreferredSize(new Dimension(WIDTH, HEIGHT));
