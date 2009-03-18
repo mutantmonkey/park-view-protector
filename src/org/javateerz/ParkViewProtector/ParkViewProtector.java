@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11;
 
 import org.newdawn.easyogg.OggClip;
 
-public class ParkViewProtector extends Canvas
+public class ParkViewProtector
 {
 	public static final int WIDTH			= 800;
 	public static final int HEIGHT			= 600;
@@ -103,37 +103,6 @@ public class ParkViewProtector extends Canvas
 		{
 			System.out.println("Error setting system look and feel");
 		}
-		
-		// create container JFrame (window)
-		window						= new JFrame("Park View Protector");
-		window.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		
-		// set up content panel
-		contentPanel				= (JPanel) window.getContentPane();
-		contentPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		
-		// add canvas
-		contentPanel.setLayout(new GridLayout(1, 1));
-		contentPanel.add(this);
-		
-		// set up window
-		window.pack();
-		window.setResizable(false);
-		
-		// make the window visible
-		window.setVisible(true);
-		
-		// this makes the program end when the window is closed
-		window.addWindowListener(new WindowAdapter()
-		{
-			public void windowClosing(WindowEvent e)
-			{
-				quit();
-			}
-		});
-		
-		// don't automatically repaint
-		setIgnoreRepaint(true);
 	}
 	
 	/**
@@ -151,15 +120,10 @@ public class ParkViewProtector extends Canvas
 			System.out.println("No clock home start!");
 		}
 		
-		Graphics g					= getGraphics();
-		
-		// draw the background
-		g.setColor(Color.white);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
 		// Javateerz logo
-		jtzLogo.draw(g, WIDTH / 2 - jtzLogo.getWidth() / 2, HEIGHT / 2 - jtzLogo.getHeight() / 2);
-		g.dispose();
+		jtzLogo.draw(WIDTH / 2 - jtzLogo.getWidth() / 2, HEIGHT / 2 - jtzLogo.getHeight() / 2);
 		
 		try{Thread.sleep(3000);}catch(Exception e){}
 	}
@@ -182,14 +146,14 @@ public class ParkViewProtector extends Canvas
 		}
 		
 		// add key handler class
-		addKeyListener(new Keyboard());
+		//addKeyListener(new Keyboard());
 		
 		// request focus so we will get events without a click
-		requestFocus();
+		//requestFocus();
 		
 		// accelerated graphics
-		createBufferStrategy(2);
-		strategy					= getBufferStrategy();
+		//createBufferStrategy(2);
+		//strategy					= getBufferStrategy();
 		
 		title						= new TitleScreen(this);
 		game						= new Game(this);
@@ -205,10 +169,10 @@ public class ParkViewProtector extends Canvas
 		while(running)
 		{
 			// close requested?
-			if(Display.isCloseRequested())
+			/*if(Display.isCloseRequested())
 			{
 				running				= false;
-			}
+			}*/
 			
 			// clear screen
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);

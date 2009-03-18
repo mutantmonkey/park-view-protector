@@ -63,7 +63,7 @@ public class TitleScreen extends Menu
 		g							= (Graphics) strategy.getDrawGraphics();
 		
 		// draw logo
-		mainLogo.draw(g, 0, 0);
+		mainLogo.draw(0, 0);
 		
 		// FIXME: remove this notice about the new keys
 		g.setColor(SELECTED_TEXT_COLOR);

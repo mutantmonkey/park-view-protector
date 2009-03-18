@@ -108,8 +108,8 @@ public class Game implements Serializable
 	public void init(ParkViewProtector p)
 	{
 		this.driver							= p;
-		this.g								= p.getGraphics();
-		this.strategy						= p.getBufferStrategy();
+		//this.g								= p.getGraphics();
+		//this.strategy						= p.getBufferStrategy();
 	}
 	
 	/**
@@ -932,7 +932,7 @@ public class Game implements Serializable
 	{
 		Sprite gameOver					= DataStore.INSTANCE.getSprite("game_over.png");
 		
-		gameOver.draw(g, 0, 0);
+		gameOver.draw(0, 0);
 		
 		// finish drawing
 		g.dispose();
