@@ -1,6 +1,11 @@
 /**
  * Main game
  * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * @author	Jamie of the Javateerz
  */
 
@@ -169,7 +174,19 @@ public class Game implements Serializable
 	{
 		for(int i = 0;i < students.size();i++)
 		{
-			students.get(i).pickItem(new Item('h',0,0));
+			int random = (int)(Math.random()*4);
+			//there is a 1/2 chance of a health item, 1/4 chance of a teacher item, and 1/4 chance of no item
+			switch(random)
+			{
+			case 0:
+			case 1:
+				students.get(i).pickItem(new Item('h',0,0));
+				break;
+			case 2:
+				students.get(i).pickItem(new Item('t',0,0));
+			default:
+				break;
+			}
 		}
 	}
 	
@@ -194,6 +211,14 @@ public class Game implements Serializable
 			currStudent			= students.get(i);
 			currStudent.draw(g);
 			currStudent.step(this);
+			if(currStudent.getCharge() <= 0 && currStudent.bin.items.size() > 0)
+			{
+				while(currStudent.bin.items.size() > 0)
+				{
+					items.add(currStudent.bin.items.get(0));
+					currStudent.bin.dropItem(currStudent.bin.items.get(0));
+				}
+			}
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -397,6 +422,9 @@ public class Game implements Serializable
 		Bar tpBar					= new Bar(ParkViewProtector.STATS_BAR_TP, tpMaxWidth,
 				(double) player.getTp() / player.getMaxTp());
 		tpBar.draw(g, STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
+		
+		// draw Inventory
+		player.bin.draw(g,550,20);
 	}
 	
 	/**
