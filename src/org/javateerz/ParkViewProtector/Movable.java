@@ -221,7 +221,7 @@ public abstract class Movable implements Serializable
 	 */
 	public void draw(Graphics g)
 	{
-		sprite.draw(g, (int) x, (int) y);
+		sprite.draw((int) x, (int) y);
 	}
 	
 	/**
