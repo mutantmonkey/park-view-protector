@@ -199,15 +199,6 @@ public class Game implements Serializable
 		Cupple currCouple;
 		Attack currAttack;
 		
-		g						= (Graphics) strategy.getDrawGraphics();
-		
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glLoadIdentity();
-		
-		// draw the background
-		g.setColor(ParkViewProtector.COLOR_BG_2);
-		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
-		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw students
 		////////////////////////////////////////////////////////////////////////////////////
@@ -338,14 +329,11 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// these are painted last to ensure that they are always on top
 
-		drawStatistics();
+		/*drawStatistics();
 		
 		// finish drawing (Java2D)
 		g.dispose();
-		strategy.show();
-		
-		// finish drawing
-		Display.update();
+		strategy.show();*/
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Move the player

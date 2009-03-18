@@ -86,6 +86,9 @@ public class ParkViewProtector
 		// we are drawing in 2D (sadly), so disable the depth test (there is no depth!)
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		
+		// set clear color to white
+		GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		
@@ -169,13 +172,16 @@ public class ParkViewProtector
 		while(running)
 		{
 			// close requested?
-			/*if(Display.isCloseRequested())
+			if(Display.isCloseRequested() || Keyboard.isPressed(Keyboard.BACK))
 			{
 				running				= false;
-			}*/
+			}
 			
 			// clear screen
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glLoadIdentity();
 			
 			if(showTitle)
 			{
@@ -192,6 +198,9 @@ public class ParkViewProtector
 			else {
 				game.show();
 			}
+			
+			GL11.glFlush();
+			Display.update();
 		}
 	}
 	
@@ -291,7 +300,7 @@ public class ParkViewProtector
 	public static void main(String args[])
 	{
 		ParkViewProtector game			= new ParkViewProtector();
-		game.showOpening();
+		//game.showOpening();
 		game.init();
 		game.mainLoop();
 		

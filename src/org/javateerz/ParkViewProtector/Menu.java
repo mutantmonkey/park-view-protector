@@ -39,8 +39,6 @@ public class Menu
 	public Menu(ParkViewProtector p)
 	{
 		this.driver								= p;
-		this.g									= p.getGraphics();
-		this.strategy							= p.getBufferStrategy();
 	}
 	
 	public void show()

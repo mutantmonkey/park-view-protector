@@ -88,7 +88,7 @@ public class OptionsMenu extends Menu
 		g									= (Graphics) strategy.getDrawGraphics();
 		
 		// draw the background
-		optionsBg.draw(g, 0, 0);
+		optionsBg.draw(0, 0);
 		
 		// set font and color
 		g.setFont(TEXT_FONT);

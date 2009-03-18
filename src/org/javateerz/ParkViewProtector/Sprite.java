@@ -22,7 +22,7 @@ public class Sprite
 	 */
 	public Sprite(GLTexture texture)
 	{
-		texture			= texture;
+		this.texture	= texture;
 		
 		width			= texture.getImageWidth();
 		height			= texture.getImageHeight();
@@ -69,14 +69,16 @@ public class Sprite
 		
 		// draw a quadrilateral
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glTexCoord2f(0, 0);
-		GL11.glVertex2f(0, 0);
-		GL11.glTexCoord2f(0, texture.getHeight());
-		GL11.glVertex2f(0, height);
-		GL11.glTexCoord2f(texture.getWidth(), texture.getHeight());
-		GL11.glVertex2f(width, height);
-		GL11.glTexCoord2f(texture.getWidth(), 0);
-		GL11.glVertex2f(width, 0);
+		{
+			GL11.glTexCoord2f(0, 0);
+			GL11.glVertex2f(0, 0);
+			GL11.glTexCoord2f(0, texture.getHeight());
+			GL11.glVertex2f(0, height);
+			GL11.glTexCoord2f(texture.getWidth(), texture.getHeight());
+			GL11.glVertex2f(width, height);
+			GL11.glTexCoord2f(texture.getWidth(), 0);
+			GL11.glVertex2f(width, 0);
+		}
 		GL11.glEnd();
 		
 		GL11.glPopMatrix();

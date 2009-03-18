@@ -217,6 +217,13 @@ public enum DataStore
 		// convert the image data into something OpenGL can use
 		ByteBuffer textureBuffer	= convertImageData(img, texture);
 		
+		// scaling methods
+		if(glTarget == GL11.GL_TEXTURE_2D)
+		{
+			GL11.glTexParameteri(glTarget, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+			GL11.glTexParameteri(glTarget, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+		}
+		
 		GL11.glTexImage2D(glTarget, 0, colorModel, get2Fold(img.getWidth()), get2Fold(img.getHeight()), 0,
 				srcColorModel, GL11.GL_UNSIGNED_BYTE, textureBuffer);
 		

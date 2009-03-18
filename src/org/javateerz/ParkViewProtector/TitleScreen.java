@@ -60,13 +60,11 @@ public class TitleScreen extends Menu
 			Keyboard.setReleased(Keyboard.BACK);
 		}
 		
-		g							= (Graphics) strategy.getDrawGraphics();
-		
 		// draw logo
 		mainLogo.draw(0, 0);
 		
 		// FIXME: remove this notice about the new keys
-		g.setColor(SELECTED_TEXT_COLOR);
+		/*g.setColor(SELECTED_TEXT_COLOR);
 		g.drawString("NOTICE: Keys have changed. Use w, a, s, and d to move; j, k, and l to attack", 50, 50);
 		
 		// set font and color
@@ -90,7 +88,7 @@ public class TitleScreen extends Menu
 		
 		// finish drawing
 		g.dispose();
-		strategy.show();
+		strategy.show();*/
 		
 		// keep the game from running too fast
 		try
