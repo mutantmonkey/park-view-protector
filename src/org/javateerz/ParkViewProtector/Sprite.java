@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class Sprite
 {
-	private Image img;
+	private GLTexture texture;
 	
 	/**
 	 * Create a new sprite
@@ -49,8 +49,8 @@ public class Sprite
 	 * @param x X Position
 	 * @param y Y Position
 	 */
-	public void draw(Graphics g, int x, int y)
+	public void draw(int x, int y)
 	{
-		g.drawImage(img, x, y, null);
+		//g.drawImage(img, x, y, null);
 	}
 }

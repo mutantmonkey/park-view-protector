@@ -16,6 +16,9 @@ import java.awt.image.BufferStrategy;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+
 public class Game implements Serializable
 {
 	public static final int SPEED_THROTTLE		= 10;
@@ -198,6 +201,9 @@ public class Game implements Serializable
 		
 		g						= (Graphics) strategy.getDrawGraphics();
 		
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glLoadIdentity();
+		
 		// draw the background
 		g.setColor(ParkViewProtector.COLOR_BG_2);
 		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
@@ -334,9 +340,12 @@ public class Game implements Serializable
 
 		drawStatistics();
 		
-		// finish drawing
+		// finish drawing (Java2D)
 		g.dispose();
 		strategy.show();
+		
+		// finish drawing
+		Display.update();
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Move the player

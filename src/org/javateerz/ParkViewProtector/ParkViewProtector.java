@@ -15,6 +15,12 @@ import java.awt.image.BufferStrategy;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 
+import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
+
 import org.newdawn.easyogg.OggClip;
 
 public class ParkViewProtector extends Canvas
@@ -32,6 +38,8 @@ public class ParkViewProtector extends Canvas
 	public static final Color STATS_BAR_FG	= Color.white;
 	public static final Color STATS_BAR_HP	= new Color(255, 0, 255);
 	public static final Color STATS_BAR_TP	= new Color(0, 255, 0);
+	
+	private static final long serialVersionUID = 1L;
 	
 	protected JFrame window;
 	protected JPanel contentPanel;
@@ -57,6 +65,32 @@ public class ParkViewProtector extends Canvas
 	
 	public ParkViewProtector()
 	{
+		try
+		{
+			// TODO: add fullscreen support
+			
+			Display.setTitle("Park View Protector");
+			Display.create();
+		}
+		catch (LWJGLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		// the ugly cursor must die
+		Mouse.setGrabbed(true);
+		
+		// enable 2D textures
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+		// we are drawing in 2D (sadly), so disable the depth test (there is no depth!)
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		
+		GL11.glOrtho(0, WIDTH, HEIGHT, 0, -1, 1);
+		
 		// load logos
 		jtzLogo						= DataStore.INSTANCE.getSprite("javateerslogo.png");
 		
@@ -69,8 +103,6 @@ public class ParkViewProtector extends Canvas
 		{
 			System.out.println("Error setting system look and feel");
 		}
-		
-		// TODO: add fullscreen support (may require switch from AWT)
 		
 		// create container JFrame (window)
 		window						= new JFrame("Park View Protector");
@@ -172,6 +204,15 @@ public class ParkViewProtector extends Canvas
 	{
 		while(running)
 		{
+			// close requested?
+			if(Display.isCloseRequested())
+			{
+				running				= false;
+			}
+			
+			// clear screen
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			
 			if(showTitle)
 			{
 				title.show();
