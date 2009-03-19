@@ -3,21 +3,13 @@ package org.javateerz.EasyGL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 
-public class GLRect
+public class GLRect extends GLObject
 {
-	private int x;
-	private int y;
-	private int width;
-	private int height;
-	
 	private Color color		= new Color(Color.CYAN);
 	
 	public GLRect(int x, int y, int width, int height)
 	{
-		this.x				= x;
-		this.y				= y;
-		this.width			= width;
-		this.height			= height;
+		super(x, y, width, height);
 	}
 	
 	public void setColor(Color c)

@@ -315,7 +315,7 @@ public class Game implements Serializable
 		///////////////////////////////////////////////////////////////////////////////////
 		// FIXME: these should probably be drawn before everything else
 		
-		/*for(int i = 0;i < items.size();i++)
+		for(int i = 0;i < items.size();i++)
 		{
 				items.get(i).draw();
 				if(items.get(i).getBounds().intersects(player.getBounds()))
@@ -324,7 +324,7 @@ public class Game implements Serializable
 					System.out.println("Staff items++: " + player.bin.items.size());
 					items.remove(items.get(i));
 				}
-		}*/
+		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw statistics
