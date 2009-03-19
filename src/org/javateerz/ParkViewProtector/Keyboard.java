@@ -38,6 +38,9 @@ public class Keyboard extends KeyAdapter
 	public static final int ATTACK2			= KeyEvent.VK_K;
 	public static final int ATTACK3			= KeyEvent.VK_L;
 	
+	public static final int USE_HP_ITEM		= KeyEvent.VK_I;
+	public static final int USE_TP_ITEM		= KeyEvent.VK_O;
+	
 	private static boolean[] keys			= new boolean[1024];
 	
 	/**

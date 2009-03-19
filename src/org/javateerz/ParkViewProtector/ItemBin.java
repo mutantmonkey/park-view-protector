@@ -29,7 +29,6 @@ public class ItemBin implements Serializable
 			inv[1]++;
 		}
 		item.setUser(holder);
-		System.out.println("Item - get!");
 		items.add(item);
 	}
 	
@@ -39,7 +38,8 @@ public class ItemBin implements Serializable
 		{
 			if(items.get(i).getType() == type)
 			{
-				useItem(items.get(i).getType());
+				useItem(items.get(i));
+				break;
 			}
 		}
 	}

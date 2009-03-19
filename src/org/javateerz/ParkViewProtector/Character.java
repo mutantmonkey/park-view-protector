@@ -94,6 +94,10 @@ public abstract class Character extends Movable
 	public int adjustHp(int amount)
 	{
 		hp		   -= amount;
+		if(hp > maxHp)
+		{
+			hp = maxHp;
+		}
 		
 		return hp;
 	}

@@ -6,6 +6,7 @@
  * 
  * 
  * 
+ * 
  * @author	Jamie of the Javateerz
  */
 
@@ -26,6 +27,8 @@ public class Game implements Serializable
 	// delay (in number of frames) before another attack can be used
 	public static final int ATTACK_DELAY		= 20;
 	private int attackDelay					= 0;
+	public static final int ITEM_USE_DELAY		= 20;
+	private int itemDelay					= 0;
 	public static final int TP_REGEN			= 5;
 	public static int tpRegen					= 0;
 	public static final int CHARGE_REGEN		= 10;
@@ -322,7 +325,6 @@ public class Game implements Serializable
 				if(items.get(i).getBounds().intersects(player.getBounds()))
 				{
 					player.pickItem(items.get(i));
-					System.out.println("Staff items++: " + player.bin.items.size());
 					items.remove(items.get(i));
 				}
 		}
@@ -387,6 +389,35 @@ public class Game implements Serializable
 			Thread.sleep(SPEED_THROTTLE);
 		}
 		catch(Exception e) {}
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		// Use items
+		// "Yeah, yeah, Jamie, I know; this is terrible placement"
+		// 			-Donny
+		////////////////////////////////////////////////////////////////////////////////////
+		
+		if(Keyboard.isPressed(Keyboard.USE_HP_ITEM))
+		{
+			if(itemDelay == ITEM_USE_DELAY)
+			{
+				System.out.println("Game class says you healed hp! - itemDelay is " + itemDelay);
+				player.useItem('h');
+				itemDelay = 0;
+			}
+		}
+		if(Keyboard.isPressed(Keyboard.USE_TP_ITEM))
+		{
+			if(itemDelay == ITEM_USE_DELAY)
+			{
+				System.out.println("Game class says you healed tp! - itemDelay is " + itemDelay);
+				player.useItem('t');
+				itemDelay = 0;
+			}
+		}
+		if(itemDelay < ITEM_USE_DELAY)
+		{
+			itemDelay++;
+		}
 	}
 	
 	/**
