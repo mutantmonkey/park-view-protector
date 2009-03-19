@@ -16,6 +16,7 @@ import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -45,7 +46,7 @@ public class ParkViewProtector
 	protected JPanel contentPanel;
 	
 	private boolean running					= true;
-	public static boolean showTitle			= true;
+	public static boolean showTitle			= false;
 	public static boolean showMenu			= false;
 	public static boolean showOptions		= false;
 	
@@ -67,7 +68,7 @@ public class ParkViewProtector
 	{
 		try
 		{
-			// TODO: add fullscreen support
+			setDisplayMode();
 			
 			Display.setTitle("Park View Protector");
 			Display.create();
@@ -78,7 +79,7 @@ public class ParkViewProtector
 		}
 		
 		// the ugly cursor must die
-		Mouse.setGrabbed(true);
+		//Mouse.setGrabbed(true);
 		
 		// enable 2D textures
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -88,6 +89,10 @@ public class ParkViewProtector
 		
 		// set clear color to white
 		GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		
+		// enable transparency
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
@@ -106,6 +111,30 @@ public class ParkViewProtector
 		{
 			System.out.println("Error setting system look and feel");
 		}
+	}
+	
+	public boolean setDisplayMode()
+	{
+		try
+		{
+			DisplayMode[] modes				= org.lwjgl.util.Display.getAvailableDisplayModes(WIDTH, HEIGHT, -1, -1,
+				-1, -1, 60, 60);
+		
+			org.lwjgl.util.Display.setDisplayMode(modes, new String[] {
+					"width=" + WIDTH,
+					"height=" + HEIGHT,
+					"freq=" + 60,
+					"bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel(),
+			});
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+			return false;
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -172,7 +201,7 @@ public class ParkViewProtector
 		while(running)
 		{
 			// close requested?
-			if(Display.isCloseRequested() || Keyboard.isPressed(Keyboard.BACK))
+			if(Display.isCloseRequested() || Keyboard.isKeyDown(KeyboardConfig.BACK))
 			{
 				running				= false;
 			}

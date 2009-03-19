@@ -16,6 +16,7 @@ import java.awt.image.BufferStrategy;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
@@ -242,7 +243,7 @@ public class Game implements Serializable
 				}
 			}
 			
-			if(Keyboard.isPressed(Keyboard.SHOW_CHARGES))
+			if(Keyboard.isKeyDown(KeyboardConfig.SHOW_CHARGES))
 			{
 				showCharges();
 			}
@@ -341,23 +342,23 @@ public class Game implements Serializable
 		
 		int distX = 0, distY = 0;
 		
-		if(Keyboard.isPressed(Keyboard.UP) && player.getBounds().y > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.UP) && player.getBounds().y > 0)
 		{
 			distY						= -MOVE_SPEED;
 		}
 		
-		if(Keyboard.isPressed(Keyboard.DOWN) && player.getBounds().y < ParkViewProtector.HEIGHT
+		if(Keyboard.isKeyDown(KeyboardConfig.DOWN) && player.getBounds().y < ParkViewProtector.HEIGHT
 				- player.getBounds().height)
 		{
 			distY						= MOVE_SPEED;
 		}
 		
-		if(Keyboard.isPressed(Keyboard.LEFT) && player.getBounds().x > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.LEFT) && player.getBounds().x > 0)
 		{
 			distX						= -MOVE_SPEED;
 		}
 		
-		if(Keyboard.isPressed(Keyboard.RIGHT) && player.getBounds().x < ParkViewProtector.WIDTH
+		if(Keyboard.isKeyDown(KeyboardConfig.RIGHT) && player.getBounds().x < ParkViewProtector.WIDTH
 				- player.getBounds().width)
 		{
 			distX						= MOVE_SPEED;
@@ -522,16 +523,16 @@ public class Game implements Serializable
 	 */
 	public void switchChar()
 	{
-		if(Keyboard.isPressed(Keyboard.CHAR1) || Keyboard.isPressed(Keyboard.CHAR2))
+		if(Keyboard.isKeyDown(KeyboardConfig.CHAR1) || Keyboard.isKeyDown(KeyboardConfig.CHAR2))
 		{
 			hpPercent=(double)player.getHp()/(double)player.getMaxHp();
 			tpPercent=(double)player.getTp()/(double)player.getMaxTp();
-			if(Keyboard.isPressed(Keyboard.CHAR1) && !(player instanceof Stark))
+			if(Keyboard.isKeyDown(KeyboardConfig.CHAR1) && !(player instanceof Stark))
 			{
 				player=new Stark((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.STARK_HP*hpPercent), (int)((double)Stats.STARK_TP*tpPercent));
 			}
 			
-			if(Keyboard.isPressed(Keyboard.CHAR2) && !(player instanceof SpecialCharacter))
+			if(Keyboard.isKeyDown(KeyboardConfig.CHAR2) && !(player instanceof SpecialCharacter))
 			{
 				player=new SpecialCharacter((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.SPECIAL_HP*hpPercent), (int) ((double)Stats.SPECIAL_TP*tpPercent));
 			}
@@ -544,20 +545,20 @@ public class Game implements Serializable
 	 */
 	public void playerAttack()
 	{
-		if((Keyboard.isPressed(Keyboard.ATTACK1) || Keyboard.isPressed(Keyboard.ATTACK2)
-				|| Keyboard.isPressed(Keyboard.ATTACK3)) && attackDelay == 0)
+		if((Keyboard.isKeyDown(KeyboardConfig.ATTACK1) || Keyboard.isKeyDown(KeyboardConfig.ATTACK2)
+				|| Keyboard.isKeyDown(KeyboardConfig.ATTACK3)) && attackDelay == 0)
 		{
 			Attack playerAttack;
 			int attackKey=0;
-			if(Keyboard.isPressed(Keyboard.ATTACK1))
+			if(Keyboard.isKeyDown(KeyboardConfig.ATTACK1))
 			{
 				attackKey=0;
 			}
-			else if(Keyboard.isPressed(Keyboard.ATTACK2))
+			else if(Keyboard.isKeyDown(KeyboardConfig.ATTACK2))
 			{
 				attackKey=1;
 			}
-			else if(Keyboard.isPressed(Keyboard.ATTACK3))
+			else if(Keyboard.isKeyDown(KeyboardConfig.ATTACK3))
 			{
 				attackKey=2;
 			}

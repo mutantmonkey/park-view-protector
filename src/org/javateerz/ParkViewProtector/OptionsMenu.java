@@ -8,6 +8,8 @@ package org.javateerz.ParkViewProtector;
 
 import java.awt.*;
 
+import org.lwjgl.input.Keyboard;
+
 public class OptionsMenu extends Menu
 {
 	public static final int LEFT_SPACING	= 60;
@@ -45,40 +47,34 @@ public class OptionsMenu extends Menu
 	public void show()
 	{
 		// handle key presses
-		if(Keyboard.isPressed(Keyboard.NAV_UP) && selectedItem > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)
 		{
 			selectedItem--;
 		}
-		else if(Keyboard.isPressed(Keyboard.NAV_DOWN) && selectedItem < items.length - 1)
+		else if(Keyboard.isKeyDown(KeyboardConfig.NAV_DOWN) && selectedItem < items.length - 1)
 		{
 			selectedItem++;
 		}
-		else if(Keyboard.isPressed(Keyboard.BACK))
+		else if(Keyboard.isKeyDown(KeyboardConfig.BACK))
 		{
 			ParkViewProtector.showMenu		= false;
-			
-			// FIXME: see above
-			Keyboard.setReleased(Keyboard.BACK);
 		}
 		
 		// menu items are different
 		if(items[selectedItem] instanceof MenuItem)
 		{
-			if(Keyboard.isPressed(Keyboard.ENTER))
+			if(Keyboard.isKeyDown(KeyboardConfig.ENTER))
 			{
 				execute(((MenuItem) items[selectedItem]).getAction());
-				
-				// FIXME: see above
-				Keyboard.setReleased(Keyboard.ENTER);
 			}
 		}
 		else {
-			if(Keyboard.isPressed(Keyboard.NAV_LEFT))
+			if(Keyboard.isKeyDown(KeyboardConfig.NAV_LEFT))
 			{
 				items[selectedItem].leftPressed();
 				items[selectedItem].update(driver);
 			}
-			else if(Keyboard.isPressed(Keyboard.NAV_RIGHT))
+			else if(Keyboard.isKeyDown(KeyboardConfig.NAV_RIGHT))
 			{
 				items[selectedItem].rightPressed();
 				items[selectedItem].update(driver);

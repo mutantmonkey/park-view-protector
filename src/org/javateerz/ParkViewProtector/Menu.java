@@ -9,6 +9,8 @@ package org.javateerz.ParkViewProtector;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
+import org.lwjgl.input.Keyboard;
+
 public class Menu
 {
 	public static final int TOP_SPACING				= 120;
@@ -44,27 +46,21 @@ public class Menu
 	public void show()
 	{
 		// handle key presses
-		if(Keyboard.isPressed(Keyboard.NAV_UP) && selectedItem > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)
 		{
 			selectedItem--;
 		}
-		else if(Keyboard.isPressed(Keyboard.NAV_DOWN) && selectedItem < items.length - 1)
+		else if(Keyboard.isKeyDown(KeyboardConfig.NAV_DOWN) && selectedItem < items.length - 1)
 		{
 			selectedItem++;
 		}
-		else if(Keyboard.isPressed(Keyboard.ENTER))
+		else if(Keyboard.isKeyDown(KeyboardConfig.ENTER))
 		{
 			execute(items[selectedItem].getAction());
-			
-			// FIXME: should this actually be here?
-			Keyboard.setReleased(Keyboard.ENTER);
 		}
-		else if(Keyboard.isPressed(Keyboard.BACK))
+		else if(Keyboard.isKeyDown(KeyboardConfig.BACK))
 		{
 			ParkViewProtector.showMenu		= false;
-			
-			// FIXME: see above
-			Keyboard.setReleased(Keyboard.BACK);
 		}
 		
 		g									= (Graphics) strategy.getDrawGraphics();
