@@ -33,7 +33,8 @@ public class GLRect
 		GL11.glTranslatef(x, y, 0);
 		
 		// set color for drawing
-		GL11.glColor4b(color.getRedByte(), color.getGreenByte(), color.getBlueByte(), color.getAlphaByte());
+		GL11.glColor4f((float) color.getRed() / 255, (float) color.getGreen() / 255,
+				(float) color.getBlue() / 255, (float) color.getAlpha() / 255);
 		
 		// draw a quadrilateral
 		GL11.glBegin(GL11.GL_QUADS);
