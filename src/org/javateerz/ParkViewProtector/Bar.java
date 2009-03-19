@@ -7,7 +7,8 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
+import org.javateerz.EasyGL.GLRect;
+import org.lwjgl.util.Color;
 
 public class Bar
 {
@@ -71,14 +72,18 @@ public class Bar
 	 * @param x X-position
 	 * @param y Y-position
 	 */
-	public void draw(Graphics g, int x, int y)
+	public void draw(int x, int y)
 	{
 		// background
-		g.setColor(color.darker().darker());
-		g.fillRect(x, y, maxWidth, BAR_HEIGHT);
+		//g.setColor(color.darker().darker());
+		//g.fillRect(x, y, maxWidth, BAR_HEIGHT);
+		
+		GLRect bg				= new GLRect(x, y, maxWidth, BAR_HEIGHT);
+		bg.draw();
 		
 		// main bar
-		g.setColor(color);
-		g.fillRect(x, y, width, BAR_HEIGHT);
+		GLRect fg				= new GLRect(x, y, width, BAR_HEIGHT);
+		fg.setColor(color);
+		fg.draw();
 	}
 }

@@ -16,6 +16,7 @@ import java.awt.image.BufferStrategy;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.javateerz.EasyGL.GLRect;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -207,7 +208,7 @@ public class Game implements Serializable
 		for(int i = 0; i < students.size(); i++)
 		{
 			currStudent			= students.get(i);
-			currStudent.draw(g);
+			currStudent.draw();
 			currStudent.step(this);
 			if(currStudent.getCharge() <= 0 && currStudent.bin.items.size() > 0)
 			{
@@ -226,7 +227,7 @@ public class Game implements Serializable
 		for(int i = 0; i < couples.size(); i++)
 		{
 			currCouple			= couples.get(i);
-			currCouple.draw(g);
+			currCouple.draw();
 			
 			currCouple.step(this);
 			
@@ -270,7 +271,7 @@ public class Game implements Serializable
 		for(int i = 0; i < attacks.size(); i++)
 		{
 			currAttack			= attacks.get(i);
-			currAttack.draw(g);
+			currAttack.draw();
 			
 			currAttack.move(MOVE_SPEED);
 			
@@ -306,7 +307,7 @@ public class Game implements Serializable
 		// Draw player
 		////////////////////////////////////////////////////////////////////////////////////
 		
-		player.draw(g);
+		player.draw();
 		player.step(this);
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -316,7 +317,7 @@ public class Game implements Serializable
 		
 		for(int i = 0;i < items.size();i++)
 		{
-				items.get(i).draw(g);
+				items.get(i).draw();
 				if(items.get(i).getBounds().intersects(player.getBounds()))
 				{
 					player.pickItem(items.get(i));
@@ -330,11 +331,7 @@ public class Game implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// these are painted last to ensure that they are always on top
 
-		/*drawStatistics();
-		
-		// finish drawing (Java2D)
-		g.dispose();
-		strategy.show();*/
+		drawStatistics();
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Move the player
@@ -393,11 +390,12 @@ public class Game implements Serializable
 	public void drawStatistics()
 	{
 		// background rectangle
-		g.setColor(ParkViewProtector.STATS_BAR_BG);
-		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
+		GLRect bgRect				= new GLRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
+		bgRect.setColor(ParkViewProtector.STATS_BAR_BG);
+		bgRect.draw();
 		
 		// draw labels
-		g.setColor(ParkViewProtector.STATS_BAR_FG);
+		/*g.setColor(ParkViewProtector.STATS_BAR_FG);
 		g.setFont(new Font("System", Font.PLAIN, 10));
 		
 		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;
@@ -405,24 +403,24 @@ public class Game implements Serializable
 		g.drawString("HP:", STAT_PAD_TOP, STAT_PAD_TOP + textCenter);
 		g.drawString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING + textCenter);
 		g.drawString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP + BAR_HEIGHT);
-		g.drawString("Level: " + level, 500, STAT_PAD_TOP + BAR_HEIGHT);
+		g.drawString("Level: " + level, 500, STAT_PAD_TOP + BAR_HEIGHT);*/
 		
 		// draw HP bar
 		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
 
 		Bar hpBar					= new Bar(ParkViewProtector.STATS_BAR_HP, hpMaxWidth,
 				(double) player.getHp() / player.getMaxHp());
-		hpBar.draw(g, STAT_PAD_LEFT_BAR, STAT_PAD_TOP);
+		hpBar.draw(STAT_PAD_LEFT_BAR, STAT_PAD_TOP);
 		
 		// draw TP bar
 		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
 		
 		Bar tpBar					= new Bar(ParkViewProtector.STATS_BAR_TP, tpMaxWidth,
 				(double) player.getTp() / player.getMaxTp());
-		tpBar.draw(g, STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
+		tpBar.draw(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
 		
 		// draw Inventory
-		player.bin.draw(g,550,20);
+		//player.bin.draw(g,550,20);
 	}
 	
 	/**
@@ -892,10 +890,6 @@ public class Game implements Serializable
 		
 		gameOver.draw(0, 0);
 		
-		// finish drawing
-		g.dispose();
-		strategy.show();
-		
 		try
 		{
 			Thread.sleep(15000);
@@ -912,14 +906,13 @@ public class Game implements Serializable
 	 */
 	public void showCharges()
 	{
-		g.setColor(ParkViewProtector.COLOR_BG_1);
+		//g.setColor(ParkViewProtector.COLOR_BG_1);
 		
 		for(int i = 0;i < students.size();i++)
 		{
 			if(students.get(i).getCharge() > 0)
 			{
-				students.get(i).showCharge(g);
-				students.get(i).showChargeBar(g);
+				students.get(i).showCharge();
 			}
 		}
 	}

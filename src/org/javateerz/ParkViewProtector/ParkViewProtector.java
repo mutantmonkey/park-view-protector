@@ -8,10 +8,6 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferStrategy;
-
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 
@@ -21,6 +17,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.Color;
 
 import org.newdawn.easyogg.OggClip;
 
@@ -31,19 +28,16 @@ public class ParkViewProtector
 	
 	// colors
 	public static final Color COLOR_BG_1	= new Color(255, 0, 255);
-	public static final Color COLOR_TEXT_1	= Color.white;
-	public static final Color COLOR_BG_2	= Color.white;
-	public static final Color COLOR_TEXT_2	= Color.black;
+	public static final Color COLOR_TEXT_1	= new Color(255, 255, 255);
+	public static final Color COLOR_BG_2	= new Color(255, 255, 255);
+	public static final Color COLOR_TEXT_2	= new Color(0, 0, 0);
 	
-	public static final Color STATS_BAR_BG	= new Color(0f, 0f, 0f, 0.5f);
-	public static final Color STATS_BAR_FG	= Color.white;
+	public static final Color STATS_BAR_BG	= new Color(0, 0, 0, 127);
+	public static final Color STATS_BAR_FG	= new Color(255, 255, 255);
 	public static final Color STATS_BAR_HP	= new Color(255, 0, 255);
 	public static final Color STATS_BAR_TP	= new Color(0, 255, 0);
 	
 	private static final long serialVersionUID = 1L;
-	
-	protected JFrame window;
-	protected JPanel contentPanel;
 	
 	private boolean running					= true;
 	public static boolean showTitle			= false;
@@ -52,10 +46,6 @@ public class ParkViewProtector
 	
 	// logos
 	private Sprite jtzLogo;
-	
-	// graphics
-	private Graphics g;
-	private BufferStrategy strategy;
 	
 	private OggClip bgMusic;
 	
@@ -81,10 +71,8 @@ public class ParkViewProtector
 		// the ugly cursor must die
 		//Mouse.setGrabbed(true);
 		
-		// enable 2D textures
+		// enable 2D textures and disable 3D depth test
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-		// we are drawing in 2D (sadly), so disable the depth test (there is no depth!)
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		
 		// set clear color to white
@@ -113,28 +101,32 @@ public class ParkViewProtector
 		}
 	}
 	
+	/**
+	 * Select a display mode
+	 * 
+	 * @return True if an acceptable display mode was found
+	 */
 	public boolean setDisplayMode()
 	{
 		try
 		{
-			DisplayMode[] modes				= org.lwjgl.util.Display.getAvailableDisplayModes(WIDTH, HEIGHT, -1, -1,
-				-1, -1, 60, 60);
+			DisplayMode[] modes				= Display.getAvailableDisplayModes();
 		
-			org.lwjgl.util.Display.setDisplayMode(modes, new String[] {
-					"width=" + WIDTH,
-					"height=" + HEIGHT,
-					"freq=" + 60,
-					"bpp=" + org.lwjgl.opengl.Display.getDisplayMode().getBitsPerPixel(),
-			});
+			for(DisplayMode mode : modes)
+			{
+				if(mode.getWidth() == WIDTH && mode.getHeight() == HEIGHT)
+				{
+					Display.setDisplayMode(mode);
+					return true;
+				}
+			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			
-			return false;
 		}
 		
-		return true;
+		return false;
 	}
 	
 	/**
@@ -176,16 +168,6 @@ public class ParkViewProtector
 		{
 			System.out.println("Error playing background music");
 		}
-		
-		// add key handler class
-		//addKeyListener(new Keyboard());
-		
-		// request focus so we will get events without a click
-		//requestFocus();
-		
-		// accelerated graphics
-		//createBufferStrategy(2);
-		//strategy					= getBufferStrategy();
 		
 		title						= new TitleScreen(this);
 		game						= new Game(this);
@@ -231,6 +213,8 @@ public class ParkViewProtector
 			GL11.glFlush();
 			Display.update();
 		}
+		
+		quit();
 	}
 	
 	/**
@@ -295,7 +279,7 @@ public class ParkViewProtector
 	{
 		System.out.println("Error: " + msg);
 		
-		JOptionPane.showMessageDialog(window, msg, "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
 		
 		if(fatal)
 		{
@@ -323,7 +307,7 @@ public class ParkViewProtector
 		
 		bgMusic.stop();
 		
-		window.dispose();
+		Display.destroy();
 	}
 	
 	public static void main(String args[])

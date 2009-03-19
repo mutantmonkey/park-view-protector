@@ -10,6 +10,8 @@ package org.javateerz.ParkViewProtector;
 import java.awt.Graphics;
 import java.io.*;
 
+import org.javateerz.EasyGL.GLRect;
+
 public class Student extends Character implements Serializable
 {
 	private static final long serialVersionUID = 2L;
@@ -150,16 +152,17 @@ public class Student extends Character implements Serializable
 		
 	}
 	
-	public void showCharge(Graphics g)
+	public void showCharge()
 	{
-		g.drawRect((int) x, (int) y, (int) getBounds().getWidth(),
+		GLRect rect				= new GLRect((int) x, (int) y, (int) getBounds().getWidth(),
 				(int) getBounds().getHeight());
-	}
-	
-	public void showChargeBar(Graphics g)
-	{
+		
+		rect.draw();
+		
+		// draw a quadrilateral
+
 		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()), (double)charge/100);
-		chargeBar.draw(g,(int)x,(int)y);
+		chargeBar.draw((int)x,(int)y);
 	}
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
