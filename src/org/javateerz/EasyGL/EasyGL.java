@@ -101,6 +101,10 @@ public class EasyGL
 			testRect.setColor(new Color(255, 0, 255, 175));
 			testRect.draw();
 			
+			GLString musti			= new GLString("MUSTAFA", 20, 20);
+			musti.setColor(new Color(120, 255, 0));
+			musti.draw();
+			
 			GL11.glFlush();
 			Display.update();
 			

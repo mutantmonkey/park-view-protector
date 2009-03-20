@@ -17,6 +17,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import org.javateerz.EasyGL.GLRect;
+import org.javateerz.EasyGL.GLString;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -398,12 +399,11 @@ public class Game implements Serializable
 		/*g.setColor(ParkViewProtector.STATS_BAR_FG);
 		g.setFont(new Font("System", Font.PLAIN, 10));
 		
-		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;
+		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;*/
 		
-		g.drawString("HP:", STAT_PAD_TOP, STAT_PAD_TOP + textCenter);
-		g.drawString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING + textCenter);
-		g.drawString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP + BAR_HEIGHT);
-		g.drawString("Level: " + level, 500, STAT_PAD_TOP + BAR_HEIGHT);*/
+		GLString hpStr				= new GLString("HP:", STAT_PAD_TOP, STAT_PAD_TOP);
+		hpStr.setColor(ParkViewProtector.STATS_BAR_FG);
+		hpStr.draw();
 		
 		// draw HP bar
 		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
@@ -412,6 +412,10 @@ public class Game implements Serializable
 				(double) player.getHp() / player.getMaxHp());
 		hpBar.draw(STAT_PAD_LEFT_BAR, STAT_PAD_TOP);
 		
+		GLString tpStr				= new GLString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
+		tpStr.setColor(ParkViewProtector.STATS_BAR_FG);
+		tpStr.draw();
+		
 		// draw TP bar
 		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
 		
@@ -419,8 +423,18 @@ public class Game implements Serializable
 				(double) player.getTp() / player.getMaxTp());
 		tpBar.draw(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
 		
+		// draw speed
+		GLString speedStr			= new GLString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP);
+		speedStr.setColor(ParkViewProtector.STATS_BAR_FG);
+		speedStr.draw();
+		
+		// draw level
+		GLString levelStr			= new GLString("Level: " + level, 500, STAT_PAD_TOP);
+		levelStr.setColor(ParkViewProtector.STATS_BAR_FG);
+		levelStr.draw();
+		
 		// draw Inventory
-		player.bin.draw(g,550,20);
+		player.bin.draw(g,550,STAT_PAD_TOP);
 	}
 	
 	/**
