@@ -59,6 +59,8 @@ public class Sprite
 	{
 		GL11.glPushMatrix();
 		
+		// enable textures and bind texture
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		texture.bind();
 		
 		// move to selected location

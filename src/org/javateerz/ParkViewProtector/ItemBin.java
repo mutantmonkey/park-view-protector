@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.javateerz.EasyGL.GLString;
+
 public class ItemBin implements Serializable
 {
 	private static final long serialVersionUID	= 1L;
@@ -95,7 +97,8 @@ public class ItemBin implements Serializable
 	
 	public void draw(Graphics g,int x,int y)
 	{
-		g.setColor(ParkViewProtector.STATS_BAR_FG);
-		g.drawString("HP: " + inv[0] + " TP: " + inv[1],x,y);
+		GLString stats					= new GLString("HP: " + inv[0] + " TP: " + inv[1],x,y);
+		stats.setColor(ParkViewProtector.STATS_BAR_FG);
+		stats.draw();
 	}
 }

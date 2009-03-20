@@ -90,6 +90,6 @@ public class FloatOption extends OptionItem
 									- BAR_WIDTH;
 		y						= (int) (y - getBounds(g).getHeight() / 2);
 		
-		optionBar.draw(g, x, y);
+		optionBar.draw(x, y);
 	}
 }

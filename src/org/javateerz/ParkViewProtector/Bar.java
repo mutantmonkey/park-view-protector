@@ -12,7 +12,8 @@ import org.lwjgl.util.Color;
 
 public class Bar
 {
-	private static final int BAR_HEIGHT	= 10;
+	public static final int BAR_HEIGHT			= 10;
+	public static final double DARKEN_FACTOR	= 0.5;
 	
 	private Color color;
 	
@@ -79,11 +80,21 @@ public class Bar
 		//g.fillRect(x, y, maxWidth, BAR_HEIGHT);
 		
 		GLRect bg				= new GLRect(x, y, maxWidth, BAR_HEIGHT);
+		bg.setColor(darken(color));
 		bg.draw();
 		
 		// main bar
 		GLRect fg				= new GLRect(x, y, width, BAR_HEIGHT);
 		fg.setColor(color);
 		fg.draw();
+	}
+	
+	public Color darken(Color color)
+	{
+		int red					= (int) (color.getRed() * DARKEN_FACTOR);
+		int green				= (int) (color.getGreen() * DARKEN_FACTOR);
+		int blue				= (int) (color.getBlue() * DARKEN_FACTOR);
+		
+		return new Color(red, green, blue);
 	}
 }

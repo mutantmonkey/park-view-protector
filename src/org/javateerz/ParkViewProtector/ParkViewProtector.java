@@ -71,8 +71,7 @@ public class ParkViewProtector
 		// the ugly cursor must die
 		//Mouse.setGrabbed(true);
 		
-		// enable 2D textures and disable 3D depth test
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		// disable 3D depth test
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		
 		// set clear color to white
@@ -149,6 +148,10 @@ public class ParkViewProtector
 		// Javateerz logo
 		jtzLogo.draw(WIDTH / 2 - jtzLogo.getWidth() / 2, HEIGHT / 2 - jtzLogo.getHeight() / 2);
 		
+		// show rendered content
+		GL11.glFlush();
+		Display.update();
+		
 		try{Thread.sleep(3000);}catch(Exception e){}
 	}
 	
@@ -183,7 +186,7 @@ public class ParkViewProtector
 		while(running)
 		{
 			// close requested?
-			if(Display.isCloseRequested() || Keyboard.isKeyDown(KeyboardConfig.BACK))
+			if(Display.isCloseRequested())
 			{
 				running				= false;
 			}
@@ -210,6 +213,7 @@ public class ParkViewProtector
 				game.show();
 			}
 			
+			// show rendered content
 			GL11.glFlush();
 			Display.update();
 		}
@@ -313,7 +317,7 @@ public class ParkViewProtector
 	public static void main(String args[])
 	{
 		ParkViewProtector game			= new ParkViewProtector();
-		//game.showOpening();
+		game.showOpening();
 		game.init();
 		game.mainLoop();
 		

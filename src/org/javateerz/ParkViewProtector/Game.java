@@ -330,7 +330,7 @@ public class Game implements Serializable
 		// Draw statistics
 		////////////////////////////////////////////////////////////////////////////////////
 		// these are painted last to ensure that they are always on top
-
+		
 		drawStatistics();
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -420,7 +420,7 @@ public class Game implements Serializable
 		tpBar.draw(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
 		
 		// draw Inventory
-		//player.bin.draw(g,550,20);
+		player.bin.draw(g,550,20);
 	}
 	
 	/**
@@ -889,6 +889,10 @@ public class Game implements Serializable
 		Sprite gameOver					= DataStore.INSTANCE.getSprite("game_over.png");
 		
 		gameOver.draw(0, 0);
+		
+		// show rendered content
+		GL11.glFlush();
+		Display.update();
 		
 		try
 		{
