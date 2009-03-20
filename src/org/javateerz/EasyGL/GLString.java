@@ -48,7 +48,7 @@ public class GLString extends GLObject
 		GL11.glPushMatrix();
 		
 		// disable textures
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(TEXTURE_TARGET);
 		
 		// move to selected location
 		GL11.glTranslatef(x, y, 0);

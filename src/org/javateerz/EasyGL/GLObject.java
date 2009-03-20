@@ -12,6 +12,7 @@
 
 package org.javateerz.EasyGL;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 
 /**
@@ -21,6 +22,8 @@ import org.lwjgl.util.Color;
  */
 public abstract class GLObject
 {
+	public static final int TEXTURE_TARGET		= GL11.GL_TEXTURE_2D;
+	
 	protected int x;
 	protected int y;
 	protected int width;
@@ -66,6 +69,26 @@ public abstract class GLObject
 	public void setColor(Color c)
 	{
 		color				= c;
+	}
+	
+	/**
+	 * Returns the width of the object
+	 * 
+	 * @return
+	 */
+	public int getWidth()
+	{
+		return width;
+	}
+	
+	/**
+	 * Returns the height of the object
+	 * 
+	 * @return
+	 */
+	public int getHeight()
+	{
+		return height;
 	}
 	
 	/**

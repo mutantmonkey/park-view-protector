@@ -33,8 +33,8 @@ public enum DataStore
 	private HashMap<String, Sprite> sprites	= new HashMap<String, Sprite>();
 	private HashMap<String, GLTexture> textures	= new HashMap<String, GLTexture>();
 	
-	private ColorModel glAlphaColorModel;
-	private ColorModel glColorModel;
+	public ColorModel glAlphaColorModel;
+	public ColorModel glColorModel;
 	
 	/**
 	 * Constructor
@@ -158,26 +158,13 @@ public enum DataStore
 			return sprites.get(file);
 		}
 		
-		// load the file
-		/*BufferedImage img		= loadImage(file);
-		
-		// create an image using accelerated graphics (hardware rendering, prevents flickering)
-		GraphicsConfiguration gc	= GraphicsEnvironment.getLocalGraphicsEnvironment().
-			getDefaultScreenDevice().getDefaultConfiguration();
-		
-		Image image				= gc.createCompatibleImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
-		
-		// draw image into accelerated image
-		image.getGraphics().drawImage(img, 0, 0, null);
-		
-		Sprite sprite			= new Sprite(image);
+		BufferedImage img		= loadImage(file);
+		Sprite sprite			= new Sprite(img);
 		
 		// cache the sprite so it doesn't have to be loaded again
 		sprites.put(file, sprite);
 		
-		return sprite;*/
-		
-		return new Sprite(getTexture(file));
+		return sprite;
 	}
 	
 	/**

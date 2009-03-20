@@ -6,26 +6,26 @@
 
 package org.javateerz.ParkViewProtector;
 
+import java.awt.image.BufferedImage;
+
+import org.javateerz.EasyGL.GLSprite;
 import org.lwjgl.opengl.GL11;
 
-public class Sprite
+public class Sprite extends GLSprite
 {
-	private GLTexture texture;
+	//private GLTexture texture;
 	
-	private int width;
-	private int height;
+	//private int width;
+	//private int height;
 	
 	/**
 	 * Create a new sprite
 	 * 
 	 * @param image An image to use as the sprite
 	 */
-	public Sprite(GLTexture texture)
+	public Sprite(BufferedImage img)
 	{
-		this.texture	= texture;
-		
-		width			= texture.getImageWidth();
-		height			= texture.getImageHeight();
+		super(img);
 	}
 	
 	/**
@@ -33,20 +33,20 @@ public class Sprite
 	 * 
 	 * @return Width of the sprite
 	 */
-	public int getWidth()
+	/*public int getWidth()
 	{
 		return width;
-	}
+	}*/
 	
 	/**
 	 * Gets the height (in pixels) of the sprite
 	 * 
 	 * @return Height of the sprite
 	 */
-	public int getHeight()
+	/*public int getHeight()
 	{
 		return height;
-	}
+	}*/
 	
 	/**
 	 * Draws the image on a Graphics context
@@ -55,7 +55,7 @@ public class Sprite
 	 * @param x X Position
 	 * @param y Y Position
 	 */
-	public void draw(int x, int y)
+	/*public void draw(int x, int y)
 	{
 		GL11.glPushMatrix();
 		
@@ -82,5 +82,5 @@ public class Sprite
 		GL11.glEnd();
 		
 		GL11.glPopMatrix();
-	}
+	}*/
 }
