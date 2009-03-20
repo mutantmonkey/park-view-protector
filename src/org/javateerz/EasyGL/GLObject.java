@@ -1,5 +1,24 @@
+//******************************************************//
+//
+// EasyGL
+//
+//******************************************************//
+// Written by:
+//	James Schwinabart
+//******************************************************//
+// EASYGL IS FREE SOFTWARE
+// http://james.schwinabart.com/easygl/license/
+//******************************************************//
+
 package org.javateerz.EasyGL;
 
+import org.lwjgl.util.Color;
+
+/**
+ * An OpenGL object
+ * 
+ * @author	James Schwinabart
+ */
 public abstract class GLObject
 {
 	protected int x;
@@ -7,6 +26,30 @@ public abstract class GLObject
 	protected int width;
 	protected int height;
 	
+	protected Color color	= new Color(Color.CYAN);
+	
+	/**
+	 * Creates a new OpenGL object
+	 * 
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 */
+	public GLObject(int x, int y)
+	{
+		this.x				= x;
+		this.y				= y;
+	}
+	
+	/**
+	 * Creates a new OpenGL object
+	 * 
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 */
 	public GLObject(int x, int y, int width, int height)
 	{
 		this.x				= x;
@@ -15,5 +58,18 @@ public abstract class GLObject
 		this.height			= height;
 	}
 	
+	/**
+	 * Changes the color of the OpenGL object
+	 * 
+	 * @param c
+	 */
+	public void setColor(Color c)
+	{
+		color				= c;
+	}
+	
+	/**
+	 * Draws the OpenGL object on the display
+	 */
 	public abstract void draw();
 }
