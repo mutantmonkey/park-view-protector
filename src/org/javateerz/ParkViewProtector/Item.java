@@ -84,6 +84,13 @@ public class Item extends Movable
 	
 	public void updateSprite()
 	{
-		this.sprite	= DataStore.INSTANCE.getSprite("gitem.png");
+		if(type == 'h')
+		{
+			this.sprite	= DataStore.INSTANCE.getSprite("gHpPot.png");
+		}
+		else
+		{
+			this.sprite	= DataStore.INSTANCE.getSprite("gTpPot.png");
+		}
 	}
 }
