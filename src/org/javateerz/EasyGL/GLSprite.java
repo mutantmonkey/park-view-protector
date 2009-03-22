@@ -39,7 +39,9 @@ public class GLSprite extends GLObject
 	private int textureHeight;
 	
 	/**
-	 * Create a new sprite
+	 * Creates a new sprite
+	 * 
+	 * @param img Source image
 	 */
 	public GLSprite(BufferedImage img)
 	{
@@ -52,6 +54,13 @@ public class GLSprite extends GLObject
 		initTexture();
 	}
 	
+	/**
+	 * Creates a new sprite at the given position
+	 * 
+	 * @param img Source image
+	 * @param x
+	 * @param y
+	 */
 	public GLSprite(BufferedImage img, int x, int y)
 	{
 		super(x, y);
@@ -63,6 +72,9 @@ public class GLSprite extends GLObject
 		initTexture();
 	}
 	
+	/**
+	 * Initializes the texture
+	 */
 	private void initTexture()
 	{
 		textureId					= createTextureId();
@@ -85,12 +97,41 @@ public class GLSprite extends GLObject
 				textureBuffer);
 	}
 	
+	/**
+	 * Binds the texture to the OpenGL target
+	 */
 	private void bindTexture()
 	{
 		GL11.glEnable(TEXTURE_TARGET);
 		GL11.glBindTexture(TEXTURE_TARGET, textureId);
 	}
 	
+	/**
+	 * Gets the width of the texture
+	 * 
+	 * @return
+	 */
+	private float getTextureWidth()
+	{
+		return (float) width / textureWidth;
+	}
+	
+	/**
+	 * Gets the height of the texture
+	 * 
+	 * @return
+	 */
+	private float getTextureHeight()
+	{
+		return (float) height / textureHeight;
+	}
+	
+	/**
+	 * Draws the image on the OpenGL target at the given position
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	public void draw(int x, int y)
 	{
 		this.x					= x;
@@ -99,6 +140,9 @@ public class GLSprite extends GLObject
 		draw();
 	}
 	
+	/**
+	 * Draws the image on the OpenGL target
+	 */
 	public void draw()
 	{
 		GL11.glPushMatrix();
@@ -115,11 +159,11 @@ public class GLSprite extends GLObject
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f(0, 0);
 		GL11.glVertex2f(0, 0);
-		GL11.glTexCoord2f(0, textureHeight);
+		GL11.glTexCoord2f(0, getTextureHeight());
 		GL11.glVertex2f(0, height);
-		GL11.glTexCoord2f(textureWidth, textureHeight);
+		GL11.glTexCoord2f(getTextureWidth(), getTextureHeight());
 		GL11.glVertex2f(width, height);
-		GL11.glTexCoord2f(textureWidth, 0);
+		GL11.glTexCoord2f(getTextureWidth(), 0);
 		GL11.glVertex2f(width, 0);
 		GL11.glEnd();
 		
@@ -160,7 +204,6 @@ public class GLSprite extends GLObject
 	/**
 	 * Convert the buffered image to a texture
 	 *
-	 * @param bufferedImage The image to convert to a texture
 	 * @return A buffer containing the data
 	 */
 	private ByteBuffer convertImageData()
@@ -185,8 +228,8 @@ public class GLSprite extends GLObject
 			texHeight *= 2;
 		}
 		
-		textureWidth			= texHeight;
-		textureHeight			= texWidth;
+		textureWidth			= texWidth;
+		textureHeight			= texHeight;
 		
 		// create a raster that can be used by OpenGL as a source
 
