@@ -135,7 +135,7 @@ public enum DataStore
 		
 		return clip;
 	}
-	
+
 	/**
 	 * Loads/retrieves a sprite
 	 * 

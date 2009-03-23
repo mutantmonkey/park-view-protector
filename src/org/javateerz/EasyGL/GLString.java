@@ -12,10 +12,10 @@
 
 package org.javateerz.EasyGL;
 
-import java.awt.Font;
-
 import org.lwjgl.util.Rectangle;
-import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.AngelCodeFont;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.SlickException;
 
 /**
  * An OpenGL text string
@@ -24,7 +24,7 @@ import org.newdawn.slick.TrueTypeFont;
  */
 public class GLString extends GLObject
 {
-	private TrueTypeFont font;
+	private Font font;
 	private String text;
 	
 	/**
@@ -49,9 +49,6 @@ public class GLString extends GLObject
 		super(x, y);
 		
 		text					= str;
-		
-		width					= text.length() * 5;
-		height					= 10;
 	}
 	
 	/**
@@ -61,25 +58,29 @@ public class GLString extends GLObject
 	 */
 	public void setFont(Font font)
 	{
-		//this.font				= new TrueTypeFont(font, false);
+		this.font				= font;
 	}
 	
 	/**
 	 * Gets the bounding box of the font
 	 */
-	/*public Rectangle getBounds()
+	public Rectangle getBounds()
 	{
+		if(font == null) super.getBounds();
+		
 		Rectangle ret			= new Rectangle(x, y, font.getWidth(text),
 				font.getLineHeight());
 		
 		return ret;
-	}*/
+	}
 	
 	/**
 	 * Draws the OpenGL string on the display
 	 */
 	public void draw()
 	{
-		//font.drawString((float) x, (float) y, text, color);
+		if(font == null) return;
+		
+		font.drawString((float) x, (float) y, text, color);
 	}
 }

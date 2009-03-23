@@ -6,23 +6,24 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.Font;
-
 import org.javateerz.EasyGL.*;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.SlickException;
 
 public class Menu
 {
 	public static final int TOP_SPACING				= 120;
 	public static final int LINE_SPACING			= 40;
-	public static final Font TEXT_FONT				= new Font("Dialog", Font.PLAIN, 32);
 	public static final Color BG_COLOR				= new Color(0, 0, 0);
 	public static final Color TEXT_COLOR			= new Color(255, 255, 255);
 	public static final Color SELECTED_TEXT_COLOR	= new Color(255, 0, 255);
 	
 	protected ParkViewProtector driver;
+	protected Font textFont;
 	
 	private MenuItem[] items						= {
 			new MenuItem("Back", 1),
@@ -41,6 +42,17 @@ public class Menu
 	public Menu(ParkViewProtector p)
 	{
 		this.driver								= p;
+		
+		try
+		{
+			textFont								= new AngelCodeFont("fonts/menu.fnt", 
+					"fonts/menu.png");
+		}
+		catch(SlickException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void show()
@@ -72,7 +84,7 @@ public class Menu
 		// draw menu items
 		for(int i = 0; i < items.length; i++)
 		{
-			items[i].setFont(TEXT_FONT);
+			items[i].setFont(textFont);
 			
 			// set text color
 			if(i == selectedItem)

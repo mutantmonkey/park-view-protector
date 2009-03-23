@@ -86,7 +86,7 @@ public class OptionsMenu extends Menu
 		for(int i = 0; i < items.length; i++)
 		{
 			// set font
-			items[i].setFont(TEXT_FONT);
+			items[i].setFont(textFont);
 			
 			// set text color
 			if(i == selectedItem)

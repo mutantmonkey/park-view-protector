@@ -65,7 +65,7 @@ public class TitleScreen extends Menu
 		// draw menu items
 		for(int i = 0; i < items.length; i++)
 		{
-			items[i].setFont(TEXT_FONT);
+			items[i].setFont(textFont);
 		
 			// set text color
 			if(i == selectedItem)

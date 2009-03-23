@@ -18,8 +18,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
-import org.newdawn.easyogg.OggClip;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Music;
 
 public class ParkViewProtector
 {
@@ -47,7 +47,7 @@ public class ParkViewProtector
 	// logos
 	private Sprite jtzLogo;
 	
-	private OggClip bgMusic;
+	private Music bgMusic;
 	
 	private TitleScreen title;
 	private Game game;
@@ -163,9 +163,14 @@ public class ParkViewProtector
 		// try to play background music
 		try
 		{
-			bgMusic					= new OggClip("kicked.ogg");
+			/*bgMusic					= new OggClip("kicked.ogg");
 			bgMusic.setGain(Options.INSTANCE.getFloat("music_volume", 0.8f));
+			bgMusic.loop();*/
+			
+			bgMusic					= new Music("kicked.ogg");
+			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
 			bgMusic.loop();
+			bgMusic.play();
 		}
 		catch(Exception e)
 		{
@@ -254,7 +259,7 @@ public class ParkViewProtector
 		
 		if(key == "music_volume")
 		{
-			bgMusic.setGain(value);
+			bgMusic.setVolume(value);
 		}
 	}
 	
