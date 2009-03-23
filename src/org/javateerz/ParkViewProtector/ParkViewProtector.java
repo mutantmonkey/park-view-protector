@@ -8,33 +8,36 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferStrategy;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
-import javax.sound.sampled.Clip;
-import javax.swing.*;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
-import org.newdawn.easyogg.OggClip;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Music;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
-public class ParkViewProtector extends Canvas
+public class ParkViewProtector
 {
 	public static final int WIDTH			= 800;
 	public static final int HEIGHT			= 600;
 	
 	// colors
 	public static final Color COLOR_BG_1	= new Color(255, 0, 255);
-	public static final Color COLOR_TEXT_1	= Color.white;
-	public static final Color COLOR_BG_2	= Color.white;
-	public static final Color COLOR_TEXT_2	= Color.black;
+	public static final Color COLOR_TEXT_1	= new Color(255, 255, 255);
+	public static final Color COLOR_BG_2	= new Color(255, 255, 255);
+	public static final Color COLOR_TEXT_2	= new Color(0, 0, 0);
 	
-	public static final Color STATS_BAR_BG	= new Color(0f, 0f, 0f, 0.5f);
-	public static final Color STATS_BAR_FG	= Color.white;
+	public static final Color STATS_BAR_BG	= new Color(0, 0, 0, 127);
+	public static final Color STATS_BAR_FG	= new Color(255, 255, 255);
 	public static final Color STATS_BAR_HP	= new Color(255, 0, 255);
 	public static final Color STATS_BAR_TP	= new Color(0, 255, 0);
 	
-	protected JFrame window;
-	protected JPanel contentPanel;
+	private static final long serialVersionUID = 1L;
 	
 	private boolean running					= true;
 	public static boolean showTitle			= true;
@@ -44,11 +47,7 @@ public class ParkViewProtector extends Canvas
 	// logos
 	private Sprite jtzLogo;
 	
-	// graphics
-	private Graphics g;
-	private BufferStrategy strategy;
-	
-	private OggClip bgMusic;
+	private Music bgMusic;
 	
 	private TitleScreen title;
 	private Game game;
@@ -57,6 +56,36 @@ public class ParkViewProtector extends Canvas
 	
 	public ParkViewProtector()
 	{
+		try
+		{
+			setDisplayMode();
+			
+			Display.setTitle("Park View Protector");
+			Display.create();
+		}
+		catch (LWJGLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		// the ugly cursor must die
+		//Mouse.setGrabbed(true);
+		
+		// disable 3D depth test
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		
+		// set clear color to white
+		GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		
+		// enable transparency
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		GL11.glLoadIdentity();
+		
+		GL11.glOrtho(0, WIDTH, HEIGHT, 0, -1, 1);
+		
 		// load logos
 		jtzLogo						= DataStore.INSTANCE.getSprite("javateerslogo.png");
 		
@@ -69,39 +98,34 @@ public class ParkViewProtector extends Canvas
 		{
 			System.out.println("Error setting system look and feel");
 		}
-		
-		// TODO: add fullscreen support (may require switch from AWT)
-		
-		// create container JFrame (window)
-		window						= new JFrame("Park View Protector");
-		window.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		
-		// set up content panel
-		contentPanel				= (JPanel) window.getContentPane();
-		contentPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		
-		// add canvas
-		contentPanel.setLayout(new GridLayout(1, 1));
-		contentPanel.add(this);
-		
-		// set up window
-		window.pack();
-		window.setResizable(false);
-		
-		// make the window visible
-		window.setVisible(true);
-		
-		// this makes the program end when the window is closed
-		window.addWindowListener(new WindowAdapter()
+	}
+	
+	/**
+	 * Select a display mode
+	 * 
+	 * @return True if an acceptable display mode was found
+	 */
+	public boolean setDisplayMode()
+	{
+		try
 		{
-			public void windowClosing(WindowEvent e)
-			{
-				quit();
-			}
-		});
+			DisplayMode[] modes				= Display.getAvailableDisplayModes();
 		
-		// don't automatically repaint
-		setIgnoreRepaint(true);
+			for(DisplayMode mode : modes)
+			{
+				if(mode.getWidth() == WIDTH && mode.getHeight() == HEIGHT)
+				{
+					Display.setDisplayMode(mode);
+					return true;
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -119,15 +143,14 @@ public class ParkViewProtector extends Canvas
 			System.out.println("No clock home start!");
 		}
 		
-		Graphics g					= getGraphics();
-		
-		// draw the background
-		g.setColor(Color.white);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
 		// Javateerz logo
-		jtzLogo.draw(g, WIDTH / 2 - jtzLogo.getWidth() / 2, HEIGHT / 2 - jtzLogo.getHeight() / 2);
-		g.dispose();
+		jtzLogo.draw(WIDTH / 2 - jtzLogo.getWidth() / 2, HEIGHT / 2 - jtzLogo.getHeight() / 2);
+		
+		// show rendered content
+		GL11.glFlush();
+		Display.update();
 		
 		try{Thread.sleep(3000);}catch(Exception e){}
 	}
@@ -140,24 +163,19 @@ public class ParkViewProtector extends Canvas
 		// try to play background music
 		try
 		{
-			bgMusic					= new OggClip("kicked.ogg");
+			/*bgMusic					= new OggClip("kicked.ogg");
 			bgMusic.setGain(Options.INSTANCE.getFloat("music_volume", 0.8f));
+			bgMusic.loop();*/
+			
+			bgMusic					= new Music("kicked.ogg");
+			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
 			bgMusic.loop();
+			bgMusic.play();
 		}
 		catch(Exception e)
 		{
 			System.out.println("Error playing background music");
 		}
-		
-		// add key handler class
-		addKeyListener(new Keyboard());
-		
-		// request focus so we will get events without a click
-		requestFocus();
-		
-		// accelerated graphics
-		createBufferStrategy(2);
-		strategy					= getBufferStrategy();
 		
 		title						= new TitleScreen(this);
 		game						= new Game(this);
@@ -172,6 +190,18 @@ public class ParkViewProtector extends Canvas
 	{
 		while(running)
 		{
+			// close requested?
+			if(Display.isCloseRequested())
+			{
+				running				= false;
+			}
+			
+			// clear screen
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glLoadIdentity();
+			
 			if(showTitle)
 			{
 				title.show();
@@ -187,7 +217,13 @@ public class ParkViewProtector extends Canvas
 			else {
 				game.show();
 			}
+			
+			// show rendered content
+			GL11.glFlush();
+			Display.update();
 		}
+		
+		quit();
 	}
 	
 	/**
@@ -223,7 +259,7 @@ public class ParkViewProtector extends Canvas
 		
 		if(key == "music_volume")
 		{
-			bgMusic.setGain(value);
+			bgMusic.setVolume(value);
 		}
 	}
 	
@@ -232,14 +268,11 @@ public class ParkViewProtector extends Canvas
 	 * 
 	 * @param file File name
 	 */
-	public static void playSound(String file)
+	public static void playSound(String file) throws SlickException
 	{
-		Clip soundClip		= DataStore.INSTANCE.getAudioClip(file);
+		Sound sound							= new Sound(file);
 		
-		// TODO: add volume control
-		//soundClip.setGain(Options.INSTANCE.getFloat("sfx_volume", 1.0f));
-		
-		soundClip.start();
+		sound.play(1.0f, Options.INSTANCE.getFloat("sfx_volume", 1.0f));
 	}
 	
 	/**
@@ -252,7 +285,7 @@ public class ParkViewProtector extends Canvas
 	{
 		System.out.println("Error: " + msg);
 		
-		JOptionPane.showMessageDialog(window, msg, "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
 		
 		if(fatal)
 		{
@@ -280,7 +313,7 @@ public class ParkViewProtector extends Canvas
 		
 		bgMusic.stop();
 		
-		window.dispose();
+		Display.destroy();
 	}
 	
 	public static void main(String args[])

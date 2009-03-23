@@ -7,8 +7,9 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.Rectangle;
 import java.io.*;
+
+import org.newdawn.slick.geom.Rectangle;
 
 public class Cupple extends Character
 {

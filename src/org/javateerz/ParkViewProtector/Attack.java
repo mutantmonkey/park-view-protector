@@ -8,8 +8,6 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.util.ArrayList;
-import java.awt.Rectangle;
 import java.io.*;
 
 public class Attack extends Movable

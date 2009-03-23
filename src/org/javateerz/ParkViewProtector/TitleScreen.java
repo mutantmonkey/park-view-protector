@@ -6,13 +6,14 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
+import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 
 public class TitleScreen extends Menu
 {
 	public static final int RIGHT_SPACING	= 20;
 	
-	public static final Color SELECTED_TEXT_COLOR	= Color.white;
+	public static final Color SELECTED_TEXT_COLOR	= new Color(255, 255, 255);
 	public static final Color TEXT_COLOR			= new Color(255, 150, 255);
 	
 	private MenuItem[] items			= {
@@ -37,60 +38,47 @@ public class TitleScreen extends Menu
 	public void show()
 	{
 		// handle key presses
-		if(Keyboard.isPressed(Keyboard.NAV_UP) && selectedItem > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)
 		{
 			selectedItem--;
 		}
-		else if(Keyboard.isPressed(Keyboard.NAV_DOWN) && selectedItem < items.length - 1)
+		else if(Keyboard.isKeyDown(KeyboardConfig.NAV_DOWN) && selectedItem < items.length - 1)
 		{
 			selectedItem++;
 		}
-		else if(Keyboard.isPressed(Keyboard.ENTER))
+		else if(Keyboard.isKeyDown(KeyboardConfig.ENTER))
 		{
 			execute(items[selectedItem].getAction());
-			
-			// FIXME: should this actually be here?
-			Keyboard.setReleased(Keyboard.ENTER);
 		}
-		else if(Keyboard.isPressed(Keyboard.BACK))
+		else if(Keyboard.isKeyDown(KeyboardConfig.BACK))
 		{
 			ParkViewProtector.showMenu		= false;
-			
-			// FIXME: see above
-			Keyboard.setReleased(Keyboard.BACK);
 		}
 		
-		g							= (Graphics) strategy.getDrawGraphics();
-		
 		// draw logo
-		mainLogo.draw(g, 0, 0);
+		mainLogo.draw(0, 0);
 		
 		// FIXME: remove this notice about the new keys
-		g.setColor(SELECTED_TEXT_COLOR);
-		g.drawString("NOTICE: Keys have changed. Use w, a, s, and d to move; j, k, and l to attack", 50, 50);
-		
-		// set font and color
-		g.setFont(TEXT_FONT);
+		/*textFont.drawString(50, 50, "NOTICE: Keys have changed. Use w, a, s, and d to " +
+				"move; j, k, and l to attack", SELECTED_TEXT_COLOR);*/
 		
 		// draw menu items
 		for(int i = 0; i < items.length; i++)
 		{
+			items[i].setFont(textFont);
+				
 			// set text color
 			if(i == selectedItem)
 			{
-				g.setColor(SELECTED_TEXT_COLOR);
+				items[i].setColor(SELECTED_TEXT_COLOR);
 			}
 			else {
-				g.setColor(TEXT_COLOR);
+				items[i].setColor(TEXT_COLOR);
 			}
 			
-			items[i].draw(g, ParkViewProtector.WIDTH - items[i].getBounds(g).width - RIGHT_SPACING,
+			items[i].draw(ParkViewProtector.WIDTH - items[i].getBounds().getWidth() - RIGHT_SPACING,
 					TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
-		
-		// finish drawing
-		g.dispose();
-		strategy.show();
 		
 		// keep the game from running too fast
 		try

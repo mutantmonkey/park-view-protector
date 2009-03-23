@@ -6,7 +6,7 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
+import org.lwjgl.input.Keyboard;
 
 public class OptionsMenu extends Menu
 {
@@ -45,72 +45,60 @@ public class OptionsMenu extends Menu
 	public void show()
 	{
 		// handle key presses
-		if(Keyboard.isPressed(Keyboard.NAV_UP) && selectedItem > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)
 		{
 			selectedItem--;
 		}
-		else if(Keyboard.isPressed(Keyboard.NAV_DOWN) && selectedItem < items.length - 1)
+		else if(Keyboard.isKeyDown(KeyboardConfig.NAV_DOWN) && selectedItem < items.length - 1)
 		{
 			selectedItem++;
 		}
-		else if(Keyboard.isPressed(Keyboard.BACK))
+		else if(Keyboard.isKeyDown(KeyboardConfig.BACK))
 		{
 			ParkViewProtector.showMenu		= false;
-			
-			// FIXME: see above
-			Keyboard.setReleased(Keyboard.BACK);
 		}
 		
 		// menu items are different
 		if(items[selectedItem] instanceof MenuItem)
 		{
-			if(Keyboard.isPressed(Keyboard.ENTER))
+			if(Keyboard.isKeyDown(KeyboardConfig.ENTER))
 			{
 				execute(((MenuItem) items[selectedItem]).getAction());
-				
-				// FIXME: see above
-				Keyboard.setReleased(Keyboard.ENTER);
 			}
 		}
 		else {
-			if(Keyboard.isPressed(Keyboard.NAV_LEFT))
+			if(Keyboard.isKeyDown(KeyboardConfig.NAV_LEFT))
 			{
 				items[selectedItem].leftPressed();
 				items[selectedItem].update(driver);
 			}
-			else if(Keyboard.isPressed(Keyboard.NAV_RIGHT))
+			else if(Keyboard.isKeyDown(KeyboardConfig.NAV_RIGHT))
 			{
 				items[selectedItem].rightPressed();
 				items[selectedItem].update(driver);
 			}
 		}
 		
-		g									= (Graphics) strategy.getDrawGraphics();
-		
 		// draw the background
-		optionsBg.draw(g, 0, 0);
-		
-		// set font and color
-		g.setFont(TEXT_FONT);
+		optionsBg.draw(0, 0);
 		
 		// draw menu items
 		for(int i = 0; i < items.length; i++)
 		{
+			// set font
+			items[i].setFont(textFont);
+			
 			// set text color
 			if(i == selectedItem)
 			{
-				g.setColor(SELECTED_TEXT_COLOR);
+				items[i].setColor(SELECTED_TEXT_COLOR);
 			}
 			else {
-				g.setColor(TEXT_COLOR);
+				items[i].setColor(TEXT_COLOR);
 			}
 			
-			items[i].draw(g, LEFT_SPACING, TOP_SPACING + (i + 1) * LINE_SPACING);
+			items[i].draw(LEFT_SPACING, TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
-		
-		// finish drawing
-		g.dispose();
-		strategy.show();
 		
 		// keep the game from running too fast
 		try
