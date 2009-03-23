@@ -9,8 +9,8 @@
 package org.javateerz.ParkViewProtector;
 
 import java.io.Serializable;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+
+import org.newdawn.slick.geom.Rectangle;
 
 public abstract class Movable implements Serializable
 {
@@ -219,7 +219,7 @@ public abstract class Movable implements Serializable
 	/**
 	 * Called by main game loop, draws the object's sprite on the screen
 	 */
-	public void draw(Graphics g)
+	public void draw()
 	{
 		sprite.draw((int) x, (int) y);
 	}

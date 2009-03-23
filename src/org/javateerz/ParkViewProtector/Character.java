@@ -6,8 +6,6 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.util.ArrayList;
-
 public abstract class Character extends Movable
 {
 	// stats

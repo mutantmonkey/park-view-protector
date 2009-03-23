@@ -4,10 +4,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="images"/>
 	<classpathentry kind="lib" path="sounds"/>
-	<classpathentry kind="lib" path="easyogg.jar"/>
-	<classpathentry kind="lib" path="jogg-0.0.7.jar"/>
-	<classpathentry kind="lib" path="jorbis-0.0.15.jar"/>
 	<classpathentry kind="lib" path="lwjgl.jar"/>
 	<classpathentry kind="lib" path="lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="slick.jar"/>
+	<classpathentry kind="lib" path="jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="jorbis-0.0.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

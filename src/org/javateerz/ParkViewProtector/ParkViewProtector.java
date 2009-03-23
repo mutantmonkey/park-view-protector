@@ -8,20 +8,18 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferStrategy;
-
-import javax.sound.sampled.Clip;
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
-import org.newdawn.easyogg.OggClip;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Music;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 public class ParkViewProtector
 {
@@ -30,19 +28,16 @@ public class ParkViewProtector
 	
 	// colors
 	public static final Color COLOR_BG_1	= new Color(255, 0, 255);
-	public static final Color COLOR_TEXT_1	= Color.white;
-	public static final Color COLOR_BG_2	= Color.white;
-	public static final Color COLOR_TEXT_2	= Color.black;
+	public static final Color COLOR_TEXT_1	= new Color(255, 255, 255);
+	public static final Color COLOR_BG_2	= new Color(255, 255, 255);
+	public static final Color COLOR_TEXT_2	= new Color(0, 0, 0);
 	
-	public static final Color STATS_BAR_BG	= new Color(0f, 0f, 0f, 0.5f);
-	public static final Color STATS_BAR_FG	= Color.white;
+	public static final Color STATS_BAR_BG	= new Color(0, 0, 0, 127);
+	public static final Color STATS_BAR_FG	= new Color(255, 255, 255);
 	public static final Color STATS_BAR_HP	= new Color(255, 0, 255);
 	public static final Color STATS_BAR_TP	= new Color(0, 255, 0);
 	
 	private static final long serialVersionUID = 1L;
-	
-	protected JFrame window;
-	protected JPanel contentPanel;
 	
 	private boolean running					= true;
 	public static boolean showTitle			= true;
@@ -52,11 +47,7 @@ public class ParkViewProtector
 	// logos
 	private Sprite jtzLogo;
 	
-	// graphics
-	private Graphics g;
-	private BufferStrategy strategy;
-	
-	private OggClip bgMusic;
+	private Music bgMusic;
 	
 	private TitleScreen title;
 	private Game game;
@@ -67,7 +58,7 @@ public class ParkViewProtector
 	{
 		try
 		{
-			// TODO: add fullscreen support
+			setDisplayMode();
 			
 			Display.setTitle("Park View Protector");
 			Display.create();
@@ -78,13 +69,17 @@ public class ParkViewProtector
 		}
 		
 		// the ugly cursor must die
-		Mouse.setGrabbed(true);
+		//Mouse.setGrabbed(true);
 		
-		// enable 2D textures
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-		// we are drawing in 2D (sadly), so disable the depth test (there is no depth!)
+		// disable 3D depth test
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		
+		// set clear color to white
+		GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		
+		// enable transparency
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
@@ -103,6 +98,34 @@ public class ParkViewProtector
 		{
 			System.out.println("Error setting system look and feel");
 		}
+	}
+	
+	/**
+	 * Select a display mode
+	 * 
+	 * @return True if an acceptable display mode was found
+	 */
+	public boolean setDisplayMode()
+	{
+		try
+		{
+			DisplayMode[] modes				= Display.getAvailableDisplayModes();
+		
+			for(DisplayMode mode : modes)
+			{
+				if(mode.getWidth() == WIDTH && mode.getHeight() == HEIGHT)
+				{
+					Display.setDisplayMode(mode);
+					return true;
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -125,6 +148,10 @@ public class ParkViewProtector
 		// Javateerz logo
 		jtzLogo.draw(WIDTH / 2 - jtzLogo.getWidth() / 2, HEIGHT / 2 - jtzLogo.getHeight() / 2);
 		
+		// show rendered content
+		GL11.glFlush();
+		Display.update();
+		
 		try{Thread.sleep(3000);}catch(Exception e){}
 	}
 	
@@ -136,24 +163,19 @@ public class ParkViewProtector
 		// try to play background music
 		try
 		{
-			bgMusic					= new OggClip("kicked.ogg");
+			/*bgMusic					= new OggClip("kicked.ogg");
 			bgMusic.setGain(Options.INSTANCE.getFloat("music_volume", 0.8f));
+			bgMusic.loop();*/
+			
+			bgMusic					= new Music("kicked.ogg");
+			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
 			bgMusic.loop();
+			bgMusic.play();
 		}
 		catch(Exception e)
 		{
 			System.out.println("Error playing background music");
 		}
-		
-		// add key handler class
-		//addKeyListener(new Keyboard());
-		
-		// request focus so we will get events without a click
-		//requestFocus();
-		
-		// accelerated graphics
-		//createBufferStrategy(2);
-		//strategy					= getBufferStrategy();
 		
 		title						= new TitleScreen(this);
 		game						= new Game(this);
@@ -169,13 +191,16 @@ public class ParkViewProtector
 		while(running)
 		{
 			// close requested?
-			/*if(Display.isCloseRequested())
+			if(Display.isCloseRequested())
 			{
 				running				= false;
-			}*/
+			}
 			
 			// clear screen
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glLoadIdentity();
 			
 			if(showTitle)
 			{
@@ -192,7 +217,13 @@ public class ParkViewProtector
 			else {
 				game.show();
 			}
+			
+			// show rendered content
+			GL11.glFlush();
+			Display.update();
 		}
+		
+		quit();
 	}
 	
 	/**
@@ -228,7 +259,7 @@ public class ParkViewProtector
 		
 		if(key == "music_volume")
 		{
-			bgMusic.setGain(value);
+			bgMusic.setVolume(value);
 		}
 	}
 	
@@ -237,14 +268,11 @@ public class ParkViewProtector
 	 * 
 	 * @param file File name
 	 */
-	public static void playSound(String file)
+	public static void playSound(String file) throws SlickException
 	{
-		Clip soundClip		= DataStore.INSTANCE.getAudioClip(file);
+		Sound sound							= new Sound(file);
 		
-		// TODO: add volume control
-		//soundClip.setGain(Options.INSTANCE.getFloat("sfx_volume", 1.0f));
-		
-		soundClip.start();
+		sound.play(1.0f, Options.INSTANCE.getFloat("sfx_volume", 1.0f));
 	}
 	
 	/**
@@ -257,7 +285,7 @@ public class ParkViewProtector
 	{
 		System.out.println("Error: " + msg);
 		
-		JOptionPane.showMessageDialog(window, msg, "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
 		
 		if(fatal)
 		{
@@ -285,7 +313,7 @@ public class ParkViewProtector
 		
 		bgMusic.stop();
 		
-		window.dispose();
+		Display.destroy();
 	}
 	
 	public static void main(String args[])

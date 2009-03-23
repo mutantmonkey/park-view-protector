@@ -6,11 +6,10 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
+import org.javateerz.EasyGL.GLString;
 
-public abstract class OptionItem
+public abstract class OptionItem extends GLString
 {
-	protected String label;
 	protected String key;
 	
 	/**
@@ -20,7 +19,7 @@ public abstract class OptionItem
 	 */
 	public OptionItem(String label)
 	{
-		this.label			= label;
+		super(label);
 	}
 	
 	/**
@@ -31,7 +30,8 @@ public abstract class OptionItem
 	 */
 	public OptionItem(String label, String key)
 	{
-		this.label			= label;
+		super(label);
+		
 		this.key			= key;
 	}
 	
@@ -49,30 +49,4 @@ public abstract class OptionItem
 	 * Updates the option
 	 */
 	public abstract void update(ParkViewProtector p);
-	
-	/**
-	 * Gets the bounds of the item
-	 * 
-	 * @param g Graphics context
-	 * @return Bounding box
-	 */
-	public Rectangle getBounds(Graphics g)
-	{
-		int width			= g.getFontMetrics().stringWidth(label);
-		int height			= g.getFontMetrics().getHeight();
-		
-		return new Rectangle(width, height);
-	}
-	
-	/**
-	 * Draws the item on the graphics context
-	 *  
-	 * @param g Graphics context
-	 * @param x X position
-	 * @param y Y position
-	 */
-	public void draw(Graphics g, int x, int y)
-	{
-		g.drawString(label, x, y);
-	}
 }

@@ -6,9 +6,6 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
-import javax.swing.*;
-
 // TODO: I think having MenuItem extend OptionItem was a bad idea
 public class MenuItem extends OptionItem
 {
@@ -74,17 +71,16 @@ public class MenuItem extends OptionItem
 	
 	/**
 	 * Draws the menu item centered on the graphics context
-	 *  
-	 * @param g Graphics context
+	 * 
 	 * @param x X position
 	 * @param y Y position
 	 */
-	public void drawCentered(Graphics g, int x, int y)
+	public void drawCentered(int x, int y)
 	{
 		// center the string
-		int width			= g.getFontMetrics().stringWidth(label);
+		int width			= getBounds().getWidth();
 		x				   -= width / 2;
 		
-		draw(g, x, y);
+		draw(x, y);
 	}
 }
