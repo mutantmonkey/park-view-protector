@@ -8,18 +8,18 @@
 
 package org.javateerz.ParkViewProtector;
 
-import javax.sound.sampled.Clip;
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Music;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 public class ParkViewProtector
 {
@@ -268,14 +268,11 @@ public class ParkViewProtector
 	 * 
 	 * @param file File name
 	 */
-	public static void playSound(String file)
+	public static void playSound(String file) throws SlickException
 	{
-		Clip soundClip		= DataStore.INSTANCE.getAudioClip(file);
+		Sound sound							= new Sound(file);
 		
-		// TODO: add volume control
-		//soundClip.setGain(Options.INSTANCE.getFloat("sfx_volume", 1.0f));
-		
-		soundClip.start();
+		sound.play(1.0f, Options.INSTANCE.getFloat("sfx_volume", 1.0f));
 	}
 	
 	/**

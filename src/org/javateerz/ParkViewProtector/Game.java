@@ -95,7 +95,7 @@ public class Game implements Serializable
 		init(p);
 		
 		statsFont							= new TrueTypeFont(
-				new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 12), false);
+				new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 10), false);
 		
 		// initialize everything
 		initPlayer();
@@ -395,19 +395,12 @@ public class Game implements Serializable
 	 */
 	public void drawStatistics()
 	{
-		// FIXME: drawing GLStrings is very slow; it's not good enough for this
-		
 		// background rectangle
 		GLRect bgRect				= new GLRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
 		bgRect.setColor(ParkViewProtector.STATS_BAR_BG);
 		bgRect.draw();
 		
 		// draw labels
-		/*g.setColor(ParkViewProtector.STATS_BAR_FG);
-		g.setFont(new Font("System", Font.PLAIN, 10));
-		
-		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;*/
-		
 		GLString hpStr				= new GLString("HP:", STAT_PAD_TOP, STAT_PAD_TOP);
 		hpStr.setColor(ParkViewProtector.STATS_BAR_FG);
 		hpStr.setFont(statsFont);
@@ -445,7 +438,7 @@ public class Game implements Serializable
 		levelStr.draw();
 		
 		// draw Inventory
-		player.bin.draw(550,STAT_PAD_TOP);
+		player.bin.draw(statsFont, 550, STAT_PAD_TOP);
 	}
 	
 	/**
@@ -952,6 +945,7 @@ public class Game implements Serializable
 	 * 
 	 * @param os Object input stream
 	 */
+	@SuppressWarnings("unchecked")
 	private void readObject(ObjectInputStream os)
 	{
 		try
