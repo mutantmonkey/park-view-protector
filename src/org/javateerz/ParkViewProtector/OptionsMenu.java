@@ -6,8 +6,6 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
-
 import org.lwjgl.input.Keyboard;
 
 public class OptionsMenu extends Menu
@@ -81,32 +79,26 @@ public class OptionsMenu extends Menu
 			}
 		}
 		
-		g									= (Graphics) strategy.getDrawGraphics();
-		
 		// draw the background
 		optionsBg.draw(0, 0);
-		
-		// set font and color
-		g.setFont(TEXT_FONT);
 		
 		// draw menu items
 		for(int i = 0; i < items.length; i++)
 		{
+			// set font
+			items[i].setFont(TEXT_FONT);
+			
 			// set text color
 			if(i == selectedItem)
 			{
-				g.setColor(SELECTED_TEXT_COLOR);
+				items[i].setColor(SELECTED_TEXT_COLOR);
 			}
 			else {
-				g.setColor(TEXT_COLOR);
+				items[i].setColor(TEXT_COLOR);
 			}
 			
-			items[i].draw(g, LEFT_SPACING, TOP_SPACING + (i + 1) * LINE_SPACING);
+			items[i].draw(LEFT_SPACING, TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
-		
-		// finish drawing
-		g.dispose();
-		strategy.show();
 		
 		// keep the game from running too fast
 		try

@@ -13,7 +13,8 @@
 package org.javateerz.EasyGL;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Color;
+import org.lwjgl.util.Rectangle;
+import org.newdawn.slick.Color;
 
 /**
  * An OpenGL object
@@ -29,15 +30,22 @@ public abstract class GLObject
 	protected int width;
 	protected int height;
 	
-	protected Color color	= new Color(Color.CYAN);
+	protected Color color						= Color.black;
 	
 	/**
 	 * Creates a new OpenGL object
+	 */
+	public GLObject()
+	{
+		this.x				= 0;
+		this.y				= 0;
+	}
+	
+	/**
+	 * Creates a new OpenGL object at the given position
 	 * 
 	 * @param x
 	 * @param y
-	 * @param width
-	 * @param height
 	 */
 	public GLObject(int x, int y)
 	{
@@ -46,7 +54,7 @@ public abstract class GLObject
 	}
 	
 	/**
-	 * Creates a new OpenGL object
+	 * Creates a new OpenGL object at the given position with the given width and height
 	 * 
 	 * @param x
 	 * @param y
@@ -89,6 +97,30 @@ public abstract class GLObject
 	public int getHeight()
 	{
 		return height;
+	}
+	
+	/**
+	 * Returns the bounds of the object
+	 * 
+	 * @return
+	 */
+	public Rectangle getBounds()
+	{
+		return new Rectangle(x, y, width, height);
+	}
+	
+	/**
+	 * Draws the OpenGL object on the display at the given position
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void draw(int x, int y)
+	{
+		this.x				= x;
+		this.y				= y;
+		
+		draw();
 	}
 	
 	/**

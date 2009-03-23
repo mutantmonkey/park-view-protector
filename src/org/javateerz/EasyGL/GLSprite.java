@@ -14,12 +14,7 @@ package org.javateerz.EasyGL;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -100,7 +95,7 @@ public class GLSprite extends GLObject
 	/**
 	 * Binds the texture to the OpenGL target
 	 */
-	private void bindTexture()
+	public void bindTexture()
 	{
 		GL11.glEnable(TEXTURE_TARGET);
 		GL11.glBindTexture(TEXTURE_TARGET, textureId);
@@ -124,20 +119,6 @@ public class GLSprite extends GLObject
 	private float getTextureHeight()
 	{
 		return (float) height / textureHeight;
-	}
-	
-	/**
-	 * Draws the image on the OpenGL target at the given position
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	public void draw(int x, int y)
-	{
-		this.x					= x;
-		this.y					= y;
-		
-		draw();
 	}
 	
 	/**
@@ -238,11 +219,11 @@ public class GLSprite extends GLObject
 		if (img.getColorModel().hasAlpha())
 		{
 			raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,texWidth,texHeight,4,null);
-			texImage = new BufferedImage(DataStore.INSTANCE.glAlphaColorModel,raster,false,new Hashtable());
+			texImage = new BufferedImage(DataStore.INSTANCE.glAlphaColorModel,raster,false,new Hashtable<Object, Object>());
 		}
 		else {
 			raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,texWidth,texHeight,3,null);
-			texImage = new BufferedImage(DataStore.INSTANCE.glColorModel,raster,false,new Hashtable());
+			texImage = new BufferedImage(DataStore.INSTANCE.glColorModel,raster,false,new Hashtable<Object, Object>());
 		}
 			
 		// copy the source image into the produced image

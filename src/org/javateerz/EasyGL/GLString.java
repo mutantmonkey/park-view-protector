@@ -12,7 +12,10 @@
 
 package org.javateerz.EasyGL;
 
-import org.lwjgl.opengl.GL11;
+import java.awt.Font;
+
+import org.lwjgl.util.Rectangle;
+import org.newdawn.slick.TrueTypeFont;
 
 /**
  * An OpenGL text string
@@ -21,10 +24,21 @@ import org.lwjgl.opengl.GL11;
  */
 public class GLString extends GLObject
 {
+	private TrueTypeFont font;
 	private String text;
 	
 	/**
 	 * Creates a new OpenGL string
+	 * 
+	 * @param str Text to display
+	 */
+	public GLString(String str)
+	{
+		text					= str;
+	}
+	
+	/**
+	 * Creates a new OpenGL string at the given position
 	 * 
 	 * @param str Text to display
 	 * @param x
@@ -41,30 +55,31 @@ public class GLString extends GLObject
 	}
 	
 	/**
+	 * Sets the font of the object
+	 * 
+	 * @param font
+	 */
+	public void setFont(Font font)
+	{
+		//this.font				= new TrueTypeFont(font, false);
+	}
+	
+	/**
+	 * Gets the bounding box of the font
+	 */
+	/*public Rectangle getBounds()
+	{
+		Rectangle ret			= new Rectangle(x, y, font.getWidth(text),
+				font.getLineHeight());
+		
+		return ret;
+	}*/
+	
+	/**
 	 * Draws the OpenGL string on the display
 	 */
 	public void draw()
 	{
-		GL11.glPushMatrix();
-		
-		// disable textures
-		GL11.glDisable(TEXTURE_TARGET);
-		
-		// move to selected location
-		GL11.glTranslatef(x, y, 0);
-		
-		// set color for drawing
-		GL11.glColor4f((float) color.getRed() / 255, (float) color.getGreen() / 255,
-				(float) color.getBlue() / 255, (float) color.getAlpha() / 255);
-		
-		// draw a quadrilateral
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2f(0, 0);
-		GL11.glVertex2f(0, height);
-		GL11.glVertex2f(width, height);
-		GL11.glVertex2f(width, 0);
-		GL11.glEnd();
-		
-		GL11.glPopMatrix();
+		//font.drawString((float) x, (float) y, text, color);
 	}
 }

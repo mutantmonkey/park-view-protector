@@ -6,23 +6,23 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
-import java.awt.image.BufferStrategy;
+import java.awt.Font;
+
+import org.javateerz.EasyGL.*;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.Color;
 
 public class Menu
 {
 	public static final int TOP_SPACING				= 120;
 	public static final int LINE_SPACING			= 40;
 	public static final Font TEXT_FONT				= new Font("Dialog", Font.PLAIN, 32);
-	public static final Color BG_COLOR				= Color.black;
-	public static final Color TEXT_COLOR			= Color.white;
+	public static final Color BG_COLOR				= new Color(0, 0, 0);
+	public static final Color TEXT_COLOR			= new Color(255, 255, 255);
 	public static final Color SELECTED_TEXT_COLOR	= new Color(255, 0, 255);
 	
 	protected ParkViewProtector driver;
-	protected Graphics g;
-	protected BufferStrategy strategy;
 	
 	private MenuItem[] items						= {
 			new MenuItem("Back", 1),
@@ -63,33 +63,28 @@ public class Menu
 			ParkViewProtector.showMenu		= false;
 		}
 		
-		g									= (Graphics) strategy.getDrawGraphics();
-		
 		// draw the background
-		g.setColor(BG_COLOR);
-		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
-		
-		// set font and color
-		g.setFont(TEXT_FONT);
+		GLRect bg							= new GLRect(0, 0, ParkViewProtector.WIDTH,
+				ParkViewProtector.HEIGHT);
+		bg.setColor(BG_COLOR);
+		bg.draw();
 		
 		// draw menu items
 		for(int i = 0; i < items.length; i++)
 		{
+			items[i].setFont(TEXT_FONT);
+			
 			// set text color
 			if(i == selectedItem)
 			{
-				g.setColor(SELECTED_TEXT_COLOR);
+				items[i].setColor(SELECTED_TEXT_COLOR);
 			}
 			else {
-				g.setColor(TEXT_COLOR);
+				items[i].setColor(TEXT_COLOR);
 			}
 			
-			items[i].drawCentered(g, ParkViewProtector.WIDTH / 2, TOP_SPACING + (i + 1) * LINE_SPACING);
+			items[i].drawCentered(ParkViewProtector.WIDTH / 2, TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
-		
-		// finish drawing
-		g.dispose();
-		strategy.show();
 		
 		// keep the game from running too fast
 		try

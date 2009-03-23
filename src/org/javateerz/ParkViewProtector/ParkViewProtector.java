@@ -17,9 +17,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Color;
 
 import org.newdawn.easyogg.OggClip;
+import org.newdawn.slick.Color;
 
 public class ParkViewProtector
 {
@@ -40,7 +40,7 @@ public class ParkViewProtector
 	private static final long serialVersionUID = 1L;
 	
 	private boolean running					= true;
-	public static boolean showTitle			= false;
+	public static boolean showTitle			= true;
 	public static boolean showMenu			= false;
 	public static boolean showOptions		= false;
 	

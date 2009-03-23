@@ -202,6 +202,12 @@ public class Game implements Serializable
 		Cupple currCouple;
 		Attack currAttack;
 		
+		// key handling
+		if(Keyboard.isKeyDown(KeyboardConfig.MENU))
+		{
+			ParkViewProtector.showMenu			= true;
+		}
+		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw students
 		////////////////////////////////////////////////////////////////////////////////////
@@ -390,6 +396,8 @@ public class Game implements Serializable
 	 */
 	public void drawStatistics()
 	{
+		// FIXME: drawing GLStrings is very slow; it's not good enough for this
+		
 		// background rectangle
 		GLRect bgRect				= new GLRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
 		bgRect.setColor(ParkViewProtector.STATS_BAR_BG);
@@ -401,9 +409,9 @@ public class Game implements Serializable
 		
 		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;*/
 		
-		GLString hpStr				= new GLString("HP:", STAT_PAD_TOP, STAT_PAD_TOP);
+		/*GLString hpStr				= new GLString("HP:", STAT_PAD_TOP, STAT_PAD_TOP);
 		hpStr.setColor(ParkViewProtector.STATS_BAR_FG);
-		hpStr.draw();
+		hpStr.draw();*/
 		
 		// draw HP bar
 		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
@@ -412,9 +420,9 @@ public class Game implements Serializable
 				(double) player.getHp() / player.getMaxHp());
 		hpBar.draw(STAT_PAD_LEFT_BAR, STAT_PAD_TOP);
 		
-		GLString tpStr				= new GLString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
+		/*GLString tpStr				= new GLString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
 		tpStr.setColor(ParkViewProtector.STATS_BAR_FG);
-		tpStr.draw();
+		tpStr.draw();*/
 		
 		// draw TP bar
 		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
@@ -424,17 +432,17 @@ public class Game implements Serializable
 		tpBar.draw(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
 		
 		// draw speed
-		GLString speedStr			= new GLString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP);
+		/*GLString speedStr			= new GLString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP);
 		speedStr.setColor(ParkViewProtector.STATS_BAR_FG);
 		speedStr.draw();
 		
 		// draw level
 		GLString levelStr			= new GLString("Level: " + level, 500, STAT_PAD_TOP);
 		levelStr.setColor(ParkViewProtector.STATS_BAR_FG);
-		levelStr.draw();
+		levelStr.draw();*/
 		
 		// draw Inventory
-		player.bin.draw(g,550,STAT_PAD_TOP);
+		//player.bin.draw(g,550,STAT_PAD_TOP);
 	}
 	
 	/**

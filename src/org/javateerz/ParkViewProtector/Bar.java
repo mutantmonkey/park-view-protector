@@ -8,7 +8,7 @@
 package org.javateerz.ParkViewProtector;
 
 import org.javateerz.EasyGL.GLRect;
-import org.lwjgl.util.Color;
+import org.newdawn.slick.Color;
 
 public class Bar
 {
@@ -76,11 +76,8 @@ public class Bar
 	public void draw(int x, int y)
 	{
 		// background
-		//g.setColor(color.darker().darker());
-		//g.fillRect(x, y, maxWidth, BAR_HEIGHT);
-		
 		GLRect bg				= new GLRect(x, y, maxWidth, BAR_HEIGHT);
-		bg.setColor(darken(color));
+		bg.setColor(color.darker(0.5f));
 		bg.draw();
 		
 		// main bar

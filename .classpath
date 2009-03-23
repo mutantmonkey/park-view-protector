@@ -9,5 +9,7 @@
 	<classpathentry kind="lib" path="jorbis-0.0.15.jar"/>
 	<classpathentry kind="lib" path="lwjgl.jar"/>
 	<classpathentry kind="lib" path="lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="glapp.jar"/>
+	<classpathentry kind="lib" path="slick-util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

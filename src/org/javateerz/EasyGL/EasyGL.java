@@ -1,12 +1,11 @@
 package org.javateerz.EasyGL;
 
-import org.javateerz.ParkViewProtector.KeyboardConfig;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Color;
+import org.newdawn.slick.Color;
 
 public class EasyGL
 {
@@ -94,7 +93,7 @@ public class EasyGL
 			GL11.glLoadIdentity();
 			
 			GLRect testRect2		= new GLRect(70, 70, 300, 300);
-			testRect2.setColor(new Color(Color.CYAN));
+			testRect2.setColor(Color.cyan);
 			testRect2.draw();
 			
 			GLRect testRect			= new GLRect(30, 30, 100, 100);
