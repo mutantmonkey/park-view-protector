@@ -6,6 +6,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 
 public class EasyGL
 {
@@ -102,6 +103,9 @@ public class EasyGL
 			
 			GLString musti			= new GLString("MUSTAFA", 20, 20);
 			musti.setColor(new Color(120, 255, 0));
+			musti.setFont(new TrueTypeFont(new java.awt.Font("System",
+					java.awt.Font.PLAIN, 42), false));
+			
 			musti.draw();
 			
 			GL11.glFlush();

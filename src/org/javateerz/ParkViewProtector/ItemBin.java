@@ -1,6 +1,5 @@
 package org.javateerz.ParkViewProtector;
 
-import java.awt.Graphics;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -95,7 +94,7 @@ public class ItemBin implements Serializable
 		}
 	}
 	
-	public void draw(Graphics g,int x,int y)
+	public void draw(int x,int y)
 	{
 		GLString stats					= new GLString("HP: " + inv[0] + " TP: " + inv[1],x,y);
 		stats.setColor(ParkViewProtector.STATS_BAR_FG);

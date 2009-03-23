@@ -9,10 +9,9 @@ package org.javateerz.ParkViewProtector;
 import org.javateerz.EasyGL.*;
 
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 
 public class Menu
 {
@@ -23,7 +22,7 @@ public class Menu
 	public static final Color SELECTED_TEXT_COLOR	= new Color(255, 0, 255);
 	
 	protected ParkViewProtector driver;
-	protected Font textFont;
+	protected static Font textFont;
 	
 	private MenuItem[] items						= {
 			new MenuItem("Back", 1),
@@ -43,16 +42,8 @@ public class Menu
 	{
 		this.driver								= p;
 		
-		try
-		{
-			textFont								= new AngelCodeFont("fonts/menu.fnt", 
-					"fonts/menu.png");
-		}
-		catch(SlickException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		textFont								= new TrueTypeFont(new java.awt.Font(
+				"System", java.awt.Font.PLAIN, 32), true);
 	}
 	
 	public void show()

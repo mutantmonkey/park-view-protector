@@ -59,14 +59,14 @@ public class TitleScreen extends Menu
 		mainLogo.draw(0, 0);
 		
 		// FIXME: remove this notice about the new keys
-		/*g.setColor(SELECTED_TEXT_COLOR);
-		g.drawString("NOTICE: Keys have changed. Use w, a, s, and d to move; j, k, and l to attack", 50, 50);*/
+		/*textFont.drawString(50, 50, "NOTICE: Keys have changed. Use w, a, s, and d to " +
+				"move; j, k, and l to attack", SELECTED_TEXT_COLOR);*/
 		
 		// draw menu items
 		for(int i = 0; i < items.length; i++)
 		{
 			items[i].setFont(textFont);
-		
+				
 			// set text color
 			if(i == selectedItem)
 			{

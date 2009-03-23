@@ -7,7 +7,6 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.Graphics;
 import java.io.*;
 
 import org.javateerz.EasyGL.GLRect;

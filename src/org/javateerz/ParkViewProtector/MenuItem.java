@@ -6,9 +6,6 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
-import javax.swing.*;
-
 // TODO: I think having MenuItem extend OptionItem was a bad idea
 public class MenuItem extends OptionItem
 {

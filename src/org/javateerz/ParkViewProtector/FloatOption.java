@@ -6,8 +6,6 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.Graphics;
-
 public class FloatOption extends OptionItem
 {
 	public static final int BAR_WIDTH		= 200;
@@ -87,7 +85,7 @@ public class FloatOption extends OptionItem
 		
 		x						= ParkViewProtector.WIDTH - OptionsMenu.RIGHT_SPACING
 									- BAR_WIDTH;
-		y						= (int) (y - getBounds().getHeight() / 2);
+		y						= (int) (y + getBounds().getHeight() / 2);
 		
 		optionBar.draw(x, y);
 	}

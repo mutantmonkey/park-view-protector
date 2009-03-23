@@ -9,8 +9,8 @@
 package org.javateerz.ParkViewProtector;
 
 import java.io.Serializable;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+
+import org.newdawn.slick.geom.Rectangle;
 
 public abstract class Movable implements Serializable
 {

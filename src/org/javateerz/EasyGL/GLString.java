@@ -13,9 +13,8 @@
 package org.javateerz.EasyGL;
 
 import org.lwjgl.util.Rectangle;
-import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.opengl.TextureImpl;
 
 /**
  * An OpenGL text string
@@ -81,6 +80,8 @@ public class GLString extends GLObject
 	{
 		if(font == null) return;
 		
-		font.drawString((float) x, (float) y, text, color);
+		TextureImpl.bindNone();
+		
+		font.drawString(x, y, text, color);
 	}
 }

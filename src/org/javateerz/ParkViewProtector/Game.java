@@ -1,18 +1,11 @@
 /**
  * Main game
  * 
- * 
- * 
- * 
- * 
- * 
  * @author	Jamie of the Javateerz
  */
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
-import java.awt.image.BufferStrategy;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -21,6 +14,9 @@ import org.javateerz.EasyGL.GLString;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.geom.Rectangle;
 
 public class Game implements Serializable
 {
@@ -74,8 +70,8 @@ public class Game implements Serializable
 	private static final long serialVersionUID	= 6L;
 	
 	private transient ParkViewProtector driver;
-	private transient Graphics g;
-	private transient BufferStrategy strategy;
+	
+	private transient Font statsFont;
 	
 	// objects on the screen
 	private int level							= 1;
@@ -97,6 +93,9 @@ public class Game implements Serializable
 	public Game(ParkViewProtector p)
 	{
 		init(p);
+		
+		statsFont							= new TrueTypeFont(
+				new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 12), false);
 		
 		// initialize everything
 		initPlayer();
@@ -283,10 +282,10 @@ public class Game implements Serializable
 			currAttack.move(MOVE_SPEED);
 			
 			// is the attack off the screen?
-			if(currAttack.getBounds().x < -currAttack.getBounds().width ||
-					currAttack.getBounds().x > ParkViewProtector.WIDTH ||
-					currAttack.getBounds().y < -currAttack.getBounds().height ||
-					currAttack.getBounds().y > ParkViewProtector.HEIGHT)
+			if(currAttack.getBounds().getX() < -currAttack.getBounds().getWidth() ||
+					currAttack.getBounds().getX() > ParkViewProtector.WIDTH ||
+					currAttack.getBounds().getY() < -currAttack.getBounds().getHeight() ||
+					currAttack.getBounds().getY() > ParkViewProtector.HEIGHT)
 			{
 				System.out.println("Attack #" + i +" went off screen, removing");
 				
@@ -307,7 +306,7 @@ public class Game implements Serializable
 		
 		for(Wall w : walls)
 		{
-			w.draw(g);
+			w.draw();
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -346,24 +345,24 @@ public class Game implements Serializable
 		
 		int distX = 0, distY = 0;
 		
-		if(Keyboard.isKeyDown(KeyboardConfig.UP) && player.getBounds().y > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.UP) && player.getBounds().getY() > 0)
 		{
 			distY						= -MOVE_SPEED;
 		}
 		
-		if(Keyboard.isKeyDown(KeyboardConfig.DOWN) && player.getBounds().y < ParkViewProtector.HEIGHT
-				- player.getBounds().height)
+		if(Keyboard.isKeyDown(KeyboardConfig.DOWN) && player.getBounds().getY() < ParkViewProtector.HEIGHT
+				- player.getBounds().getHeight())
 		{
 			distY						= MOVE_SPEED;
 		}
 		
-		if(Keyboard.isKeyDown(KeyboardConfig.LEFT) && player.getBounds().x > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.LEFT) && player.getBounds().getX() > 0)
 		{
 			distX						= -MOVE_SPEED;
 		}
 		
-		if(Keyboard.isKeyDown(KeyboardConfig.RIGHT) && player.getBounds().x < ParkViewProtector.WIDTH
-				- player.getBounds().width)
+		if(Keyboard.isKeyDown(KeyboardConfig.RIGHT) && player.getBounds().getX() < ParkViewProtector.WIDTH
+				- player.getBounds().getWidth())
 		{
 			distX						= MOVE_SPEED;
 		}
@@ -411,6 +410,7 @@ public class Game implements Serializable
 		
 		GLString hpStr				= new GLString("HP:", STAT_PAD_TOP, STAT_PAD_TOP);
 		hpStr.setColor(ParkViewProtector.STATS_BAR_FG);
+		hpStr.setFont(statsFont);
 		hpStr.draw();
 		
 		// draw HP bar
@@ -422,6 +422,7 @@ public class Game implements Serializable
 		
 		GLString tpStr				= new GLString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
 		tpStr.setColor(ParkViewProtector.STATS_BAR_FG);
+		tpStr.setFont(statsFont);
 		tpStr.draw();
 		
 		// draw TP bar
@@ -434,15 +435,17 @@ public class Game implements Serializable
 		// draw speed
 		GLString speedStr			= new GLString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP);
 		speedStr.setColor(ParkViewProtector.STATS_BAR_FG);
+		speedStr.setFont(statsFont);
 		speedStr.draw();
 		
 		// draw level
 		GLString levelStr			= new GLString("Level: " + level, 500, STAT_PAD_TOP);
 		levelStr.setColor(ParkViewProtector.STATS_BAR_FG);
+		levelStr.setFont(statsFont);
 		levelStr.draw();
 		
 		// draw Inventory
-		player.bin.draw(g,550,STAT_PAD_TOP);
+		player.bin.draw(550,STAT_PAD_TOP);
 	}
 	
 	/**
@@ -465,23 +468,23 @@ public class Game implements Serializable
 		}
 		
 		// change direction if we hit the top or bottom
-		if(obj.getBounds().y <= STATS_BAR_HEIGHT && obj.getDirection() == Direction.NORTH)
+		if(obj.getBounds().getY() <= STATS_BAR_HEIGHT && obj.getDirection() == Direction.NORTH)
 		{
 			obj.setDirection(Direction.SOUTH);
 			obj.resetMoveCount();
 		}
-		else if(obj.getBounds().y >= ParkViewProtector.HEIGHT - obj.getBounds().height  &&
+		else if(obj.getBounds().getY() >= ParkViewProtector.HEIGHT - obj.getBounds().getHeight()  &&
 				obj.getDirection() == Direction.SOUTH)
 		{
 			obj.setDirection(Direction.NORTH);
 			obj.resetMoveCount();
 		}
-		else if(obj.getBounds().x <= 0 && obj.getDirection() == Direction.WEST)
+		else if(obj.getBounds().getX() <= 0 && obj.getDirection() == Direction.WEST)
 		{
 			obj.setDirection(Direction.EAST);
 			obj.resetMoveCount();
 		}
-		else if(obj.getBounds().x >= ParkViewProtector.WIDTH - obj.getBounds().width &&
+		else if(obj.getBounds().getX() >= ParkViewProtector.WIDTH - obj.getBounds().getWidth() &&
 				obj.getDirection() == Direction.EAST)
 		{
 			obj.setDirection(Direction.WEST);
@@ -823,13 +826,14 @@ public class Game implements Serializable
 				if(currCouple.getHp() <=0)
 				{
 					male		= currCouple.getMale();
-					male.moveTo(currCouple.getBounds().x, currCouple.getBounds().y);
+					male.moveTo(currCouple.getBounds().getX(),
+							currCouple.getBounds().getY());
 					male.setHitDelay(currAttack.getHitDelay());
 					male.setCharge(-10);
 					
 					female		= currCouple.getFemale();
-					female.moveTo(currCouple.getBounds().x + DECOUPLE_SPACING,
-							currCouple.getBounds().y);
+					female.moveTo(currCouple.getBounds().getX() + DECOUPLE_SPACING,
+							currCouple.getBounds().getY());
 					female.setHitDelay(currAttack.getHitDelay());
 					female.setCharge(-10);
 					
