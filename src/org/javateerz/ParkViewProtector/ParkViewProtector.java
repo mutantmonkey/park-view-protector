@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -222,6 +223,12 @@ public class ParkViewProtector
 				menu.show();
 			}
 			else {
+				// escape quits
+				if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+				{
+					running			= false;
+				}
+				
 				game.show();
 			}
 			
