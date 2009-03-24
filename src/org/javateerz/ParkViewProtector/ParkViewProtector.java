@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -39,6 +40,8 @@ public class ParkViewProtector
 	
 	private static final long serialVersionUID = 1L;
 	
+	private boolean fullscreen				= true;
+	
 	private boolean running					= true;
 	public static boolean showTitle			= true;
 	public static boolean showMenu			= false;
@@ -60,6 +63,11 @@ public class ParkViewProtector
 		{
 			setDisplayMode();
 			
+			if(fullscreen)
+			{
+				Display.setFullscreen(true);
+			}
+			
 			Display.setTitle("Park View Protector");
 			Display.create();
 		}
@@ -68,8 +76,11 @@ public class ParkViewProtector
 			e.printStackTrace();
 		}
 		
-		// the ugly cursor must die
-		//Mouse.setGrabbed(true);
+		if(fullscreen)
+		{
+			// hide mouse cursor
+			Mouse.setGrabbed(true);
+		}
 		
 		// disable 3D depth test
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -306,7 +317,7 @@ public class ParkViewProtector
 		
 		System.exit(0);
 	}
-	
+
 	public void quit()
 	{
 		running							= false;
