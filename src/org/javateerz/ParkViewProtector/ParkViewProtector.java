@@ -174,14 +174,10 @@ public class ParkViewProtector
 		// try to play background music
 		try
 		{
-			/*bgMusic					= new OggClip("kicked.ogg");
-			bgMusic.setGain(Options.INSTANCE.getFloat("music_volume", 0.8f));
-			bgMusic.loop();*/
-			
 			bgMusic					= new Music("kicked.ogg");
 			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
 			bgMusic.loop();
-			bgMusic.play();
+			//bgMusic.play();
 		}
 		catch(Exception e)
 		{
@@ -317,8 +313,13 @@ public class ParkViewProtector
 		
 		System.exit(0);
 	}
+	
+	public void quitGame()
+	{
+		running							= false;
+	}
 
-	public void quit()
+	private void quit()
 	{
 		running							= false;
 		

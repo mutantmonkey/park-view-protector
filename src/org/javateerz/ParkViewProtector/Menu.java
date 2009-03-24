@@ -133,7 +133,7 @@ public class Menu
 				break;
 				
 			case 9:
-				driver.quit();
+				driver.quitGame();
 				break;
 		}
 	}

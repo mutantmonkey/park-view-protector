@@ -35,6 +35,8 @@ public class Game implements Serializable
 	public static final int CHARGE_REGEN		= 10;
 	public static int chargeRegen				= 0;
 	
+	public static final int GAME_OVER_DELAY		= 5000;
+	
 	public static final int MIN_STUDENTS		= 20;
 	public static final int MAX_STUDENTS		= 30;
 	
@@ -943,13 +945,13 @@ public class Game implements Serializable
 		
 		try
 		{
-			Thread.sleep(15000);
+			Thread.sleep(GAME_OVER_DELAY);
 		}
 		catch(Exception e)
 		{
 		}
 		
-		driver.quit();
+		driver.quitGame();
 	}
 	
 	/**
