@@ -10,6 +10,7 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 
 import org.javateerz.EasyGL.GLRect;
+import org.newdawn.slick.Color;
 
 public class Student extends Character implements Serializable
 {
@@ -155,10 +156,10 @@ public class Student extends Character implements Serializable
 	{
 		GLRect rect				= new GLRect((int) x, (int) y, (int) getBounds().getWidth(),
 				(int) getBounds().getHeight());
-		
+		rect.setColor(new Color(ParkViewProtector.COLOR_BG_1.getRed(),
+				ParkViewProtector.COLOR_BG_1.getGreen(),
+				ParkViewProtector.COLOR_BG_1.getBlue(), 5));
 		rect.draw();
-		
-		// draw a quadrilateral
 
 		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()), (double)charge/100);
 		chargeBar.draw((int)x,(int)y);
