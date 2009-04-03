@@ -44,6 +44,8 @@ public class Menu
 		
 		textFont								= new TrueTypeFont(new java.awt.Font(
 				"System", java.awt.Font.PLAIN, 32), true);
+		
+		driver.setMusic("menu.ogg");
 	}
 	
 	public void show()

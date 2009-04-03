@@ -172,18 +172,7 @@ public class ParkViewProtector
 	 */
 	public void init()
 	{
-		// try to play background music
-		try
-		{
-			bgMusic					= new Music("kicked.ogg");
-			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
-			bgMusic.loop();
-			//bgMusic.play();
-		}
-		catch(Exception e)
-		{
-			System.out.println("Error playing background music");
-		}
+		//setMusic("heavyset.ogg");
 		
 		title						= new TitleScreen(this);
 		game						= new Game(this);
@@ -287,6 +276,26 @@ public class ParkViewProtector
 		Sound sound							= new Sound(file);
 		
 		sound.play(1.0f, Options.INSTANCE.getFloat("sfx_volume", 1.0f));
+	}
+	
+	/**
+	 * Change the background music
+	 * 
+	 * @param file File name
+	 */
+	public void setMusic(String file)
+	{
+		// try to play background music
+		try
+		{
+			bgMusic							= new Music(file);
+			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
+			bgMusic.loop();
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error playing background music");
+		}
 	}
 	
 	/**
