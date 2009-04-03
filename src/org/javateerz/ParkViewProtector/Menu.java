@@ -11,9 +11,10 @@ import org.javateerz.EasyGL.*;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.TrueTypeFont;
 
-public class Menu
+public class Menu extends GameScreen
 {
 	public static final int TOP_SPACING				= 120;
 	public static final int LINE_SPACING			= 40;
@@ -21,7 +22,6 @@ public class Menu
 	public static final Color TEXT_COLOR			= new Color(255, 255, 255);
 	public static final Color SELECTED_TEXT_COLOR	= new Color(255, 0, 255);
 	
-	protected ParkViewProtector driver;
 	protected static Font textFont;
 	
 	private MenuItem[] items						= {
@@ -45,11 +45,26 @@ public class Menu
 		textFont								= new TrueTypeFont(new java.awt.Font(
 				"System", java.awt.Font.PLAIN, 32), true);
 		
-		driver.setMusic("menu.ogg");
+		// load background music
+		try
+		{
+			bgMusic								= new Music("menu.ogg");
+			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error playing background music");
+		}
 	}
 	
 	public void show()
 	{
+		// ensure music is playing
+		if(!bgMusic.playing())
+		{
+			bgMusic.loop();
+		}
+		
 		// handle key presses
 		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)
 		{
@@ -110,6 +125,7 @@ public class Menu
 		{
 			case 1:
 				ParkViewProtector.showMenu		= false;
+				bgMusic.stop();
 				break;
 			
 			case 2:
@@ -131,6 +147,7 @@ public class Menu
 				}
 				
 				ParkViewProtector.showMenu		= false;
+				bgMusic.stop();
 				
 				break;
 				

@@ -18,7 +18,7 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 
-public class Game implements Serializable
+public class Game extends GameScreen implements Serializable
 {
 	public static final int SPEED_THROTTLE		= 10;
 	
@@ -72,8 +72,6 @@ public class Game implements Serializable
 	public static double tpPercent;
 	
 	private static final long serialVersionUID	= 6L;
-	
-	private transient ParkViewProtector driver;
 	
 	private transient Font statsFont;
 	

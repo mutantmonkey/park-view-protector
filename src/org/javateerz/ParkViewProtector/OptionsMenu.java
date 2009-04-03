@@ -55,7 +55,7 @@ public class OptionsMenu extends Menu
 		}
 		else if(Keyboard.isKeyDown(KeyboardConfig.BACK))
 		{
-			ParkViewProtector.showMenu		= false;
+			ParkViewProtector.showOptions		= false;
 		}
 		
 		// menu items are different

@@ -37,6 +37,12 @@ public class TitleScreen extends Menu
 	
 	public void show()
 	{
+		// ensure music is playing
+		if(!bgMusic.playing())
+		{
+			bgMusic.loop();
+		}
+		
 		// handle key presses
 		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)
 		{
@@ -99,6 +105,7 @@ public class TitleScreen extends Menu
 		{
 			case 1:
 				ParkViewProtector.showTitle		= false;
+				bgMusic.stop();
 				break;
 			
 			case 2:
@@ -109,6 +116,7 @@ public class TitleScreen extends Menu
 					driver.setGame(gameData);
 
 					ParkViewProtector.showTitle	= false;
+					bgMusic.stop();
 				}
 				
 				break;

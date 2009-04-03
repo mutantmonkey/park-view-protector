@@ -199,17 +199,9 @@ public class ParkViewProtector
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			GL11.glLoadIdentity();
 			
-			if(showTitle)
+			if(getActiveDriver() != game)
 			{
-				title.show();
-			}
-			else if(showOptions)
-			{
-				optMenu.show();
-			}
-			else if(showMenu)
-			{
-				menu.show();
+				getActiveDriver().show();
 			}
 			else {
 				// escape quits
@@ -251,6 +243,29 @@ public class ParkViewProtector
 	}
 	
 	/**
+	 * @return The screen driver that is currently being displayed
+	 */
+	public GameScreen getActiveDriver()
+	{
+		if(showTitle)
+		{
+			return title;
+		}
+		else if(showOptions)
+		{
+			// FIXME: this is just a hack to make music work properly
+			return menu;
+		}
+		else if(showMenu)
+		{
+			return menu;
+		}
+		else {
+			return game;
+		}
+	}
+	
+	/**
 	 * Update a float option
 	 * 
 	 * @param key
@@ -262,7 +277,7 @@ public class ParkViewProtector
 		
 		if(key == "music_volume")
 		{
-			bgMusic.setVolume(value);
+			getActiveDriver().getMusic().setVolume(value);
 		}
 	}
 	
@@ -276,26 +291,6 @@ public class ParkViewProtector
 		Sound sound							= new Sound(file);
 		
 		sound.play(1.0f, Options.INSTANCE.getFloat("sfx_volume", 1.0f));
-	}
-	
-	/**
-	 * Change the background music
-	 * 
-	 * @param file File name
-	 */
-	public void setMusic(String file)
-	{
-		// try to play background music
-		try
-		{
-			bgMusic							= new Music(file);
-			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
-			bgMusic.loop();
-		}
-		catch(Exception e)
-		{
-			System.out.println("Error playing background music");
-		}
 	}
 	
 	/**
