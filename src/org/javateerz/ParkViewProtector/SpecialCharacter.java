@@ -68,7 +68,7 @@ public class SpecialCharacter extends Staff
 				tp=10;
 				type=Type.FRONT;
 				speed=0;
-				duration=20;
+				duration=70;
 				reuse=40;
 				stillTime=20;
 				hits=1;
@@ -95,7 +95,7 @@ public class SpecialCharacter extends Staff
 				AoE=true;
 				break;
 			case 2:
-				name="squel";
+				name="screech";
 				damage=1;
 				tp=25;
 				type=Type.CENTER;
