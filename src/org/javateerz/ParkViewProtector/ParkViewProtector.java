@@ -41,8 +41,6 @@ public class ParkViewProtector
 	
 	private static final long serialVersionUID = 1L;
 	
-	private boolean fullscreen				= true;
-	
 	private boolean running					= true;
 	public static boolean showTitle			= true;
 	public static boolean showMenu			= false;
@@ -51,14 +49,12 @@ public class ParkViewProtector
 	// logos
 	private Sprite jtzLogo;
 	
-	private Music bgMusic;
-	
 	private TitleScreen title;
 	private Game game;
 	private Menu menu;
 	private OptionsMenu optMenu;
 	
-	public ParkViewProtector()
+	public ParkViewProtector(boolean fullscreen)
 	{
 		try
 		{
@@ -172,8 +168,6 @@ public class ParkViewProtector
 	 */
 	public void init()
 	{
-		//setMusic("heavyset.ogg");
-		
 		title						= new TitleScreen(this);
 		game						= new Game(this);
 		menu						= new Menu(this);
@@ -199,19 +193,8 @@ public class ParkViewProtector
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			GL11.glLoadIdentity();
 			
-			if(getActiveDriver() != game)
-			{
-				getActiveDriver().show();
-			}
-			else {
-				// escape quits
-				if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
-				{
-					running			= false;
-				}
-				
-				game.show();
-			}
+			// render content
+			getActiveDriver().show();
 			
 			// show rendered content
 			GL11.glFlush();
@@ -253,8 +236,7 @@ public class ParkViewProtector
 		}
 		else if(showOptions)
 		{
-			// FIXME: this is just a hack to make music work properly
-			return menu;
+			return optMenu;
 		}
 		else if(showMenu)
 		{
@@ -334,14 +316,17 @@ public class ParkViewProtector
 	{
 		running							= false;
 		
-		bgMusic.stop();
+		getActiveDriver().getMusic().stop();
 		
 		Display.destroy();
 	}
 	
 	public static void main(String args[])
 	{
-		ParkViewProtector game			= new ParkViewProtector();
+		// running in fullscreen mode?
+		boolean fullscreen				= args.length > 0 && args[0].equals("-fullscreen");
+		
+		ParkViewProtector game			= new ParkViewProtector(fullscreen);
 		game.showOpening();
 		game.init();
 		game.mainLoop();
