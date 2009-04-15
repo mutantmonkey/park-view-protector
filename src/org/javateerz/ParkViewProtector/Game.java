@@ -794,7 +794,7 @@ public class Game extends GameScreen implements Serializable
 			
 			//The student takes damage in this if loop
 			if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
-					currStudent.getCharge() > 0 && currStudent.isHittable() &&
+					/*currStudent.getCharge() > 0 && */currStudent.isHittable() &&
 					currAttack.isStudent())
 			{
 				if(currAttack.getStatus()==Status.STUN)

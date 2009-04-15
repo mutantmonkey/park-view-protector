@@ -16,6 +16,8 @@ public abstract class GameScreen
 		try
 		{
 			bgMusic									= new Music(file);
+			
+			// set volume
 			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
 		}
 		catch(Exception e)
@@ -31,6 +33,7 @@ public abstract class GameScreen
 			// adjust volume
 			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
 			
+			// make it loop!
 			bgMusic.loop();
 			
 			if(musicPosition > 0)
