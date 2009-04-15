@@ -46,24 +46,13 @@ public class Menu extends GameScreen
 				"System", java.awt.Font.PLAIN, 32), true);
 		
 		// load background music
-		try
-		{
-			bgMusic								= new Music("menu.ogg");
-			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
-		}
-		catch(Exception e)
-		{
-			System.out.println("Error playing background music");
-		}
+		setMusic("menu.ogg");
 	}
 	
 	public void show()
 	{
 		// ensure music is playing
-		if(!bgMusic.playing())
-		{
-			bgMusic.loop();
-		}
+		ensureMusicPlaying();
 		
 		// handle key presses
 		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)

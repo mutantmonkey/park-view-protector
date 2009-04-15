@@ -316,7 +316,11 @@ public class ParkViewProtector
 	{
 		running							= false;
 		
+		// stop music
 		getActiveDriver().getMusic().stop();
+		
+		// make sure options get stored
+		Options.INSTANCE.sync();
 		
 		Display.destroy();
 	}

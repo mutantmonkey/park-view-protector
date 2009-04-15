@@ -97,19 +97,11 @@ public class Game extends GameScreen implements Serializable
 	{
 		init(p);
 		
-		statsFont							= new TrueTypeFont(
+		statsFont								= new TrueTypeFont(
 				new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 10), false);
 		
 		// load background music
-		try
-		{
-			bgMusic								= new Music("heavyset.ogg");
-			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
-		}
-		catch(Exception e)
-		{
-			System.out.println("Error playing background music");
-		}
+		setMusic("bloated.ogg");
 		
 		// initialize everything
 		initPlayer();
