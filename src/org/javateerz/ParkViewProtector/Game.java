@@ -101,7 +101,7 @@ public class Game extends GameScreen implements Serializable
 				new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 10), false);
 		
 		// load background music
-		setMusic("bloated.ogg");
+		setMusic("heavyset.ogg");
 		
 		// initialize everything
 		initPlayer();
