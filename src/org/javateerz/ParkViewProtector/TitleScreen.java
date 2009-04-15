@@ -38,10 +38,7 @@ public class TitleScreen extends Menu
 	public void show()
 	{
 		// ensure music is playing
-		if(!bgMusic.playing())
-		{
-			bgMusic.loop();
-		}
+		ensureMusicPlaying();
 		
 		// handle key presses
 		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)

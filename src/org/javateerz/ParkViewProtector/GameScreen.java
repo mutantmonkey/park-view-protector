@@ -11,10 +11,29 @@ public abstract class GameScreen
 	
 	public abstract void show();
 	
+	protected void setMusic(String file)
+	{
+		try
+		{
+			bgMusic									= new Music(file);
+			
+			// set volume
+			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error playing background music");
+		}
+	}
+	
 	protected void ensureMusicPlaying()
 	{
 		if(!bgMusic.playing())
 		{
+			// adjust volume
+			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
+			
+			// make it loop!
 			bgMusic.loop();
 			
 			if(musicPosition > 0)

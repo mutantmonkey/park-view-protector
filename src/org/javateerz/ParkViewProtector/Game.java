@@ -97,19 +97,11 @@ public class Game extends GameScreen implements Serializable
 	{
 		init(p);
 		
-		statsFont							= new TrueTypeFont(
+		statsFont								= new TrueTypeFont(
 				new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 10), false);
 		
 		// load background music
-		try
-		{
-			bgMusic								= new Music("heavyset.ogg");
-			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));
-		}
-		catch(Exception e)
-		{
-			System.out.println("Error playing background music");
-		}
+		setMusic("bloated.ogg");
 		
 		// initialize everything
 		initPlayer();
@@ -803,7 +795,7 @@ public class Game extends GameScreen implements Serializable
 			
 			//The student takes damage in this if loop
 			if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
-					currStudent.getCharge() > 0 && currStudent.isHittable() &&
+					/*currStudent.getCharge() > 0 && */currStudent.isHittable() &&
 					currAttack.isStudent())
 			{
 				if(currAttack.getStatus()==Status.STUN)

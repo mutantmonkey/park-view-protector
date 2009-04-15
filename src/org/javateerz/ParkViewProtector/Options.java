@@ -1,5 +1,6 @@
 package org.javateerz.ParkViewProtector;
 
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public enum Options
@@ -30,5 +31,21 @@ public enum Options
 	public void putFloat(String key, float value)
 	{
 		options.putFloat(key, value);
+	}
+	
+	/**
+	 * Ensure the options are stored
+	 */
+	public void sync()
+	{
+		try
+		{
+			options.sync();
+		}
+		catch (BackingStoreException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
