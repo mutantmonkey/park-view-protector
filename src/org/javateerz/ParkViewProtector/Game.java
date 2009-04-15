@@ -161,7 +161,7 @@ public class Game extends GameScreen implements Serializable
 		
 		Student student				= null;
 		
-		int x, y;
+		int x, y, type;
 		double speed;
 		char gender;
 		
@@ -171,8 +171,9 @@ public class Game extends GameScreen implements Serializable
 			y						= (int) (Math.random() * ParkViewProtector.HEIGHT);
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
+			type					= (int)(Math.random()*3);
 			
-			student					= new Student(x, y, 5, 5, speed, gender);
+			student					= new Student(x, y, 5, 5, speed, gender, type);
 			
 			// make sure that the student is not spawned on top of a wall)
 			while(!canMove(student.getBounds()))
