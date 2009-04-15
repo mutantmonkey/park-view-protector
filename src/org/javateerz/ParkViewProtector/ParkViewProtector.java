@@ -12,14 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
@@ -327,14 +325,31 @@ public class ParkViewProtector
 	
 	public static void main(String args[])
 	{
-		// running in fullscreen mode?
-		boolean fullscreen				= args.length > 0 && args[0].equals("-fullscreen");
+		boolean fullscreen				= false;
+		boolean skipIntro				= false;
+		
+		if(args.length > 0)
+		{
+			for(String arg : args)
+			{
+				if(arg.equals("-fullscreen"))
+				{
+					fullscreen			= true;
+				}
+				else if(arg.equals("-nointro"))
+				{
+					skipIntro			= true;
+				}
+			}
+		}
 		
 		ParkViewProtector game			= new ParkViewProtector(fullscreen);
-		game.showOpening();
+		
+		// show intro
+		if(!skipIntro)
+			game.showOpening();
+		
 		game.init();
 		game.mainLoop();
-		
-		System.out.println("The game has finished running! Yay");
 	}
 }
