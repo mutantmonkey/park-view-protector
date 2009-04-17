@@ -15,7 +15,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Font;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -153,7 +152,7 @@ public class Game extends GameScreen implements Serializable
 		
 		Student student				= null;
 		
-		int x, y, type;
+		int x, y;
 		double speed;
 		char gender;
 		
