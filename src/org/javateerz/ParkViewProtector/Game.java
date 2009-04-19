@@ -152,7 +152,7 @@ public class Game extends GameScreen implements Serializable
 		
 		Student student				= null;
 		
-		int x, y;
+		int x, y, type;
 		double speed;
 		char gender;
 		
