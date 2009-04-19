@@ -16,7 +16,7 @@ public class Student extends Character implements Serializable
 {
 	private static final long serialVersionUID = 2L;
 	
-	private String stype	= "default";
+	private String type	= "default";
 	
 	private char gender;
 	private int charge;
@@ -43,16 +43,16 @@ public class Student extends Character implements Serializable
 		switch(type)
 		{
 			case Arch.GANG:
-				stype = "gangster";
+				this.type = "gangster";
 				break;
 			case Arch.GOTH:
-				stype = "goth";
+				this.type = "goth";
 				break;
 			case Arch.BAND:
-				stype = "band";
+				this.type = "band";
 				break;
 			default:
-				stype = "default";
+				this.type = "default";
 			break;
 		}
 		
@@ -64,13 +64,19 @@ public class Student extends Character implements Serializable
 	 */
 	protected void updateSprite()
 	{
-		sprite			= DataStore.INSTANCE.getSprite("student/" + stype + "_" + gender + ".png");
+		sprite			= DataStore.INSTANCE.getSprite("student/" + type + "_" + gender + ".png");
 	}
 	
 	/**
-	 * Returns the gender of the student
-	 * 
-	 * @return
+	 * @return The type of the student (used for the sprite)
+	 */
+	public String getType()
+	{
+		return type;
+	}
+	
+	/**
+	 * @return The gender of the student
 	 */
 	public char getGender()
 	{
@@ -78,9 +84,7 @@ public class Student extends Character implements Serializable
 	}
 	
 	/**
-	 * Returns the charge of the student
-	 * 
-	 * @return
+	 * @return The charge of the student
 	 */
 	public int getCharge()
 	{
