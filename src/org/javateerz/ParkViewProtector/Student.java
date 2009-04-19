@@ -16,7 +16,7 @@ public class Student extends Character implements Serializable
 {
 	private static final long serialVersionUID = 2L;
 	
-	private String type	= "default";
+	private String stype	= "default";
 	
 	private char gender;
 	private int charge;
@@ -29,7 +29,7 @@ public class Student extends Character implements Serializable
 	 * @param spd		Speed of student
 	 * @param gender	Gender of student
 	 */
-	public Student(int x, int y, int hp, int maxHp, double spd, char gender)
+	public Student(int x, int y, int hp, int maxHp, double spd, char gender, int type)
 	{
 		super(x, y, hp, maxHp, spd);
 		
@@ -40,20 +40,19 @@ public class Student extends Character implements Serializable
 		
 		// FIXME: this is just for testing; determining type should probably be handled in
 		// the driver
-		int num			= (int)(Math.random()*3);
-		switch(num)
+		switch(type)
 		{
 			case Arch.GANG:
-				type = "gangster";
+				stype = "gangster";
 				break;
 			case Arch.GOTH:
-				type = "goth";
+				stype = "goth";
 				break;
 			case Arch.BAND:
-				type = "band";
+				stype = "band";
 				break;
 			default:
-				type = "default";
+				stype = "default";
 			break;
 		}
 		
@@ -65,7 +64,7 @@ public class Student extends Character implements Serializable
 	 */
 	protected void updateSprite()
 	{
-		sprite			= DataStore.INSTANCE.getSprite("student/" + type + "_" + gender + ".png");
+		sprite			= DataStore.INSTANCE.getSprite("student/" + stype + "_" + gender + ".png");
 	}
 	
 	/**
