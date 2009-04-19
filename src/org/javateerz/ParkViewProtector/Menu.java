@@ -11,7 +11,6 @@ import org.javateerz.EasyGL.*;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.TrueTypeFont;
 
 public class Menu extends GameScreen

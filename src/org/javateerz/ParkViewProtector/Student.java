@@ -68,9 +68,15 @@ public class Student extends Character implements Serializable
 	}
 	
 	/**
-	 * Returns the gender of the student
-	 * 
-	 * @return
+	 * @return The type of the student (used for the sprite)
+	 */
+	public String getType()
+	{
+		return type;
+	}
+	
+	/**
+	 * @return The gender of the student
 	 */
 	public char getGender()
 	{
@@ -78,9 +84,7 @@ public class Student extends Character implements Serializable
 	}
 	
 	/**
-	 * Returns the charge of the student
-	 * 
-	 * @return
+	 * @return The charge of the student
 	 */
 	public int getCharge()
 	{
