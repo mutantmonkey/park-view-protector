@@ -688,6 +688,12 @@ public class Game extends GameScreen implements Serializable
 		
 		int i						= students.indexOf(currStudent);
 		
+		// prevent coupling if we intersect a wall
+		if(!canMove(currStudent.getBounds()))
+		{
+			return false;
+		}
+		
 		for(int j = 0; j < students.size(); j++)
 		{
 			testStudent				= students.get(j);
