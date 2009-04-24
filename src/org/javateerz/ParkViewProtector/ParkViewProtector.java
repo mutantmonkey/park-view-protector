@@ -330,6 +330,7 @@ public class ParkViewProtector
 		boolean fullscreen				= false;
 		boolean skipIntro				= false;
 		
+		// command line arguments
 		if(args.length > 0)
 		{
 			for(String arg : args)

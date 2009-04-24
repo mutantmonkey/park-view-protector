@@ -9,13 +9,9 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
-import org.javateerz.EasyGL.GLRect;
-import org.javateerz.EasyGL.GLString;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Game extends GameScreen implements Serializable
@@ -27,9 +23,9 @@ public class Game extends GameScreen implements Serializable
 	
 	// delay (in number of frames) before another attack can be used
 	public static final int ATTACK_DELAY		= 20;
-	private int attackDelay					= 0;
+	private int attackDelay						= 0;
 	public static final int ITEM_USE_DELAY		= 20;
-	private int itemDelay					= 0;
+	private int itemDelay						= 0;
 	public static final int TP_REGEN			= 5;
 	public static int tpRegen					= 0;
 	public static final int CHARGE_REGEN		= 10;
@@ -55,17 +51,8 @@ public class Game extends GameScreen implements Serializable
 	public static final int DECOUPLE_SPACING	= 40;
 	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
 	
-	public static final int STAT_PAD_TOP		= 10;
-	public static final int STAT_PAD_BOTTOM		= STAT_PAD_TOP;
-	public static final int STAT_PAD_LEFT_BAR	= STAT_PAD_TOP * 3 + 3;
-	public static final int BAR_HEIGHT			= 10;
-	public static final int BAR_SPACING			= 5;
-	public static final int BAR_MULTIPLIER		= 2;
-	public static final int STATS_BAR_HEIGHT	= STAT_PAD_TOP + BAR_HEIGHT * 2 +
-													BAR_SPACING + STAT_PAD_BOTTOM;
-	
 	public static final int PLAYER_X			= 10;
-	public static final int PLAYER_Y			= STATS_BAR_HEIGHT + 10;
+	public static final int PLAYER_Y			= 30;
 	public static final int PLAYER_HP			= 50;
 	public static final int PLAYER_TP			= 300;
 	public static double hpPercent;
@@ -73,7 +60,7 @@ public class Game extends GameScreen implements Serializable
 	
 	private static final long serialVersionUID	= 6L;
 	
-	private transient Font statsFont;
+	private transient Statistics stats;
 	
 	// objects on the screen
 	private int level							= 1;
@@ -96,8 +83,7 @@ public class Game extends GameScreen implements Serializable
 	{
 		init(p);
 		
-		statsFont								= new TrueTypeFont(
-				new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 10), false);
+		stats									= new Statistics();
 		
 		// load background music
 		setMusic("heavyset.ogg");
@@ -111,7 +97,7 @@ public class Game extends GameScreen implements Serializable
 	
 	public void init(ParkViewProtector p)
 	{
-		this.driver							= p;
+		this.driver								= p;
 	}
 	
 	/**
@@ -347,7 +333,7 @@ public class Game extends GameScreen implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// these are painted last to ensure that they are always on top
 		
-		drawStatistics();
+		stats.draw(player, level);
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Move the player
@@ -430,57 +416,6 @@ public class Game extends GameScreen implements Serializable
 	}
 	
 	/**
-	 * Draw statistics
-	 */
-	public void drawStatistics()
-	{
-		// background rectangle
-		GLRect bgRect				= new GLRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
-		bgRect.setColor(ParkViewProtector.STATS_BAR_BG);
-		bgRect.draw();
-		
-		// draw labels
-		GLString hpStr				= new GLString("HP:", STAT_PAD_TOP, STAT_PAD_TOP);
-		hpStr.setColor(ParkViewProtector.STATS_BAR_FG);
-		hpStr.setFont(statsFont);
-		hpStr.draw();
-		
-		// draw HP bar
-		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
-
-		Bar hpBar					= new Bar(ParkViewProtector.STATS_BAR_HP, hpMaxWidth,
-				(double) player.getHp() / player.getMaxHp());
-		hpBar.draw(STAT_PAD_LEFT_BAR, STAT_PAD_TOP);
-		
-		GLString tpStr				= new GLString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
-		tpStr.setColor(ParkViewProtector.STATS_BAR_FG);
-		tpStr.setFont(statsFont);
-		tpStr.draw();
-		
-		// draw TP bar
-		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
-		
-		Bar tpBar					= new Bar(ParkViewProtector.STATS_BAR_TP, tpMaxWidth,
-				(double) player.getTp() / player.getMaxTp());
-		tpBar.draw(STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
-		
-		// draw speed
-		GLString speedStr			= new GLString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP);
-		speedStr.setColor(ParkViewProtector.STATS_BAR_FG);
-		speedStr.setFont(statsFont);
-		speedStr.draw();
-		
-		// draw level
-		GLString levelStr			= new GLString("Level: " + level, 500, STAT_PAD_TOP);
-		levelStr.setColor(ParkViewProtector.STATS_BAR_FG);
-		levelStr.setFont(statsFont);
-		levelStr.draw();
-		
-		// draw Inventory
-		player.bin.draw(statsFont, 550, STAT_PAD_TOP);
-	}
-	
-	/**
 	 * Random movement
 	 * 
 	 * @param Movable Object to move
@@ -500,7 +435,7 @@ public class Game extends GameScreen implements Serializable
 		}
 		
 		// change direction if we hit the top or bottom
-		if(obj.getBounds().getY() <= STATS_BAR_HEIGHT && obj.getDirection() == Direction.NORTH)
+		if(obj.getBounds().getY() <= 0 && obj.getDirection() == Direction.NORTH)
 		{
 			obj.setDirection(Direction.SOUTH);
 			obj.resetMoveCount();
