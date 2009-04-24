@@ -13,7 +13,7 @@ public class OptionsMenu extends Menu
 	public static final int LEFT_SPACING	= 60;
 	public static final int RIGHT_SPACING	= 60;
 	
-	private OptionItem[] items;
+	private MenuBlock[] items;
 	
 	private Sprite optionsBg;
 	
@@ -26,7 +26,7 @@ public class OptionsMenu extends Menu
 	{
 		super(p);
 		
-		items		= new OptionItem[3];
+		items		= new MenuBlock[3];
 		int i		= 0;
 		
 		items[i]	= new MenuItem("Back", 1);
@@ -66,16 +66,17 @@ public class OptionsMenu extends Menu
 				execute(((MenuItem) items[selectedItem]).getAction());
 			}
 		}
-		else {
+		else if(items[selectedItem] instanceof OptionItem)
+		{
 			if(Keyboard.isKeyDown(KeyboardConfig.NAV_LEFT))
 			{
-				items[selectedItem].leftPressed();
-				items[selectedItem].update(driver);
+				((OptionItem) items[selectedItem]).leftPressed();
+				((OptionItem) items[selectedItem]).update(driver);
 			}
 			else if(Keyboard.isKeyDown(KeyboardConfig.NAV_RIGHT))
 			{
-				items[selectedItem].rightPressed();
-				items[selectedItem].update(driver);
+				((OptionItem) items[selectedItem]).rightPressed();
+				((OptionItem) items[selectedItem]).update(driver);
 			}
 		}
 		

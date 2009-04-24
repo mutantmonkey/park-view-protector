@@ -6,9 +6,7 @@
 
 package org.javateerz.ParkViewProtector;
 
-import org.javateerz.EasyGL.GLString;
-
-public abstract class OptionItem extends GLString
+public abstract class OptionItem extends MenuBlock
 {
 	protected String key;
 	

@@ -6,8 +6,7 @@
 
 package org.javateerz.ParkViewProtector;
 
-// TODO: I think having MenuItem extend OptionItem was a bad idea
-public class MenuItem extends OptionItem
+public class MenuItem extends MenuBlock
 {
 	private int action;
 	
@@ -34,31 +33,7 @@ public class MenuItem extends OptionItem
 		
 		this.action			= action;
 	}
-	
-	/**
-	 * Action for when the left key is pressed
-	 */
-	public void leftPressed()
-	{
-		// do nothing
-	}
-	
-	/**
-	 * Action for when the right key is pressed
-	 */
-	public void rightPressed()
-	{
-		// do nothing
-	}
-	
-	/**
-	 * Action to update
-	 */
-	public void update(ParkViewProtector p)
-	{
-		// do nothing
-	}
-	
+
 	/**
 	 * Gets the action ID
 	 * 
@@ -67,20 +42,5 @@ public class MenuItem extends OptionItem
 	public int getAction()
 	{
 		return action;
-	}
-	
-	/**
-	 * Draws the menu item centered on the graphics context
-	 * 
-	 * @param x X position
-	 * @param y Y position
-	 */
-	public void drawCentered(int x, int y)
-	{
-		// center the string
-		int width			= getBounds().getWidth();
-		x				   -= width / 2;
-		
-		draw(x, y);
 	}
 }
