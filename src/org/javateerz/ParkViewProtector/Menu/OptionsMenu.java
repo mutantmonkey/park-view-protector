@@ -4,8 +4,14 @@
  * @author	James Schwinabart
  */
 
-package org.javateerz.ParkViewProtector;
+package org.javateerz.ParkViewProtector.Menu;
 
+import org.javateerz.ParkViewProtector.DataStore;
+import org.javateerz.ParkViewProtector.FloatOption;
+import org.javateerz.ParkViewProtector.KeyboardConfig;
+import org.javateerz.ParkViewProtector.Options;
+import org.javateerz.ParkViewProtector.ParkViewProtector;
+import org.javateerz.ParkViewProtector.Sprite;
 import org.lwjgl.input.Keyboard;
 
 public class OptionsMenu extends Menu

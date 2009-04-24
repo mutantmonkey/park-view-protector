@@ -4,9 +4,14 @@
  * @author	James Schwinabart
  */
 
-package org.javateerz.ParkViewProtector;
+package org.javateerz.ParkViewProtector.Menu;
 
 import org.javateerz.EasyGL.*;
+import org.javateerz.ParkViewProtector.DataSaver;
+import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.GameScreen;
+import org.javateerz.ParkViewProtector.KeyboardConfig;
+import org.javateerz.ParkViewProtector.ParkViewProtector;
 
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;

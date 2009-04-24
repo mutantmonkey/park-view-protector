@@ -6,18 +6,18 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.image.BufferedImage;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
-import org.javateerz.EasyGL.GLSprite;
-
-public class Sprite extends GLSprite
+public class Sprite extends Image
 {
 	/**
 	 * Create a new sprite
 	 * 
 	 * @param image An image to use as the sprite
+	 * @throws SlickException 
 	 */
-	public Sprite(BufferedImage img)
+	public Sprite(String img) throws SlickException
 	{
 		super(img);
 	}

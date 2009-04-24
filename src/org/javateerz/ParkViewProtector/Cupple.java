@@ -61,8 +61,6 @@ public class Cupple extends Character
 	
 	protected void updateSprite()
 	{
-		System.out.println(female.getType() + "_" + male.getType());
-		
 		sprite	= DataStore.INSTANCE.getSprite("couples/" + female.getType() + "_"
 				+ male.getType() + ".png");
 	}

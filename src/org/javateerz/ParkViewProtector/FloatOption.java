@@ -6,6 +6,9 @@
 
 package org.javateerz.ParkViewProtector;
 
+import org.javateerz.ParkViewProtector.Menu.OptionItem;
+import org.javateerz.ParkViewProtector.Menu.OptionsMenu;
+
 public class FloatOption extends OptionItem
 {
 	public static final int BAR_WIDTH		= 200;

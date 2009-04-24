@@ -4,7 +4,8 @@
  * @author	James Schwinabart
  */
 
-package org.javateerz.ParkViewProtector;
+package org.javateerz.ParkViewProtector.Menu;
+
 
 public class MenuItem extends MenuBlock
 {

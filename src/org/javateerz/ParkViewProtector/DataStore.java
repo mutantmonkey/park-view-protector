@@ -17,6 +17,8 @@ import java.util.HashMap;
 import javax.imageio.*;
 import javax.sound.sampled.*;
 
+import org.newdawn.slick.SlickException;
+
 // this is an enum, but we could also use our own Singleton class
 public enum DataStore
 {
@@ -150,11 +152,20 @@ public enum DataStore
 			return sprites.get(file);
 		}
 		
-		BufferedImage img		= loadImage(file);
-		Sprite sprite			= new Sprite(img);
-		
-		// cache the sprite so it doesn't have to be loaded again
-		sprites.put(file, sprite);
+		//BufferedImage img		= loadImage(file);
+		Sprite sprite = null;
+		try
+		{
+			sprite = new Sprite(file);
+			
+			// cache the sprite so it doesn't have to be loaded again
+			sprites.put(file, sprite);
+		}
+		catch(SlickException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return sprite;
 	}

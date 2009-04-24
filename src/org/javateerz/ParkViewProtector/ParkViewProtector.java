@@ -11,6 +11,8 @@ package org.javateerz.ParkViewProtector;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import org.javateerz.ParkViewProtector.Menu.Menu;
+import org.javateerz.ParkViewProtector.Menu.OptionsMenu;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;

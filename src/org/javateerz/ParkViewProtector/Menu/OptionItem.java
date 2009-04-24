@@ -4,7 +4,9 @@
  * @author	James Schwinabart
  */
 
-package org.javateerz.ParkViewProtector;
+package org.javateerz.ParkViewProtector.Menu;
+
+import org.javateerz.ParkViewProtector.ParkViewProtector;
 
 public abstract class OptionItem extends MenuBlock
 {

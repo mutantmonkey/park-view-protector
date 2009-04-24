@@ -6,6 +6,8 @@
 
 package org.javateerz.ParkViewProtector;
 
+import org.javateerz.ParkViewProtector.Menu.Menu;
+import org.javateerz.ParkViewProtector.Menu.MenuItem;
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 
