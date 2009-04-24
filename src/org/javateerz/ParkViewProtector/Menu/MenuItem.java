@@ -6,7 +6,6 @@
 
 package org.javateerz.ParkViewProtector.Menu;
 
-
 public class MenuItem extends MenuBlock
 {
 	private int action;
