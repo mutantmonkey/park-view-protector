@@ -126,6 +126,7 @@ public class Menu extends GameScreen
 				break;
 				
 			case 4:
+				ParkViewProtector.selectChar 	= false;
 				DataSaver.save(driver.getGame());
 				break;
 			
@@ -140,6 +141,7 @@ public class Menu extends GameScreen
 				}
 				
 				ParkViewProtector.showMenu		= false;
+				ParkViewProtector.selectChar 	= false;
 				bgMusic.stop();
 				
 				break;

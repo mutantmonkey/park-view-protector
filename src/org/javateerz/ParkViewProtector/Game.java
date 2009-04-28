@@ -108,6 +108,15 @@ public class Game extends GameScreen implements Serializable
 		player						= new SpecialCharacter(PLAYER_X, PLAYER_Y, PLAYER_HP, PLAYER_TP);
 	}
 	
+	// FIXME: decide if this should be part of the constructor
+	public void setPlayer(Staff player)
+	{
+		this.player					= player;
+		this.player.moveTo(PLAYER_X, PLAYER_Y);
+		this.player.setHp(PLAYER_HP);
+		this.player.setTp(PLAYER_TP);
+	}
+	
 	/**
 	 * Create some walls
 	 */

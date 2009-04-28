@@ -115,6 +115,7 @@ public class TitleScreen extends Menu
 					driver.setGame(gameData);
 
 					ParkViewProtector.showTitle	= false;
+					ParkViewProtector.selectChar = false;
 					bgMusic.stop();
 				}
 				

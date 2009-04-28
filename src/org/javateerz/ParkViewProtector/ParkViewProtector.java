@@ -45,6 +45,7 @@ public class ParkViewProtector
 	public static boolean showTitle			= true;
 	public static boolean showMenu			= false;
 	public static boolean showOptions		= false;
+	public static boolean selectChar		= true;
 	
 	// logos
 	private Sprite jtzLogo;
@@ -53,6 +54,7 @@ public class ParkViewProtector
 	private Game game;
 	private Menu menu;
 	private OptionsMenu optMenu;
+	private CharSelect charSelect;
 	
 	public ParkViewProtector(boolean fullscreen)
 	{
@@ -172,6 +174,7 @@ public class ParkViewProtector
 		game						= new Game(this);
 		menu						= new Menu(this);
 		optMenu						= new OptionsMenu(this);
+		charSelect					= new CharSelect(this);
 	}
 	
 	/**
@@ -241,6 +244,10 @@ public class ParkViewProtector
 		else if(showMenu)
 		{
 			return menu;
+		}
+		else if(selectChar)
+		{
+			return charSelect;
 		}
 		else {
 			return game;
