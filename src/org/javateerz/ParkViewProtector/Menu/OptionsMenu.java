@@ -48,21 +48,33 @@ public class OptionsMenu extends Menu
 		optionsBg							= DataStore.INSTANCE.getSprite("options.png");
 	}
 	
+	public void keyPressed(int key, char c)
+	{
+		switch(key)
+		{
+			case KeyboardConfig.NAV_UP:
+				if(selectedItem > 0)
+					selectedItem--;
+				break;
+		
+			case KeyboardConfig.NAV_DOWN:
+				if(selectedItem < items.length - 1)
+					selectedItem++;
+				break;
+				
+			case KeyboardConfig.BACK:
+				ParkViewProtector.showOptions	= false;
+				break;
+		}
+		
+		clearKeyPressedRecord();
+	}
+	
 	public void show()
 	{
-		// handle key presses
-		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)
-		{
-			selectedItem--;
-		}
-		else if(Keyboard.isKeyDown(KeyboardConfig.NAV_DOWN) && selectedItem < items.length - 1)
-		{
-			selectedItem++;
-		}
-		else if(Keyboard.isKeyDown(KeyboardConfig.BACK))
-		{
-			ParkViewProtector.showOptions		= false;
-		}
+		// key events
+		addKeyListener(this);
+		poll();
 		
 		// menu items are different
 		if(items[selectedItem] instanceof MenuItem)

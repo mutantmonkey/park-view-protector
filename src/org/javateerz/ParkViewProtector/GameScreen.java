@@ -1,13 +1,19 @@
 package org.javateerz.ParkViewProtector;
 
+import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 
-public abstract class GameScreen 
+public abstract class GameScreen extends Input
 {
 	protected transient ParkViewProtector driver;
 	protected transient Music bgMusic;
 	
 	protected transient float musicPosition			= 0f;
+	
+	public GameScreen()
+	{
+		super(ParkViewProtector.HEIGHT);
+	}
 	
 	public abstract void show();
 	
@@ -48,5 +54,31 @@ public abstract class GameScreen
 	public Music getMusic()
 	{
 		return bgMusic;
+	}
+	
+	public void poll()
+	{
+		poll(ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
+	}
+	
+	public void keyPressed(int key, char c)
+	{
+	}
+	
+	public void keyReleased(int key, char c)
+	{
+	}
+	
+	public void setInput(Input input)
+	{
+	}
+	
+	public void inputEnded()
+	{
+	}
+	
+	public boolean isAcceptingInput()
+	{
+		return false;
 	}
 }

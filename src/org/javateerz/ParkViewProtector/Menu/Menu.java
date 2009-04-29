@@ -13,12 +13,12 @@ import org.javateerz.ParkViewProtector.GameScreen;
 import org.javateerz.ParkViewProtector.KeyboardConfig;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 
-import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
+import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.TrueTypeFont;
 
-public class Menu extends GameScreen
+public class Menu extends GameScreen implements KeyListener
 {
 	public static final int TOP_SPACING				= 120;
 	public static final int LINE_SPACING			= 40;
@@ -53,28 +53,45 @@ public class Menu extends GameScreen
 		setMusic("menu.ogg");
 	}
 	
+	public void keyPressed(int key, char c)
+	{
+		switch(key)
+		{
+			case KeyboardConfig.NAV_UP:
+				if(selectedItem > 0)
+					selectedItem--;
+				break;
+		
+			case KeyboardConfig.NAV_DOWN:
+				if(selectedItem < items.length - 1)
+					selectedItem++;
+				break;
+				
+			case KeyboardConfig.ENTER:
+				execute(items[selectedItem].getAction());
+				break;
+		
+			case KeyboardConfig.BACK:
+				ParkViewProtector.showMenu	= false;
+				break;
+		}
+		
+		clearKeyPressedRecord();
+	}
+	
+	public boolean isAcceptingInput()
+	{
+		return true;
+	}
+	
 	public void show()
 	{
 		// ensure music is playing
 		ensureMusicPlaying();
 		
-		// handle key presses
-		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)
-		{
-			selectedItem--;
-		}
-		else if(Keyboard.isKeyDown(KeyboardConfig.NAV_DOWN) && selectedItem < items.length - 1)
-		{
-			selectedItem++;
-		}
-		else if(Keyboard.isKeyDown(KeyboardConfig.ENTER))
-		{
-			execute(items[selectedItem].getAction());
-		}
-		else if(Keyboard.isKeyDown(KeyboardConfig.BACK))
-		{
-			ParkViewProtector.showMenu		= false;
-		}
+		// key events
+		addKeyListener(this);
+		poll();
 		
 		// draw the background
 		GLRect bg							= new GLRect(0, 0, ParkViewProtector.WIDTH,

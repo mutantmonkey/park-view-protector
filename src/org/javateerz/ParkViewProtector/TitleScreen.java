@@ -8,7 +8,6 @@ package org.javateerz.ParkViewProtector;
 
 import org.javateerz.ParkViewProtector.Menu.Menu;
 import org.javateerz.ParkViewProtector.Menu.MenuItem;
-import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 
 public class TitleScreen extends Menu
@@ -37,28 +36,45 @@ public class TitleScreen extends Menu
 		mainLogo					= DataStore.INSTANCE.getSprite("logo.png");
 	}
 	
+	public void keyPressed(int key, char c)
+	{
+		switch(key)
+		{
+			case KeyboardConfig.NAV_UP:
+				if(selectedItem > 0)
+					selectedItem--;
+				break;
+		
+			case KeyboardConfig.NAV_DOWN:
+				if(selectedItem < items.length - 1)
+					selectedItem++;
+				break;
+				
+			case KeyboardConfig.ENTER:
+				execute(items[selectedItem].getAction());
+				break;
+		
+			case KeyboardConfig.BACK:
+				ParkViewProtector.showMenu	= false;
+				break;
+		}
+		
+		clearKeyPressedRecord();
+	}
+	
+	public boolean isAcceptingInput()
+	{
+		return true;
+	}
+	
 	public void show()
 	{
 		// ensure music is playing
 		ensureMusicPlaying();
 		
-		// handle key presses
-		if(Keyboard.isKeyDown(KeyboardConfig.NAV_UP) && selectedItem > 0)
-		{
-			selectedItem--;
-		}
-		else if(Keyboard.isKeyDown(KeyboardConfig.NAV_DOWN) && selectedItem < items.length - 1)
-		{
-			selectedItem++;
-		}
-		else if(Keyboard.isKeyDown(KeyboardConfig.ENTER))
-		{
-			execute(items[selectedItem].getAction());
-		}
-		else if(Keyboard.isKeyDown(KeyboardConfig.BACK))
-		{
-			ParkViewProtector.showMenu		= false;
-		}
+		// key events
+		addKeyListener(this);
+		poll();
 		
 		// draw logo
 		mainLogo.draw(0, 0);
