@@ -33,14 +33,27 @@ public class CharSelect extends GameScreen
 	
 	public void show()
 	{
+		// FIXME: these should be handled in a a separate method
 		// handle key presses
-		if(Keyboard.isKeyDown(KeyboardConfig.NAV_LEFT) && selectedIndex > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.NAV_LEFT))
 		{
-			selectedIndex--;
+			if(selectedIndex > 0)
+			{
+				selectedIndex--;
+			}
+			else {
+				//selectedIndex = choices.length - 1;
+			}
 		}
-		else if(Keyboard.isKeyDown(KeyboardConfig.NAV_RIGHT) && selectedIndex < choices.length - 1)
+		else if(Keyboard.isKeyDown(KeyboardConfig.NAV_RIGHT))
 		{
-			selectedIndex++;
+			if(selectedIndex < choices.length - 1)
+			{
+				selectedIndex++;
+			}
+			else {
+				//selectedIndex = 0;
+			}
 		}
 		else if(Keyboard.isKeyDown(KeyboardConfig.ENTER))
 		{
