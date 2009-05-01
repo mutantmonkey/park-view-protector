@@ -25,7 +25,6 @@ public class CharSelect extends GameScreen implements KeyListener
 		nameFont						= new TrueTypeFont(new java.awt.Font(
 				"System", java.awt.Font.PLAIN, 32), true);
 		
-		// FIXME: add default constructors (we just need to display the sprite!)
 		choices							= new Staff[2];
 		choices[0]						= new Stark(CHAR_X, CHAR_Y);
 		choices[1]						= new SpecialCharacter(CHAR_X, CHAR_Y);
