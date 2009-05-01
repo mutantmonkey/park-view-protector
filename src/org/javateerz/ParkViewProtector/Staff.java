@@ -71,6 +71,10 @@ public abstract class Staff extends Character
 	public void adjustTp(int amount)
 	{
 		tp+=amount;
+		if(tp > maxTp)
+		{
+			tp = maxTp;
+		}
 	}
 	
 	//Changes the max TP
