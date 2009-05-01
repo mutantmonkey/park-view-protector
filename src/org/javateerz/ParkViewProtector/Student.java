@@ -7,8 +7,10 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.Graphics;
 import java.io.*;
+
+import org.javateerz.EasyGL.GLRect;
+import org.newdawn.slick.Color;
 
 public class Student extends Character implements Serializable
 {
@@ -27,7 +29,7 @@ public class Student extends Character implements Serializable
 	 * @param spd		Speed of student
 	 * @param gender	Gender of student
 	 */
-	public Student(int x, int y, int hp, int maxHp, double spd, char gender)
+	public Student(int x, int y, int hp, int maxHp, double spd, char gender, int type)
 	{
 		super(x, y, hp, maxHp, spd);
 		
@@ -38,12 +40,20 @@ public class Student extends Character implements Serializable
 		
 		// FIXME: this is just for testing; determining type should probably be handled in
 		// the driver
-		if(Math.random() < 0.4)
+		switch(type)
 		{
-			type = "goth";
-		}
-		else {
-			type = "gangster";
+			case Arch.GANG:
+				this.type = "gangster";
+				break;
+			case Arch.GOTH:
+				this.type = "goth";
+				break;
+			case Arch.BAND:
+				this.type = "band";
+				break;
+			default:
+				this.type = "default";
+			break;
 		}
 		
 		updateSprite();
@@ -58,9 +68,15 @@ public class Student extends Character implements Serializable
 	}
 	
 	/**
-	 * Returns the gender of the student
-	 * 
-	 * @return
+	 * @return The type of the student (used for the sprite)
+	 */
+	public String getType()
+	{
+		return type;
+	}
+	
+	/**
+	 * @return The gender of the student
 	 */
 	public char getGender()
 	{
@@ -68,9 +84,7 @@ public class Student extends Character implements Serializable
 	}
 	
 	/**
-	 * Returns the charge of the student
-	 * 
-	 * @return
+	 * @return The charge of the student
 	 */
 	public int getCharge()
 	{
@@ -150,16 +164,17 @@ public class Student extends Character implements Serializable
 		
 	}
 	
-	public void showCharge(Graphics g)
+	public void showCharge()
 	{
-		g.drawRect((int) x, (int) y, (int) getBounds().getWidth(),
+		GLRect rect				= new GLRect((int) x, (int) y, (int) getBounds().getWidth(),
 				(int) getBounds().getHeight());
-	}
-	
-	public void showChargeBar(Graphics g)
-	{
+		rect.setColor(new Color(ParkViewProtector.COLOR_BG_1.getRed(),
+				ParkViewProtector.COLOR_BG_1.getGreen(),
+				ParkViewProtector.COLOR_BG_1.getBlue(), 5));
+		rect.draw();
+
 		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()), (double)charge/100);
-		chargeBar.draw(g,(int)x,(int)y);
+		chargeBar.draw((int)x,(int)y);
 	}
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
@@ -173,4 +188,11 @@ public class Student extends Character implements Serializable
 	{
 		os.defaultWriteObject();
 	}
+}
+
+class Arch
+{
+	public final static int GANG=0;
+	public final static int GOTH=1;
+	public final static int BAND=2;
 }

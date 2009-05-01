@@ -6,7 +6,8 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.Graphics;
+import org.javateerz.ParkViewProtector.Menu.OptionItem;
+import org.javateerz.ParkViewProtector.Menu.OptionsMenu;
 
 public class FloatOption extends OptionItem
 {
@@ -78,18 +79,17 @@ public class FloatOption extends OptionItem
 	/**
 	 * Draws the item on the graphics context
 	 *  
-	 * @param g Graphics context
 	 * @param x X position
 	 * @param y Y position
 	 */
-	public void draw(Graphics g, int x, int y)
+	public void draw(int x, int y)
 	{
-		super.draw(g, x, y);
+		super.draw(x, y);
 		
 		x						= ParkViewProtector.WIDTH - OptionsMenu.RIGHT_SPACING
 									- BAR_WIDTH;
-		y						= (int) (y - getBounds(g).getHeight() / 2);
+		y						= (int) (y + getBounds().getHeight() / 2);
 		
-		optionBar.draw(g, x, y);
+		optionBar.draw(x, y);
 	}
 }

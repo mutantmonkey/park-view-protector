@@ -10,6 +10,8 @@ package org.javateerz.ParkViewProtector;
 
 public class SpecialCharacter extends Staff
 {
+	public static final String CHAR_NAME		= "Michael Schwinabart";
+	
 	private static final double SPEED= 5.0;
 	private static final int MAX_HP = 50;
 	private static final int MAX_TP = 300;
@@ -17,7 +19,7 @@ public class SpecialCharacter extends Staff
 	
 	public SpecialCharacter(int x, int y, int hp, int tp)
 	{
-		super(x, y, hp, MAX_HP, SPEED, tp, MAX_TP);
+		super(CHAR_NAME, x, y, hp, MAX_HP, SPEED, tp, MAX_TP);
 		updateSprite();
 	}
 
@@ -68,7 +70,7 @@ public class SpecialCharacter extends Staff
 				tp=10;
 				type=Type.FRONT;
 				speed=0;
-				duration=20;
+				duration=70;
 				reuse=40;
 				stillTime=20;
 				hits=1;
@@ -95,7 +97,7 @@ public class SpecialCharacter extends Staff
 				AoE=true;
 				break;
 			case 2:
-				name="squel";
+				name="screech";
 				damage=1;
 				tp=25;
 				type=Type.CENTER;

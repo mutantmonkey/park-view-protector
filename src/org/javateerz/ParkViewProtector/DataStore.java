@@ -7,7 +7,7 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
+import java.awt.color.*;
 import java.awt.image.*;
 
 import java.io.*;
@@ -17,6 +17,8 @@ import java.util.HashMap;
 import javax.imageio.*;
 import javax.sound.sampled.*;
 
+import org.newdawn.slick.SlickException;
+
 // this is an enum, but we could also use our own Singleton class
 public enum DataStore
 {
@@ -24,6 +26,32 @@ public enum DataStore
 	
 	private HashMap<String, Clip> clips		= new HashMap<String, Clip>();
 	private HashMap<String, Sprite> sprites	= new HashMap<String, Sprite>();
+	
+	public ColorModel glAlphaColorModel;
+	public ColorModel glColorModel;
+	
+	/**
+	 * Constructor
+	 */
+	private DataStore()
+	{
+		// initialize OpenGL color models
+		
+		glAlphaColorModel					= new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
+                new int[] {8,8,8,8},
+                true,
+                false,
+                ComponentColorModel.TRANSLUCENT,
+                DataBuffer.TYPE_BYTE);
+                
+		glColorModel						= new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
+                new int[] {8,8,8,0},
+                false,
+                false,
+                ComponentColorModel.OPAQUE,
+                DataBuffer.TYPE_BYTE);
+
+	}
 	
 	/**
 	 * Loads/retrieves an audio clip
@@ -109,7 +137,7 @@ public enum DataStore
 		
 		return clip;
 	}
-	
+
 	/**
 	 * Loads/retrieves a sprite
 	 * 
@@ -124,9 +152,33 @@ public enum DataStore
 			return sprites.get(file);
 		}
 		
-		// load the file
+		//BufferedImage img		= loadImage(file);
+		Sprite sprite = null;
+		try
+		{
+			sprite = new Sprite(file);
+			
+			// cache the sprite so it doesn't have to be loaded again
+			sprites.put(file, sprite);
+		}
+		catch(SlickException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return sprite;
+	}
+	
+	/**
+	 * Loads an image
+	 * 
+	 * @param file Image file to load
+	 * @return
+	 */
+	public BufferedImage loadImage(String file)
+	{
 		URL url					= Thread.currentThread().getContextClassLoader().getResource(file);
-		//File url				= new File(file);
 		
 		BufferedImage img		= null;
 		
@@ -141,20 +193,6 @@ public enum DataStore
 			return null;
 		}
 		
-		// create an image using accelerated graphics (hardware rendering, prevents flickering)
-		GraphicsConfiguration gc	= GraphicsEnvironment.getLocalGraphicsEnvironment().
-			getDefaultScreenDevice().getDefaultConfiguration();
-		
-		Image image				= gc.createCompatibleImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
-		
-		// draw image into accelerated image
-		image.getGraphics().drawImage(img, 0, 0, null);
-		
-		Sprite sprite			= new Sprite(image);
-		
-		// cache the sprite so it doesn't have to be loaded again
-		sprites.put(file, sprite);
-		
-		return sprite;
+		return img;
 	}
 }

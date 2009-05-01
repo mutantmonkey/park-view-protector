@@ -1,23 +1,20 @@
 /**
  * Main game
  * 
- * 
- * 
- * 
- * 
- * 
- * 
  * @author	Jamie of the Javateerz
  */
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
-import java.awt.image.BufferStrategy;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Game implements Serializable
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.geom.Rectangle;
+
+public class Game extends GameScreen implements Serializable
 {
 	public static final int SPEED_THROTTLE		= 10;
 	
@@ -26,13 +23,15 @@ public class Game implements Serializable
 	
 	// delay (in number of frames) before another attack can be used
 	public static final int ATTACK_DELAY		= 20;
-	private int attackDelay					= 0;
+	private int attackDelay						= 0;
 	public static final int ITEM_USE_DELAY		= 20;
-	private int itemDelay					= 0;
+	private int itemDelay						= 0;
 	public static final int TP_REGEN			= 5;
 	public static int tpRegen					= 0;
 	public static final int CHARGE_REGEN		= 10;
 	public static int chargeRegen				= 0;
+	
+	public static final int GAME_OVER_DELAY		= 5000;
 	
 	public static final int MIN_STUDENTS		= 20;
 	public static final int MAX_STUDENTS		= 30;
@@ -52,17 +51,8 @@ public class Game implements Serializable
 	public static final int DECOUPLE_SPACING	= 40;
 	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
 	
-	public static final int STAT_PAD_TOP		= 10;
-	public static final int STAT_PAD_BOTTOM		= STAT_PAD_TOP;
-	public static final int STAT_PAD_LEFT_BAR	= STAT_PAD_TOP * 3 + 3;
-	public static final int BAR_HEIGHT			= 10;
-	public static final int BAR_SPACING			= 5;
-	public static final int BAR_MULTIPLIER		= 2;
-	public static final int STATS_BAR_HEIGHT	= STAT_PAD_TOP + BAR_HEIGHT * 2 +
-													BAR_SPACING + STAT_PAD_BOTTOM;
-	
 	public static final int PLAYER_X			= 10;
-	public static final int PLAYER_Y			= STATS_BAR_HEIGHT + 10;
+	public static final int PLAYER_Y			= 30;
 	public static final int PLAYER_HP			= 50;
 	public static final int PLAYER_TP			= 300;
 	public static double hpPercent;
@@ -70,9 +60,7 @@ public class Game implements Serializable
 	
 	private static final long serialVersionUID	= 6L;
 	
-	private transient ParkViewProtector driver;
-	private transient Graphics g;
-	private transient BufferStrategy strategy;
+	private transient Statistics stats;
 	
 	// objects on the screen
 	private int level							= 1;
@@ -95,6 +83,11 @@ public class Game implements Serializable
 	{
 		init(p);
 		
+		stats									= new Statistics();
+		
+		// load background music
+		setMusic("heavyset.ogg");
+		
 		// initialize everything
 		initPlayer();
 		initWalls();
@@ -104,9 +97,7 @@ public class Game implements Serializable
 	
 	public void init(ParkViewProtector p)
 	{
-		this.driver							= p;
-		this.g								= p.getGraphics();
-		this.strategy						= p.getBufferStrategy();
+		this.driver								= p;
 	}
 	
 	/**
@@ -115,6 +106,15 @@ public class Game implements Serializable
 	public void initPlayer()
 	{
 		player						= new SpecialCharacter(PLAYER_X, PLAYER_Y, PLAYER_HP, PLAYER_TP);
+	}
+	
+	// FIXME: decide if this should be part of the constructor
+	public void setPlayer(Staff player)
+	{
+		this.player					= player;
+		this.player.moveTo(PLAYER_X, PLAYER_Y);
+		this.player.setHp(PLAYER_HP);
+		this.player.setTp(PLAYER_TP);
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class Game implements Serializable
 		
 		Student student				= null;
 		
-		int x, y;
+		int x, y, type;
 		double speed;
 		char gender;
 		
@@ -157,8 +157,9 @@ public class Game implements Serializable
 			y						= (int) (Math.random() * ParkViewProtector.HEIGHT);
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
+			type					= (int)(Math.random()*3);
 			
-			student					= new Student(x, y, 5, 5, speed, gender);
+			student					= new Student(x, y, 5, 5, speed, gender, type);
 			
 			// make sure that the student is not spawned on top of a wall)
 			while(!canMove(student.getBounds()))
@@ -199,11 +200,18 @@ public class Game implements Serializable
 		Cupple currCouple;
 		Attack currAttack;
 		
-		g						= (Graphics) strategy.getDrawGraphics();
+		// ensure music is playing
+		ensureMusicPlaying();
 		
-		// draw the background
-		g.setColor(ParkViewProtector.COLOR_BG_2);
-		g.fillRect(0, 0, ParkViewProtector.WIDTH, ParkViewProtector.HEIGHT);
+		// key handling
+		if(Keyboard.isKeyDown(KeyboardConfig.MENU))
+		{
+			ParkViewProtector.showMenu			= true;
+		}
+		else if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+		{
+			driver.quitGame();
+		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw students
@@ -212,7 +220,7 @@ public class Game implements Serializable
 		for(int i = 0; i < students.size(); i++)
 		{
 			currStudent			= students.get(i);
-			currStudent.draw(g);
+			currStudent.draw();
 			currStudent.step(this);
 			if(currStudent.getCharge() <= 0 && currStudent.bin.items.size() > 0)
 			{
@@ -231,7 +239,7 @@ public class Game implements Serializable
 		for(int i = 0; i < couples.size(); i++)
 		{
 			currCouple			= couples.get(i);
-			currCouple.draw(g);
+			currCouple.draw();
 			
 			currCouple.step(this);
 			
@@ -248,7 +256,7 @@ public class Game implements Serializable
 				}
 			}
 			
-			if(Keyboard.isPressed(Keyboard.SHOW_CHARGES))
+			if(Keyboard.isKeyDown(KeyboardConfig.SHOW_CHARGES))
 			{
 				showCharges();
 			}
@@ -275,15 +283,15 @@ public class Game implements Serializable
 		for(int i = 0; i < attacks.size(); i++)
 		{
 			currAttack			= attacks.get(i);
-			currAttack.draw(g);
+			currAttack.draw();
 			
 			currAttack.move(MOVE_SPEED);
 			
 			// is the attack off the screen?
-			if(currAttack.getBounds().x < -currAttack.getBounds().width ||
-					currAttack.getBounds().x > ParkViewProtector.WIDTH ||
-					currAttack.getBounds().y < -currAttack.getBounds().height ||
-					currAttack.getBounds().y > ParkViewProtector.HEIGHT)
+			if(currAttack.getBounds().getX() < -currAttack.getBounds().getWidth() ||
+					currAttack.getBounds().getX() > ParkViewProtector.WIDTH ||
+					currAttack.getBounds().getY() < -currAttack.getBounds().getHeight() ||
+					currAttack.getBounds().getY() > ParkViewProtector.HEIGHT)
 			{
 				System.out.println("Attack #" + i +" went off screen, removing");
 				
@@ -304,14 +312,14 @@ public class Game implements Serializable
 		
 		for(Wall w : walls)
 		{
-			w.draw(g);
+			w.draw();
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw player
 		////////////////////////////////////////////////////////////////////////////////////
 		
-		player.draw(g);
+		player.draw();
 		player.step(this);
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -321,7 +329,7 @@ public class Game implements Serializable
 		
 		for(int i = 0;i < items.size();i++)
 		{
-				items.get(i).draw(g);
+				items.get(i).draw();
 				if(items.get(i).getBounds().intersects(player.getBounds()))
 				{
 					player.pickItem(items.get(i));
@@ -333,12 +341,8 @@ public class Game implements Serializable
 		// Draw statistics
 		////////////////////////////////////////////////////////////////////////////////////
 		// these are painted last to ensure that they are always on top
-
-		drawStatistics();
 		
-		// finish drawing
-		g.dispose();
-		strategy.show();
+		stats.draw(player, level);
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Move the player
@@ -346,24 +350,24 @@ public class Game implements Serializable
 		
 		int distX = 0, distY = 0;
 		
-		if(Keyboard.isPressed(Keyboard.UP) && player.getBounds().y > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.UP) && player.getBounds().getY() > 0)
 		{
 			distY						= -MOVE_SPEED;
 		}
 		
-		if(Keyboard.isPressed(Keyboard.DOWN) && player.getBounds().y < ParkViewProtector.HEIGHT
-				- player.getBounds().height)
+		if(Keyboard.isKeyDown(KeyboardConfig.DOWN) && player.getBounds().getY() < ParkViewProtector.HEIGHT
+				- player.getBounds().getHeight())
 		{
 			distY						= MOVE_SPEED;
 		}
 		
-		if(Keyboard.isPressed(Keyboard.LEFT) && player.getBounds().x > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.LEFT) && player.getBounds().getX() > 0)
 		{
 			distX						= -MOVE_SPEED;
 		}
 		
-		if(Keyboard.isPressed(Keyboard.RIGHT) && player.getBounds().x < ParkViewProtector.WIDTH
-				- player.getBounds().width)
+		if(Keyboard.isKeyDown(KeyboardConfig.RIGHT) && player.getBounds().getX() < ParkViewProtector.WIDTH
+				- player.getBounds().getWidth())
 		{
 			distX						= MOVE_SPEED;
 		}
@@ -396,7 +400,7 @@ public class Game implements Serializable
 		// 			-Donny
 		////////////////////////////////////////////////////////////////////////////////////
 		
-		if(Keyboard.isPressed(Keyboard.USE_HP_ITEM))
+		if(Keyboard.isKeyDown(KeyboardConfig.USE_HP_ITEM))
 		{
 			if(itemDelay == ITEM_USE_DELAY)
 			{
@@ -405,7 +409,7 @@ public class Game implements Serializable
 				itemDelay = 0;
 			}
 		}
-		if(Keyboard.isPressed(Keyboard.USE_TP_ITEM))
+		if(Keyboard.isKeyDown(KeyboardConfig.USE_TP_ITEM))
 		{
 			if(itemDelay == ITEM_USE_DELAY)
 			{
@@ -418,44 +422,6 @@ public class Game implements Serializable
 		{
 			itemDelay++;
 		}
-	}
-	
-	/**
-	 * Draw statistics
-	 */
-	public void drawStatistics()
-	{
-		// background rectangle
-		g.setColor(ParkViewProtector.STATS_BAR_BG);
-		g.fillRect(0, 0, ParkViewProtector.WIDTH, STATS_BAR_HEIGHT);
-		
-		// draw labels
-		g.setColor(ParkViewProtector.STATS_BAR_FG);
-		g.setFont(new Font("System", Font.PLAIN, 10));
-		
-		int textCenter				= BAR_HEIGHT / 4 + g.getFontMetrics().getHeight() / 2;
-		
-		g.drawString("HP:", STAT_PAD_TOP, STAT_PAD_TOP + textCenter);
-		g.drawString("TP:", STAT_PAD_TOP, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING + textCenter);
-		g.drawString("Speed: " + player.getSpeed(), 400, STAT_PAD_TOP + BAR_HEIGHT);
-		g.drawString("Level: " + level, 500, STAT_PAD_TOP + BAR_HEIGHT);
-		
-		// draw HP bar
-		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
-
-		Bar hpBar					= new Bar(ParkViewProtector.STATS_BAR_HP, hpMaxWidth,
-				(double) player.getHp() / player.getMaxHp());
-		hpBar.draw(g, STAT_PAD_LEFT_BAR, STAT_PAD_TOP);
-		
-		// draw TP bar
-		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
-		
-		Bar tpBar					= new Bar(ParkViewProtector.STATS_BAR_TP, tpMaxWidth,
-				(double) player.getTp() / player.getMaxTp());
-		tpBar.draw(g, STAT_PAD_LEFT_BAR, STAT_PAD_TOP + BAR_HEIGHT + BAR_SPACING);
-		
-		// draw Inventory
-		player.bin.draw(g,550,20);
 	}
 	
 	/**
@@ -478,23 +444,23 @@ public class Game implements Serializable
 		}
 		
 		// change direction if we hit the top or bottom
-		if(obj.getBounds().y <= STATS_BAR_HEIGHT && obj.getDirection() == Direction.NORTH)
+		if(obj.getBounds().getY() <= 0 && obj.getDirection() == Direction.NORTH)
 		{
 			obj.setDirection(Direction.SOUTH);
 			obj.resetMoveCount();
 		}
-		else if(obj.getBounds().y >= ParkViewProtector.HEIGHT - obj.getBounds().height  &&
+		else if(obj.getBounds().getY() >= ParkViewProtector.HEIGHT - obj.getBounds().getHeight()  &&
 				obj.getDirection() == Direction.SOUTH)
 		{
 			obj.setDirection(Direction.NORTH);
 			obj.resetMoveCount();
 		}
-		else if(obj.getBounds().x <= 0 && obj.getDirection() == Direction.WEST)
+		else if(obj.getBounds().getX() <= 0 && obj.getDirection() == Direction.WEST)
 		{
 			obj.setDirection(Direction.EAST);
 			obj.resetMoveCount();
 		}
-		else if(obj.getBounds().x >= ParkViewProtector.WIDTH - obj.getBounds().width &&
+		else if(obj.getBounds().getX() >= ParkViewProtector.WIDTH - obj.getBounds().getWidth() &&
 				obj.getDirection() == Direction.EAST)
 		{
 			obj.setDirection(Direction.WEST);
@@ -556,16 +522,16 @@ public class Game implements Serializable
 	 */
 	public void switchChar()
 	{
-		if(Keyboard.isPressed(Keyboard.CHAR1) || Keyboard.isPressed(Keyboard.CHAR2))
+		if(Keyboard.isKeyDown(KeyboardConfig.CHAR1) || Keyboard.isKeyDown(KeyboardConfig.CHAR2))
 		{
 			hpPercent=(double)player.getHp()/(double)player.getMaxHp();
 			tpPercent=(double)player.getTp()/(double)player.getMaxTp();
-			if(Keyboard.isPressed(Keyboard.CHAR1) && !(player instanceof Stark))
+			if(Keyboard.isKeyDown(KeyboardConfig.CHAR1) && !(player instanceof Stark))
 			{
 				player=new Stark((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.STARK_HP*hpPercent), (int)((double)Stats.STARK_TP*tpPercent));
 			}
 			
-			if(Keyboard.isPressed(Keyboard.CHAR2) && !(player instanceof SpecialCharacter))
+			if(Keyboard.isKeyDown(KeyboardConfig.CHAR2) && !(player instanceof SpecialCharacter))
 			{
 				player=new SpecialCharacter((int) player.getBounds().getX(), (int) player.getBounds().getY(), (int) ((double)Stats.SPECIAL_HP*hpPercent), (int) ((double)Stats.SPECIAL_TP*tpPercent));
 			}
@@ -578,20 +544,20 @@ public class Game implements Serializable
 	 */
 	public void playerAttack()
 	{
-		if((Keyboard.isPressed(Keyboard.ATTACK1) || Keyboard.isPressed(Keyboard.ATTACK2)
-				|| Keyboard.isPressed(Keyboard.ATTACK3)) && attackDelay == 0)
+		if((Keyboard.isKeyDown(KeyboardConfig.ATTACK1) || Keyboard.isKeyDown(KeyboardConfig.ATTACK2)
+				|| Keyboard.isKeyDown(KeyboardConfig.ATTACK3)) && attackDelay == 0)
 		{
 			Attack playerAttack;
 			int attackKey=0;
-			if(Keyboard.isPressed(Keyboard.ATTACK1))
+			if(Keyboard.isKeyDown(KeyboardConfig.ATTACK1))
 			{
 				attackKey=0;
 			}
-			else if(Keyboard.isPressed(Keyboard.ATTACK2))
+			else if(Keyboard.isKeyDown(KeyboardConfig.ATTACK2))
 			{
 				attackKey=1;
 			}
-			else if(Keyboard.isPressed(Keyboard.ATTACK3))
+			else if(Keyboard.isKeyDown(KeyboardConfig.ATTACK3))
 			{
 				attackKey=2;
 			}
@@ -665,6 +631,12 @@ public class Game implements Serializable
 		Student testStudent;
 		
 		int i						= students.indexOf(currStudent);
+		
+		// prevent coupling if we intersect a wall
+		if(!canMove(currStudent.getBounds()))
+		{
+			return false;
+		}
 		
 		for(int j = 0; j < students.size(); j++)
 		{
@@ -772,7 +744,7 @@ public class Game implements Serializable
 			
 			//The student takes damage in this if loop
 			if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
-					currStudent.getCharge() > 0 && currStudent.isHittable() &&
+					/*currStudent.getCharge() > 0 && */currStudent.isHittable() &&
 					currAttack.isStudent())
 			{
 				if(currAttack.getStatus()==Status.STUN)
@@ -836,13 +808,14 @@ public class Game implements Serializable
 				if(currCouple.getHp() <=0)
 				{
 					male		= currCouple.getMale();
-					male.moveTo(currCouple.getBounds().x, currCouple.getBounds().y);
+					male.moveTo(currCouple.getBounds().getX(),
+							currCouple.getBounds().getY());
 					male.setHitDelay(currAttack.getHitDelay());
 					male.setCharge(-10);
 					
 					female		= currCouple.getFemale();
-					female.moveTo(currCouple.getBounds().x + DECOUPLE_SPACING,
-							currCouple.getBounds().y);
+					female.moveTo(currCouple.getBounds().getX() + DECOUPLE_SPACING,
+							currCouple.getBounds().getY());
 					female.setHitDelay(currAttack.getHitDelay());
 					female.setCharge(-10);
 					
@@ -923,21 +896,21 @@ public class Game implements Serializable
 	{
 		Sprite gameOver					= DataStore.INSTANCE.getSprite("game_over.png");
 		
-		gameOver.draw(g, 0, 0);
+		gameOver.draw(0, 0);
 		
-		// finish drawing
-		g.dispose();
-		strategy.show();
+		// show rendered content
+		GL11.glFlush();
+		Display.update();
 		
 		try
 		{
-			Thread.sleep(15000);
+			Thread.sleep(GAME_OVER_DELAY);
 		}
 		catch(Exception e)
 		{
 		}
 		
-		driver.quit();
+		driver.quitGame();
 	}
 	
 	/**
@@ -945,14 +918,13 @@ public class Game implements Serializable
 	 */
 	public void showCharges()
 	{
-		g.setColor(ParkViewProtector.COLOR_BG_1);
+		//g.setColor(ParkViewProtector.COLOR_BG_1);
 		
 		for(int i = 0;i < students.size();i++)
 		{
 			if(students.get(i).getCharge() > 0)
 			{
-				students.get(i).showCharge(g);
-				students.get(i).showChargeBar(g);
+				students.get(i).showCharge();
 			}
 		}
 	}
@@ -962,6 +934,7 @@ public class Game implements Serializable
 	 * 
 	 * @param os Object input stream
 	 */
+	@SuppressWarnings("unchecked")
 	private void readObject(ObjectInputStream os)
 	{
 		try

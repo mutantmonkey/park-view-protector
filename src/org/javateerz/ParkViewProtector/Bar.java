@@ -7,11 +7,13 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.*;
+import org.javateerz.EasyGL.GLRect;
+import org.newdawn.slick.Color;
 
 public class Bar
 {
-	private static final int BAR_HEIGHT	= 10;
+	public static final int BAR_HEIGHT			= 10;
+	public static final double DARKEN_FACTOR	= 0.5;
 	
 	private Color color;
 	
@@ -71,14 +73,25 @@ public class Bar
 	 * @param x X-position
 	 * @param y Y-position
 	 */
-	public void draw(Graphics g, int x, int y)
+	public void draw(int x, int y)
 	{
 		// background
-		g.setColor(color.darker().darker());
-		g.fillRect(x, y, maxWidth, BAR_HEIGHT);
+		GLRect bg				= new GLRect(x, y, maxWidth, BAR_HEIGHT);
+		bg.setColor(color.darker(0.5f));
+		bg.draw();
 		
 		// main bar
-		g.setColor(color);
-		g.fillRect(x, y, width, BAR_HEIGHT);
+		GLRect fg				= new GLRect(x, y, width, BAR_HEIGHT);
+		fg.setColor(color);
+		fg.draw();
+	}
+	
+	public Color darken(Color color)
+	{
+		int red					= (int) (color.getRed() * DARKEN_FACTOR);
+		int green				= (int) (color.getGreen() * DARKEN_FACTOR);
+		int blue				= (int) (color.getBlue() * DARKEN_FACTOR);
+		
+		return new Color(red, green, blue);
 	}
 }

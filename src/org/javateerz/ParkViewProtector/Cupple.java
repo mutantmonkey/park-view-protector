@@ -7,8 +7,9 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.Rectangle;
 import java.io.*;
+
+import org.newdawn.slick.geom.Rectangle;
 
 public class Cupple extends Character
 {
@@ -60,7 +61,8 @@ public class Cupple extends Character
 	
 	protected void updateSprite()
 	{
-		sprite	= DataStore.INSTANCE.getSprite("cupple.png");
+		sprite	= DataStore.INSTANCE.getSprite("couples/" + female.getType() + "_"
+				+ male.getType() + ".png");
 	}
 	
 	public Student getMale()

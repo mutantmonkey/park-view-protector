@@ -6,8 +6,7 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import org.newdawn.slick.geom.Rectangle;
 
 public class Wall extends Movable
 {
@@ -53,7 +52,7 @@ public class Wall extends Movable
 	/**
 	 * Called by main game loop, draws the object's sprite on the screen
 	 */
-	public void draw(Graphics g)
+	public void draw()
 	{
 		if(width > height)			// horizontal
 		{
@@ -61,7 +60,7 @@ public class Wall extends Movable
 			
 			for(int i = 0; i < width; i += spriteWidth)
 			{
-				sprite.draw(g, (int) x + i, (int) y);
+				sprite.draw((int) x + i, (int) y);
 			}
 		}
 		else {						// vertical
@@ -69,7 +68,7 @@ public class Wall extends Movable
 			
 			for(int i = 0; i < height; i += spriteHeight)
 			{
-				sprite.draw(g, (int) x, (int) y + i);
+				sprite.draw((int) x, (int) y + i);
 			}
 		}
 	}

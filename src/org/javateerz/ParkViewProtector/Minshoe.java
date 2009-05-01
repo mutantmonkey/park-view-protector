@@ -11,6 +11,8 @@ package org.javateerz.ParkViewProtector;
 
 public class Minshoe extends Staff
 {
+	public static final String CHAR_NAME		= "Dr. 'Minshoe'";
+	
 	private static final double SPEED= 1.0;
 	private static final int MAX_TP = 0;
 	private static final int MAX_HP = 0;
@@ -18,7 +20,7 @@ public class Minshoe extends Staff
 	
 	public Minshoe(int x, int y, int hp, int tp)
 	{
-		super(x, y, hp, MAX_HP, SPEED, tp, MAX_TP);
+		super(CHAR_NAME, x, y, hp, MAX_HP, SPEED, tp, MAX_TP);
 		updateSprite();
 	}
 

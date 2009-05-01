@@ -15,8 +15,11 @@ public abstract class Staff extends Character
 {
 	private static final long serialVersionUID = 3L;
 	
+	private String name;
+	
 	private int tp;
 	private int maxTp;
+	
 	public abstract Attack getAttack(int i);
 	
 	/*public Staff()
@@ -29,9 +32,10 @@ public abstract class Staff extends Character
 	}*/
 	
 	// Creates a Staff member.
-	public Staff(int x, int y, int hp, int maxHp, double speed, int tp, int maxTp)
+	public Staff(String name, int x, int y, int hp, int maxHp, double speed, int tp, int maxTp)
 	{
 		super(x, y, hp, maxHp, speed);
+		this.name = name;
 		//tp=Teacher Points, Amount of points for use of skills
 		this.tp=tp;
 		this.maxTp=maxTp;
@@ -85,6 +89,11 @@ public abstract class Staff extends Character
 	public void setMaxTp(int amount)
 	{
 		maxTp=amount;
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 	
 	public void step(Game game)

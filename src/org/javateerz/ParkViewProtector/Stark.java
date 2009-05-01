@@ -11,6 +11,8 @@ package org.javateerz.ParkViewProtector;
 
 public class Stark extends Staff
 {
+	public static final String CHAR_NAME		= "Mr. David Stark";
+	
 	private static final double SPEED= 2.0;
 	private static final int MAX_HP=100;
 	private static final int MAX_TP=100;
@@ -18,7 +20,7 @@ public class Stark extends Staff
 	
 	public Stark(int x, int y, int hp, int tp)
 	{
-		super(x, y, hp, MAX_HP, SPEED, tp, MAX_TP);
+		super(CHAR_NAME, x, y, hp, MAX_HP, SPEED, tp, MAX_TP);
 		updateSprite();
 	}
 	
