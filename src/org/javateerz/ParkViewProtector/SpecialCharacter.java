@@ -17,6 +17,12 @@ public class SpecialCharacter extends Staff
 	private static final int MAX_TP = 300;
 	private static final long serialVersionUID = 4L;
 	
+	public SpecialCharacter(int x, int y)
+	{
+		super(CHAR_NAME, x, y, MAX_HP, MAX_HP, SPEED, MAX_TP, MAX_TP);
+		updateSprite();
+	}
+	
 	public SpecialCharacter(int x, int y, int hp, int tp)
 	{
 		super(CHAR_NAME, x, y, hp, MAX_HP, SPEED, tp, MAX_TP);

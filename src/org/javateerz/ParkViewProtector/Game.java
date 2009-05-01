@@ -53,8 +53,6 @@ public class Game extends GameScreen implements Serializable
 	
 	public static final int PLAYER_X			= 10;
 	public static final int PLAYER_Y			= 30;
-	public static final int PLAYER_HP			= 50;
-	public static final int PLAYER_TP			= 300;
 	public static double hpPercent;
 	public static double tpPercent;
 	
@@ -89,7 +87,7 @@ public class Game extends GameScreen implements Serializable
 		setMusic("heavyset.ogg");
 		
 		// initialize everything
-		initPlayer();
+		//initPlayer();
 		initWalls();
 		initStudents();
 		initItems();
@@ -105,7 +103,7 @@ public class Game extends GameScreen implements Serializable
 	 */
 	public void initPlayer()
 	{
-		player						= new SpecialCharacter(PLAYER_X, PLAYER_Y, PLAYER_HP, PLAYER_TP);
+		player						= new SpecialCharacter(PLAYER_X, PLAYER_Y);
 	}
 	
 	// FIXME: decide if this should be part of the constructor
@@ -113,8 +111,6 @@ public class Game extends GameScreen implements Serializable
 	{
 		this.player					= player;
 		this.player.moveTo(PLAYER_X, PLAYER_Y);
-		this.player.setHp(PLAYER_HP);
-		this.player.setTp(PLAYER_TP);
 	}
 	
 	/**
