@@ -120,7 +120,7 @@ public class TitleScreen extends Menu
 		{
 			case 1:
 				ParkViewProtector.showTitle		= false;
-				bgMusic.stop();
+				//bgMusic.stop();
 				break;
 			
 			case 2:
