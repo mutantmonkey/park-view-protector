@@ -480,11 +480,73 @@ public class Game extends GameScreen implements Serializable
 				|| !canMove(obj.getNewBounds(speed)))
 		{
 			// collision, must choose new direction
-			obj.resetMoveCount();
+			//obj.resetMoveCount();
+			
+			if(obj instanceof Character)
+			{
+				push((Character)obj,player);
+			}
 		}
-		else {
+		
+		else
+		{
 			obj.move(speed);
 		}
+	}
+	
+	/**
+	 * Causes c1 to push c2 away.
+	 * 
+	 * @param c1
+	 * @param c2
+	 */
+	/* FIXME: Yeah, I have no idea how to fix this.
+	 * 		It sometimes "catches" so it moves both characters at the same time,
+	 * 		all the time, unless "uncatched"
+	 * 
+	 * 		Does not work when an object is colliding with 2 players! D:
+	 */
+	public void push(Character c1, Character c2)
+	{
+		double	temp1=c1.getSpeed(),
+				temp2=c2.getSpeed();
+		
+		//c1.setSpeed(MOVE_SPEED);
+		c2.setSpeed(c1.getSpeed()+.1);
+		
+		switch(c1.getDirection())
+		{
+			case Direction.NORTH:
+				if(canMove(c1.getNewBounds(0,-1)) && canMove(c2.getNewBounds(0,-1)))
+				{
+					c1.move(0,-1);
+					c2.move(0,-1);
+				}
+				break;
+			case Direction.SOUTH:
+				if(canMove(c1.getNewBounds(0,1)) && canMove(c2.getNewBounds(0,1)))
+				{
+					c1.move(0,1);
+					c2.move(0,1);
+				}
+				break;
+			case Direction.EAST:
+				if(canMove(c1.getNewBounds(1,0)) && canMove(c2.getNewBounds(1,0)))
+				{
+					c1.move(1,0);
+					c2.move(1,0);
+				}
+				break;
+			case Direction.WEST:
+				if(canMove(c1.getNewBounds(-1,0)) && canMove(c2.getNewBounds(-1,0)))
+				{
+					c1.move(-1,0);
+					c2.move(-1,0);
+				}
+				break;
+		}
+		//c1.setSpeed(temp1);
+		c2.setSpeed(temp2);
 	}
 	
 	/**

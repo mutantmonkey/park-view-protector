@@ -62,9 +62,9 @@ public abstract class Movable implements Serializable
 	 * 
 	 * @param change New speed
 	 */
-	public void changeSpeed(double change)
+	public void setSpeed(double s)
 	{
-		speed = change;
+		speed = s;
 	}
 	
 	/**
@@ -261,8 +261,7 @@ public abstract class Movable implements Serializable
 	/**
 	 * Computes a new bounding box for the object moved the specified distance
 	 * 
-	 * @param distX X component
-	 * @param distY Y component
+	 * @param distance
 	 * @return New bounding box
 	 */
 	public Rectangle getNewBounds(int distance)
@@ -299,6 +298,10 @@ public abstract class Movable implements Serializable
 	}
 }
 
+
+/**
+ * Direction variables
+ */
 class Direction
 {
 	public static final int NORTH	= 0;

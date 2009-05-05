@@ -6,6 +6,8 @@
 
 package org.javateerz.ParkViewProtector;
 
+import java.util.ArrayList;
+
 public abstract class Character extends Movable
 {
 	// stats
@@ -42,20 +44,28 @@ public abstract class Character extends Movable
 	}
 	
 	/**
-	 * Returns the amount of HP that this character has
-	 * 
-	 * @return Amount of HP
+	 * @return Amount of HP the character has.
 	 */
 	public int getHp()
 	{
 		return hp;
 	}
 	
+	/**
+	 * Set the amount of HP.
+	 * 
+	 * @param amount
+	 */
 	public void setHp(int amount)
 	{
 		hp=amount;
 	}
 	
+	/**
+	 * Lowers time before the character can be hit again by amount.
+	 * 
+	 * @param amount
+	 */
 	public void decrementHitDelay(int amount)
 	{
 		if(hitDelay>0)
@@ -64,16 +74,27 @@ public abstract class Character extends Movable
 		}
 	}
 	
+	/**
+	 * Sets time before the character can be hit again.
+	 * 
+	 * @param amount
+	 */
 	public void setHitDelay(int amount)
 	{
 		hitDelay=amount;
 	}
 	
+	/**
+	 * @return The time before the character can be hit again.
+	 */
 	public int getHitDelay()
 	{
 		return hitDelay;
 	}
 	
+	/**
+	 * @return If the character can be hit.
+	 */
 	public boolean isHittable()
 	{
 		if(hitDelay<=0)
@@ -113,7 +134,6 @@ public abstract class Character extends Movable
 	/**
 	 * Drops the entire inventory
 	 */
-	
 	public void dropInv()
 	{
 		bin.dropInv();
@@ -128,7 +148,6 @@ public abstract class Character extends Movable
 	public void pickItem(Item item)
 	{
 		bin.add(item);
-
 		//code to remove from field...
 	}
 	
@@ -140,6 +159,25 @@ public abstract class Character extends Movable
 	public void useItem(char type)
 	{
 		bin.useItem(type);
+	}
+	
+	/**
+	 * @param students
+	 * @return The students currently colliding with the character.
+	 */
+	public ArrayList<Character> getColliders(ArrayList<Student> students)
+	{
+		ArrayList<Character> list=new ArrayList<Character>();
+		Character curr;
+		for(int i=0; i<students.size(); i++)
+		{
+			curr=students.get(i);
+			if(curr.getBounds().intersects(getBounds()))
+			{
+				list.add(curr);
+			}
+		}
+		return list;
 	}
 	
 	protected void validateState()

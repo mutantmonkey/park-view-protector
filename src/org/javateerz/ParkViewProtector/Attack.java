@@ -117,7 +117,6 @@ public class Attack extends Movable
 	}
 
 	/**
-	 * 
 	 * @return The name of the attack
 	 */
 	public String getName()
@@ -126,7 +125,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return The damage the attack deals
 	 */
 	public int getDamage()
@@ -135,7 +133,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return The TP attack consumes
 	 */
 	public int getTp()
@@ -144,7 +141,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return The duration the attack stays on screen
 	 */
 	public int getDuration()
@@ -153,7 +149,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return The status effect the attack induces
 	 */
 	public int getStatus()
@@ -162,7 +157,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return The duration of the status effect
 	 */
 	public int getStatusDuration()
@@ -171,7 +165,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return The duration that the user cannot perform an action
 	 */
 	public int getStillTime()
@@ -180,7 +173,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return The duration before the user can perform another attack
 	 */
 	public int getReuse()
@@ -189,7 +181,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return If true, the attack will not disappear upon hitting a target
 	 */
 	public boolean isAoE()
@@ -198,7 +189,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return The duration before the target will get hit again by the same attack
 	 */
 	public int getHitDelay()
@@ -207,7 +197,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return If true, only students will take damage
 	 */
 	public boolean isStudent()
@@ -225,7 +214,6 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * 
 	 * @return If the attack has completed
 	 */
 	public boolean over()
@@ -288,9 +276,7 @@ public class Attack extends Movable
 }
 
 /**
- * 
  * Attack type placement variables
- *
  */
 class Type
 {
@@ -300,9 +286,7 @@ class Type
 }
 
 /**
- * 
  * Status effect variables
- *
  */
 class Status
 {

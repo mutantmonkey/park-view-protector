@@ -14,6 +14,10 @@ import org.newdawn.slick.Color;
 
 public class Student extends Character implements Serializable
 {
+	public final static int GANG=0;
+	public final static int GOTH=1;
+	public final static int BAND=2;
+	
 	private static final long serialVersionUID = 2L;
 	
 	private String type	= "default";
@@ -42,13 +46,13 @@ public class Student extends Character implements Serializable
 		// the driver
 		switch(type)
 		{
-			case Arch.GANG:
+			case Student.GANG:
 				this.type = "gangster";
 				break;
-			case Arch.GOTH:
+			case Student.GOTH:
 				this.type = "goth";
 				break;
-			case Arch.BAND:
+			case Student.BAND:
 				this.type = "band";
 				break;
 			default:
@@ -188,11 +192,4 @@ public class Student extends Character implements Serializable
 	{
 		os.defaultWriteObject();
 	}
-}
-
-class Arch
-{
-	public final static int GANG=0;
-	public final static int GOTH=1;
-	public final static int BAND=2;
 }
