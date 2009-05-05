@@ -67,6 +67,7 @@ public class Game extends GameScreen implements Serializable
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
 	private ArrayList<Item> items				= new ArrayList<Item>();
+	private ArrayList<VisualFX> fx				= new ArrayList<VisualFX>();
 	private ArrayList<Wall> walls;
 
 	/**
@@ -331,6 +332,17 @@ public class Game extends GameScreen implements Serializable
 					player.pickItem(items.get(i));
 					items.remove(items.get(i));
 				}
+		}
+		
+		// Draw FXs
+		
+		for(int i=0;i<fx.size();i++)
+		{
+			fx.get(i).draw();
+			if(fx.get(i).tick())
+			{
+				fx.remove(fx.get(i));
+			}
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -687,6 +699,11 @@ public class Game extends GameScreen implements Serializable
 		return false;
 	}
 	
+	public void hitFX(int x, int y)
+	{
+		fx.add(new VisualFX(x,y,0,"blip",10));
+	}
+	
 	/**
 	 * Handle attacks
 	 * 
@@ -743,6 +760,9 @@ public class Game extends GameScreen implements Serializable
 					/*currStudent.getCharge() > 0 && */currStudent.isHittable() &&
 					currAttack.isStudent())
 			{
+				hitFX((int)(currStudent.getBounds().getCenterX()-currStudent.getBounds().getWidth()/4),
+						(int)(currStudent.getBounds().getCenterY()-currStudent.getBounds().getHeight()/4));
+				
 				if(currAttack.getStatus()==Status.STUN)
 				{
 					currStudent.stun(currAttack.getStatusDuration());
@@ -787,6 +807,8 @@ public class Game extends GameScreen implements Serializable
 			if(currAttack.getBounds().intersects(currCouple.getBounds()) &&
 					currCouple.isHittable() && currAttack.isStudent())
 			{
+				hitFX((int)(currCouple.getBounds().getCenterX()-currCouple.getBounds().getWidth()/4),
+						(int)(currCouple.getBounds().getCenterY()-currCouple.getBounds().getHeight()/4));
 				currCouple.adjustHp(currAttack.getDamage());
 				currCouple.setHitDelay(currAttack.getHitDelay());
 				
