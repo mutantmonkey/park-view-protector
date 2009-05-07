@@ -76,10 +76,10 @@ public class Wall extends Movable
 		{
 			for(int j = 0; j < height; j ++)
 			{
-				if(j+1>=height)
+				/*if(j+1>=height)
 					updateSprite(1);
 				else
-					updateSprite();
+					updateSprite();*/
 				sprite.draw((int) x + i * spriteWidth, (int) y + j * spriteHeight);
 			}
 		}

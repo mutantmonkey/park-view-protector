@@ -63,7 +63,7 @@ public class Game extends GameScreen implements Serializable
 	// objects on the screen
 	private int level							= 1;
 	private Staff player;
-	private VisualFX background;
+	private VisualFX background					= new VisualFX("background1",0,0,0);
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
@@ -217,7 +217,6 @@ public class Game extends GameScreen implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw Background
 		////////////////////////////////////////////////////////////////////////////////////
-		background = new VisualFX("background1",0,0,0);
 		background.draw();
 
 		////////////////////////////////////////////////////////////////////////////////////
