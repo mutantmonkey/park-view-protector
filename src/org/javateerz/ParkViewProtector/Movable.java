@@ -229,6 +229,16 @@ public abstract class Movable implements Serializable
 		sprite.draw((int) x, (int) y);
 	}
 	
+	public double getX()
+	{
+		return x;
+	}
+	
+	public double getY()
+	{
+		return y;
+	}
+	
 	/**
 	 * Computes the bounding box for the object
 	 * 

@@ -8,6 +8,8 @@ package org.javateerz.ParkViewProtector;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.geom.Rectangle;
+
 public abstract class Character extends Movable
 {
 	// stats
@@ -188,5 +190,78 @@ public abstract class Character extends Movable
 		{
 			throw new IllegalArgumentException("HP cannot exceed max HP");
 		}
+	}
+	
+	/**
+	 * Computes the bounding box for the object
+	 * 
+	 * @return Bounding box
+	 */
+	public Rectangle getBounds()
+	{
+		Rectangle rect = new Rectangle((int) x, (int) y+(sprite.getHeight()-sprite.getWidth())/2,
+				sprite.getWidth(), sprite.getWidth());
+		
+		return rect;
+	}
+	
+	/**
+	 * Computes a new bounding box for the object moved the specified distance
+	 * 
+	 * @param distX X component
+	 * @param distY Y component
+	 * @return New bounding box
+	 */
+	public Rectangle getNewBounds(int distX, int distY)
+	{
+		int newX				= (int) x;
+		int newY				= (int) y;
+		
+		newX				   += (int) (distX * speed);
+		newY				   += (int) (distY * speed);
+		
+		Rectangle bounds		= new Rectangle(newX, newY+(sprite.getHeight()-sprite.getWidth())/2, sprite.getWidth(),
+				sprite.getWidth());
+		
+		return bounds;
+	}
+	
+	/**
+	 * Computes a new bounding box for the object moved the specified distance
+	 * 
+	 * @param distance
+	 * @return New bounding box
+	 */
+	public Rectangle getNewBounds(int distance)
+	{
+		int newX				= (int) x;
+		int newY				= (int) y;
+		
+		int dist				= (int) (distance * speed);
+		
+		// determine and change direction if necessary
+		switch(direction)
+		{
+			case Direction.NORTH:
+				newY	-= dist;
+				break;
+			
+			case Direction.EAST:
+				newX	+= dist;
+				break;
+				
+			case Direction.SOUTH:
+				newY	+= dist;
+				break;
+			
+			case Direction.WEST:
+				newX	-= dist;
+				break;
+		}
+		
+		Rectangle bounds		= new Rectangle(newX, newY+(sprite.getHeight()-sprite.getWidth())/2, sprite.getWidth(),
+				sprite.getWidth());
+		
+		return bounds;
 	}
 }
