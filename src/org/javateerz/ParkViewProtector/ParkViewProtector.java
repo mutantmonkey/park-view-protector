@@ -216,6 +216,9 @@ public class ParkViewProtector
 			if(showFps && frames % 30 == 0)
 			{
 				secs				= (System.currentTimeMillis() - startTime) / 1000;
+				if(secs == 0)
+					continue;
+				
 				fps					= frames / secs;
 				
 				Display.setTitle("Park View Protector (fps: " + fps + ")");
