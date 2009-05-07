@@ -63,6 +63,7 @@ public class Game extends GameScreen implements Serializable
 	// objects on the screen
 	private int level							= 1;
 	private Staff player;
+	private VisualFX background;
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
@@ -124,9 +125,13 @@ public class Game extends GameScreen implements Serializable
 		switch(level)
 		{
 			default:
-				walls.add(new Wall(100, 0, ParkViewProtector.WIDTH - 60, 4));
-				walls.add(new Wall(100, 3, 4, 300));
-				
+				/*walls.add(new Wall(Wall.NARROW_H, 100, 100, 4, 1));
+				walls.add(new Wall(Wall.NARROW_V, 100, 100, 1, 4));
+				walls.add(new Wall(Wall.NARROW_H, 100, 500, 4, 1));
+				walls.add(new Wall(Wall.NARROW_V, 500, 100, 1, 4));
+				walls.add(new Wall(Wall.SMALL, 400, 300, 4, 4));*/
+				walls.add(new Wall(Wall.NORMAL,100,100,4,4));
+				walls.add(new Wall(Wall.NARROW_V, 600, 100, 1,4));
 				break;
 		}
 	}
@@ -159,7 +164,7 @@ public class Game extends GameScreen implements Serializable
 			student					= new Student(x, y, 5, 5, speed, gender, type);
 			
 			// make sure that the student is not spawned on top of a wall)
-			while(!canMove(student.getBounds()))
+			while(!canMove(student.getBounds(), student))
 			{
 				x					= (int) (Math.random() * ParkViewProtector.WIDTH) + 1;
 				y					= (int) (Math.random() * ParkViewProtector.HEIGHT) + 1;
@@ -209,6 +214,11 @@ public class Game extends GameScreen implements Serializable
 		{
 			driver.quitGame();
 		}
+		
+		// Draw Background
+		
+		background = new VisualFX("background1",0,0,0);
+		background.draw();
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw students
@@ -336,7 +346,7 @@ public class Game extends GameScreen implements Serializable
 		
 		// Draw FXs
 		
-		for(int i=0;i<fx.size();i++)
+		for(int i=0; i<fx.size(); i++)
 		{
 			fx.get(i).draw();
 			if(fx.get(i).tick())
@@ -358,24 +368,30 @@ public class Game extends GameScreen implements Serializable
 		
 		int distX = 0, distY = 0;
 		
-		if(Keyboard.isKeyDown(KeyboardConfig.UP) && player.getBounds().getY() > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.UP) &&
+			!Keyboard.isKeyDown(KeyboardConfig.DOWN) &&
+			player.getBounds().getY() > 0)
 		{
 			distY						= -MOVE_SPEED;
 		}
 		
-		if(Keyboard.isKeyDown(KeyboardConfig.DOWN) && player.getBounds().getY() < ParkViewProtector.HEIGHT
-				- player.getBounds().getHeight())
+		if(Keyboard.isKeyDown(KeyboardConfig.DOWN) &&
+				!Keyboard.isKeyDown(KeyboardConfig.UP) &&
+				player.getBounds().getY() < ParkViewProtector.HEIGHT - player.getBounds().getHeight())
 		{
 			distY						= MOVE_SPEED;
 		}
 		
-		if(Keyboard.isKeyDown(KeyboardConfig.LEFT) && player.getBounds().getX() > 0)
+		if(Keyboard.isKeyDown(KeyboardConfig.LEFT) &&
+				!Keyboard.isKeyDown(KeyboardConfig.RIGHT) &&
+				player.getBounds().getX() > 0)
 		{
 			distX						= -MOVE_SPEED;
 		}
 		
-		if(Keyboard.isKeyDown(KeyboardConfig.RIGHT) && player.getBounds().getX() < ParkViewProtector.WIDTH
-				- player.getBounds().getWidth())
+		if(Keyboard.isKeyDown(KeyboardConfig.RIGHT) &&
+				!Keyboard.isKeyDown(KeyboardConfig.LEFT) &&
+				player.getBounds().getX() < ParkViewProtector.WIDTH - player.getBounds().getWidth())
 		{
 			distX						= MOVE_SPEED;
 		}
@@ -383,7 +399,7 @@ public class Game extends GameScreen implements Serializable
 		// if we are moving, check to see if location is clear, then move
 		if(distX != 0 || distY != 0)
 		{
-			if(canMove(player.getNewBounds(distX, distY)))
+			if(canMove(player.getNewBounds(distX, distY), player))
 			{
 				player.move(distX, distY);
 			}
@@ -477,15 +493,17 @@ public class Game extends GameScreen implements Serializable
 		
 		// check for collisions
 		if(obj.getNewBounds(speed).intersects(player.getBounds())
-				|| !canMove(obj.getNewBounds(speed)))
+				|| !canMove(obj.getNewBounds(speed), (Character) obj))
 		{
 			// collision, must choose new direction
-			//obj.resetMoveCount();
 			
 			if(obj instanceof Character)
 			{
 				push((Character)obj,player);
+				obj.incrementMoveCount();
 			}
+			else
+				obj.resetMoveCount();
 		}
 		
 		else
@@ -517,28 +535,28 @@ public class Game extends GameScreen implements Serializable
 		switch(c1.getDirection())
 		{
 			case Direction.NORTH:
-				if(canMove(c1.getNewBounds(0,-1)) && canMove(c2.getNewBounds(0,-1)))
+				if(canMove(c1.getNewBounds(0,-1), c1) && canMove(c2.getNewBounds(0,-1), c2))
 				{
 					c1.move(0,-1);
 					c2.move(0,-1);
 				}
 				break;
 			case Direction.SOUTH:
-				if(canMove(c1.getNewBounds(0,1)) && canMove(c2.getNewBounds(0,1)))
+				if(canMove(c1.getNewBounds(0,1), c1) && canMove(c2.getNewBounds(0,1), c2))
 				{
 					c1.move(0,1);
 					c2.move(0,1);
 				}
 				break;
 			case Direction.EAST:
-				if(canMove(c1.getNewBounds(1,0)) && canMove(c2.getNewBounds(1,0)))
+				if(canMove(c1.getNewBounds(1,0), c1) && canMove(c2.getNewBounds(1,0), c2))
 				{
 					c1.move(1,0);
 					c2.move(1,0);
 				}
 				break;
 			case Direction.WEST:
-				if(canMove(c1.getNewBounds(-1,0)) && canMove(c2.getNewBounds(-1,0)))
+				if(canMove(c1.getNewBounds(-1,0), c1) && canMove(c2.getNewBounds(-1,0), c2))
 				{
 					c1.move(-1,0);
 					c2.move(-1,0);
@@ -555,25 +573,27 @@ public class Game extends GameScreen implements Serializable
 	 * 
 	 * @return
 	 */
-	public boolean canMove(Rectangle newRect)
+	public boolean canMove(Rectangle newRect, Character curr)
 	{
 		// students
-		/*for(Student s : students)
+		for(Student s : students)
 		{
 			if(!s.getStunned() && newRect.intersects(s.getBounds()))
 			{
-				return false;
+				if(!(s instanceof Student) || s!=curr)
+					return false;
 			}
-		}*/
+		}
 		
 		// couples
-		/*for(Cupple c : couples)
+		for(Cupple c : couples)
 		{
 			if(newRect.intersects(c.getBounds()))
 			{
-				return false;
+				if(!(c instanceof Cupple) || c!=curr)
+					return false;
 			}
-		}*/
+		}
 		
 		// walls
 		for(Wall w : walls)
@@ -703,7 +723,7 @@ public class Game extends GameScreen implements Serializable
 		int i						= students.indexOf(currStudent);
 		
 		// prevent coupling if we intersect a wall
-		if(!canMove(currStudent.getBounds()))
+		if(!canMove(currStudent.getBounds(), currStudent))
 		{
 			return false;
 		}
@@ -763,7 +783,7 @@ public class Game extends GameScreen implements Serializable
 	
 	public void hitFX(int x, int y)
 	{
-		fx.add(new VisualFX(x,y,0,"blip",10));
+		fx.add(new VisualFX("blip",10,x,y));
 	}
 	
 	/**

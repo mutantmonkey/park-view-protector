@@ -86,7 +86,7 @@ public class Cupple extends Character
 			}
 			
 			// move toward the wall
-			if(game.canMove(this.getBounds()))
+			if(game.canMove(this.getBounds(), this))
 			{
 				Wall wall	= game.getWall(wallId);
 				moveToward(wall);

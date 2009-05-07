@@ -91,7 +91,7 @@ public abstract class Movable implements Serializable
 		x		   += distX * speed;
 		y		   += distY * speed;
 		
-		moveCount++;
+		incrementMoveCount();
 	}
 	
 	/**
@@ -130,7 +130,7 @@ public abstract class Movable implements Serializable
 				break;
 		}
 			
-		moveCount++;
+		incrementMoveCount();
 	}
 	
 	/**
@@ -173,6 +173,11 @@ public abstract class Movable implements Serializable
 	public int getMoveCount()
 	{
 		return moveCount;
+	}
+	
+	public void incrementMoveCount()
+	{
+		moveCount++;
 	}
 	
 	/**

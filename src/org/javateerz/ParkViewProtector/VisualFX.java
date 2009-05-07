@@ -11,9 +11,9 @@ public class VisualFX extends Movable implements Serializable
 	String name;
 	int time, tick=0;
 	
-	public VisualFX(double x, double y, double speed, String name, int time)
+	public VisualFX(String name, int time, double x, double y)
 	{
-		super(x, y, speed);
+		super(x, y, 0);
 		this.name=name;
 		this.time=time;
 		updateSprite();
@@ -21,13 +21,13 @@ public class VisualFX extends Movable implements Serializable
 	
 	protected void updateSprite()
 	{
-		this.sprite		= DataStore.INSTANCE.getSprite("attack/blip.png");
+		this.sprite		= DataStore.INSTANCE.getSprite("FX/"+name+".png");
 	}
 	
 	public boolean tick()
 	{
 		tick++;
-		if(tick>=time)
+		if(time==0 || tick>=time)
 			return true;
 		return false;
 	}

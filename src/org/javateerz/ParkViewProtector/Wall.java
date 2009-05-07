@@ -10,10 +10,16 @@ import org.newdawn.slick.geom.Rectangle;
 
 public class Wall extends Movable
 {
+	public static final int NORMAL=0;
+	public static final int NARROW_H=1;
+	public static final int NARROW_V=2;
+	public static final int SMALL=3;
+	
 	private static final long serialVersionUID = 1L;
 	
 	private int width;
 	private int height;
+	private int type;
 	
 	/**
 	 * Create a new wall
@@ -23,30 +29,39 @@ public class Wall extends Movable
 	 * @param w Width
 	 * @param h Height
 	 */
-	public Wall(int x, int y, int w, int h)
+	public Wall(int t, int x, int y , int w, int h)
 	{
 		super(x, y, 0);
 		
 		width				= w;
 		height				= h;
+		type				= t;
 		
 		updateSprite();
 	}
 	
 	protected void updateSprite()
 	{
-		char orient;
-		
-		// determine orientation
-		if(width > height)
+		try
 		{
-			orient			= 'h';
+			sprite				= DataStore.INSTANCE.getSprite("wall_" + type + ".png");
 		}
-		else {
-			orient			= 'v';
+		catch(Exception e)
+		{
+			sprite				= DataStore.INSTANCE.getSprite("wall_0.png");
 		}
-		
-		sprite				= DataStore.INSTANCE.getSprite("wall_" + orient + ".png");
+	}
+	
+	protected void updateSprite(int x)
+	{
+		try
+		{
+			sprite				= DataStore.INSTANCE.getSprite("wall_" + type + "x.png");
+		}
+		catch(Exception e)
+		{
+			updateSprite();
+		}
 	}
 	
 	/**
@@ -54,21 +69,18 @@ public class Wall extends Movable
 	 */
 	public void draw()
 	{
-		if(width > height)			// horizontal
+		int spriteHeight	= sprite.getHeight() - 1;
+		int spriteWidth		= sprite.getWidth() - 1;
+		
+		for(int i = 0; i < width; i ++)
 		{
-			int spriteWidth		= sprite.getWidth() - 1;
-			
-			for(int i = 0; i < width; i += spriteWidth)
+			for(int j = 0; j < height; j ++)
 			{
-				sprite.draw((int) x + i, (int) y);
-			}
-		}
-		else {						// vertical
-			int spriteHeight	= sprite.getHeight() - 1;
-			
-			for(int i = 0; i < height; i += spriteHeight)
-			{
-				sprite.draw((int) x, (int) y + i);
+				if(j+1>=height)
+					updateSprite(1);
+				else
+					updateSprite();
+				sprite.draw((int) x + i * spriteWidth, (int) y + j * spriteHeight);
 			}
 		}
 	}
@@ -80,7 +92,8 @@ public class Wall extends Movable
 	 */
 	public Rectangle getBounds()
 	{
-		Rectangle ret		= new Rectangle((int) x, (int) y, width, height);
+		Rectangle ret		= new Rectangle((int) x, (int) y,
+				width*sprite.getWidth(), height*sprite.getHeight());
 		
 		return ret;
 	}
