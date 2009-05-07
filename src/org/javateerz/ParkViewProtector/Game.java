@@ -9,6 +9,7 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.javateerz.ParkViewProtector.Levels.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -22,12 +23,14 @@ public class Game extends GameScreen implements Serializable
 	public static final int MOVE_SPEED			= 1;
 	
 	// delay (in number of frames) before another attack can be used
+	// FIXME: should probably go in Staff
 	public static final int ATTACK_DELAY		= 20;
 	private int attackDelay						= 0;
 	public static final int ITEM_USE_DELAY		= 20;
 	private int itemDelay						= 0;
 	public static final int TP_REGEN			= 5;
 	public static int tpRegen					= 0;
+	////////////////////////////////////////////////////
 	public static final int CHARGE_REGEN		= 10;
 	public static int chargeRegen				= 0;
 	
@@ -56,9 +59,10 @@ public class Game extends GameScreen implements Serializable
 	public static double hpPercent;
 	public static double tpPercent;
 	
-	private static final long serialVersionUID	= 6L;
+	private static final long serialVersionUID	= 7L;
 	
 	private transient Statistics stats;
+	private transient Level lev;
 	
 	// objects on the screen
 	private int level							= 1;
@@ -120,20 +124,14 @@ public class Game extends GameScreen implements Serializable
 	 */
 	public void initWalls()
 	{
-		walls						= new ArrayList<Wall>();
-		
 		switch(level)
 		{
 			default:
-				/*walls.add(new Wall(Wall.NARROW_H, 100, 100, 4, 1));
-				walls.add(new Wall(Wall.NARROW_V, 100, 100, 1, 4));
-				walls.add(new Wall(Wall.NARROW_H, 100, 500, 4, 1));
-				walls.add(new Wall(Wall.NARROW_V, 500, 100, 1, 4));
-				walls.add(new Wall(Wall.SMALL, 400, 300, 4, 4));*/
-				walls.add(new Wall(Wall.NORMAL,100,100,4,4));
-				walls.add(new Wall(Wall.NARROW_V, 600, 100, 1,4));
+				lev					= new Level1();
 				break;
 		}
+		
+		walls						= lev.getWalls();
 	}
 	
 	/**
