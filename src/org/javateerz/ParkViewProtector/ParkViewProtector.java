@@ -47,6 +47,10 @@ public class ParkViewProtector
 	public static boolean showOptions		= false;
 	public static boolean selectChar		= true;
 	
+	private boolean showFps					= true;
+	private long frames						= 0;
+	private long startTime;
+	
 	// logos
 	private Sprite jtzLogo;
 	
@@ -175,6 +179,8 @@ public class ParkViewProtector
 		menu						= new Menu(this);
 		optMenu						= new OptionsMenu(this);
 		charSelect					= new CharSelect(this);
+		
+		startTime					= System.currentTimeMillis();
 	}
 	
 	/**
@@ -182,6 +188,8 @@ public class ParkViewProtector
 	 */
 	public void mainLoop()
 	{
+		long secs, fps;
+		
 		while(running)
 		{
 			// close requested?
@@ -202,6 +210,16 @@ public class ParkViewProtector
 			// show rendered content
 			GL11.glFlush();
 			Display.update();
+			
+			frames++;
+			
+			if(showFps && frames % 30 == 0)
+			{
+				secs				= (System.currentTimeMillis() - startTime) / 1000;
+				fps					= frames / secs;
+				
+				Display.setTitle("Park View Protector (fps: " + fps + ")");
+			}
 		}
 		
 		quit();
@@ -229,6 +247,22 @@ public class ParkViewProtector
 	}
 	
 	/**
+	 * Update a float option
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	public void setFloat(String key, float value)
+	{
+		Options.INSTANCE.putFloat(key, value);
+		
+		if(key == "music_volume")
+		{
+			getActiveDriver().getMusic().setVolume(value);
+		}
+	}
+
+	/**
 	 * @return The screen driver that is currently being displayed
 	 */
 	public GameScreen getActiveDriver()
@@ -251,22 +285,6 @@ public class ParkViewProtector
 		}
 		else {
 			return game;
-		}
-	}
-	
-	/**
-	 * Update a float option
-	 * 
-	 * @param key
-	 * @param value
-	 */
-	public void setFloat(String key, float value)
-	{
-		Options.INSTANCE.putFloat(key, value);
-		
-		if(key == "music_volume")
-		{
-			getActiveDriver().getMusic().setVolume(value);
 		}
 	}
 	
