@@ -91,7 +91,7 @@ public class Game extends GameScreen implements Serializable
 	
 	public void init(ParkViewProtector p)
 	{
-		this.driver								= p;
+		this.driver					= p;
 	}
 	
 	// FIXME: decide if this should be part of the constructor
@@ -250,7 +250,7 @@ public class Game extends GameScreen implements Serializable
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw items
-		///////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////
 		// FIXME: these should probably be drawn before everything else
 		
 		for(int i = 0;i < items.size();i++)
