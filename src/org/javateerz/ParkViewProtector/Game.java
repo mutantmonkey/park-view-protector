@@ -36,12 +36,6 @@ public class Game extends GameScreen implements Serializable
 	
 	public static final int GAME_OVER_DELAY		= 5000;
 	
-	public static final int MIN_STUDENTS		= 20;
-	public static final int MAX_STUDENTS		= 30;
-	
-	public static final int MAX_STUDENT_SPEED	= 1;
-	public static final double GENDER_CHANCE	= 0.5;
-	
 	public static final double COUPLE_CHARGE_CHANCE	= 0.1;
 	public static final int COUPLE_CHARGE_AMOUNT	= 1;
 	
@@ -92,10 +86,12 @@ public class Game extends GameScreen implements Serializable
 		// load background music
 		setMusic("heavyset.ogg");
 		
+		// initialize level
+		initLevel();
+		
 		// initialize everything
-		//initPlayer();
-		initWalls();
 		initStudents();
+		//initPlayer();
 		initItems();
 	}
 	
@@ -120,14 +116,14 @@ public class Game extends GameScreen implements Serializable
 	}
 	
 	/**
-	 * Create some walls
+	 * Initialize level and draw walls
 	 */
-	public void initWalls()
+	public void initLevel()
 	{
 		switch(level)
 		{
 			default:
-				lev					= new Level1();
+				lev					= new Level1(this);
 				break;
 		}
 		
@@ -135,43 +131,11 @@ public class Game extends GameScreen implements Serializable
 	}
 	
 	/**
-	 * Create and initialize students
+	 * Initialize walls only
 	 */
 	public void initStudents()
 	{
-		// create a random number of students using MIN_STUDENTS and MAX_STUDENTS; multiply
-		// it by 2 and divide to ensure that an even number is created to ensure proper
-		// coupling
-		int numStudents				= (int) (Math.random() * (MAX_STUDENTS - MIN_STUDENTS + 1)) + MIN_STUDENTS;
-		numStudents					= Math.round(numStudents * 2 / 2);
-		
-		Student student				= null;
-		
-		int x, y, type;
-		double speed;
-		char gender;
-		
-		for(int i = 0; i < numStudents; i++)
-		{
-			x						= (int) (Math.random() * ParkViewProtector.WIDTH);
-			y						= (int) (Math.random() * ParkViewProtector.HEIGHT);
-			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
-			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
-			type					= (int)(Math.random()*3);
-			
-			student					= new Student(x, y, 5, 5, speed, gender, type);
-			
-			// make sure that the student is not spawned on top of a wall)
-			while(!canMove(student.getBounds(), student))
-			{
-				x					= (int) (Math.random() * ParkViewProtector.WIDTH) + 1;
-				y					= (int) (Math.random() * ParkViewProtector.HEIGHT) + 1;
-				
-				student.moveTo(x, y);
-			}
-			
-			students.add(student);
-		}
+		students					= lev.getStudents();
 	}
 	
 	public void initItems()
@@ -575,31 +539,40 @@ public class Game extends GameScreen implements Serializable
 	public boolean canMove(Rectangle newRect, Character curr)
 	{
 		// students
-		for(Student s : students)
+		if(students.size() > 0)
 		{
-			if(!s.getStunned() && newRect.intersects(s.getBounds()))
+			for(Student s : students)
 			{
-				if(!(s instanceof Student) || s!=curr)
-					return false;
+				if(!s.getStunned() && newRect.intersects(s.getBounds()))
+				{
+					if(!(s instanceof Student) || s!=curr)
+						return false;
+				}
 			}
 		}
 		
 		// couples
-		for(Cupple c : couples)
+		if(couples.size() > 0)
 		{
-			if(newRect.intersects(c.getBounds()))
+			for(Cupple c : couples)
 			{
-				if(!(c instanceof Cupple) || c!=curr)
-					return false;
+				if(newRect.intersects(c.getBounds()))
+				{
+					if(!(c instanceof Cupple) || c!=curr)
+						return false;
+				}
 			}
 		}
-		
+			
 		// walls
-		for(Wall w : walls)
+		if(walls.size() > 0)
 		{
-			if(newRect.intersects(w.getBounds()))
+			for(Wall w : walls)
 			{
-				return false;
+				if(newRect.intersects(w.getBounds()))
+				{
+					return false;
+				}
 			}
 		}
 		
@@ -1044,7 +1017,7 @@ public class Game extends GameScreen implements Serializable
 			couples		= (ArrayList<Cupple>) os.readObject();
 			attacks		= (ArrayList<Attack>) os.readObject();
 			
-			initWalls();
+			initLevel();
 		}
 		catch(ClassNotFoundException e)
 		{
