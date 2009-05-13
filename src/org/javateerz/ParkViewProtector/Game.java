@@ -926,8 +926,6 @@ public class Game extends GameScreen implements Serializable
 	 */
 	public void showCharges()
 	{
-		//g.setColor(ParkViewProtector.COLOR_BG_1);
-		
 		for(int i = 0;i < students.size();i++)
 		{
 			if(students.get(i).getCharge() > 0)
