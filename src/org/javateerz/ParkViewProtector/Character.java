@@ -278,6 +278,65 @@ public abstract class Character extends Movable
 
 	}
 	
+	public void moveRandom(Movable obj)
+	{
+		int speed					= Game.MOVE_SPEED;
+		int changeMoves				= (int) (Math.random() * (Game.MAX_NUM_MOVES - Game.MIN_NUM_MOVES) +
+				Game.MIN_NUM_MOVES + 1);
+		
+		// change direction if the move count exceeds the number of moves to change after
+		if(obj.getMoveCount() <= 0 || obj.getMoveCount() > changeMoves)
+		{
+			// choose a new direction
+			obj.setDirection((int) (Math.random() * 4));
+			obj.resetMoveCount();
+		}
+		
+		// change direction if we hit the top or bottom
+		if(obj.getBounds().getY() <= 0 && obj.getDirection() == Direction.NORTH)
+		{
+			obj.setDirection(Direction.SOUTH);
+			obj.resetMoveCount();
+		}
+		else if(obj.getBounds().getY() >= ParkViewProtector.HEIGHT - obj.getBounds().getHeight()  &&
+				obj.getDirection() == Direction.SOUTH)
+		{
+			obj.setDirection(Direction.NORTH);
+			obj.resetMoveCount();
+		}
+		else if(obj.getBounds().getX() <= 0 && obj.getDirection() == Direction.WEST)
+		{
+			obj.setDirection(Direction.EAST);
+			obj.resetMoveCount();
+		}
+		else if(obj.getBounds().getX() >= ParkViewProtector.WIDTH - obj.getBounds().getWidth() &&
+				obj.getDirection() == Direction.EAST)
+		{
+			obj.setDirection(Direction.WEST);
+			obj.resetMoveCount();
+		}
+		
+		// check for collisions
+		if(obj.getNewBounds(speed).intersects(player.getBounds())
+				|| !((Character) obj).canMove(obj.getNewBounds(speed)))
+		{
+			// collision, must choose new direction
+			
+			if(obj instanceof Character && obj.getNewBounds(speed).intersects(player.getBounds()))
+			{
+				((Character) obj).push(player);
+				obj.incrementMoveCount();
+			}
+			else
+				obj.resetMoveCount();
+		}
+		
+		else
+		{
+			obj.move(speed);
+		}
+	}
+	
 	protected void validateState()
 	{
 		super.validateState();

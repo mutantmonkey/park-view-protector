@@ -444,7 +444,7 @@ public class Game extends GameScreen implements Serializable
 	 * 
 	 * @param Movable Object to move
 	 */
-	public void moveRandom(Movable obj)
+	/*public void moveRandom(Movable obj)
 	{
 		int speed					= MOVE_SPEED;
 		int changeMoves				= (int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
@@ -501,7 +501,7 @@ public class Game extends GameScreen implements Serializable
 		{
 			obj.move(speed);
 		}
-	}
+	}*/
 	
 	/**
 	 * Causes c1 to push c2 away.
