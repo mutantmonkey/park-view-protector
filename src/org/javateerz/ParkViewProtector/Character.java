@@ -182,6 +182,102 @@ public abstract class Character extends Movable
 		return list;
 	}
 	
+	/**
+	 * Loop through students, couples, and walls to see if the specified rectangle is
+	 * available
+	 * 
+	 * @return
+	 */
+	public boolean canMove(Rectangle newRect)
+	{
+		// students
+		ArrayList<Student> students=game.getStudents();
+		if(students.size() > 0)
+		{
+			for(Student s : students)
+			{
+				if(!s.getStunned() && newRect.intersects(s.getBounds()))
+				{
+					if(!(s instanceof Student) || s!=this)
+						return false;
+				}
+			}
+		}
+		
+		// couples
+		ArrayList<Cupple> couples=game.getCouples();
+		if(couples.size() > 0)
+		{
+			for(Cupple c : couples)
+			{
+				if(!c.getStunned() && newRect.intersects(c.getBounds()))
+				{
+					if(!(c instanceof Cupple) || c!=this)
+						return false;
+				}
+			}
+		}
+			
+		// walls
+		ArrayList<Wall> walls=game.getWalls();
+		if(walls.size() > 0)
+		{
+			for(Wall w : walls)
+			{
+				if(newRect.intersects(w.getBounds()))
+				{
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	public void push(Character other)
+	{
+		double	temp1=getSpeed(),
+				temp2=other.getSpeed();
+		
+		setSpeed(getSpeed());
+		other.setSpeed(getSpeed());
+		
+		switch(getDirection())
+		{
+			case Direction.NORTH:
+				if(other.canMove(other.getNewBounds(0,-1)))
+				{
+					move(0,-1);
+					other.move(0,-1);
+				}
+				break;
+			case Direction.SOUTH:
+				if(other.canMove(other.getNewBounds(0,1)))
+				{
+					move(0,1);
+					other.move(0,1);
+				}
+				break;
+			case Direction.EAST:
+				if(other.canMove(other.getNewBounds(1,0)))
+				{
+					move(1,0);
+					other.move(1,0);
+				}
+				break;
+			case Direction.WEST:
+				if(other.canMove(other.getNewBounds(-1,0)))
+				{
+					move(-1,0);
+					other.move(-1,0);
+				}
+				break;
+		}
+		setSpeed(temp1);
+		other.setSpeed(temp2);
+
+	}
+	
 	protected void validateState()
 	{
 		super.validateState();

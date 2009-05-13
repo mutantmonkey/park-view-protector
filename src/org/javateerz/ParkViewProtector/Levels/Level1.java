@@ -48,7 +48,7 @@ public class Level1 implements Level
 			student					= new Student(game, x, y, 5, 5, speed, gender, type);
 			
 			// make sure that the student is not spawned on top of a wall)
-			while(!game.canMove(student.getBounds(), student))
+			while(!student.canMove(student.getBounds()))
 			{
 				x					= (int) (Math.random() * ParkViewProtector.WIDTH) + 1;
 				y					= (int) (Math.random() * ParkViewProtector.HEIGHT) + 1;

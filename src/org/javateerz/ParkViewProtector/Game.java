@@ -95,6 +95,23 @@ public class Game extends GameScreen implements Serializable
 		initItems();
 	}
 	
+	public ArrayList<Student> getStudents()
+	{
+		return students;
+	}
+	
+	public ArrayList<Cupple> getCouples()
+	{
+		return couples;
+	}
+	
+	public ArrayList<Wall> getWalls()
+	{
+		return walls;
+	}
+	
+	
+	
 	public void init(ParkViewProtector p)
 	{
 		this.driver								= p;
@@ -362,7 +379,18 @@ public class Game extends GameScreen implements Serializable
 		// if we are moving, check to see if location is clear, then move
 		if(distX != 0 || distY != 0)
 		{
-			if(canMove(player.getNewBounds(distX, distY), player))
+			if(!player.canMove(player.getNewBounds(distX,distY)))
+			{
+				for(int i=0; i<students.size(); i++)
+				{
+					Student s = students.get(i);
+					if(player.getNewBounds(MOVE_SPEED).intersects(s.getBounds()))
+					{
+						player.push(students.get(i));
+					}
+				}
+			}
+			else if(player.canMove(player.getNewBounds(distX, distY)))
 			{
 				player.move(distX, distY);
 			}
@@ -456,13 +484,13 @@ public class Game extends GameScreen implements Serializable
 		
 		// check for collisions
 		if(obj.getNewBounds(speed).intersects(player.getBounds())
-				|| !canMove(obj.getNewBounds(speed), (Character) obj))
+				|| !((Character) obj).canMove(obj.getNewBounds(speed)))
 		{
 			// collision, must choose new direction
 			
-			if(obj instanceof Character)
+			if(obj instanceof Character && obj.getNewBounds(speed).intersects(player.getBounds()))
 			{
-				push((Character)obj,player);
+				((Character) obj).push(player);
 				obj.incrementMoveCount();
 			}
 			else
@@ -482,53 +510,53 @@ public class Game extends GameScreen implements Serializable
 	 * @param c2
 	 */
 	/* FIXME: Yeah, I have no idea how to fix this.
-	 * 		It sometimes "catches" so it moves both characters at the same time,
-	 * 		all the time, unless "uncatched"
+	 * 			IT's BROKEN!
 	 * 
 	 * 		Does not work when an object is colliding with 2 players! D:
 	 */
-	public void push(Character c1, Character c2)
+	/*public void push(Character c1, Character c2)
 	{
+		//System.out.println("PUSHING!");
 		double	temp1=c1.getSpeed(),
 				temp2=c2.getSpeed();
 		
-		//c1.setSpeed(MOVE_SPEED);
+		c1.setSpeed(c1.getSpeed());
 		c2.setSpeed(c1.getSpeed()+.1);
 		
 		switch(c1.getDirection())
 		{
 			case Direction.NORTH:
-				if(canMove(c1.getNewBounds(0,-1), c1) && canMove(c2.getNewBounds(0,-1), c2))
+				if(canMove(c2.getNewBounds(0,-1), c2))
 				{
 					c1.move(0,-1);
 					c2.move(0,-1);
 				}
 				break;
 			case Direction.SOUTH:
-				if(canMove(c1.getNewBounds(0,1), c1) && canMove(c2.getNewBounds(0,1), c2))
+				if(canMove(c2.getNewBounds(0,1), c2))
 				{
 					c1.move(0,1);
 					c2.move(0,1);
 				}
 				break;
 			case Direction.EAST:
-				if(canMove(c1.getNewBounds(1,0), c1) && canMove(c2.getNewBounds(1,0), c2))
+				if(canMove(c2.getNewBounds(1,0), c2))
 				{
 					c1.move(1,0);
 					c2.move(1,0);
 				}
 				break;
 			case Direction.WEST:
-				if(canMove(c1.getNewBounds(-1,0), c1) && canMove(c2.getNewBounds(-1,0), c2))
+				if(canMove(c2.getNewBounds(-1,0), c2))
 				{
 					c1.move(-1,0);
 					c2.move(-1,0);
 				}
 				break;
 		}
-		//c1.setSpeed(temp1);
+		c1.setSpeed(temp1);
 		c2.setSpeed(temp2);
-	}
+	}*/
 	
 	/**
 	 * Loop through students, couples, and walls to see if the specified rectangle is
@@ -536,6 +564,7 @@ public class Game extends GameScreen implements Serializable
 	 * 
 	 * @return
 	 */
+	/*
 	public boolean canMove(Rectangle newRect, Character curr)
 	{
 		// students
@@ -556,7 +585,7 @@ public class Game extends GameScreen implements Serializable
 		{
 			for(Cupple c : couples)
 			{
-				if(newRect.intersects(c.getBounds()))
+				if(!c.getStunned() && newRect.intersects(c.getBounds()))
 				{
 					if(!(c instanceof Cupple) || c!=curr)
 						return false;
@@ -577,7 +606,7 @@ public class Game extends GameScreen implements Serializable
 		}
 		
 		return true;
-	}
+	}*/
 	
 	/**
 	 * Handles players attacks
@@ -673,7 +702,7 @@ public class Game extends GameScreen implements Serializable
 		int i						= students.indexOf(currStudent);
 		
 		// prevent coupling if we intersect a wall
-		if(!canMove(currStudent.getBounds(), currStudent))
+		if(!currStudent.canMove(currStudent.getBounds()))
 		{
 			return false;
 		}
@@ -695,7 +724,7 @@ public class Game extends GameScreen implements Serializable
 			}
 
 			// did we hit another student with a charge?
-			if(currStudent.getBounds().intersects(students.get(j).getBounds())
+			if(currStudent.getNewBounds(MOVE_SPEED).intersects(students.get(j).getBounds())
 					&& testStudent.getCharge() > 0)
 			{
 				charge				= currStudent.getCharge() +
@@ -857,15 +886,33 @@ public class Game extends GameScreen implements Serializable
 				// FIXME: If multiple attacks hit something or what?
 				if(currCouple.getHp() <=0)
 				{
+					int 	x=(int) currCouple.getBounds().getX(),
+							y=(int) currCouple.getBounds().getY();
+					
 					male		= currCouple.getMale();
-					male.moveTo(currCouple.getBounds().getX(),
-							currCouple.getBounds().getY());
+					male.moveTo(x,y);
+					while(!male.canMove(male.getBounds()))
+					{
+						x					= x + 1;
+						y					= y + 1;
+
+						male.moveTo(x,y);
+					}
 					male.setHitDelay(currAttack.getHitDelay());
 					male.setCharge(-10);
 					
+					x=(int) currCouple.getBounds().getX();
+					y=(int) currCouple.getBounds().getY();
+					
 					female		= currCouple.getFemale();
-					female.moveTo(currCouple.getBounds().getX() + DECOUPLE_SPACING,
-							currCouple.getBounds().getY());
+					female.moveTo(x + DECOUPLE_SPACING, y);
+					while(!female.canMove(female.getBounds()))
+					{
+						x					= x + DECOUPLE_SPACING + 1;
+						y					= y + 1;
+
+						female.moveTo(x,y);
+					}
 					female.setHitDelay(currAttack.getHitDelay());
 					female.setCharge(-10);
 					

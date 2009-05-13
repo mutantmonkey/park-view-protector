@@ -114,6 +114,11 @@ public class Student extends Character implements Serializable
 	
 	public void step(Game game)
 	{
+		if(charge > 0)
+		{
+			game.attemptCoupling(this);
+		}
+		
 		// random movement
 		game.moveRandom(this);
 		
@@ -123,10 +128,6 @@ public class Student extends Character implements Serializable
 		game.recharge(this);
 		
 		// attempt coupling
-		if(charge > 0)
-		{
-			game.attemptCoupling(this);
-		}
 		
 
 		// did we hit another student with a charge?
