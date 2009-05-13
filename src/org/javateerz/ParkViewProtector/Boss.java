@@ -4,9 +4,9 @@ public class Boss extends Staff
 {
 	private static final long serialVersionUID = 1L;
 	
-	public Boss(int x, int y, int hp, int maxHp, double speed, int tp, int maxTp)
+	public Boss(Game g, int x, int y, int hp, int maxHp, double speed, int tp, int maxTp)
 	{
-		super(x,y,hp,maxHp,speed,tp,maxTp);
+		super(g, x,y, hp,maxHp, speed, tp, maxTp);
 		updateSprite();
 	}
 	

@@ -28,14 +28,16 @@ public class Student extends Character implements Serializable
 	/**
 	 * Create a new student
 	 * 
+	 * @param g			Instance of Game
 	 * @param hp		HP of student
 	 * @param maxHp		Max HP of student
 	 * @param spd		Speed of student
 	 * @param gender	Gender of student
 	 */
-	public Student(int x, int y, int hp, int maxHp, double spd, char gender, int type)
+	public Student(Game g, int x, int y, int hp, int maxHp, double spd, char gender,
+			int type)
 	{
-		super(x, y, hp, maxHp, spd);
+		super(g, x, y, hp, maxHp, spd);
 		
 		this.gender		= gender;
 		

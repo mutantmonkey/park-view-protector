@@ -24,14 +24,15 @@ public class Wall extends Movable
 	/**
 	 * Create a new wall
 	 * 
+	 * @param g Instance of Game
 	 * @param x X-position
 	 * @param y Y-position
 	 * @param w Width
 	 * @param h Height
 	 */
-	public Wall(int t, int x, int y , int w, int h)
+	public Wall(Game g, int t, int x, int y , int w, int h)
 	{
-		super(x, y, 0);
+		super(g, x, y, 0);
 		
 		width				= w;
 		height				= h;

@@ -31,10 +31,22 @@ public abstract class Staff extends Character
 		sprite = DataStore.INSTANCE.getSprite("placeholder.png");
 	}*/
 	
-	// Creates a Staff member.
-	public Staff(String name, int x, int y, int hp, int maxHp, double speed, int tp, int maxTp)
+	/**
+	 * 
+	 * @param name
+	 * @param g Instance of Game
+	 * @param x
+	 * @param y
+	 * @param hp
+	 * @param maxHp
+	 * @param speed
+	 * @param tp
+	 * @param maxTp
+	 */
+	public Staff(String name, Game g, int x, int y, int hp, int maxHp, double speed,
+			int tp, int maxTp)
 	{
-		super(x, y, hp, maxHp, speed);
+		super(g, x, y, hp, maxHp, speed);
 		this.name = name;
 		//tp=Teacher Points, Amount of points for use of skills
 		this.tp=tp;
@@ -104,7 +116,6 @@ public abstract class Staff extends Character
 	{
 		decrementHitDelay(1);
 		game.tpRegen();
-		game.switchChar();
 		game.handleAttack();
 	}
 	

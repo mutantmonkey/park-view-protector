@@ -29,16 +29,16 @@ public abstract class Character extends Movable
 	/**
 	 * Constructor
 	 * 
+	 * @param g Instance of Game
 	 * @param x
 	 * @param y
 	 * @param hp
 	 * @param maxHp
 	 * @param speed
-	 * @param damage
 	 */
-	public Character(double x, double y, int hp, int maxHp, double speed)
+	public Character(Game g, double x, double y, int hp, int maxHp, double speed)
 	{
-		super(x, y, speed);
+		super(g, x, y, speed);
 		
 		this.hp		= hp;
 		this.maxHp	= maxHp;

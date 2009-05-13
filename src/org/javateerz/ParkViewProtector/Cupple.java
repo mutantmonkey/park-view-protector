@@ -37,9 +37,10 @@ public class Cupple extends Character
 	private boolean likesWall		= false;
 	private int wallId				= 0;
 	
-	public Cupple(Student a,Student b)
+	public Cupple(Game g, Student a, Student b)
 	{
-		super(a.x,a.y,a.hp+b.hp,a.maxHp + b.maxHp, (a.speed+b.speed) * SPEED_MULTIPLIER);
+		super(g, a.x, a.y, a.hp + b.hp, a.maxHp + b.maxHp,
+				(a.speed+b.speed) * SPEED_MULTIPLIER);
 		
 		if(a.getGender() == 'm')
 		{

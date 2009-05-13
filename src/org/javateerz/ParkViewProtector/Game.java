@@ -61,7 +61,7 @@ public class Game extends GameScreen implements Serializable
 	// objects on the screen
 	private int level							= 1;
 	private Staff player;
-	private VisualFX background					= new VisualFX("background1",0,0,0);
+	private VisualFX background					= new VisualFX(this,"background1",0,0,0);
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
@@ -105,7 +105,7 @@ public class Game extends GameScreen implements Serializable
 	 */
 	public void initPlayer()
 	{
-		player						= new SpecialCharacter(PLAYER_X, PLAYER_Y);
+		player						= new SpecialCharacter(this, PLAYER_X, PLAYER_Y);
 	}
 	
 	// FIXME: decide if this should be part of the constructor
@@ -148,10 +148,10 @@ public class Game extends GameScreen implements Serializable
 			{
 			case 0:
 			case 1:
-				students.get(i).pickItem(new Item('h',0,0));
+				students.get(i).pickItem(new Item(this, 'h', 0, 0));
 				break;
 			case 2:
-				students.get(i).pickItem(new Item('t',0,0));
+				students.get(i).pickItem(new Item(this, 't', 0, 0));
 			default:
 				break;
 			}
@@ -580,28 +580,6 @@ public class Game extends GameScreen implements Serializable
 	}
 	
 	/**
-	 * Switches the player's character to another
-	 */
-	public void switchChar()
-	{
-		if(Keyboard.isKeyDown(KeyboardConfig.CHAR1) || Keyboard.isKeyDown(KeyboardConfig.CHAR2))
-		{
-			hpPercent=(double)player.getHp()/(double)player.getMaxHp();
-			tpPercent=(double)player.getTp()/(double)player.getMaxTp();
-			if(Keyboard.isKeyDown(KeyboardConfig.CHAR1) && !(player instanceof Stark))
-			{
-				player=new Stark((int) player.getX(), (int) player.getY(), (int) ((double)Stats.STARK_HP*hpPercent), (int)((double)Stats.STARK_TP*tpPercent));
-			}
-			
-			if(Keyboard.isKeyDown(KeyboardConfig.CHAR2) && !(player instanceof SpecialCharacter))
-			{
-				player=new SpecialCharacter((int) player.getX(), (int) player.getY(), (int) ((double)Stats.SPECIAL_HP*hpPercent), (int) ((double)Stats.SPECIAL_TP*tpPercent));
-			}
-		}
-	}
-	
-	
-	/**
 	 * Handles players attacks
 	 */
 	public void playerAttack()
@@ -725,7 +703,7 @@ public class Game extends GameScreen implements Serializable
 				
 				if(Math.random() * COUPLE_CHANCE_MULTIPLIER < charge)
 				{
-					couples.add(new Cupple(currStudent, testStudent));
+					couples.add(new Cupple(this, currStudent, testStudent));
 					
 					student1			= i;
 					student2			= j;
@@ -755,7 +733,7 @@ public class Game extends GameScreen implements Serializable
 	
 	public void hitFX(int x, int y)
 	{
-		fx.add(new VisualFX("blip",10,x,y));
+		fx.add(new VisualFX(this, "blip", 10, x, y));
 	}
 	
 	/**

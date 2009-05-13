@@ -18,9 +18,9 @@ public class Minshoe extends Staff
 	private static final int MAX_HP = 0;
 	private static final long serialVersionUID = 3L;
 	
-	public Minshoe(int x, int y, int hp, int tp)
+	public Minshoe(Game g, int x, int y, int hp, int tp)
 	{
-		super(CHAR_NAME, x, y, hp, MAX_HP, SPEED, tp, MAX_TP);
+		super(CHAR_NAME, g, x, y, hp, MAX_HP, SPEED, tp, MAX_TP);
 		updateSprite();
 	}
 

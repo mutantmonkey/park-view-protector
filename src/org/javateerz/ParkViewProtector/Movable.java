@@ -14,6 +14,8 @@ import org.newdawn.slick.geom.Rectangle;
 
 public abstract class Movable implements Serializable
 {
+	protected Game game;
+	
 	protected double speed;
 	
 	// placement
@@ -33,12 +35,15 @@ public abstract class Movable implements Serializable
 	/**
 	 * Constructor
 	 * 
+	 * @param game Instance of Game
 	 * @param x
 	 * @param y
 	 * @param speed
 	 */
-	public Movable(double x, double y, double speed)
+	public Movable(Game game, double x, double y, double speed)
 	{
+		this.game	= game;
+		
 		this.x		= x;
 		this.y		= y;
 		

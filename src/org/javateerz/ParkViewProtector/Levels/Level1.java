@@ -45,7 +45,7 @@ public class Level1 implements Level
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			type					= (int)(Math.random()*3);
 			
-			student					= new Student(x, y, 5, 5, speed, gender, type);
+			student					= new Student(game, x, y, 5, 5, speed, gender, type);
 			
 			// make sure that the student is not spawned on top of a wall)
 			while(!game.canMove(student.getBounds(), student))
@@ -66,8 +66,8 @@ public class Level1 implements Level
 	{
 		ArrayList<Wall> walls		= new ArrayList<Wall>();
 		
-		walls.add(new Wall(Wall.NORMAL, 100, 100, 4, 4));
-		walls.add(new Wall(Wall.NARROW_V, 600, 100, 1, 4));
+		walls.add(new Wall(game, Wall.NORMAL, 100, 100, 4, 4));
+		walls.add(new Wall(game, Wall.NARROW_V, 600, 100, 1, 4));
 		
 		return walls;
 	}

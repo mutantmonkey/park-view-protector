@@ -19,9 +19,9 @@ public class Item extends Movable
 	
 	private static final long serialVersionUID = 1L;
 	
-	public Item(char type,int x,int y)
+	public Item(Game g, char type, int x, int y)
 	{
-		super(x,y,0);
+		super(g, x, y, 0);
 		this.type = type;
 		updateSprite();
 	}
@@ -31,9 +31,9 @@ public class Item extends Movable
 	 * @param type
 	 * @param c
 	 */
-	public Item(char type,Character c)
+	public Item(Game g, char type, Character c)
 	{
-		super(0,0,0);
+		super(g, 0, 0, 0);
 		this.type = type;
 		user = c;
 		updateSprite();
