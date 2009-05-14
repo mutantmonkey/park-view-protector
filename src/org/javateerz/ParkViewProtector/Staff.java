@@ -10,6 +10,7 @@
 package org.javateerz.ParkViewProtector;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public abstract class Staff extends Character
 {
@@ -19,6 +20,8 @@ public abstract class Staff extends Character
 	
 	private int tp;
 	private int maxTp;
+	private int tpRegenRate=0;
+	private int TP_REGEN_RATE=5;
 	
 	public abstract Attack getAttack(int i);
 	
@@ -48,7 +51,6 @@ public abstract class Staff extends Character
 	{
 		super(g, x, y, hp, maxHp, speed);
 		this.name = name;
-		//tp=Teacher Points, Amount of points for use of skills
 		this.tp=tp;
 		this.maxTp=maxTp;
 	}
@@ -114,9 +116,9 @@ public abstract class Staff extends Character
 	
 	public void step(Game game)
 	{
-		decrementHitDelay(1);
-		game.tpRegen();
-		game.handleAttack();
+		recover();
+		tpRegen();
+		handleAttack();
 	}
 	
 	protected void validateState()
@@ -127,6 +129,58 @@ public abstract class Staff extends Character
 		{
 			throw new IllegalArgumentException("TP cannot exceed max TP");
 		}
+	}
+
+	/**
+	 * Regenerate the player's TP
+	 */
+	public void tpRegen()
+	{
+		tpRegenRate+=1;
+		if(tpRegenRate>=TP_REGEN_RATE)
+		{
+			if(game.getPlayer().getTp()<game.getPlayer().getMaxTp())
+				game.getPlayer().adjustTp(2);
+			tpRegenRate=0;
+		}
+	}
+	
+	/**
+	 * Handle attacks
+	 * 
+	 * @return Whether or not the attack hit the player
+	 */
+	public boolean handleAttack()
+	{
+		Attack attack;
+		
+		ArrayList<Attack> attacks=game.getAttacks();
+		
+		for(int j = 0; j < attacks.size(); j++)
+		{
+			attack		= attacks.get(j);
+			
+			if(attack.getBounds().intersects(getBounds()) && !isVulnerable() && !attack.isStudent())
+			{
+				adjustHp(attack.getDamage());
+				if(getHp()>getMaxHp())
+					setHp(getMaxHp());
+				setInvulFrames(attack.getHitDelay());
+				
+				if(!attack.isAoE())
+				{
+					attacks.remove(j);
+				}
+				
+				if(attack.getStatus()==Status.STUN)
+				{
+					setStunFrames(attack.getStatusDuration());
+				}
+				
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException

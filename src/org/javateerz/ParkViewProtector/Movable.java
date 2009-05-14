@@ -9,6 +9,7 @@
 package org.javateerz.ParkViewProtector;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.newdawn.slick.geom.Rectangle;
 
@@ -27,8 +28,6 @@ public abstract class Movable implements Serializable
 	
 	protected transient Sprite sprite;
 	protected int moveCount;
-	
-	protected int stunFrames	= 0;
 	
 	private static final long serialVersionUID = 2L;
 	
@@ -53,40 +52,13 @@ public abstract class Movable implements Serializable
 	}
 	
 	/**
-	 * Returns the speed of the object
-	 * 
-	 * @return Speed
-	 */
-	public double getSpeed()
-	{
-		return speed;
-	}
-	
-	/**
-	 * Changes the speed of the object
-	 * 
-	 * @param change New speed
-	 */
-	public void setSpeed(double s)
-	{
-		speed = s;
-	}
-	
-	/**
 	 * Moves the object a distance (which is multiplied by speed)
 	 * 
-	 * @param distX X component
-	 * @param distY Y component
+	 * @param distX	x distance
+	 * @param distY	x distance
 	 */
 	public void move(int distX, int distY)
 	{
-		// are we stunned?
-		if(stunFrames > 0)
-		{
-			stunFrames--;
-			return;
-		}
-		
 		// determine and change direction if necessary
 		if(distY > 0)	direction	= Direction.SOUTH;
 		if(distX < 0)	direction	= Direction.WEST;
@@ -104,34 +76,27 @@ public abstract class Movable implements Serializable
 	 * 
 	 * @param dist distance
 	 */
-	public void move(int distance)
+	public void move(int dist)
 	{
-		// are we stunned?
-		if(stunFrames > 0)
-		{
-			stunFrames--;
-			return;
-		}
-		
-		double dist		= distance * speed;
+		double distance		= dist * speed;
 
 		// determine and change direction if necessary
 		switch(direction)
 		{
 			case Direction.NORTH:
-				y		-= dist;
+				y		-= distance;
 				break;
 			
 			case Direction.EAST:
-				x		+= dist;
+				x		+= distance;
 				break;
 				
 			case Direction.SOUTH:
-				y		+= dist;
+				y		+= distance;
 				break;
 			
 			case Direction.WEST:
-				x		-= dist;
+				x		-= distance;
 				break;
 		}
 			
@@ -151,9 +116,125 @@ public abstract class Movable implements Serializable
 	}
 	
 	/**
+	 * @param student
+	 * @return If the character intersects specified student
+	 */
+	public boolean intersects(Student student)
+	{
+		ArrayList<Student> students=game.getStudents();
+		for(Student s : students)
+		{
+			if(s.getBounds().intersects(getBounds()) && s==this)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * @return The students that collided with the character
+	 */
+	public ArrayList<Student> getCollidedStudents()
+	{
+		ArrayList<Student> students=game.getStudents();
+		ArrayList<Student> colliders=new ArrayList<Student>();
+		for(Student s : students)
+		{
+			if(this.intersects(s))
+			{
+				colliders.add(s);
+			}
+		}
+		return colliders;
+	}
+	
+	/**
+	 * @param couple
+	 * @return If the character intersects specified couple
+	 */
+	public boolean intersects(Couple couple)
+	{
+		ArrayList<Couple> couples=game.getCouples();
+		for(Couple c : couples)
+		{
+			if(c.getBounds().intersects(getBounds()) && c==this)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * @return The couples that collided with the character
+	 */
+	public ArrayList<Couple> getCollidedCouples()
+	{
+		ArrayList<Couple> couples=game.getCouples();
+		ArrayList<Couple> colliders=new ArrayList<Couple>();
+		for(Couple c : couples)
+		{
+			if(this.intersects(c))
+			{
+				colliders.add(c);
+			}
+		}
+		return colliders;
+	}
+	
+	/**
+	 * @param player
+	 * @return If the character intersects the player
+	 */
+	public boolean intersects(Staff player)
+	{
+		Staff curr=game.getPlayer();
+		if(curr.getBounds().intersects(getBounds()) && curr==this)
+		{
+				return true;
+		}
+		return false;
+	}
+	
+	// TODO: Add a will intersect (getNewBounds() intersects obj, return true;)
+	/**public boolean willIntersect(Movable obj)
+	{
+		if(obj instanceof Student)
+			
+		return false;
+	}*/
+	
+	/**
+	 * @return Returns the speed of the object
+	 */
+	public double getSpeed()
+	{
+		return speed;
+	}
+
+	/**
+	 * Changes the speed of the object
+	 * 
+	 * @param amount New speed
+	 */
+	public void setSpeed(double amount)
+	{
+		speed = amount;
+	}
+
+	/**
+	 * @return The direction that the object is facing
+	 */
+	public int getDirection()
+	{
+		return direction;
+	}
+
+	/**
 	 * Changes the direction that the object is facing
 	 * 
-	 * @param int direction
+	 * @param direction New direction
 	 */
 	public void setDirection(int dir)
 	{
@@ -161,25 +242,16 @@ public abstract class Movable implements Serializable
 	}
 	
 	/**
-	 * Returns the direction that the object is facing
-	 * 
-	 * @return
-	 */
-	public int getDirection()
-	{
-		return direction;
-	}
-	
-	/**
-	 * Returns the number of moves made by the object
-	 * 
-	 * @return
+	 * @return The number of moves made by the object
 	 */
 	public int getMoveCount()
 	{
 		return moveCount;
 	}
 	
+	/**
+	 * Increases move counter by 1
+	 */
 	public void incrementMoveCount()
 	{
 		moveCount++;
@@ -194,60 +266,23 @@ public abstract class Movable implements Serializable
 	}
 	
 	/**
-	 * Stuns an object for the number of frames specified
+	 * @return The x component
 	 */
-	public void stun(int frames)
-	{
-		stunFrames				= frames;
-	}
-	
-	/**
-	 * Is the object stunned?
-	 * 
-	 * @return
-	 */
-	public boolean getStunned()
-	{
-		return (stunFrames > 0);
-	}
-	
-	/**
-	 * Updates the sprite; this is called by validateState() to ensure
-	 * that the sprite is updated after a game is loaded
-	 */
-	protected abstract void updateSprite();
-	
-	/**
-	 * Ensures that the object is in a usable state after loading a
-	 * game
-	 */
-	protected void validateState()
-	{
-		updateSprite();
-	}
-	
-	/**
-	 * Called by main game loop, draws the object's sprite on the screen
-	 */
-	public void draw()
-	{
-		sprite.draw((int) x, (int) y);
-	}
-	
 	public double getX()
 	{
 		return x;
 	}
-	
+
+	/**
+	 * @return The y component
+	 */
 	public double getY()
 	{
 		return y;
 	}
 	
 	/**
-	 * Computes the bounding box for the object
-	 * 
-	 * @return Bounding box
+	 * @return The bounding box of the object
 	 */
 	public Rectangle getBounds()
 	{
@@ -258,11 +293,9 @@ public abstract class Movable implements Serializable
 	}
 	
 	/**
-	 * Computes a new bounding box for the object moved the specified distance
-	 * 
 	 * @param distX X component
 	 * @param distY Y component
-	 * @return New bounding box
+	 * @return The new bounding box of the object if it is moved the specified distance
 	 */
 	public Rectangle getNewBounds(int distX, int distY)
 	{
@@ -279,10 +312,8 @@ public abstract class Movable implements Serializable
 	}
 	
 	/**
-	 * Computes a new bounding box for the object moved the specified distance
-	 * 
 	 * @param distance
-	 * @return New bounding box
+	 * @return The new bounding box of the object if it is moved the specified distance
 	 */
 	public Rectangle getNewBounds(int distance)
 	{
@@ -315,6 +346,76 @@ public abstract class Movable implements Serializable
 				sprite.getHeight());
 		
 		return bounds;
+	}
+
+	/**
+	 * @return The index of the wall that is closest to the object
+	 */
+	public int findNearestWall()
+	{
+		Wall nearestWall			= null;
+		int smallestDist			= Integer.MAX_VALUE;
+		int distX, distY, dist;
+		ArrayList<Wall> walls= game.getWalls();
+		
+		for(Wall wall : walls)
+		{
+			// compute X distance
+			if(wall.getBounds().getX() <= getBounds().getX())
+			{
+				// wall lies to the left
+				distX					= (int) (getBounds().getX() - wall.getBounds().getX());
+			}
+			else {
+				// wall lies to the right
+				distX					= (int) (wall.getBounds().getX() - getBounds().getX());
+			}
+			
+			// compute Y distance
+			if(wall.getBounds().getY() <= getBounds().getY())
+			{
+				// wall lies above
+				distY					= (int) (getBounds().getY() - wall.getBounds().getY());
+			}
+			else {
+				// wall lies below
+				distY					= (int) (wall.getBounds().getY() - getBounds().getY());
+			}
+			
+			// compute distance between wall and object
+			dist						= (int) Math.sqrt(distX * distX + distY * distY);
+			
+			if(dist < smallestDist)
+			{
+				nearestWall				= wall;
+				smallestDist			= dist;
+			}
+		}
+		
+		return walls.indexOf(nearestWall);
+	}
+
+	/**
+	 * Called by main game loop, draws the object's sprite on the screen
+	 */
+	public void draw()
+	{
+		sprite.draw((int) x, (int) y);
+	}
+
+	/**
+	 * Updates the sprite; this is called by validateState() to ensure
+	 * that the sprite is updated after a game is loaded
+	 */
+	protected abstract void updateSprite();
+
+	/**
+	 * Ensures that the object is in a usable state after loading a
+	 * game
+	 */
+	protected void validateState()
+	{
+		updateSprite();
 	}
 }
 

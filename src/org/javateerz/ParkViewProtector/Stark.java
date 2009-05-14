@@ -120,7 +120,7 @@ public class Stark extends Staff
 				AoE=true;
 				break;
 		}
-		attack=new Attack(game,this.getBounds().getX(), this.getBounds().getY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
 }
