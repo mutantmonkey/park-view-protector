@@ -8,10 +8,11 @@
 package org.javateerz.ParkViewProtector;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import org.newdawn.slick.geom.Rectangle;
 
-public class Cupple extends Character
+public class Couple extends Character
 {
 	private static final long serialVersionUID = 3L;
 	
@@ -37,7 +38,7 @@ public class Cupple extends Character
 	private boolean likesWall		= false;
 	private int wallId				= 0;
 	
-	public Cupple(Game g, Student a, Student b)
+	public Couple(Game g, Student a, Student b)
 	{
 		super(g, a.x, a.y, a.hp + b.hp, a.maxHp + b.maxHp,
 				(a.speed+b.speed) * SPEED_MULTIPLIER);
@@ -83,7 +84,7 @@ public class Cupple extends Character
 			// find nearest wall
 			if(wallId == 0)
 			{
-				wallId		= game.findNearestWall(this);
+				wallId		= findNearestWall();
 			}
 			
 			// move toward the wall
@@ -97,13 +98,13 @@ public class Cupple extends Character
 			}
 		}
 		else {
-			game.moveRandom(this);
+			moveRandom(this);
 		}
 		
 		// decrement the hit delay
-		decrementHitDelay(1);
+		recover();
 		
-		game.handleAttacks(this);
+		handleAttacks();
 	}
 	
 	public void moveToward(Wall wall)
@@ -144,7 +145,93 @@ public class Cupple extends Character
 		
 		move(distX, distY);
 	}
+	
+	/**
+	 * Handle any attacks on a couple
+	 * 
+	 * @param currCouple
+	 * @return Whether or not the attack hit the couple
+	 */
+	public boolean handleAttacks()
+	{
+		Attack currAttack;
+		Student male, female;
+		
+		ArrayList<Couple> couples=game.getCouples();
+		ArrayList<Attack> attacks=game.getAttacks();
+		ArrayList<Student> students=game.getStudents();
+		
+		int i				= couples.indexOf(this);
+		
+		// hit by an attack?
+		for(int j = 0; j < attacks.size(); j++)
+		{
+			currAttack		= attacks.get(j);
+			
+			if(currAttack.getBounds().intersects(getBounds()) &&
+					isVulnerable() && currAttack.isStudent())
+			{
+				game.hitFX((int)(getBounds().getCenterX()-getBounds().getWidth()/4),
+						(int)(getBounds().getCenterY()-getBounds().getHeight()/4));
+				adjustHp(currAttack.getDamage());
+				setInvulFrames(currAttack.getHitDelay());
+				
+				if(!currAttack.isAoE())
+				{
+					attacks.remove(j);
+				}
+				
+				if(currAttack.getStatus()==Status.STUN)
+				{
+					setStunFrames(currAttack.getStatusDuration());
+				}
+				
+				// FIXME: If multiple attacks hit something or what?
+				if(getHp() <=0)
+				{
+					int 	x=(int) getBounds().getX(),
+							y=(int) getBounds().getY();
+					
+					male		= getMale();
+					male.moveTo(x,y);
+					while(!male.canMove(male.getBounds()))
+					{
+						x					= x + 1;
+						y					= y + 1;
 
+						male.moveTo(x,y);
+					}
+					male.setInvulFrames(currAttack.getHitDelay());
+					male.setCharge(-10);
+					
+					x=(int) getBounds().getX();
+					y=(int) getBounds().getY();
+					
+					female		= getFemale();
+					female.moveTo(x + game.DECOUPLE_SPACING, y);
+					while(!female.canMove(female.getBounds()))
+					{
+						x					= x + game.DECOUPLE_SPACING + 1;
+						y					= y + 1;
+
+						female.moveTo(x,y);
+					}
+					female.setInvulFrames(currAttack.getHitDelay());
+					female.setCharge(-10);
+					
+					// create students before removing couple
+					students.add(male);
+					students.add(female);
+					
+					couples.remove(i);
+				}
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	public void attack()
 	{
 		// TODO: insert code here

@@ -8,6 +8,7 @@
 package org.javateerz.ParkViewProtector;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import org.javateerz.EasyGL.GLRect;
 import org.newdawn.slick.Color;
@@ -24,6 +25,8 @@ public class Student extends Character implements Serializable
 	
 	private char gender;
 	private int charge;
+	private int chargeRegenRate=0;
+	private final int CHARGE_REGEN_RATE=10;
 	
 	/**
 	 * Create a new student
@@ -116,16 +119,16 @@ public class Student extends Character implements Serializable
 	{
 		if(charge > 0)
 		{
-			game.attemptCoupling(this);
+			attemptCoupling();
 		}
 		
 		// random movement
-		game.moveRandom(this);
+		moveRandom(this);
 		
 		// decrement the hit delay
-		decrementHitDelay(1);
+		recover();
 		
-		game.recharge(this);
+		recharge();
 		
 		// attempt coupling
 		
@@ -139,7 +142,7 @@ public class Student extends Character implements Serializable
 			
 			if(Math.random() * COUPLE_CHANCE_MULTIPLIER < charge)
 			{
-				couples.add(new Cupple(currStudent, students.get(j)));
+				couples.add(new Couple(currStudent, students.get(j)));
 				
 				
 				student1			= i;
@@ -163,7 +166,142 @@ public class Student extends Character implements Serializable
 			}
 		}*/
 		
-		game.handleAttacks(this);
+		handleAttacks();
+	}
+	
+	/**
+	 * Recharge students
+	 */
+	public void recharge()
+	{
+		chargeRegenRate+=1;
+		if(chargeRegenRate>=CHARGE_REGEN_RATE)
+		{
+			chargeRegenRate=0;
+			if(getCharge()<100)
+				adjustCharge(1);
+		}
+	}
+	
+	/**
+	 * Attempt to couple with another student
+	 * 
+	 * @param currStudent
+	 * @return Whether or not the coupling succeeded
+	 */
+	public boolean attemptCoupling()
+	{
+		int charge, student1, student2;
+		Student testStudent;
+		ArrayList<Student> students=game.getStudents();
+		ArrayList<Couple> couples=game.getCouples();
+		
+		int i						= students.indexOf(this);
+		
+		// prevent coupling if we intersect a wall
+		if(!canMove(getBounds()))
+		{
+			return false;
+		}
+		
+		for(int j = 0; j < students.size(); j++)
+		{
+			testStudent				= students.get(j);
+			
+			// don't do anything if it's us
+			if(i == j)
+			{
+				continue;
+			}
+			
+			// no same-sex couples (for now at least)
+			if(getGender() == testStudent.getGender())
+			{
+				continue;
+			}
+
+			// did we hit another student with a charge?
+			if(getNewBounds(game.MOVE_SPEED).intersects(students.get(j).getBounds())
+					&& testStudent.getCharge() > 0)
+			{
+				charge				= getCharge() +
+										testStudent.getCharge();
+				
+				if(Math.random() * game.COUPLE_CHANCE_MULTIPLIER < charge)
+				{
+					couples.add(new Couple(game, this, testStudent));
+					
+					student1			= i;
+					student2			= j;
+					
+					if(student2 > student1)
+					{
+						student2--;
+					}
+					
+					try
+					{
+						students.remove(student1);
+						students.remove(student2);
+					}
+					catch(Exception e)
+					{
+						game.driver.error("Something went wrong when deleting someone :O", false);
+					}
+					
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Handle any attacks on a student
+	 * 
+	 * @param obj
+	 * @return Whether or not the attack hit the student
+	 */
+	public boolean handleAttacks()
+	{
+		Attack currAttack;
+		ArrayList<Attack> attacks=game.getAttacks();
+		
+		// hit by an attack?
+		for(int j = 0; j < attacks.size(); j++)
+		{
+			currAttack		= attacks.get(j);
+			
+			//The student takes damage in this if loop
+			if(currAttack.getBounds().intersects(getBounds()) &&
+					/*getCharge() > 0 && */isVulnerable() &&
+					currAttack.isStudent())
+			{
+				game.hitFX((int)(getBounds().getCenterX()-getBounds().getWidth()/4),
+						(int)(getBounds().getCenterY()-getBounds().getHeight()/4));
+				
+				if(currAttack.getStatus()==Status.STUN)
+				{
+					setStunFrames(currAttack.getStatusDuration());
+				}
+				
+				if(!currAttack.isAoE())
+				{
+					attacks.remove(j);
+				}
+				
+				// FIXME: should be variable depending on strength
+				if(getCharge()>-10)
+					adjustCharge(-currAttack.getDamage()/3);
+				//System.out.println("Student took "+ currAttack.getDamage()/3 + ", now has "+ getCharge());
+				setInvulFrames(currAttack.getHitDelay());
+				
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public void attack()

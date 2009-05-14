@@ -3,7 +3,7 @@
  *
  * @author	Javateerz
  * 
- * Creates an attack area
+ * Creates an attack object
  */
 
 package org.javateerz.ParkViewProtector;
@@ -12,12 +12,22 @@ import java.io.*;
 
 public class Attack extends Movable
 {
-	private double speed;
-	private String name;
-	private int damage, tp, duration, time=0, status, statusDuration, stillTime, hits, hitDelay, reuse;
-	//Target: True=Student, False=Staff
-	private boolean isStudent, AoE;
-	private int type;
+	private double 		speed;
+	private String 		name;
+	private int 		damage,
+						tp, 
+						duration, 
+						time=0, 
+						status, 
+						statusDuration, 
+						stillTime, 
+						hits, 
+						hitDelay, 
+						reuse;
+	// Target: True=Student, False=Staff
+	private boolean 	isStudent, 
+						AoE;
+	private int 		type;
 	
 	private static final long serialVersionUID = 4L;
 	
@@ -41,10 +51,24 @@ public class Attack extends Movable
 	 * @param hitDelay: The time before the target can be hit again after being hit
 	 * @param reuse: The time the user can perform another attack
 	 */
-	public Attack(Game g, double x, double y, double speed, int direction,
-			String name, boolean isStudent, boolean AoE, int damage, int tp, int duration,
-			int type, int statusEffect, int statusDuration, int stillTime,
-			int hits, int hitDelay, int reuse)
+	public Attack(	Game g,
+					double x,
+					double y,
+					double speed,
+					int direction,
+					String name,
+					boolean isStudent,
+					boolean AoE,
+					int damage,
+					int tp,
+					int duration,
+					int type,
+					int statusEffect,
+					int statusDuration,
+					int stillTime,
+					int hits,
+					int hitDelay,
+					int reuse)
 	{
 		super(g, x, y, speed);
 		this.type=type;
@@ -133,6 +157,30 @@ public class Attack extends Movable
 	}
 	
 	/**
+	 * @return The duration the attack stays on screen
+	 */
+	public int getDuration()
+	{
+		return duration;
+	}
+
+	/**
+	 * @return The duration of the status effect
+	 */
+	public int getStatusDuration()
+	{
+		return statusDuration;
+	}
+
+	/**
+	 * @return The duration that the user cannot perform an action
+	 */
+	public int getStillTime()
+	{
+		return stillTime;
+	}
+
+	/**
 	 * @return The TP attack consumes
 	 */
 	public int getTp()
@@ -141,35 +189,11 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * @return The duration the attack stays on screen
-	 */
-	public int getDuration()
-	{
-		return duration;
-	}
-	
-	/**
 	 * @return The status effect the attack induces
 	 */
 	public int getStatus()
 	{
 		return status;
-	}
-	
-	/**
-	 * @return The duration of the status effect
-	 */
-	public int getStatusDuration()
-	{
-		return statusDuration;
-	}
-	
-	/**
-	 * @return The duration that the user cannot perform an action
-	 */
-	public int getStillTime()
-	{
-		return stillTime;
 	}
 	
 	/**
@@ -230,8 +254,8 @@ public class Attack extends Movable
 	{
 		updateSprite();
 		
-		x = (x+10)-(int) this.getBounds().getWidth()/4;
-		y = (y+16)-(int) this.getBounds().getHeight()/4;
+		x = (x)-(int) this.getBounds().getWidth()/4;
+		y = (y)-(int) this.getBounds().getHeight()/4;
 		
 		if(type==Type.FRONT)
 		{

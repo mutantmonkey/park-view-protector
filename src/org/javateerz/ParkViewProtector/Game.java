@@ -17,9 +17,10 @@ import org.newdawn.slick.geom.Rectangle;
 
 public class Game extends GameScreen implements Serializable
 {
+	// Speed at which the game slows down
 	public static final int SPEED_THROTTLE		= 10;
 	
-	// number of pixels to move by
+	// Number of pixels to move
 	public static final int MOVE_SPEED			= 1;
 	
 	// delay (in number of frames) before another attack can be used
@@ -39,7 +40,7 @@ public class Game extends GameScreen implements Serializable
 	public static final double COUPLE_CHARGE_CHANCE	= 0.1;
 	public static final int COUPLE_CHARGE_AMOUNT	= 1;
 	
-	public static final double CUPPLE_CHANCE	= 0.6;
+	public static final double Couple_CHANCE	= 0.6;
 	public static final double ATTACK_CHANCE	= 0.1;
 	
 	public static final int MIN_NUM_MOVES		= 10;
@@ -63,7 +64,7 @@ public class Game extends GameScreen implements Serializable
 	private Staff player;
 	private VisualFX background					= new VisualFX(this,"background1",0,0,0);
 	private ArrayList<Student> students			= new ArrayList<Student>();
-	private ArrayList<Cupple> couples			= new ArrayList<Cupple>();
+	private ArrayList<Couple> couples			= new ArrayList<Couple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
 	private ArrayList<Item> items				= new ArrayList<Item>();
 	private ArrayList<VisualFX> fx				= new ArrayList<VisualFX>();
@@ -100,7 +101,7 @@ public class Game extends GameScreen implements Serializable
 		return students;
 	}
 	
-	public ArrayList<Cupple> getCouples()
+	public ArrayList<Couple> getCouples()
 	{
 		return couples;
 	}
@@ -108,6 +109,16 @@ public class Game extends GameScreen implements Serializable
 	public ArrayList<Wall> getWalls()
 	{
 		return walls;
+	}
+	
+	public ArrayList<Attack> getAttacks()
+	{
+		return attacks;
+	}
+	
+	public Staff getPlayer()
+	{
+		return player;
 	}
 	
 	
@@ -178,7 +189,7 @@ public class Game extends GameScreen implements Serializable
 	public void show()
 	{
 		Student currStudent; 
-		Cupple currCouple;
+		Couple currCouple;
 		Attack currAttack;
 		
 		// ensure music is playing
@@ -196,6 +207,7 @@ public class Game extends GameScreen implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw Background
 		////////////////////////////////////////////////////////////////////////////////////
+		
 		background.draw();
 
 		////////////////////////////////////////////////////////////////////////////////////
@@ -239,7 +251,7 @@ public class Game extends GameScreen implements Serializable
 			
 			// did the couple hit the player? if so, decrease HP
 			if(currCouple.getBounds().intersects(player.getBounds()) &&
-					Math.random() <= ATTACK_CHANCE && !currCouple.getStunned())
+					Math.random() <= ATTACK_CHANCE && !currCouple.isStunned())
 			{
 				if(player.getHp() <= 0)
 				{
@@ -248,11 +260,6 @@ public class Game extends GameScreen implements Serializable
 				else {
 					player.adjustHp(1);
 				}
-			}
-			
-			if(Keyboard.isKeyDown(KeyboardConfig.SHOW_CHARGES))
-			{
-				showCharges();
 			}
 			
 			// update students
@@ -564,15 +571,14 @@ public class Game extends GameScreen implements Serializable
 	 * 
 	 * @return
 	 */
-	/*
-	public boolean canMove(Rectangle newRect, Character curr)
+	/*public boolean canMove(Rectangle newRect, Character curr)
 	{
 		// students
 		if(students.size() > 0)
 		{
 			for(Student s : students)
 			{
-				if(!s.getStunned() && newRect.intersects(s.getBounds()))
+				if(!s.isStunned() && newRect.intersects(s.getBounds()))
 				{
 					if(!(s instanceof Student) || s!=curr)
 						return false;
@@ -583,11 +589,11 @@ public class Game extends GameScreen implements Serializable
 		// couples
 		if(couples.size() > 0)
 		{
-			for(Cupple c : couples)
+			for(Couple c : couples)
 			{
-				if(!c.getStunned() && newRect.intersects(c.getBounds()))
+				if(!c.isStunned() && newRect.intersects(c.getBounds()))
 				{
-					if(!(c instanceof Cupple) || c!=curr)
+					if(!(c instanceof Couple) || c!=curr)
 						return false;
 				}
 			}
@@ -606,7 +612,7 @@ public class Game extends GameScreen implements Serializable
 		}
 		
 		return true;
-	}*/
+	}/*
 	
 	/**
 	 * Handles players attacks
@@ -634,7 +640,7 @@ public class Game extends GameScreen implements Serializable
 			playerAttack			= player.getAttack(attackKey);
 			if(player.getTp()>=playerAttack.getTp())
 			{
-				player.stun(playerAttack.getStillTime());
+				player.setAttackFrames(playerAttack.getStillTime());
 				player.adjustTp(-playerAttack.getTp());
 				playerAttack.switchXY();
 				attacks.add(playerAttack);
@@ -659,323 +665,9 @@ public class Game extends GameScreen implements Serializable
 			attackDelay--;
 	}
 	
-	/**
-	 * Regenerate the player's TP
-	 */
-	public void tpRegen()
-	{
-		tpRegen+=1;
-		if(tpRegen>=TP_REGEN)
-		{
-			if(player.getTp()<player.getMaxTp())
-				player.adjustTp(2);
-			tpRegen=0;
-		}
-	}
-	
-	
-	/**
-	 * Recharge students
-	 */
-	public void recharge(Student student)
-	{
-		chargeRegen+=1;
-		if(chargeRegen>=CHARGE_REGEN)
-		{
-			chargeRegen=0;
-			if(student.getCharge()<100)
-				student.adjustCharge(1);
-		}
-	}
-	
-	/**
-	 * Attempt to couple with another student
-	 * 
-	 * @param currStudent
-	 * @return Whether or not the coupling succeeded
-	 */
-	public boolean attemptCoupling(Student currStudent)
-	{
-		int charge, student1, student2;
-		Student testStudent;
-		
-		int i						= students.indexOf(currStudent);
-		
-		// prevent coupling if we intersect a wall
-		if(!currStudent.canMove(currStudent.getBounds()))
-		{
-			return false;
-		}
-		
-		for(int j = 0; j < students.size(); j++)
-		{
-			testStudent				= students.get(j);
-			
-			// don't do anything if it's us
-			if(i == j)
-			{
-				continue;
-			}
-			
-			// no same-sex couples (for now at least)
-			if(currStudent.getGender() == testStudent.getGender())
-			{
-				continue;
-			}
-
-			// did we hit another student with a charge?
-			if(currStudent.getNewBounds(MOVE_SPEED).intersects(students.get(j).getBounds())
-					&& testStudent.getCharge() > 0)
-			{
-				charge				= currStudent.getCharge() +
-										testStudent.getCharge();
-				
-				if(Math.random() * COUPLE_CHANCE_MULTIPLIER < charge)
-				{
-					couples.add(new Cupple(this, currStudent, testStudent));
-					
-					student1			= i;
-					student2			= j;
-					
-					if(student2 > student1)
-					{
-						student2--;
-					}
-					
-					try
-					{
-						students.remove(student1);
-						students.remove(student2);
-					}
-					catch(Exception e)
-					{
-						driver.error("Something went wrong when deleting someone :O", false);
-					}
-					
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-	
 	public void hitFX(int x, int y)
 	{
 		fx.add(new VisualFX(this, "blip", 10, x, y));
-	}
-	
-	/**
-	 * Handle attacks
-	 * 
-	 * @return Whether or not the attack hit the player
-	 */
-	public boolean handleAttack()
-	{
-		Attack currAttack;
-		
-		for(int j = 0; j < attacks.size(); j++)
-		{
-			currAttack		= attacks.get(j);
-			
-			if(currAttack.getBounds().intersects(player.getBounds()) && player.isHittable() && !currAttack.isStudent())
-			{
-				player.adjustHp(currAttack.getDamage());
-				if(player.getHp()>player.getMaxHp())
-					player.setHp(player.getMaxHp());
-				player.setHitDelay(currAttack.getHitDelay());
-				
-				if(!currAttack.isAoE())
-				{
-					attacks.remove(j);
-				}
-				
-				if(currAttack.getStatus()==Status.STUN)
-				{
-					player.stun(currAttack.getStatusDuration());
-				}
-				
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Handle any attacks on a student
-	 * 
-	 * @param obj
-	 * @return Whether or not the attack hit the student
-	 */
-	public boolean handleAttacks(Student currStudent)
-	{
-		Attack currAttack;
-		
-		// hit by an attack?
-		for(int j = 0; j < attacks.size(); j++)
-		{
-			currAttack		= attacks.get(j);
-			
-			//The student takes damage in this if loop
-			if(currAttack.getBounds().intersects(currStudent.getBounds()) &&
-					/*currStudent.getCharge() > 0 && */currStudent.isHittable() &&
-					currAttack.isStudent())
-			{
-				hitFX((int)(currStudent.getBounds().getCenterX()-currStudent.getBounds().getWidth()/4),
-						(int)(currStudent.getBounds().getCenterY()-currStudent.getBounds().getHeight()/4));
-				
-				if(currAttack.getStatus()==Status.STUN)
-				{
-					currStudent.stun(currAttack.getStatusDuration());
-				}
-				
-				if(!currAttack.isAoE())
-				{
-					attacks.remove(j);
-				}
-				
-				// FIXME: should be variable depending on strength
-				if(currStudent.getCharge()>-10)
-					currStudent.adjustCharge(-currAttack.getDamage()/3);
-				//System.out.println("Student took "+ currAttack.getDamage()/3 + ", now has "+ currStudent.getCharge());
-				currStudent.setHitDelay(currAttack.getHitDelay());
-				
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Handle any attacks on a couple
-	 * 
-	 * @param currCouple
-	 * @return Whether or not the attack hit the couple
-	 */
-	public boolean handleAttacks(Cupple currCouple)
-	{
-		Attack currAttack;
-		Student male, female;
-		
-		int i				= couples.indexOf(currCouple);
-		
-		// hit by an attack?
-		for(int j = 0; j < attacks.size(); j++)
-		{
-			currAttack		= attacks.get(j);
-			
-			if(currAttack.getBounds().intersects(currCouple.getBounds()) &&
-					currCouple.isHittable() && currAttack.isStudent())
-			{
-				hitFX((int)(currCouple.getBounds().getCenterX()-currCouple.getBounds().getWidth()/4),
-						(int)(currCouple.getBounds().getCenterY()-currCouple.getBounds().getHeight()/4));
-				currCouple.adjustHp(currAttack.getDamage());
-				currCouple.setHitDelay(currAttack.getHitDelay());
-				
-				if(!currAttack.isAoE())
-				{
-					attacks.remove(j);
-				}
-				
-				if(currAttack.getStatus()==Status.STUN)
-				{
-					currCouple.stun(currAttack.getStatusDuration());
-				}
-				
-				// FIXME: If multiple attacks hit something or what?
-				if(currCouple.getHp() <=0)
-				{
-					int 	x=(int) currCouple.getBounds().getX(),
-							y=(int) currCouple.getBounds().getY();
-					
-					male		= currCouple.getMale();
-					male.moveTo(x,y);
-					while(!male.canMove(male.getBounds()))
-					{
-						x					= x + 1;
-						y					= y + 1;
-
-						male.moveTo(x,y);
-					}
-					male.setHitDelay(currAttack.getHitDelay());
-					male.setCharge(-10);
-					
-					x=(int) currCouple.getBounds().getX();
-					y=(int) currCouple.getBounds().getY();
-					
-					female		= currCouple.getFemale();
-					female.moveTo(x + DECOUPLE_SPACING, y);
-					while(!female.canMove(female.getBounds()))
-					{
-						x					= x + DECOUPLE_SPACING + 1;
-						y					= y + 1;
-
-						female.moveTo(x,y);
-					}
-					female.setHitDelay(currAttack.getHitDelay());
-					female.setCharge(-10);
-					
-					// create students before removing couple
-					students.add(male);
-					students.add(female);
-					
-					couples.remove(i);
-				}
-				
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Finds the index of the wall that is closest to the object
-	 * 
-	 * @param Movable Object to use
-	 */
-	public int findNearestWall(Movable obj)
-	{
-		Wall nearestWall			= null;
-		int smallestDist			= Integer.MAX_VALUE;
-		int distX, distY, dist;
-		
-		for(Wall wall : walls)
-		{
-			// compute X distance
-			if(wall.getBounds().getX() <= obj.getBounds().getX())
-			{
-				// wall lies to the left
-				distX					= (int) (obj.getBounds().getX() - wall.getBounds().getX());
-			}
-			else {
-				// wall lies to the right
-				distX					= (int) (wall.getBounds().getX() - obj.getBounds().getX());
-			}
-			
-			// compute Y distance
-			if(wall.getBounds().getY() <= obj.getBounds().getY())
-			{
-				// wall lies above
-				distY					= (int) (obj.getBounds().getY() - wall.getBounds().getY());
-			}
-			else {
-				// wall lies below
-				distY					= (int) (wall.getBounds().getY() - obj.getBounds().getY());
-			}
-			
-			// compute distance between wall and object
-			dist						= (int) Math.sqrt(distX * distX + distY * distY);
-			
-			if(dist < smallestDist)
-			{
-				nearestWall				= wall;
-				smallestDist			= dist;
-			}
-		}
-		
-		return walls.indexOf(nearestWall);
 	}
 	
 	/**
@@ -1039,7 +731,7 @@ public class Game extends GameScreen implements Serializable
 			level		= os.readInt();
 			player		= (Staff) os.readObject();
 			students	= (ArrayList<Student>) os.readObject();
-			couples		= (ArrayList<Cupple>) os.readObject();
+			couples		= (ArrayList<Couple>) os.readObject();
 			attacks		= (ArrayList<Attack>) os.readObject();
 			
 			initLevel();
