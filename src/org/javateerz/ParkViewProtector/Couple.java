@@ -92,16 +92,15 @@ public class Couple extends Character
 				
 			}
 		}
-		else if(!isStunned() && !isAttacking())
+		else if(!isStunned() && !isAttacking() && aggro)
 		{
-			if(aggro && inRange(game.getPlayer(),200))
+			if(inRange(game.getPlayer(), 50))
+			{
+				attack();
+			}
+			else if(inRange(game.getPlayer(),200))
 			{
 				moveToward(game.getPlayer(),10);
-			}
-			else if(aggro && inRange(game.getPlayer(), 50))
-			{
-
-				attack();
 			}
 		}
 		else
@@ -224,10 +223,10 @@ public class Couple extends Character
 					y=(int) getBounds().getY();
 					
 					female		= getFemale();
-					female.moveTo(x + game.DECOUPLE_SPACING, y);
+					female.moveTo(x + Game.DECOUPLE_SPACING, y);
 					while(!female.canMove(female.getBounds()))
 					{
-						x					= x + game.DECOUPLE_SPACING + 1;
+						x					= x + Game.DECOUPLE_SPACING + 1;
 						y					= y + 1;
 
 						female.moveTo(x,y);

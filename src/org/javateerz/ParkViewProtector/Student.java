@@ -207,13 +207,13 @@ public class Student extends Character implements Serializable
 			}
 
 			// did we hit another student with a charge?
-			if(getNewBounds(game.MOVE_SPEED).intersects(students.get(j).getBounds())
+			if(getNewBounds(Game.MOVE_SPEED).intersects(students.get(j).getBounds())
 					&& testStudent.getHp() > 0)
 			{
 				charge				= getHp() +
 										testStudent.getHp();
 				
-				if(Math.random() * game.COUPLE_CHANCE_MULTIPLIER < charge)
+				if(Math.random() * Game.COUPLE_CHANCE_MULTIPLIER < charge)
 				{
 					couples.add(new Couple(game, this, testStudent));
 					
