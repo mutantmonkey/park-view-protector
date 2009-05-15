@@ -13,6 +13,7 @@ import org.javateerz.ParkViewProtector.Levels.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Game extends GameScreen implements Serializable
@@ -69,6 +70,7 @@ public class Game extends GameScreen implements Serializable
 	private ArrayList<Item> items				= new ArrayList<Item>();
 	private ArrayList<VisualFX> fx				= new ArrayList<VisualFX>();
 	private ArrayList<Wall> walls;
+	private ArrayList<StatusIcon> icons			= new ArrayList<StatusIcon>();
 
 	/**
 	 * Constructor
@@ -114,8 +116,16 @@ public class Game extends GameScreen implements Serializable
 	{
 		return player;
 	}
-	
-	
+
+	public ArrayList<Item> getItems()
+	{
+		return items;
+	}
+
+	public ArrayList<StatusIcon> getIcons()
+	{
+		return icons;
+	}
 	
 	public void init(ParkViewProtector p)
 	{
@@ -186,14 +196,6 @@ public class Game extends GameScreen implements Serializable
 			currStudent			= students.get(i);
 			currStudent.draw();
 			currStudent.step(this);
-			if(currStudent.getCharge() <= 0 && currStudent.bin.items.size() > 0)
-			{
-				while(currStudent.bin.items.size() > 0)
-				{
-					items.add(currStudent.bin.items.get(0));
-					currStudent.bin.dropItem(currStudent.bin.items.get(0));
-				}
-			}
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -206,33 +208,6 @@ public class Game extends GameScreen implements Serializable
 			currCouple.draw();
 			
 			currCouple.step(this);
-			
-			// did the couple hit the player? if so, decrease HP
-			if(currCouple.getBounds().intersects(player.getBounds()) &&
-					Math.random() <= ATTACK_CHANCE && !currCouple.isStunned())
-			{
-				if(player.getHp() <= 0)
-				{
-					gameOver();
-				}
-				else {
-					player.adjustHp(1);
-				}
-			}
-			
-			// update students
-			/*for(int j = 0; j < students.size(); j++)
-			{
-				// if we hit a student that isn't infected
-				if(currCouple.getBounds().intersects(students.get(j).getBounds())
-						&& !students.get(j).isInfected()
-						&& Math.random() <= INFECT_CHANCE)
-				{
-					students.get(j).infect();
-					System.out.println("student #" + j + " infected by couple #" + i);
-					break;
-				}
-			}*/
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -254,7 +229,7 @@ public class Game extends GameScreen implements Serializable
 			currAttack.move(MOVE_SPEED);
 			
 			// is the attack off the screen?
-			if(currAttack.getBounds().getX() < -currAttack.getBounds().getWidth() ||
+			/*if(currAttack.getBounds().getX() < -currAttack.getBounds().getWidth() ||
 					currAttack.getBounds().getX() > ParkViewProtector.WIDTH ||
 					currAttack.getBounds().getY() < -currAttack.getBounds().getHeight() ||
 					currAttack.getBounds().getY() > ParkViewProtector.HEIGHT)
@@ -263,7 +238,7 @@ public class Game extends GameScreen implements Serializable
 				
 				attacks.remove(i);
 				i--;
-			}
+			}*/
 			
 			if(i >= 0 && currAttack.over())
 			{
@@ -301,13 +276,6 @@ public class Game extends GameScreen implements Serializable
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
-		// Draw statistics
-		////////////////////////////////////////////////////////////////////////////////////
-		// these are painted last to ensure that they are always on top
-		
-		stats.draw(player, level);
-		
-		////////////////////////////////////////////////////////////////////////////////////
 		// Move the player
 		////////////////////////////////////////////////////////////////////////////////////
 		
@@ -342,7 +310,7 @@ public class Game extends GameScreen implements Serializable
 		}
 		
 		// if we are moving, check to see if location is clear, then move
-		if(distX != 0 || distY != 0)
+		if((distX != 0 || distY != 0) && !player.isAttacking() && !player.isStunned())
 		{
 			if(!player.canMove(player.getNewBounds(distX,distY)))
 			{
@@ -364,8 +332,24 @@ public class Game extends GameScreen implements Serializable
 		////////////////////////////////////////////////////////////////////////////////////
 		// Create attacks
 		////////////////////////////////////////////////////////////////////////////////////
-		
-		playerAttack();
+		if((Keyboard.isKeyDown(KeyboardConfig.ATTACK1) || Keyboard.isKeyDown(KeyboardConfig.ATTACK2)
+				|| Keyboard.isKeyDown(KeyboardConfig.ATTACK3)) && !player.isAttacking())
+		{
+			int attackKey=0;
+			if(Keyboard.isKeyDown(KeyboardConfig.ATTACK1))
+			{
+				attackKey=0;
+			}
+			else if(Keyboard.isKeyDown(KeyboardConfig.ATTACK2))
+			{
+				attackKey=1;
+			}
+			else if(Keyboard.isKeyDown(KeyboardConfig.ATTACK3))
+			{
+				attackKey=2;
+			}
+			player.attack(attackKey);
+		}
 		
 		// keep the game from running too fast
 		try
@@ -402,225 +386,21 @@ public class Game extends GameScreen implements Serializable
 		{
 			itemDelay++;
 		}
-	}
-	
-	/**
-	 * Random movement
-	 * 
-	 * @param Movable Object to move
-	 */
-	/*public void moveRandom(Movable obj)
-	{
-		int speed					= MOVE_SPEED;
-		int changeMoves				= (int) (Math.random() * (MAX_NUM_MOVES - MIN_NUM_MOVES) +
-				MIN_NUM_MOVES + 1);
 		
-		// change direction if the move count exceeds the number of moves to change after
-		if(obj.getMoveCount() <= 0 || obj.getMoveCount() > changeMoves)
+		if(Keyboard.isKeyDown(KeyboardConfig.SHOW_CHARGES))
 		{
-			// choose a new direction
-			obj.setDirection((int) (Math.random() * 4));
-			obj.resetMoveCount();
+			showCharges();
 		}
 		
-		// change direction if we hit the top or bottom
-		if(obj.getBounds().getY() <= 0 && obj.getDirection() == Direction.NORTH)
-		{
-			obj.setDirection(Direction.SOUTH);
-			obj.resetMoveCount();
-		}
-		else if(obj.getBounds().getY() >= ParkViewProtector.HEIGHT - obj.getBounds().getHeight()  &&
-				obj.getDirection() == Direction.SOUTH)
-		{
-			obj.setDirection(Direction.NORTH);
-			obj.resetMoveCount();
-		}
-		else if(obj.getBounds().getX() <= 0 && obj.getDirection() == Direction.WEST)
-		{
-			obj.setDirection(Direction.EAST);
-			obj.resetMoveCount();
-		}
-		else if(obj.getBounds().getX() >= ParkViewProtector.WIDTH - obj.getBounds().getWidth() &&
-				obj.getDirection() == Direction.EAST)
-		{
-			obj.setDirection(Direction.WEST);
-			obj.resetMoveCount();
-		}
+		////////////////////////////////////////////////////////////////////////////////////
+		// Draw statistics
+		////////////////////////////////////////////////////////////////////////////////////
+		// these are painted last to ensure that they are always on top
 		
-		// check for collisions
-		if(obj.getNewBounds(speed).intersects(player.getBounds())
-				|| !((Character) obj).canMove(obj.getNewBounds(speed)))
-		{
-			// collision, must choose new direction
-			
-			if(obj instanceof Character && obj.getNewBounds(speed).intersects(player.getBounds()))
-			{
-				((Character) obj).push(player);
-				obj.incrementMoveCount();
-			}
-			else
-				obj.resetMoveCount();
-		}
+		stats.draw(player, level);
 		
-		else
-		{
-			obj.move(speed);
-		}
-	}*/
-	
-	/**
-	 * Causes c1 to push c2 away.
-	 * 
-	 * @param c1
-	 * @param c2
-	 */
-	/* FIXME: Yeah, I have no idea how to fix this.
-	 * 			IT's BROKEN!
-	 * 
-	 * 		Does not work when an object is colliding with 2 players! D:
-	 */
-	/*public void push(Character c1, Character c2)
-	{
-		//System.out.println("PUSHING!");
-		double	temp1=c1.getSpeed(),
-				temp2=c2.getSpeed();
-		
-		c1.setSpeed(c1.getSpeed());
-		c2.setSpeed(c1.getSpeed()+.1);
-		
-		switch(c1.getDirection())
-		{
-			case Direction.NORTH:
-				if(canMove(c2.getNewBounds(0,-1), c2))
-				{
-					c1.move(0,-1);
-					c2.move(0,-1);
-				}
-				break;
-			case Direction.SOUTH:
-				if(canMove(c2.getNewBounds(0,1), c2))
-				{
-					c1.move(0,1);
-					c2.move(0,1);
-				}
-				break;
-			case Direction.EAST:
-				if(canMove(c2.getNewBounds(1,0), c2))
-				{
-					c1.move(1,0);
-					c2.move(1,0);
-				}
-				break;
-			case Direction.WEST:
-				if(canMove(c2.getNewBounds(-1,0), c2))
-				{
-					c1.move(-1,0);
-					c2.move(-1,0);
-				}
-				break;
-		}
-		c1.setSpeed(temp1);
-		c2.setSpeed(temp2);
-	}*/
-	
-	/**
-	 * Loop through students, couples, and walls to see if the specified rectangle is
-	 * available
-	 * 
-	 * @return
-	 */
-	/*public boolean canMove(Rectangle newRect, Character curr)
-	{
-		// students
-		if(students.size() > 0)
-		{
-			for(Student s : students)
-			{
-				if(!s.isStunned() && newRect.intersects(s.getBounds()))
-				{
-					if(!(s instanceof Student) || s!=curr)
-						return false;
-				}
-			}
-		}
-		
-		// couples
-		if(couples.size() > 0)
-		{
-			for(Couple c : couples)
-			{
-				if(!c.isStunned() && newRect.intersects(c.getBounds()))
-				{
-					if(!(c instanceof Couple) || c!=curr)
-						return false;
-				}
-			}
-		}
-			
-		// walls
-		if(walls.size() > 0)
-		{
-			for(Wall w : walls)
-			{
-				if(newRect.intersects(w.getBounds()))
-				{
-					return false;
-				}
-			}
-		}
-		
-		return true;
-	}/*
-	
-	/**
-	 * Handles players attacks
-	 */
-	public void playerAttack()
-	{
-		if((Keyboard.isKeyDown(KeyboardConfig.ATTACK1) || Keyboard.isKeyDown(KeyboardConfig.ATTACK2)
-				|| Keyboard.isKeyDown(KeyboardConfig.ATTACK3)) && attackDelay == 0)
-		{
-			Attack playerAttack;
-			int attackKey=0;
-			if(Keyboard.isKeyDown(KeyboardConfig.ATTACK1))
-			{
-				attackKey=0;
-			}
-			else if(Keyboard.isKeyDown(KeyboardConfig.ATTACK2))
-			{
-				attackKey=1;
-			}
-			else if(Keyboard.isKeyDown(KeyboardConfig.ATTACK3))
-			{
-				attackKey=2;
-			}
-		
-			playerAttack			= player.getAttack(attackKey);
-			if(player.getTp()>=playerAttack.getTp())
-			{
-				player.setAttackFrames(playerAttack.getStillTime());
-				player.adjustTp(-playerAttack.getTp());
-				playerAttack.switchXY();
-				attacks.add(playerAttack);
-				
-				try
-				{
-					ParkViewProtector.playSound(playerAttack.getName()+".wav");
-				}
-				catch(Exception e)
-				{
-					System.out.println("The attack has no sound.");
-				}
-				
-				// set delay
-				attackDelay			= playerAttack.getReuse();
-			}
-			
-		}
-		
-		// decrease delay if there is one
-		if(attackDelay > 0)
-			attackDelay--;
+		if(player.getHp()<=0)
+			gameOver();
 	}
 	
 	public void hitFX(int x, int y)
@@ -667,7 +447,7 @@ public class Game extends GameScreen implements Serializable
 	{
 		for(int i = 0;i < students.size();i++)
 		{
-			if(students.get(i).getCharge() > 0)
+			if(students.get(i).getHp() > 0)
 			{
 				students.get(i).showCharge();
 			}

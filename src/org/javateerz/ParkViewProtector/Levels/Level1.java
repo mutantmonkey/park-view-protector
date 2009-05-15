@@ -33,7 +33,7 @@ public class Level1 implements Level
 		
 		Student student				= null;
 		
-		int x, y, type;
+		int x, y, type, maxHp;
 		double speed;
 		char gender;
 		
@@ -44,8 +44,9 @@ public class Level1 implements Level
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			type					= (int)(Math.random()*3);
+			maxHp					= (int)(Math.random()*30);
 			
-			student					= new Student(game, x, y, 5, 5, speed, gender, type);
+			student					= new Student(game, x, y, maxHp, maxHp, speed, gender, type);
 			
 			// make sure that the student is not spawned on top of a wall)
 			while(!student.canMove(student.getBounds()))

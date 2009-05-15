@@ -18,11 +18,15 @@ public abstract class Character extends Movable
 	
 	protected int invulFrames	= 0;
 	protected int stunFrames	= 0;
-	protected int attackFrames	=0;
+	protected int attackFrames	= 0;
+	protected int againFrames	= 0;
 	
 	protected boolean invul		= false;
 	protected boolean stunned	= false;
 	protected boolean attacking	= false;
+	protected boolean pushing	= false;
+	protected boolean again		= false;
+	protected Character pushee	= null;
 	
 	//	Keeps track of itemsMemory inquired
 	public ItemBin bin;
@@ -44,38 +48,6 @@ public abstract class Character extends Movable
 		this.hp		= hp;
 		this.maxHp	= maxHp;
 		bin = new ItemBin(this);
-	}
-	
-	/**
-	 * Moves the character a distance if it is able to; 
-	 * Character will not move if stunned or attacking
-	 * 
-	 * @param distX	X distance
-	 * @param distY	Y distance
-	 */
-	public void move(int distX, int distY)
-	{
-		if(isStunned())
-		{
-			return;
-		}
-		super.move(distX, distY);
-	}
-	
-	/**
-	 * Moves the character a distance in the current direction if it is able to; 
-	 * Character will not move if stunned or attacking
-	 * 
-	 * @param distX	X distance
-	 * @param distY	Y distance
-	 */
-	public void move(int dist)
-	{
-		if(isStunned() || isAttacking())
-		{
-			return;
-		}
-		super.move(dist);
 	}
 	
 	/**
@@ -107,6 +79,8 @@ public abstract class Character extends Movable
 			stunFrames--;
 		if(attackFrames>0)
 			attackFrames--;
+		if(againFrames>0)
+			againFrames--;
 		
 		if(invulFrames<=0)
 			invul=false;
@@ -114,6 +88,8 @@ public abstract class Character extends Movable
 			stunned=false;
 		if(attackFrames<=0)
 			attacking=false;
+		if(againFrames<=0)
+			again=false;
 	}
 	
 	/**
@@ -123,7 +99,7 @@ public abstract class Character extends Movable
 	 */
 	public void setInvulFrames(int amount)
 	{
-		invulFrames=amount;
+		invulFrames=amount+1;
 		if(amount>0)
 			invul=true;
 	}
@@ -153,6 +129,49 @@ public abstract class Character extends Movable
 	}
 	
 	/**
+	 * Sets time for the character to attack again
+	 * @param amount
+	 */
+	public void setAgainFrames(int amount)
+	{
+		againFrames=amount;
+		if(amount>0)
+			again=true;
+	}
+	
+	/**
+	 * @return The number of stunned frames of this character
+	 */
+	public int getStunFrames()
+	{
+		return stunFrames;
+	}
+
+	/**
+	 * @return The number of attacking frames of this character
+	 */
+	public int getAttackFrames()
+	{
+		return attackFrames;
+	}
+
+	/**
+	 * @return The number of invulnerable frames of this character
+	 */
+	public int getInvulFrames()
+	{
+		return invulFrames;
+	}
+
+	/**
+	 * @return The number of frames before the player can attack again
+	 */
+	public int getAgainFrames()
+	{
+		return againFrames;
+	}
+	
+	/**
 	 * @return If the character is vulnerable
 	 */
 	public boolean isVulnerable()
@@ -175,6 +194,30 @@ public abstract class Character extends Movable
 	{
 		return attacking;
 	}
+
+	/**
+	 * @return If the character is able to attack again
+	 */
+	public boolean isAgain()
+	{
+		return !again;
+	}
+	
+	/**
+	 * @return If the character is pushing
+	 */
+	public boolean isPushing()
+	{
+		return pushing;
+	}
+	
+	/**
+	 * @return The other character that is being pushed
+	 */
+	public Character getPushee()
+	{
+		return pushee;
+	}
 	
 	/**
 	 * Decreases the HP by the specified amount
@@ -184,7 +227,7 @@ public abstract class Character extends Movable
 	 */
 	public int adjustHp(int amount)
 	{
-		hp		   -= amount;
+		hp		   += amount;
 		if(hp > maxHp)
 		{
 			hp = maxHp;
@@ -230,145 +273,112 @@ public abstract class Character extends Movable
 	{
 		bin.useItem(type);
 	}
-	
-	public boolean canMove(Rectangle newRect)
-	{
-		// students
-		ArrayList<Student> students = game.getStudents();
-		if(students.size() > 0)
-		{
-			for(Student s : students)
-			{
-				if(!s.isStunned() && newRect.intersects(s.getBounds()))
-				{
-					if(!(s instanceof Student) || s!=this)
-						return false;
-				}
-			}
-		}
-		
-		// couples
-		ArrayList<Couple> couples = game.getCouples();
-		if(couples.size() > 0)
-		{
-			for(Couple c : couples)
-			{
-				if(!c.isStunned() && newRect.intersects(c.getBounds()))
-				{
-					if(!(c instanceof Couple) || c!=this)
-						return false;
-				}
-			}
-		}
-			
-		// walls
-		ArrayList<Wall> walls=game.getWalls();
-		if(walls.size() > 0)
-		{
-			for(Wall w : walls)
-			{
-				if(newRect.intersects(w.getBounds()))
-				{
-					return false;
-				}
-			}
-		}
-		
-		return true;
-	}
-	/**
-	 * @return If the character can move into the new specified rectangle
-	 */
-	/*public boolean canMove(Rectangle newRect)
-	{
-		// students
-		ArrayList<Student> students=getCollidedStudents();
-		if(students.size()!=0)
-			for(Student s : students)
-			{
-				if(!s.isStunned())
-					return false;
-			}
-		
-		// couples
-		ArrayList<Couple> couples=getCollidedCouples();
-		if(couples.size()!=0)
-			for(Couple s : couples)
-			{
-				if(!s.isStunned())
-					return false;
-			}
-			
-		// walls
-		ArrayList<Wall> walls=game.getWalls();
-		if(walls.size() > 0)
-		{
-			for(Wall w : walls)
-			{
-				if(newRect.intersects(w.getBounds()))
-				{
-					return false;
-				}
-			}
-		}
-		
-		return true;
-	}*/
 
-	
 	/**
-	 * Causes c1 to push c2 away.
+	 * Causes character to push other character away
 	 * 
-	 * @param c1
-	 * @param c2
+	 * @param other Character to be pushed away 
 	 */
 	/* FIXME: Yeah, I have no idea how to fix this.
 	 * 			IT's BROKEN!
 	 * 
 	 * 		Does not work when an object is colliding with 2 players! D:
 	 */
-	public void push(Character other)
+	public void push(Character c)
 	{
+		pushing = true;
 		double	temp1=getSpeed(),
-				temp2=other.getSpeed();
-		
-		setSpeed(getSpeed());
-		other.setSpeed(getSpeed());
+				temp2=c.getSpeed();
 		
 		switch(getDirection())
 		{
 			case Direction.NORTH:
-				if(other.canMove(other.getNewBounds(0,-1)))
+				if(c.canMove(c.getNewBounds(0,-1)))
 				{
-					move(0,-1);
-					other.move(0,-1);
+					if(c.isPushing() && c.getPushee()==this)
+					{
+						if(getSpeed()>c.getSpeed())
+						{
+							setSpeed(getSpeed()-c.getSpeed());
+							c.setSpeed(getSpeed());
+							move(0,-1);
+							c.move(0,-1,0);
+						}
+					}
+					else if(!c.isPushing())
+					{
+						move(0,-1);
+						c.setSpeed(getSpeed());
+						c.move(0,-1,0);
+					}
 				}
 				break;
 			case Direction.SOUTH:
-				if(other.canMove(other.getNewBounds(0,1)))
+				if(c.canMove(c.getNewBounds(0,1)))
 				{
-					move(0,1);
-					other.move(0,1);
+					if(c.isPushing() && c.getPushee()==this)
+					{
+						if(getSpeed()>c.getSpeed())
+						{
+							setSpeed(getSpeed()-c.getSpeed());
+							c.setSpeed(getSpeed());
+							move(0,1);
+							c.move(0,1,0);
+						}
+					}
+					else if(!c.isPushing())
+					{
+						move(0,1);
+						c.setSpeed(getSpeed());
+						c.move(0,1,0);
+					}
 				}
 				break;
 			case Direction.EAST:
-				if(other.canMove(other.getNewBounds(1,0)))
+				if(c.canMove(c.getNewBounds(1,0)))
 				{
-					move(1,0);
-					other.move(1,0);
+					if(c.isPushing() && c.getPushee()==this)
+					{
+						if(getSpeed()>c.getSpeed())
+						{
+							setSpeed(getSpeed()-c.getSpeed());
+							c.setSpeed(getSpeed());
+							move(1,0);
+							c.move(1,0,0);
+						}
+					}
+					else if(!c.isPushing())
+					{
+						move(1,0);
+						c.setSpeed(getSpeed());
+						c.move(1,0,0);
+					}
 				}
 				break;
 			case Direction.WEST:
-				if(other.canMove(other.getNewBounds(-1,0)))
+				if(c.canMove(c.getNewBounds(-1,0)))
 				{
-					move(-1,0);
-					other.move(-1,0);
+					if(c.isPushing() && c.getPushee()==this)
+					{
+						if(getSpeed()>c.getSpeed())
+						{
+							setSpeed(getSpeed()-c.getSpeed());
+							c.setSpeed(getSpeed());
+							move(-1,0);
+							c.move(-1,0,0);
+						}
+					}
+					else if(!c.isPushing())
+					{
+						move(-1,0);
+						c.setSpeed(getSpeed());
+						c.move(-1,0,0);
+					}
 				}
 				break;
 		}
 		setSpeed(temp1);
-		other.setSpeed(temp2);
-
+		c.setSpeed(temp2);
 	}
 
 	
@@ -377,66 +387,66 @@ public abstract class Character extends Movable
 	 * 
 	 * @param Movable Object to move
 	 */
-	public void moveRandom(Movable obj)
+	public void moveRandom()
 	{
 		int speed					= Game.MOVE_SPEED;
 		int changeMoves				= (int) (Math.random() * (Game.MAX_NUM_MOVES - Game.MIN_NUM_MOVES) +
 				Game.MIN_NUM_MOVES + 1);
 		
 		// change direction if the move count exceeds the number of moves to change after
-		if(obj.getMoveCount() <= 0 || obj.getMoveCount() > changeMoves)
+		if(getMoveCount() <= 0 || getMoveCount() > changeMoves)
 		{
 			// choose a new direction
-			obj.setDirection((int) (Math.random() * 4));
-			obj.resetMoveCount();
+			setDirection((int) (Math.random() * 4));
+			resetMoveCount();
 		}
 		
 		// change direction if we hit the top or bottom
-		if(obj.getBounds().getY() <= 0 && obj.getDirection() == Direction.NORTH)
+		if(getBounds().getY() <= 0 && getDirection() == Direction.NORTH)
 		{
-			while(obj.getDirection()==Direction.NORTH)
-				obj.setDirection((int) (Math.random() * 4));
-			obj.resetMoveCount();
+			while(getDirection()==Direction.NORTH)
+				setDirection((int) (Math.random() * 4));
+			resetMoveCount();
 		}
-		else if(obj.getBounds().getY() >= ParkViewProtector.HEIGHT - obj.getBounds().getHeight()  &&
-				obj.getDirection() == Direction.SOUTH)
+		else if(getBounds().getY() >= ParkViewProtector.HEIGHT - getBounds().getHeight()  &&
+				getDirection() == Direction.SOUTH)
 		{
-			while(obj.getDirection()==Direction.SOUTH)
-				obj.setDirection((int) (Math.random() * 4));
-			obj.resetMoveCount();
+			while(getDirection()==Direction.SOUTH)
+				setDirection((int) (Math.random() * 4));
+			resetMoveCount();
 		}
-		else if(obj.getBounds().getX() <= 0 && obj.getDirection() == Direction.WEST)
+		else if(getBounds().getX() <= 0 && getDirection() == Direction.WEST)
 		{
-			while(obj.getDirection()==Direction.WEST)
-				obj.setDirection((int) (Math.random() * 4));
-			obj.resetMoveCount();
+			while(getDirection()==Direction.WEST)
+				setDirection((int) (Math.random() * 4));
+			resetMoveCount();
 		}
-		else if(obj.getBounds().getX() >= ParkViewProtector.WIDTH - obj.getBounds().getWidth() &&
-				obj.getDirection() == Direction.EAST)
+		else if(getBounds().getX() >= ParkViewProtector.WIDTH - getBounds().getWidth() &&
+				getDirection() == Direction.EAST)
 		{
-			while(obj.getDirection()==Direction.EAST)
-				obj.setDirection((int) (Math.random() * 4));
-			obj.resetMoveCount();
+			while(getDirection()==Direction.EAST)
+				setDirection((int) (Math.random() * 4));
+			resetMoveCount();
 		}
 		
 		// check for collisions
-		if(obj.getNewBounds(speed).intersects(game.getPlayer().getBounds())
-				|| !((Character) obj).canMove(obj.getNewBounds(speed)))
+		if(getNewBounds(speed).intersects(game.getPlayer().getBounds())
+				|| !this.canMove(getNewBounds(speed)))
 		{
 			// collision, must choose new direction
 			
-			if(obj instanceof Character && obj.getNewBounds(speed).intersects(game.getPlayer().getBounds()))
+			if(this instanceof Character && getNewBounds(speed).intersects(game.getPlayer().getBounds()))
 			{
-				((Character) obj).push(game.getPlayer());
-				obj.incrementMoveCount();
+				this.push(game.getPlayer());
+				incrementMoveCount();
 			}
 			else
-				obj.resetMoveCount();
+				resetMoveCount();
 		}
 		
 		else
 		{
-			obj.move(speed);
+			move(speed);
 		}
 	}
 	
@@ -464,8 +474,18 @@ public abstract class Character extends Movable
 		newX				   += (int) (distX * speed);
 		newY				   += (int) (distY * speed);
 		
-		Rectangle bounds		= new Rectangle(newX, newY+(sprite.getHeight()-sprite.getWidth())/2, sprite.getWidth(),
-				sprite.getWidth());
+		Rectangle bounds;
+		
+		if(sprite.getHeight()>sprite.getWidth())
+		{
+			bounds = new Rectangle(newX, newY+(sprite.getHeight()-sprite.getWidth())/2, sprite.getWidth(),
+					sprite.getWidth());
+		}
+		else
+		{
+			bounds = new Rectangle(newX, newY, sprite.getWidth(),
+					sprite.getHeight());
+		}
 		
 		return bounds;
 	}
@@ -502,8 +522,18 @@ public abstract class Character extends Movable
 				break;
 		}
 		
-		Rectangle bounds		= new Rectangle(newX, newY+(sprite.getHeight()-sprite.getWidth())/2, sprite.getWidth(),
+		Rectangle bounds;
+		
+		if(sprite.getHeight()>sprite.getWidth())
+		{
+			bounds		= new Rectangle(newX, newY+(sprite.getHeight()-sprite.getWidth())/2, sprite.getWidth(),
 				sprite.getWidth());
+		}
+		else
+		{
+			bounds		= new Rectangle(newX, newY, sprite.getWidth(),
+					sprite.getHeight());
+		}
 		
 		return bounds;
 	}

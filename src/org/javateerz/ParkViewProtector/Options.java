@@ -44,7 +44,6 @@ public enum Options
 		}
 		catch (BackingStoreException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

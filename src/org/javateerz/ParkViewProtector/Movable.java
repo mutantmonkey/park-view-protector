@@ -72,6 +72,20 @@ public abstract class Movable implements Serializable
 	}
 	
 	/**
+	 * Moves the object a distance (which is multiplied by speed)
+	 * 
+	 * @param distX	x distance
+	 * @param distY	x distance
+	 */
+	public void move(int distX, int distY, int any)
+	{
+		x		   += distX * speed;
+		y		   += distY * speed;
+		
+		incrementMoveCount();
+	}
+	
+	/**
 	 * Moves the object a distance (which is multiplied by speed) in the current direction
 	 * 
 	 * @param dist distance
@@ -347,6 +361,52 @@ public abstract class Movable implements Serializable
 		
 		return bounds;
 	}
+	
+	public boolean canMove(Rectangle newRect)
+	{
+		// students
+		ArrayList<Student> students = game.getStudents();
+		if(students.size() > 0)
+		{
+			for(Student s : students)
+			{
+				if(!s.isStunned() && newRect.intersects(s.getBounds()))
+				{
+					if(!(s instanceof Student) || s!=this)
+						return false;
+				}
+			}
+		}
+		
+		// couples
+		ArrayList<Couple> couples = game.getCouples();
+		if(couples.size() > 0)
+		{
+			for(Couple c : couples)
+			{
+				if(!c.isStunned() && newRect.intersects(c.getBounds()))
+				{
+					if(!(c instanceof Couple) || c!=this)
+						return false;
+				}
+			}
+		}
+			
+		// walls
+		ArrayList<Wall> walls=game.getWalls();
+		if(walls.size() > 0)
+		{
+			for(Wall w : walls)
+			{
+				if(newRect.intersects(w.getBounds()))
+				{
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
 
 	/**
 	 * @return The index of the wall that is closest to the object
@@ -394,7 +454,57 @@ public abstract class Movable implements Serializable
 		
 		return walls.indexOf(nearestWall);
 	}
-
+	
+	public boolean inRange(Movable obj, int i)
+	{
+		Rectangle testBounds	= this.getBounds();
+		testBounds.grow(i, i);
+		
+		if(testBounds.intersects(obj.getBounds()))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public void moveToward(Movable obj, int i)
+	{
+		int distX				= 0,
+			distY				= 0;
+		
+		// increase the bounding box for testing
+		Rectangle testBounds	= this.getBounds();
+		testBounds.grow(i, i);
+		
+		// make sure we actually need to move
+		if(testBounds.intersects(obj.getBounds()))
+		{
+			return;
+		}
+		
+		// compute X distance
+		if(this.getBounds().getCenterX() > obj.getBounds().getCenterX() && canMove(getNewBounds(-1,0)))
+		{
+			distX				   -= Game.MOVE_SPEED;
+		}
+		else if(this.getBounds().getCenterX() < obj.getBounds().getCenterX() && canMove(getNewBounds(1,0)))
+		{
+			distX				   += Game.MOVE_SPEED;
+		}
+		
+		// compute Y distance
+		if(this.getBounds().getCenterY() > obj.getBounds().getCenterY() && canMove(getNewBounds(0,-1)))
+		{
+			distY				   -= Game.MOVE_SPEED;
+		}
+		else if(this.getBounds().getCenterY() < obj.getBounds().getCenterY() && canMove(getNewBounds(0,1)))
+		{
+			// obj lies below
+			distY				   += Game.MOVE_SPEED;
+		}
+		move(distX, distY);
+	}
+	
 	/**
 	 * Called by main game loop, draws the object's sprite on the screen
 	 */

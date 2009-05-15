@@ -65,7 +65,7 @@ public class Item extends Movable
 	{
 		if(type == 'h')
 		{
-			user.adjustHp(HP_AMT);
+			user.adjustHp(-HP_AMT);
 		}
 		else if(type == 't')
 		{

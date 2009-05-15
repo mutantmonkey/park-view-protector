@@ -88,6 +88,41 @@ public class Attack extends Movable
 		switchXY();
 	}
 	
+	public Attack(	Game g,
+			double x,
+			double y,
+			double speed,
+			int direction,
+			String name,
+			boolean isStudent,
+			boolean AoE,
+			int damage,
+			int duration,
+			int type,
+			int statusEffect,
+			int statusDuration,
+			int stillTime,
+			int hits,
+			int hitDelay,
+			int reuse)
+		{
+			super(g, x, y, speed);
+			this.type=type;
+			this.name=name;
+			this.damage=damage;
+			this.duration=duration;
+			this.direction=direction;
+			this.stillTime=stillTime;
+			this.status=statusEffect;
+			this.statusDuration=statusDuration;
+			this.AoE=AoE;
+			this.hits=hits;
+			this.hitDelay=hitDelay;
+			this.reuse=reuse;
+			this.isStudent=isStudent;
+			switchXY();
+		}
+	
 	/**
 	 * Sets the attack's graphic
 	 */
@@ -248,7 +283,7 @@ public class Attack extends Movable
 	}
 	
 	/**
-	 * Sets the direction of the attack and center it on the player
+	 * Sets the direction of the attack and center it on the character
 	 */
 	public void switchXY()
 	{
@@ -307,14 +342,4 @@ class Type
 	public static final int FRONT=0;
 	public static final int BACK=1;
 	public static final int CENTER=2;	
-}
-
-/**
- * Status effect variables
- */
-class Status
-{
-	public static final int STUN=1;
-	public static final int POISON=2;
-	public static final int IMMUNE=3;
 }
