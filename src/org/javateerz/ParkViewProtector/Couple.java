@@ -97,6 +97,10 @@ public class Couple extends Character
 			if(aggro && inRange(game.getPlayer(),200))
 			{
 				moveToward(game.getPlayer(),10);
+			}
+			else if(aggro && inRange(game.getPlayer(), 50))
+			{
+
 				attack();
 			}
 		}

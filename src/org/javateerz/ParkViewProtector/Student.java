@@ -91,6 +91,9 @@ public class Student extends Character implements Serializable
 			if(aggro && inRange(game.getPlayer(),200))
 			{
 				moveToward(game.getPlayer(),10);
+			}
+			else if(aggro && inRange(game.getPlayer(), 50))
+			{
 				attack();
 			}
 			else
