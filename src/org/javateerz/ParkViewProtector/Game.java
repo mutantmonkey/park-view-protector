@@ -13,8 +13,6 @@ import org.javateerz.ParkViewProtector.Levels.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.geom.Rectangle;
 
 public class Game extends GameScreen implements Serializable
 {
@@ -27,7 +25,6 @@ public class Game extends GameScreen implements Serializable
 	// delay (in number of frames) before another attack can be used
 	// FIXME: should probably go in Staff
 	public static final int ATTACK_DELAY		= 20;
-	private int attackDelay						= 0;
 	public static final int ITEM_USE_DELAY		= 20;
 	private int itemDelay						= 0;
 	public static final int TP_REGEN			= 5;
@@ -148,6 +145,10 @@ public class Game extends GameScreen implements Serializable
 		{
 			default:
 				lev					= new Level1(this);
+				break;
+				
+			case 2:
+				lev					= new Level2(this);
 				break;
 		}
 		

@@ -129,6 +129,59 @@ public abstract class Movable implements Serializable
 		this.y			= y;
 	}
 	
+	public void moveToward(Movable obj, int i)
+	{
+		int distX				= 0,
+			distY				= 0;
+		
+		// increase the bounding box for testing
+		Rectangle testBounds	= this.getBounds();
+		testBounds.grow(i, i);
+		
+		// make sure we actually need to move
+		if(testBounds.intersects(obj.getBounds()))
+		{
+			return;
+		}
+		
+		// compute X distance
+		if(this.getBounds().getCenterX() > obj.getBounds().getCenterX() &&
+				canMove(getNewBounds(-Game.MOVE_SPEED, 0)))
+		{
+			distX				   -= Game.MOVE_SPEED;
+		}
+		else if(this.getBounds().getCenterX() < obj.getBounds().getCenterX() &&
+				canMove(getNewBounds(Game.MOVE_SPEED, 0)))
+		{
+			distX				   += Game.MOVE_SPEED;
+		}
+		
+		if(Math.abs(this.getBounds().getCenterX() - obj.getBounds().getCenterX()) < speed)
+		{
+			distX					= 0;
+		}
+		
+		// compute Y distance
+		if(this.getBounds().getCenterY() > obj.getBounds().getCenterY() &&
+				canMove(getNewBounds(0, -Game.MOVE_SPEED)))
+		{
+			distY				   -= Game.MOVE_SPEED;
+		}
+		else if(this.getBounds().getCenterY() < obj.getBounds().getCenterY() &&
+				canMove(getNewBounds(0, Game.MOVE_SPEED)))
+		{
+			// obj lies below
+			distY				   += Game.MOVE_SPEED;
+		}
+		
+		if(Math.abs(this.getBounds().getCenterY() - obj.getBounds().getCenterY()) < speed)
+		{
+			distY					= 0;
+		}
+		
+		move(distX, distY);
+	}
+
 	/**
 	 * @param student
 	 * @return If the character intersects specified student
@@ -465,44 +518,6 @@ public abstract class Movable implements Serializable
 			return true;
 		}
 		return false;
-	}
-	
-	public void moveToward(Movable obj, int i)
-	{
-		int distX				= 0,
-			distY				= 0;
-		
-		// increase the bounding box for testing
-		Rectangle testBounds	= this.getBounds();
-		testBounds.grow(i, i);
-		
-		// make sure we actually need to move
-		if(testBounds.intersects(obj.getBounds()))
-		{
-			return;
-		}
-		
-		// compute X distance
-		if(this.getBounds().getCenterX() > obj.getBounds().getCenterX() && canMove(getNewBounds(-1,0)))
-		{
-			distX				   -= Game.MOVE_SPEED;
-		}
-		else if(this.getBounds().getCenterX() < obj.getBounds().getCenterX() && canMove(getNewBounds(1,0)))
-		{
-			distX				   += Game.MOVE_SPEED;
-		}
-		
-		// compute Y distance
-		if(this.getBounds().getCenterY() > obj.getBounds().getCenterY() && canMove(getNewBounds(0,-1)))
-		{
-			distY				   -= Game.MOVE_SPEED;
-		}
-		else if(this.getBounds().getCenterY() < obj.getBounds().getCenterY() && canMove(getNewBounds(0,1)))
-		{
-			// obj lies below
-			distY				   += Game.MOVE_SPEED;
-		}
-		move(distX, distY);
 	}
 	
 	/**
