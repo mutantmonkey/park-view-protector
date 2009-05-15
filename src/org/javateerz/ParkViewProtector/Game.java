@@ -146,6 +146,10 @@ public class Game extends GameScreen implements Serializable
 			default:
 				lev					= new Level1(this);
 				break;
+				
+			case 2:
+				lev					= new Level2(this);
+				break;
 		}
 		
 		walls						= lev.getWalls();
