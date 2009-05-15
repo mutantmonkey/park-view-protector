@@ -75,16 +75,13 @@ public class Game extends GameScreen implements Serializable
 	/**
 	 * Constructor
 	 * 
-	 * @param w Width of the game canvas
-	 * @param h Height of the game canvas
-	 * @param g Graphics canvas
-	 * @param strategy Buffer strategy
+	 * @param p Instance of ParkViewProtector
 	 */
 	public Game(ParkViewProtector p)
 	{
 		init(p);
 		
-		stats									= new Statistics();
+		stats						= new Statistics();
 		
 		// load background music
 		setMusic("heavyset.ogg");
@@ -92,10 +89,7 @@ public class Game extends GameScreen implements Serializable
 		// initialize level
 		initLevel();
 		
-		// initialize everything
-		initStudents();
-		//initPlayer();
-		initItems();
+		students					= lev.getStudents();
 	}
 	
 	public ArrayList<Student> getStudents()
@@ -135,15 +129,7 @@ public class Game extends GameScreen implements Serializable
 	
 	public void init(ParkViewProtector p)
 	{
-		this.driver								= p;
-	}
-	
-	/**
-	 * Create and initialize player (the staff member we're playing as)
-	 */
-	public void initPlayer()
-	{
-		player						= new SpecialCharacter(this, PLAYER_X, PLAYER_Y);
+		this.driver					= p;
 	}
 	
 	// FIXME: decide if this should be part of the constructor
@@ -166,34 +152,6 @@ public class Game extends GameScreen implements Serializable
 		}
 		
 		walls						= lev.getWalls();
-	}
-	
-	/**
-	 * Initialize walls only
-	 */
-	public void initStudents()
-	{
-		students					= lev.getStudents();
-	}
-	
-	public void initItems()
-	{
-		for(int i = 0;i < students.size();i++)
-		{
-			int random = (int)(Math.random()*4);
-			//there is a 1/2 chance of a health item, 1/4 chance of a teacher item, and 1/4 chance of no item
-			switch(random)
-			{
-			case 0:
-			case 1:
-				students.get(i).pickItem(new Item(this, 'h', 0, 0));
-				break;
-			case 2:
-				students.get(i).pickItem(new Item(this, 't', 0, 0));
-			default:
-				break;
-			}
-		}
 	}
 	
 	public void show()
@@ -291,7 +249,7 @@ public class Game extends GameScreen implements Serializable
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw items
-		///////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////
 		// FIXME: these should probably be drawn before everything else
 		
 		for(int i = 0;i < items.size();i++)
@@ -487,8 +445,6 @@ public class Game extends GameScreen implements Serializable
 	 */
 	public void showCharges()
 	{
-		//g.setColor(ParkViewProtector.COLOR_BG_1);
-		
 		for(int i = 0;i < students.size();i++)
 		{
 			if(students.get(i).getHp() > 0)

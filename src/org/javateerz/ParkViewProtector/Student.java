@@ -76,6 +76,24 @@ public class Student extends Character implements Serializable
 			break;
 		}
 		
+		// give the student some items
+		int random = (int)(Math.random()*4);
+		//there is a 1/2 chance of a health item, 1/4 chance of a teacher item, and 1/4 chance of no item
+		switch(random)
+		{
+			case 0:
+			case 1:
+				pickItem(new Item(g, 'h', 0, 0));
+				break;
+				
+			case 2:
+				pickItem(new Item(g, 't', 0, 0));
+				break;
+				
+			default:
+				break;
+		}
+		
 		updateSprite();
 	}
 	
