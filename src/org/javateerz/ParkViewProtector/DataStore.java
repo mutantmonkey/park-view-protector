@@ -29,7 +29,6 @@ public enum DataStore
 		}
 		catch(SlickException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

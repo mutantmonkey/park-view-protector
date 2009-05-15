@@ -78,7 +78,7 @@ public class Stark extends Staff
 				type=Type.FRONT;
 				speed=5;
 				duration=40;
-				reuse=duration;
+				reuse=30;
 				stillTime=stillTime;
 				hits=hits;
 				hitDelay=duration/hits;

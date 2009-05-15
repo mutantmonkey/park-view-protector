@@ -12,16 +12,20 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.lwjgl.input.Keyboard;
+
 public abstract class Staff extends Character
 {
 	private static final long serialVersionUID = 3L;
+
+	private static final int TP_REGEN = 1;
 	
 	private String name;
 	
 	private int tp;
 	private int maxTp;
 	private int tpRegenRate=0;
-	private int TP_REGEN_RATE=5;
+	private static final int TP_REGEN_RATE=5;
 	
 	public abstract Attack getAttack(int i);
 	
@@ -55,6 +59,13 @@ public abstract class Staff extends Character
 		this.maxTp=maxTp;
 	}
 	
+	public void step(Game game)
+	{
+		recover();
+		tpRegen();
+		handleAttack();
+	}
+
 	protected void updateSprite()
 	{
 		sprite = DataStore.INSTANCE.getSprite("placeholder.png");
@@ -114,13 +125,6 @@ public abstract class Staff extends Character
 		return name;
 	}
 	
-	public void step(Game game)
-	{
-		recover();
-		tpRegen();
-		handleAttack();
-	}
-	
 	protected void validateState()
 	{
 		super.validateState();
@@ -140,7 +144,7 @@ public abstract class Staff extends Character
 		if(tpRegenRate>=TP_REGEN_RATE)
 		{
 			if(game.getPlayer().getTp()<game.getPlayer().getMaxTp())
-				game.getPlayer().adjustTp(2);
+				game.getPlayer().adjustTp(TP_REGEN);
 			tpRegenRate=0;
 		}
 	}
@@ -160,9 +164,11 @@ public abstract class Staff extends Character
 		{
 			attack		= attacks.get(j);
 			
-			if(attack.getBounds().intersects(getBounds()) && !isVulnerable() && !attack.isStudent())
+			if(attack.getBounds().intersects(getBounds()) && isVulnerable() && !attack.isStudent())
 			{
-				adjustHp(attack.getDamage());
+				game.hitFX((int)(getBounds().getCenterX()-getBounds().getWidth()/4),
+						(int)(getBounds().getCenterY()-getBounds().getHeight()/4));
+				adjustHp(-attack.getDamage());
 				if(getHp()>getMaxHp())
 					setHp(getMaxHp());
 				setInvulFrames(attack.getHitDelay());
@@ -181,6 +187,35 @@ public abstract class Staff extends Character
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Handles players attacks
+	 */
+	public void attack(int key)
+	{
+		ArrayList<Attack> attacks=game.getAttacks();
+		Attack attack;
+		attack			= getAttack(key);
+		if(getTp()>=attack.getTp() && isAgain())
+		{
+			setAttackFrames(attack.getStillTime());
+			adjustTp(-attack.getTp());
+			attack.switchXY();
+			attacks.add(attack);
+			
+			try
+			{
+				ParkViewProtector.playSound(attack.getName()+".wav");
+			}
+			catch(Exception e)
+			{
+				System.out.println("The attack has no sound.");
+			}
+			
+			// set delay
+			setAgainFrames(attack.getReuse());
+		}
 	}
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException

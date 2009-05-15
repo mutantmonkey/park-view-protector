@@ -97,7 +97,7 @@ public class SpecialCharacter extends Staff
 				stillTime=stillTime;
 				hits=20;
 				hitDelay=duration/hits;
-				status=Status.IMMUNE;
+				status=Status.INVULNERABLE;
 				statusLength=100;
 				isStudent=false;
 				AoE=true;

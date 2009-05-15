@@ -16,17 +16,22 @@ import org.newdawn.slick.Color;
 public class Student extends Character implements Serializable
 {
 	public final static int GANG=0;
+	public final static double GANG_AGGRO=0.80;
 	public final static int GOTH=1;
+	public final static double GOTH_AGGRO=0.30;
 	public final static int BAND=2;
+	public final static double BAND_AGGRO=0.10;
 	
 	private static final long serialVersionUID = 2L;
 	
 	private String type	= "default";
 	
+	private boolean aggro	= false;
+	
 	private char gender;
-	private int charge;
 	private int chargeRegenRate=0;
-	private final int CHARGE_REGEN_RATE=10;
+	private static final int CHARGE_REGEN=1; 
+	private static final int CHARGE_REGEN_RATE=80;
 	
 	/**
 	 * Create a new student
@@ -45,7 +50,7 @@ public class Student extends Character implements Serializable
 		this.gender		= gender;
 		
 		// generate a random charge
-		this.charge		= (int) (Math.random() * 10 + 1);
+		setHp((int) (Math.random() * getMaxHp() + 1));
 		
 		// FIXME: this is just for testing; determining type should probably be handled in
 		// the driver
@@ -53,21 +58,53 @@ public class Student extends Character implements Serializable
 		{
 			case Student.GANG:
 				this.type = "gangster";
+				if(Math.random()<GANG_AGGRO)
+					aggro=true;
 				break;
 			case Student.GOTH:
 				this.type = "goth";
+				if(Math.random()<GOTH_AGGRO)
+					aggro=true;
 				break;
 			case Student.BAND:
 				this.type = "band";
 				break;
 			default:
 				this.type = "default";
+			if(Math.random()<BAND_AGGRO)
+				aggro=true;
 			break;
 		}
 		
 		updateSprite();
 	}
 	
+	public void step(Game game)
+	{
+		if(getHp() > 0)
+		{
+			attemptCoupling();
+		}
+		
+		// random movement
+		if(!isStunned() && !isAttacking())
+			if(aggro && inRange(game.getPlayer(),200))
+			{
+				moveToward(game.getPlayer(),10);
+				attack();
+			}
+			else
+				moveRandom();
+		
+		// decrement the hit delay
+		recover();
+		
+		if(!isStunned())
+			recharge();
+		
+		handleAttacks();
+	}
+
 	/**
 	 * Updates the sprite
 	 */
@@ -92,81 +129,9 @@ public class Student extends Character implements Serializable
 		return gender;
 	}
 	
-	/**
-	 * @return The charge of the student
-	 */
-	public int getCharge()
+	public void setAggro(boolean agg)
 	{
-		return charge;
-	}
-	
-	/**
-	 * Increases the charge of the student by the specified amount
-	 * 
-	 * @param amt Amount to add to charge
-	 */
-	public void adjustCharge(int amt)
-	{
-		charge			   += amt;
-	}
-	
-	public void setCharge(int amt)
-	{
-		charge=amt;
-	}
-	
-	public void step(Game game)
-	{
-		if(charge > 0)
-		{
-			attemptCoupling();
-		}
-		
-		// random movement
-		moveRandom(this);
-		
-		// decrement the hit delay
-		recover();
-		
-		recharge();
-		
-		// attempt coupling
-		
-
-		// did we hit another student with a charge?
-		/*if(currStudent.getBounds().intersects(students.get(j).getBounds())
-				&& students.get(j).getCharge() > 0)
-		{
-				charge				= currStudent.getCharge() +
-									students.get(j).getCharge()+1;
-			
-			if(Math.random() * COUPLE_CHANCE_MULTIPLIER < charge)
-			{
-				couples.add(new Couple(currStudent, students.get(j)));
-				
-				
-				student1			= i;
-				student2			= j;
-				
-				if(student2 > student1)
-				{
-					student2--;
-				}
-				
-				try
-				{
-					students.remove(student1);
-					students.remove(student2);
-				}
-				catch(Exception e)
-				{
-					System.out.println("Something went wrong when deleting someone :O");
-				}
-				break;
-			}
-		}*/
-		
-		handleAttacks();
+		aggro=agg;
 	}
 	
 	/**
@@ -174,12 +139,12 @@ public class Student extends Character implements Serializable
 	 */
 	public void recharge()
 	{
-		chargeRegenRate+=1;
+		chargeRegenRate++;
 		if(chargeRegenRate>=CHARGE_REGEN_RATE)
 		{
 			chargeRegenRate=0;
-			if(getCharge()<100)
-				adjustCharge(1);
+			if(getHp()<getMaxHp())
+				adjustHp(CHARGE_REGEN);
 		}
 	}
 	
@@ -222,10 +187,10 @@ public class Student extends Character implements Serializable
 
 			// did we hit another student with a charge?
 			if(getNewBounds(game.MOVE_SPEED).intersects(students.get(j).getBounds())
-					&& testStudent.getCharge() > 0)
+					&& testStudent.getHp() > 0)
 			{
-				charge				= getCharge() +
-										testStudent.getCharge();
+				charge				= getHp() +
+										testStudent.getHp();
 				
 				if(Math.random() * game.COUPLE_CHANCE_MULTIPLIER < charge)
 				{
@@ -265,37 +230,49 @@ public class Student extends Character implements Serializable
 	 */
 	public boolean handleAttacks()
 	{
-		Attack currAttack;
+		Attack attack;
 		ArrayList<Attack> attacks=game.getAttacks();
 		
 		// hit by an attack?
 		for(int j = 0; j < attacks.size(); j++)
 		{
-			currAttack		= attacks.get(j);
+			attack		= attacks.get(j);
 			
 			//The student takes damage in this if loop
-			if(currAttack.getBounds().intersects(getBounds()) &&
-					/*getCharge() > 0 && */isVulnerable() &&
-					currAttack.isStudent())
+			if(attack.getBounds().intersects(getBounds()) && isVulnerable() &&
+					attack.isStudent())
 			{
 				game.hitFX((int)(getBounds().getCenterX()-getBounds().getWidth()/4),
 						(int)(getBounds().getCenterY()-getBounds().getHeight()/4));
 				
-				if(currAttack.getStatus()==Status.STUN)
+				if(attack.getStatus()==Status.STUN && !isStunned())
 				{
-					setStunFrames(currAttack.getStatusDuration());
+					setStunFrames(attack.getStatusDuration());
 				}
 				
-				if(!currAttack.isAoE())
+				if(!attack.isAoE())
 				{
 					attacks.remove(j);
 				}
 				
 				// FIXME: should be variable depending on strength
-				if(getCharge()>-10)
-					adjustCharge(-currAttack.getDamage()/3);
-				//System.out.println("Student took "+ currAttack.getDamage()/3 + ", now has "+ getCharge());
-				setInvulFrames(currAttack.getHitDelay());
+				if(getHp()>-10)
+					adjustHp(-attack.getDamage()/2);
+				
+				if(getHp()<0)
+				{
+					setAggro(false);
+					if(getHp() <= 0 && bin.items.size() > 0)
+						{
+							while(bin.items.size() > 0)
+							{
+								game.getItems().add(bin.items.get(0));
+								bin.dropItem(bin.items.get(0));
+							}
+						}
+				}
+				//System.out.println("Student took "+ attack.getDamage()/2 + ", now has "+ getCharge());
+				setInvulFrames(attack.getHitDelay());
 				
 				return true;
 			}
@@ -306,7 +283,58 @@ public class Student extends Character implements Serializable
 	
 	public void attack()
 	{
+		ArrayList<Attack> attacks=game.getAttacks();
+		Attack attack;
 		
+		String		name="attack";
+		int			damage=0,
+					tp=0,
+					type=0,
+					speed=0,
+					duration=0,
+					reuse=duration,
+					stillTime=0,
+					hits=1,
+					hitDelay=duration,
+					status=0,
+					statusLength=0;
+		boolean 	isStudent=false,
+					AoE=false;
+		
+		name="honk";
+		damage=1;
+		tp=10;
+		type=Type.FRONT;
+		speed=0;
+		duration=30;
+		reuse=100;
+		stillTime=30;
+		hits=1;
+		hitDelay=duration/hits;
+		status=status;
+		statusLength=statusLength;
+		isStudent=isStudent;
+		AoE=true;
+		
+		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		if(inRange(game.getPlayer(),50) && isAgain())
+		{
+			setAttackFrames(attack.getStillTime());
+			attack.switchXY();
+			attacks.add(attack);
+			
+			try
+			{
+				ParkViewProtector.playSound(attack.getName()+".wav");
+			}
+			catch(Exception e)
+			{
+				System.out.println("The attack has no sound.");
+			}
+			
+			// set delay
+			setAgainFrames(attack.getReuse());
+		}
 	}
 	
 	public void showCharge()
@@ -318,7 +346,7 @@ public class Student extends Character implements Serializable
 				ParkViewProtector.COLOR_BG_1.getBlue(), 5));
 		rect.draw();
 
-		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()), (double)charge/100);
+		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()), (double)getHp()/getMaxHp());
 		chargeBar.draw((int)x,(int)y);
 	}
 	

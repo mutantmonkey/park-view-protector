@@ -26,6 +26,8 @@ public class Couple extends Character
 	 */
 	public static final double WALL_CHANCE		= 0.6;
 	
+	private boolean aggro	= false;
+	
 	/**
 	 * Maximum distance from a wall in pixels that couples will
 	 * "stick" to
@@ -54,6 +56,9 @@ public class Couple extends Character
 			female = a;
 		}
 		
+		if(Math.random()>.5)
+			aggro=true;
+		
 		// determine whether or not this should be a wall couple
 		likesWall					= (Math.random() < WALL_CHANCE) ? true : false;
 		
@@ -66,20 +71,10 @@ public class Couple extends Character
 		sprite	= DataStore.INSTANCE.getSprite("couples/" + female.getType() + "_"
 				+ male.getType() + ".png");
 	}
-	
-	public Student getMale()
-	{
-		return male;
-	}
-	
-	public Student getFemale()
-	{
-		return female;
-	}
-	
+
 	public void step(Game game)
 	{
-		if(likesWall)
+		if(likesWall && !(aggro && inRange(game.getPlayer(), 50)))
 		{
 			// find nearest wall
 			if(wallId == 0)
@@ -97,14 +92,31 @@ public class Couple extends Character
 				
 			}
 		}
-		else {
-			moveRandom(this);
+		else if(!isStunned() && !isAttacking())
+		{
+			if(aggro && inRange(game.getPlayer(),200))
+			{
+				moveToward(game.getPlayer(),10);
+				attack();
+			}
 		}
+		else
+			moveRandom();
 		
 		// decrement the hit delay
 		recover();
 		
 		handleAttacks();
+	}
+
+	public Student getMale()
+	{
+		return male;
+	}
+	
+	public Student getFemale()
+	{
+		return female;
 	}
 	
 	public void moveToward(Wall wall)
@@ -173,7 +185,7 @@ public class Couple extends Character
 			{
 				game.hitFX((int)(getBounds().getCenterX()-getBounds().getWidth()/4),
 						(int)(getBounds().getCenterY()-getBounds().getHeight()/4));
-				adjustHp(currAttack.getDamage());
+				adjustHp(-currAttack.getDamage());
 				setInvulFrames(currAttack.getHitDelay());
 				
 				if(!currAttack.isAoE())
@@ -202,7 +214,7 @@ public class Couple extends Character
 						male.moveTo(x,y);
 					}
 					male.setInvulFrames(currAttack.getHitDelay());
-					male.setCharge(-10);
+					male.setHp(-10);
 					
 					x=(int) getBounds().getX();
 					y=(int) getBounds().getY();
@@ -217,7 +229,7 @@ public class Couple extends Character
 						female.moveTo(x,y);
 					}
 					female.setInvulFrames(currAttack.getHitDelay());
-					female.setCharge(-10);
+					female.setHp(-10);
 					
 					// create students before removing couple
 					students.add(male);
@@ -232,9 +244,61 @@ public class Couple extends Character
 		
 		return false;
 	}
+
 	public void attack()
 	{
-		// TODO: insert code here
+		ArrayList<Attack> attacks=game.getAttacks();
+		Attack attack;
+		
+		String		name="attack";
+		int			damage=0,
+					tp=0,
+					type=0,
+					speed=0,
+					duration=0,
+					reuse=duration,
+					stillTime=0,
+					hits=1,
+					hitDelay=duration,
+					status=0,
+					statusLength=0;
+		boolean 	isStudent=false,
+					AoE=false;
+		
+		name="honk";
+		damage=1;
+		tp=10;
+		type=Type.FRONT;
+		speed=0;
+		duration=30;
+		reuse=100;
+		stillTime=30;
+		hits=1;
+		hitDelay=duration/hits;
+		status=status;
+		statusLength=statusLength;
+		isStudent=isStudent;
+		AoE=true;
+		
+		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		if(inRange(game.getPlayer(),50) && isAgain())
+		{
+			setAttackFrames(attack.getStillTime());
+			attack.switchXY();
+			attacks.add(attack);
+			
+			try
+			{
+				ParkViewProtector.playSound(attack.getName()+".wav");
+			}
+			catch(Exception e)
+			{
+				System.out.println("The attack has no sound.");
+			}
+			
+			// set delay
+			setAgainFrames(attack.getReuse());
+		}
 	}
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
