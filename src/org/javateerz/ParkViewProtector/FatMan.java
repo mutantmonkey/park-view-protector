@@ -1,4 +1,5 @@
 package org.javateerz.ParkViewProtector;
+import java.util.ArrayList;
 
 public class FatMan extends Boss
 {
@@ -6,15 +7,15 @@ public class FatMan extends Boss
 	
 	private static final long serialVersionUID = 1L;
 	
-	public FatMan(int x,int y)
+	public FatMan(Game g,int x,int y)
 	{
-		super("FatMan",x,y,100,100,1.0,1000,1000);
+		super(g,x,y,100,100,1.0);
 		updateSprite();
 	}
 	
-	public FatMan(int x, int y, int hp, int maxHp, double speed, int tp, int maxTp)
+	public FatMan(Game g,int x, int y, int hp, int maxHp, double speed)
 	{
-		super("FatMan",x,y,hp,maxHp,speed,tp,maxTp);
+		super(g,x,y,hp,maxHp,speed);
 		updateSprite();
 	}
 	
@@ -56,15 +57,15 @@ public class FatMan extends Boss
 		{
 			case 0:
 				name="choco";
-				damage=15;
+				damage=5;
 				tp=0;
 				type=Type.FRONT;
-				speed=10;
-				duration=100;
-				reuse=0;
-				stillTime=stillTime;
+				speed=40;
+				duration=300;
+				reuse=10;
+				stillTime=10;
 				hits=hits;
-				hitDelay=duration/hits;
+				hitDelay=0;
 				status=status;
 				statusLength=statusLength;
 				isStudent=isStudent;
@@ -92,7 +93,7 @@ public class FatMan extends Boss
 				tp=30;
 				type=Type.CENTER;
 				speed=0;
-				duration=50;
+				duration=0;
 				reuse=duration;
 				stillTime=duration;
 				hits=hits;
@@ -103,7 +104,62 @@ public class FatMan extends Boss
 				AoE=true;
 				break;
 		}
-		attack=new Attack(x, y, speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(game,this.getBounds().getX(), this.getBounds().getY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
+	}
+	
+	public void step()
+	{
+		ArrayList <Attack> gameAttacks = game.getAttacks();
+		int rand = (int)(Math.random()*1000);
+		if(rand > 100)
+		{
+			if(!isStunned() && !isAttacking())
+			{
+				moveToward(game.getPlayer(),(int)(speed));
+			}
+		}
+		else
+		{
+			if(!isAttacking())
+			{
+			Attack bossAttack;
+			int attackKey=0;
+			if(rand >= 30)
+			{
+				attackKey=0;
+			}
+			else if(rand >= 10)
+			{
+				attackKey=1;
+			}
+			else
+			{
+				attackKey=2;
+			}
+			
+			bossAttack = getAttack(attackKey);
+			
+			setAttackFrames(bossAttack.getStillTime());
+			
+			bossAttack.switchXY();
+			gameAttacks.add(bossAttack);
+			
+			
+			try
+			{
+				ParkViewProtector.playSound(bossAttack.getName()+".wav");
+			}
+			catch(Exception e)
+			{
+				System.out.println("The attack has no sound.");
+			}
+			
+			// set delay
+			//attackDelay			= bossAttack.getReuse();
+			setAgainFrames(bossAttack.getReuse());
+			}
+		}
+		recover();
 	}
 }

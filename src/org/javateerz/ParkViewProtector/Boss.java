@@ -1,28 +1,57 @@
 package org.javateerz.ParkViewProtector;
 
-public abstract class Boss extends Staff
+import java.util.ArrayList;
+
+public abstract class Boss extends Character
 {
 	private static final long serialVersionUID = 1L;
 	
-	public Boss(Game g, int x, int y, int hp, int maxHp, double speed, int tp, int maxTp)
+	public Boss(Game g, int x, int y, int hp, int maxHp, double speed)
 	{
-<<<<<<< local
-		super("boss",x,y,hp,maxHp,speed,tp,maxTp);
+		super(g,x,y,hp,maxHp,speed);
 		updateSprite();
 	}
 	
-	public Boss(String s,int x, int y, int hp, int maxHp, double speed, int tp, int maxTp)
+
+	/**
+	 * Tells the boss to make a decision of what to do.
+	 * 
+	 * @param boss - the boss to give the move to
+	 */
+	public void step()
 	{
-		super(s,x,y,hp,maxHp,speed,tp,maxTp);
-=======
-		super(g, x,y, hp,maxHp, speed, tp, maxTp);
->>>>>>> other
-		updateSprite();
+		moveToward(game.getPlayer(),(int)(speed));
+		recover();
 	}
 	
 	protected void updateSprite()
 	{
 		sprite = DataStore.INSTANCE.getSprite("big_boss.png");
+	}
+	
+	/**
+	 * Handles players attacks
+	 */
+	public void attack(int key)
+	{
+		ArrayList<Attack> attacks=game.getAttacks();
+		Attack attack;
+		attack			= getAttack(key);
+		setAttackFrames(attack.getStillTime());
+		attack.switchXY();
+		attacks.add(attack);
+			
+		try
+		{
+			ParkViewProtector.playSound(attack.getName()+".wav");
+		}
+		catch(Exception e)
+		{
+			System.out.println("The attack has no sound.");
+		}
+		
+		// set delay
+		setAgainFrames(attack.getReuse());
 	}
 	
 	public abstract Attack getAttack(int i);
