@@ -9,10 +9,12 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.javateerz.EasyGL.GLRect;
 import org.javateerz.ParkViewProtector.Levels.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.geom.Rectangle;
 
 public class Game extends GameScreen implements Serializable
 {
@@ -58,8 +60,9 @@ public class Game extends GameScreen implements Serializable
 	private transient Level lev;
 	
 	// objects on the screen
-	private int level							= 1;
+	private int level							= 2;
 	private Staff player;
+	private Boss boss;
 	private VisualFX background					= new VisualFX(this,"background1",0,0,0);
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Couple> couples			= new ArrayList<Couple>();
@@ -87,6 +90,7 @@ public class Game extends GameScreen implements Serializable
 		initLevel();
 		
 		students					= lev.getStudents();
+		boss						= lev.getBoss();
 	}
 	
 	public ArrayList<Student> getStudents()
@@ -122,6 +126,11 @@ public class Game extends GameScreen implements Serializable
 	public ArrayList<StatusIcon> getIcons()
 	{
 		return icons;
+	}
+	
+	public Boss getBoss()
+	{
+		return boss;
 	}
 	
 	public void init(ParkViewProtector p)
@@ -210,6 +219,12 @@ public class Game extends GameScreen implements Serializable
 			
 			currCouple.step(this);
 		}
+		
+		//Draw Boss
+		
+		boss.draw();
+		if(boss.getHp()>0)
+			boss.step(this);
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw player
@@ -406,7 +421,9 @@ public class Game extends GameScreen implements Serializable
 	
 	public void hitFX(int x, int y)
 	{
-		fx.add(new VisualFX(this, "blip", 10, x, y));
+		VisualFX effect=new VisualFX(this, "blip", 10);
+		effect.moveTo(x-effect.getBounds().getWidth()/4, y-effect.getBounds().getHeight()/4);
+		fx.add(effect);
 	}
 	
 	/**
@@ -453,6 +470,17 @@ public class Game extends GameScreen implements Serializable
 				students.get(i).showCharge();
 			}
 		}
+		
+		for(int i = 0; i<couples.size(); i++)
+		{
+			if(couples.get(i).getHp()>0)
+			{
+				couples.get(i).showCharge();
+			}
+		}
+		
+		if(boss.getHp()>0)
+			boss.showCharge();
 	}
 	
 	/**

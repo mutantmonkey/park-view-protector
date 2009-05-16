@@ -19,6 +19,14 @@ public class VisualFX extends Movable implements Serializable
 		updateSprite();
 	}
 	
+	public VisualFX(Game g, String name, int time)
+	{
+		super(g, 0, 0, 0);
+		this.name=name;
+		this.time=time;
+		updateSprite();
+	}
+	
 	protected void updateSprite()
 	{
 		this.sprite		= DataStore.INSTANCE.getSprite("FX/"+name+".png");

@@ -182,6 +182,38 @@ public abstract class Movable implements Serializable
 		move(distX, distY);
 	}
 
+	public int getDirectionToward(Movable obj)
+	{
+		int direct=Direction.NORTH;
+		int distX=(int) (obj.getBounds().getCenterX()-getBounds().getCenterX()),
+			distY=(int) (obj.getBounds().getCenterY()-getBounds().getCenterY());
+		
+		if(Math.abs(distX) > Math.abs(distY))
+		{
+			if(distX > 0)
+			{
+				direct=Direction.EAST;
+			}
+			else if(distX < 0)
+			{
+				direct=Direction.WEST;
+			}
+		}
+		else
+		{
+
+			if(distY > 0)
+			{
+				direct=Direction.SOUTH;
+			}
+			else if(distY < 0)
+			{
+				direct=Direction.NORTH;
+			}
+		}
+		return direct;
+	}
+	
 	/**
 	 * @param student
 	 * @return If the character intersects specified student

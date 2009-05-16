@@ -13,6 +13,7 @@
 package org.javateerz.EasyGL;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.geom.Rectangle;
 
 /**
  * An OpenGL rectangle
@@ -32,6 +33,11 @@ public class GLRect extends GLObject
 	public GLRect(int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
+	}
+	
+	public GLRect(Rectangle rect)
+	{
+		super((int)rect.getX(), (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
 	}
 	
 	/**

@@ -108,6 +108,7 @@ public class Student extends Character implements Serializable
 		if(!isStunned() && !isAttacking())
 			if(aggro && inRange(game.getPlayer(), 50))
 			{
+				setDirection(getDirectionToward(game.getPlayer()));
 				attack();
 			}
 			else if(aggro && inRange(game.getPlayer(),200))
@@ -263,8 +264,8 @@ public class Student extends Character implements Serializable
 			if(attack.getBounds().intersects(getBounds()) && isVulnerable() &&
 					attack.isStudent())
 			{
-				game.hitFX((int)(getBounds().getCenterX()-getBounds().getWidth()/4),
-						(int)(getBounds().getCenterY()-getBounds().getHeight()/4));
+				game.hitFX((int)(getBounds().getCenterX()),
+						(int)(getBounds().getCenterY()));
 				
 				if(attack.getStatus()==Status.STUN && !isStunned())
 				{

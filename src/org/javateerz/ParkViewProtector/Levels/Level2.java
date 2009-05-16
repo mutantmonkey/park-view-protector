@@ -2,6 +2,8 @@ package org.javateerz.ParkViewProtector.Levels;
 
 import java.util.ArrayList;
 
+import org.javateerz.ParkViewProtector.Boss;
+import org.javateerz.ParkViewProtector.FatMan;
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Student;
@@ -63,6 +65,12 @@ public class Level2 implements Level
 		}
 		
 		return students;
+	}
+	
+	public Boss getBoss()
+	{
+		Boss boss=new FatMan(game, 400, 400);
+		return boss;
 	}
 
 	public ArrayList<Wall> getWalls()

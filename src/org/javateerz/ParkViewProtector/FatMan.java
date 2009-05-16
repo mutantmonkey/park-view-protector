@@ -13,6 +13,59 @@ public class FatMan extends Boss
 		updateSprite();
 	}
 	
+	public void step(Game g)
+	{
+		ArrayList <Attack> gameAttacks = g.getAttacks();
+		int percent=(int)(Math.random()*100);
+		if(inRange(g.getPlayer(),120))
+		{
+			if(!isStunned() && !isAttacking() && isAgain())
+			{
+				setDirection(getDirectionToward(g.getPlayer()));
+				Attack attack;
+				int attackKey=0;
+				if(percent >= 30)
+				{
+					attackKey=0;
+				}
+				else if(percent >= 10)
+				{
+					attackKey=1;
+				}
+				else
+				{
+					attackKey=2;
+				}
+				
+				attack = getAttack(attackKey);
+				
+				setAttackFrames(attack.getStillTime());
+				
+				attack.switchXY();
+				gameAttacks.add(attack);
+				
+				
+				try
+				{
+					ParkViewProtector.playSound(attack.getName()+".wav");
+				}
+				catch(Exception e)
+				{
+					System.out.println("The attack has no sound.");
+				}
+				
+				setAgainFrames(attack.getReuse());
+			}
+		}
+		else if(!isStunned() && !isAttacking())
+		{
+			moveToward(game.getPlayer(),(int)(speed));
+		}
+		recover();
+		
+		handleAttacks();
+	}
+
 	public FatMan(Game g,int x, int y, int hp, int maxHp, double speed)
 	{
 		super(g,x,y,hp,maxHp,speed);
@@ -57,13 +110,13 @@ public class FatMan extends Boss
 		{
 			case 0:
 				name="choco";
-				damage=5;
+				damage=3;
 				tp=0;
 				type=Type.FRONT;
 				speed=40;
 				duration=300;
-				reuse=10;
-				stillTime=10;
+				reuse=30;
+				stillTime=30;
 				hits=hits;
 				hitDelay=0;
 				status=status;
@@ -73,7 +126,7 @@ public class FatMan extends Boss
 				break;
 			case 1:
 				name="tape";
-				damage=10;
+				damage=2;
 				tp=0;
 				type=Type.FRONT;
 				speed=0;
@@ -88,78 +141,23 @@ public class FatMan extends Boss
 				AoE=true;
 				break;
 			case 2:
-				name="goodnight";
-				damage=3;
-				tp=30;
+				name="rage";
+				damage=1;
+				tp=0;
 				type=Type.CENTER;
 				speed=0;
-				duration=0;
-				reuse=duration;
+				duration=100;
+				reuse=200;
 				stillTime=duration;
-				hits=hits;
+				hits=10;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=100;
+				statusLength=50;
 				isStudent=isStudent;
 				AoE=true;
 				break;
 		}
-		attack=new Attack(game,this.getBounds().getX(), this.getBounds().getY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
-	}
-	
-	public void step()
-	{
-		ArrayList <Attack> gameAttacks = game.getAttacks();
-		int rand = (int)(Math.random()*1000);
-		if(rand > 100)
-		{
-			if(!isStunned() && !isAttacking())
-			{
-				moveToward(game.getPlayer(),(int)(speed));
-			}
-		}
-		else
-		{
-			if(!isAttacking())
-			{
-			Attack bossAttack;
-			int attackKey=0;
-			if(rand >= 30)
-			{
-				attackKey=0;
-			}
-			else if(rand >= 10)
-			{
-				attackKey=1;
-			}
-			else
-			{
-				attackKey=2;
-			}
-			
-			bossAttack = getAttack(attackKey);
-			
-			setAttackFrames(bossAttack.getStillTime());
-			
-			bossAttack.switchXY();
-			gameAttacks.add(bossAttack);
-			
-			
-			try
-			{
-				ParkViewProtector.playSound(bossAttack.getName()+".wav");
-			}
-			catch(Exception e)
-			{
-				System.out.println("The attack has no sound.");
-			}
-			
-			// set delay
-			//attackDelay			= bossAttack.getReuse();
-			setAgainFrames(bossAttack.getReuse());
-			}
-		}
-		recover();
 	}
 }

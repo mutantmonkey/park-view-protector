@@ -10,6 +10,8 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.javateerz.EasyGL.GLRect;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Couple extends Character
@@ -74,7 +76,7 @@ public class Couple extends Character
 
 	public void step(Game game)
 	{
-		if(likesWall && !(aggro && inRange(game.getPlayer(), 50)))
+		if(likesWall && game.getWalls().size()>0 && !(aggro && inRange(game.getPlayer(), 50)))
 		{
 			// find nearest wall
 			if(wallId == 0)
@@ -96,6 +98,7 @@ public class Couple extends Character
 		{
 			if(inRange(game.getPlayer(), 50))
 			{
+				setDirection(getDirectionToward(game.getPlayer()));
 				attack();
 			}
 			else if(inRange(game.getPlayer(),200))
@@ -186,8 +189,8 @@ public class Couple extends Character
 			if(currAttack.getBounds().intersects(getBounds()) &&
 					isVulnerable() && currAttack.isStudent())
 			{
-				game.hitFX((int)(getBounds().getCenterX()-getBounds().getWidth()/4),
-						(int)(getBounds().getCenterY()-getBounds().getHeight()/4));
+				game.hitFX((int)(getBounds().getCenterX()),
+						(int)(getBounds().getCenterY()));
 				adjustHp(-currAttack.getDamage());
 				setInvulFrames(currAttack.getHitDelay());
 				
@@ -314,5 +317,18 @@ public class Couple extends Character
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
 		os.defaultWriteObject();
+	}
+
+	public void showCharge()
+	{
+		GLRect rect				= new GLRect((int) x, (int) y, (int) getBounds().getWidth(),
+				(int) getBounds().getHeight());
+		rect.setColor(new Color(ParkViewProtector.COLOR_BG_1.getRed(),
+				ParkViewProtector.COLOR_BG_1.getGreen(),
+				ParkViewProtector.COLOR_BG_1.getBlue(), 5));
+		rect.draw();
+
+		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()), (double)getHp()/getMaxHp());
+		chargeBar.draw((int)x,(int)y);
 	}
 }

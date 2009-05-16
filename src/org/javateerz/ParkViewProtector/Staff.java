@@ -166,8 +166,8 @@ public abstract class Staff extends Character
 			
 			if(attack.getBounds().intersects(getBounds()) && isVulnerable() && !attack.isStudent())
 			{
-				game.hitFX((int)(getBounds().getCenterX()-getBounds().getWidth()/4),
-						(int)(getBounds().getCenterY()-getBounds().getHeight()/4));
+				game.hitFX((int)(getBounds().getCenterX()),
+						(int)(getBounds().getCenterY()));
 				adjustHp(-attack.getDamage());
 				if(getHp()>getMaxHp())
 					setHp(getMaxHp());
@@ -197,7 +197,7 @@ public abstract class Staff extends Character
 		ArrayList<Attack> attacks=game.getAttacks();
 		Attack attack;
 		attack			= getAttack(key);
-		if(getTp()>=attack.getTp() && isAgain())
+		if(getTp()>=attack.getTp() && isAgain() && !isStunned())
 		{
 			setAttackFrames(attack.getStillTime());
 			adjustTp(-attack.getTp());
