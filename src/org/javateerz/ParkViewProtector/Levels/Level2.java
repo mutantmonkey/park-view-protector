@@ -23,6 +23,11 @@ public class Level2 implements Level
 		game									= g;
 	}
 	
+	public String getMusic()
+	{
+		return "bloated.ogg";
+	}
+	
 	public ArrayList<Student> getStudents()
 	{
 		ArrayList<Student> students	= new ArrayList<Student>();

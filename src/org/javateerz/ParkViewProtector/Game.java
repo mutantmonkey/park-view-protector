@@ -83,9 +83,6 @@ public class Game extends GameScreen implements Serializable
 		
 		stats						= new Statistics();
 		
-		// load background music
-		setMusic("heavyset.ogg");
-		
 		// initialize level
 		initLevel();
 		
@@ -162,6 +159,9 @@ public class Game extends GameScreen implements Serializable
 		}
 		
 		walls						= lev.getWalls();
+		
+		// initialize music
+		setMusic(lev.getMusic());
 	}
 	
 	public void show()

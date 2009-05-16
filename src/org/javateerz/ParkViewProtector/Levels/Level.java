@@ -8,6 +8,7 @@ import org.javateerz.ParkViewProtector.Wall;
 
 public interface Level
 {
+	public String getMusic();
 	public ArrayList<Student> getStudents();
 	public ArrayList<Wall> getWalls();
 	public Boss getBoss();
