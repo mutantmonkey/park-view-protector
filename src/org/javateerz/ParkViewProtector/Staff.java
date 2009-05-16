@@ -12,8 +12,6 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
-import org.lwjgl.input.Keyboard;
-
 public abstract class Staff extends Character
 {
 	private static final long serialVersionUID = 3L;
