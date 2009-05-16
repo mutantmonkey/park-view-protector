@@ -1,7 +1,5 @@
 /**
  * Park View Protector
- * 
- * This class is a subclass of Canvas so we can use accelerated graphics
  *
  * @author	Jamie of the Javateerz
  */

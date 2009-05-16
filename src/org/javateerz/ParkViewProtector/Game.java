@@ -9,12 +9,11 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
-import org.javateerz.EasyGL.GLRect;
 import org.javateerz.ParkViewProtector.Levels.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.SlickException;
 
 public class Game extends GameScreen implements Serializable
 {
@@ -439,6 +438,15 @@ public class Game extends GameScreen implements Serializable
 	 */
 	public void gameOver()
 	{
+		try
+		{
+			ParkViewProtector.playSound("game_over.wav");
+		}
+		catch(SlickException e1)
+		{
+			System.out.println("Couldn't play 'game over' sound");
+		}
+		
 		Sprite gameOver					= DataStore.INSTANCE.getSprite("game_over.png");
 		
 		gameOver.draw(0, 0);
