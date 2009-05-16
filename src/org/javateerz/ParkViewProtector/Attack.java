@@ -12,7 +12,6 @@ import java.io.*;
 
 public class Attack extends Movable
 {
-	private double 		speed;
 	private String 		name;
 	private int 		damage,
 						tp, 

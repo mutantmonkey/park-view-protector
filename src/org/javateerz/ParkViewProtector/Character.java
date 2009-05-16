@@ -6,8 +6,6 @@
 
 package org.javateerz.ParkViewProtector;
 
-import java.util.ArrayList;
-
 import org.newdawn.slick.geom.Rectangle;
 
 public abstract class Character extends Movable
