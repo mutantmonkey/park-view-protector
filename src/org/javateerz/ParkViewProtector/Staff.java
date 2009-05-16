@@ -19,6 +19,8 @@ public abstract class Staff extends Character
 	private static final int TP_REGEN = 1;
 	
 	private String name;
+	private boolean invulHit=false;
+	private boolean stunHit=false;
 	
 	private int tp;
 	private int maxTp;
@@ -62,6 +64,26 @@ public abstract class Staff extends Character
 		recover();
 		tpRegen();
 		handleAttack();
+	}
+	
+	public void setInvulHit(boolean hit)
+	{
+		invulHit=hit;
+	}
+	
+	public boolean getInvulHit()
+	{
+		return invulHit;
+	}
+	
+	public void setStunHit(boolean hit)
+	{
+		stunHit=hit;
+	}
+	
+	public boolean getStunHit()
+	{
+		return stunHit;
 	}
 
 	protected void updateSprite()
@@ -157,6 +179,7 @@ public abstract class Staff extends Character
 		Attack attack;
 		
 		ArrayList<Attack> attacks=game.getAttacks();
+		ArrayList<StatusIcon> icons=game.getIcons();
 		
 		for(int j = 0; j < attacks.size(); j++)
 		{
@@ -171,20 +194,25 @@ public abstract class Staff extends Character
 					setHp(getMaxHp());
 				
 				if(attack.getStatus()==Status.INVULNERABLE)
-					setInvulFrames(attack.getStatusDuration());
-				else
-					setInvulFrames(attack.getHitDelay());
-				
-				if(!attack.isAoE())
 				{
-					attacks.remove(j);
+					setInvulHit(true);
+					setInvulFrames(attack.getStatusDuration());
+				}
+				else
+				{
+					setInvulFrames(attack.getHitDelay());
 				}
 				
 				if(attack.getStatus()==Status.STUN)
 				{
+					setStunHit(true);
 					setStunFrames(attack.getStatusDuration());
 				}
-				
+
+				if(!attack.isAoE())
+				{
+					attacks.remove(j);
+				}
 				return true;
 			}
 		}

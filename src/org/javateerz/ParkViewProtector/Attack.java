@@ -294,14 +294,39 @@ public class Attack extends Movable
 		if(type==Type.FRONT)
 		{
 			if(direction==Direction.EAST)
-				x+=(int) Math.round(30);
+				x+=(int) Math.round(Type.CLOSE);
 			else if(direction==Direction.WEST)
-				x-=(int) Math.round(30);
+				x-=(int) Math.round(Type.CLOSE);
 			else if(direction==Direction.SOUTH)
-				y+=(int) Math.round(30);
+				y+=(int) Math.round(Type.CLOSE);
 			else
-				y-=(int) Math.round(30);
+				y-=(int) Math.round(Type.CLOSE);
 		}
+		
+		else if(type==Type.MID_FRONT)
+		{
+			if(direction==Direction.EAST)
+				x+=(int) Math.round(Type.MID);
+			else if(direction==Direction.WEST)
+				x-=(int) Math.round(Type.MID);
+			else if(direction==Direction.SOUTH)
+				y+=(int) Math.round(Type.MID);
+			else
+				y-=(int) Math.round(Type.MID);
+		}
+		
+		else if(type==Type.FAR_FRONT)
+		{
+			if(direction==Direction.EAST)
+				x+=(int) Math.round(Type.FAR);
+			else if(direction==Direction.WEST)
+				x-=(int) Math.round(Type.FAR);
+			else if(direction==Direction.SOUTH)
+				y+=(int) Math.round(Type.FAR);
+			else
+				y-=(int) Math.round(Type.FAR);
+		}
+		
 		else if(type==Type.BACK)
 		{
 			if(direction==Direction.EAST)
@@ -339,6 +364,11 @@ public class Attack extends Movable
 class Type
 {
 	public static final int FRONT=0;
-	public static final int BACK=1;
-	public static final int CENTER=2;	
+	public static final int MID_FRONT=1;
+	public static final int FAR_FRONT=2;
+	public static final int BACK=3;
+	public static final int CENTER=4;
+	public static final int CLOSE=20;
+	public static final int MID=50;
+	public static final int FAR=100;
 }

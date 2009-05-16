@@ -16,8 +16,8 @@ public class FatMan extends Boss
 	public void step(Game g)
 	{
 		ArrayList <Attack> gameAttacks = g.getAttacks();
-		int percent=(int)(Math.random()*100);
-		if(inRange(g.getPlayer(),120))
+		int percent=(int)(Math.random()*1000);
+		if(inRange(g.getPlayer(),120) && percent<=100)
 		{
 			if(!isStunned() && !isAttacking() && isAgain())
 			{
@@ -57,7 +57,7 @@ public class FatMan extends Boss
 				setAgainFrames(attack.getReuse());
 			}
 		}
-		else if(!isStunned() && !isAttacking())
+		else if(!isStunned() && !isAttacking() && percent>100)
 		{
 			moveToward(game.getPlayer(),(int)(speed));
 		}
@@ -113,7 +113,7 @@ public class FatMan extends Boss
 				damage=3;
 				tp=0;
 				type=Type.FRONT;
-				speed=40;
+				speed=20;
 				duration=300;
 				reuse=30;
 				stillTime=30;
@@ -128,7 +128,7 @@ public class FatMan extends Boss
 				name="tape";
 				damage=2;
 				tp=0;
-				type=Type.FRONT;
+				type=Type.FAR_FRONT;
 				speed=0;
 				duration=20;
 				reuse=duration;

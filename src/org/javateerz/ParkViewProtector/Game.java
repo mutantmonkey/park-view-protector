@@ -31,6 +31,10 @@ public class Game extends GameScreen implements Serializable
 	private int itemDelay						= 0;
 	public static final int TP_REGEN			= 5;
 	public static int tpRegen					= 0;
+	public static final int ICON_X_OFFSET		= 28;
+	public static final int ICON_Y_OFFSET		= 38;
+	public static final int ICON_SPACING		= 30;
+	
 	////////////////////////////////////////////////////
 	public static final int CHARGE_REGEN		= 10;
 	public static int chargeRegen				= 0;
@@ -71,6 +75,8 @@ public class Game extends GameScreen implements Serializable
 	private ArrayList<VisualFX> fx				= new ArrayList<VisualFX>();
 	private ArrayList<Wall> walls;
 	private ArrayList<StatusIcon> icons			= new ArrayList<StatusIcon>();
+	private StatusIcon stun;
+	private StatusIcon invul;
 
 	/**
 	 * Constructor
@@ -125,6 +131,16 @@ public class Game extends GameScreen implements Serializable
 		return icons;
 	}
 	
+	public boolean hasStatus(int status)
+	{
+		for(int i=0; i<icons.size(); i++)
+		{
+			if(icons.get(i).getStatus()==status)
+				return true;
+		}
+		return false;
+	}
+	
 	public Boss getBoss()
 	{
 		return boss;
@@ -140,6 +156,8 @@ public class Game extends GameScreen implements Serializable
 	{
 		this.player					= player;
 		this.player.moveTo(PLAYER_X, PLAYER_Y);
+		stun= new StatusIcon(this, Status.STUN);
+		invul= new StatusIcon(this, Status.INVULNERABLE);
 	}
 	
 	/**
@@ -417,6 +435,27 @@ public class Game extends GameScreen implements Serializable
 		
 		if(player.getHp()<=0)
 			gameOver();
+		
+
+		if(!hasStatus(Status.STUN) && player.isStunned())
+		{
+			icons.add(stun);
+		}
+		
+		if(!hasStatus(Status.INVULNERABLE) && !player.isVulnerable())
+		{
+			icons.add(invul);
+		}
+		
+		for(int i=0; i<icons.size(); i++)
+		{
+			icons.get(i).setTime();
+			icons.get(i).draw(ICON_X_OFFSET+i*ICON_SPACING, ICON_Y_OFFSET);
+			if(icons.get(i).isOver())
+			{
+				icons.remove(i);
+			}
+		}
 	}
 	
 	public void hitFX(int x, int y)

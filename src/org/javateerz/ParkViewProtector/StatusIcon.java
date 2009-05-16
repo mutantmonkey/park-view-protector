@@ -3,11 +3,14 @@ package org.javateerz.ParkViewProtector;
 import java.util.ArrayList;
 
 import org.javateerz.EasyGL.GLString;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 
 public class StatusIcon
 {
-protected Game game;
+	protected Game game;
 	
 	protected double speed;
 	
@@ -16,9 +19,12 @@ protected Game game;
 	protected double y;
 	
 	protected int status;
-	protected int index;
 	protected Staff player;
-	protected ArrayList<StatusIcon> icons;
+	
+	protected int time;
+	
+	protected Font font = new TrueTypeFont(new java.awt.Font("Monospaced",
+			java.awt.Font.PLAIN, 10), false);
 	
 	protected transient Sprite sprite;
 	
@@ -30,21 +36,16 @@ protected Game game;
 	 * @param game Instance of Game
 	 * @param x
 	 * @param y
-	 * @param speed
+	 * @param status
 	 */
-	public StatusIcon(Game game, double x, double y, int status)
+	public StatusIcon(Game game, int status)
 	{
 		this.game	= game;
 		
-		this.x		= x;
-		this.y		= y;
-		
 		this.status = status;
 		this.player	= game.getPlayer();
-		icons		= game.getIcons();
-		index		= game.getIcons().indexOf(this);
-		
-		this.sprite	= DataStore.INSTANCE.getSprite("placeholder.png");
+		setTime();
+		this.sprite	= DataStore.INSTANCE.getSprite("status/"+status+".png");
 	}
 	
 	/**
@@ -75,6 +76,30 @@ protected Game game;
 		return y;
 	}
 	
+	public int getStatus()
+	{
+		return status;
+	}
+	
+	public void setTime()
+	{
+		if(status==Status.INVULNERABLE)
+		{
+			time=player.getInvulFrames();
+		}
+		else if(status==Status.STUN)
+		{
+			time=player.getStunFrames();
+		}
+	}
+	
+	public boolean isOver()
+	{
+		if(time<=0)
+			return true;
+		return false;
+	}
+	
 	/**
 	 * @return The bounding box of the object
 	 */
@@ -89,17 +114,14 @@ protected Game game;
 	/**
 	 * Called by main game loop, draws the object's sprite on the screen
 	 */
-	public void draw()
+	public void draw(int x, int y)
 	{
-		sprite.draw((int) x + index * sprite.getWidth(), (int) y);
-		int count=0;
-		if(status==Status.STUN)
-			count=player.getStunFrames();
-		else if(status==Status.INVULNERABLE)
-			count=player.getInvulFrames();
+		sprite.draw(x, y);
 		
-		GLString frames = new GLString(count+"");
-		frames.draw((int) x + index * sprite.getWidth(), (int) y);
+		GLString frames = new GLString(time+"");
+		frames.setColor(Color.black);
+		frames.setFont(font);
+		frames.draw(x+1, y-2);
 	}
 
 	/**
@@ -108,7 +130,14 @@ protected Game game;
 	 */
 	protected void updateSprite()
 	{
-		sprite	= DataStore.INSTANCE.getSprite("placeholder.png");
+		try
+		{
+			sprite	= DataStore.INSTANCE.getSprite("status/"+ status +".png");
+		}
+		catch(Exception e)
+		{
+			sprite = DataStore.INSTANCE.getSprite("status/testStatus.png");
+		}
 	}
 
 	/**
