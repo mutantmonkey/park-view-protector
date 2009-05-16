@@ -169,7 +169,11 @@ public abstract class Staff extends Character
 				adjustHp(-attack.getDamage());
 				if(getHp()>getMaxHp())
 					setHp(getMaxHp());
-				setInvulFrames(attack.getHitDelay());
+				
+				if(attack.getStatus()==Status.INVULNERABLE)
+					setInvulFrames(attack.getStatusDuration());
+				else
+					setInvulFrames(attack.getHitDelay());
 				
 				if(!attack.isAoE())
 				{
