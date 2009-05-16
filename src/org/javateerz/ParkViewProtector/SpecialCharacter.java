@@ -72,7 +72,7 @@ public class SpecialCharacter extends Staff
 		{
 			case 0:
 				name="honk";
-				damage=20;
+				damage=10;
 				tp=10;
 				type=Type.FRONT;
 				speed=0;
@@ -82,23 +82,23 @@ public class SpecialCharacter extends Staff
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=40;
+				statusLength=10;
 				isStudent=isStudent;
 				AoE=true;
 				break;
 			case 1:
-				name="cake"; //test purposes
-				damage=-3;
+				name="cake";
+				damage=-60;
 				type=Type.CENTER;
 				tp=250;
 				speed=0;
 				duration=40;
 				reuse=10;
 				stillTime=stillTime;
-				hits=20;
+				hits=1;
 				hitDelay=duration/hits;
 				status=Status.INVULNERABLE;
-				statusLength=100;
+				statusLength=200;
 				isStudent=false;
 				AoE=true;
 				break;
@@ -114,7 +114,7 @@ public class SpecialCharacter extends Staff
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=1000;
+				statusLength=300;
 				isStudent=isStudent;
 				AoE=true;
 				break;
