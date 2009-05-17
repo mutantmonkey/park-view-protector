@@ -187,7 +187,7 @@ public class Couple extends Character
 			currAttack		= attacks.get(j);
 			
 			if(currAttack.getBounds().intersects(getBounds()) &&
-					isVulnerable() && currAttack.isStudent())
+					isVulnerable() && currAttack.isEnemy())
 			{
 				game.hitFX((int)(getBounds().getCenterX()),
 						(int)(getBounds().getCenterY()));
@@ -268,7 +268,7 @@ public class Couple extends Character
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
-		boolean 	isStudent=false,
+		boolean 	isEnemy=false,
 					AoE=false;
 		
 		name="honk";
@@ -283,10 +283,10 @@ public class Couple extends Character
 		hitDelay=duration/hits;
 		status=status;
 		statusLength=statusLength;
-		isStudent=isStudent;
+		isEnemy=isEnemy;
 		AoE=true;
 		
-		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isEnemy, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		if(inRange(game.getPlayer(),50) && isAgain())
 		{
 			setAttackFrames(attack.getStillTime());
@@ -319,7 +319,7 @@ public class Couple extends Character
 		os.defaultWriteObject();
 	}
 
-	public void showCharge()
+	public void showHp()
 	{
 		GLRect rect				= new GLRect((int) x, (int) y, (int) getBounds().getWidth(),
 				(int) getBounds().getHeight());

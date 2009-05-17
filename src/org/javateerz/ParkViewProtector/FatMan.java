@@ -3,13 +3,14 @@ import java.util.ArrayList;
 
 public class FatMan extends Boss
 {
-	String myMove;
+	public static final int MAX_HP	= 200;
+	public static final int SPEED	= 1;
 	
 	private static final long serialVersionUID = 1L;
 	
-	public FatMan(Game g,int x,int y)
+	public FatMan(Game game,int x,int y)
 	{
-		super(g,x,y,100,100,1.0);
+		super(game, x, y, MAX_HP, MAX_HP, SPEED);
 		updateSprite();
 	}
 	

@@ -422,7 +422,7 @@ public class Game extends GameScreen implements Serializable
 		
 		if(Keyboard.isKeyDown(KeyboardConfig.SHOW_CHARGES))
 		{
-			showCharges();
+			showHp();
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
@@ -508,13 +508,13 @@ public class Game extends GameScreen implements Serializable
 	/**
 	 * Shows the charges of the students
 	 */
-	public void showCharges()
+	public void showHp()
 	{
 		for(int i = 0;i < students.size();i++)
 		{
 			if(students.get(i).getHp() > 0)
 			{
-				students.get(i).showCharge();
+				students.get(i).showHp();
 			}
 		}
 		
@@ -522,12 +522,12 @@ public class Game extends GameScreen implements Serializable
 		{
 			if(couples.get(i).getHp()>0)
 			{
-				couples.get(i).showCharge();
+				couples.get(i).showHp();
 			}
 		}
 		
 		if(boss.getHp()>0)
-			boss.showCharge();
+			boss.showHp();
 	}
 	
 	/**

@@ -16,47 +16,47 @@ public class Attack extends Movable
 	private int 		damage,
 						tp, 
 						duration, 
-						time=0, 
+						time = 0, 
 						status, 
 						statusDuration, 
 						stillTime, 
 						hits, 
 						hitDelay, 
 						reuse;
-	// Target: True=Student, False=Staff
-	private boolean 	isStudent, 
+	private boolean 	isEnemy, 
 						AoE;
 	private int 		type;
 	
 	private static final long serialVersionUID = 4L;
 	
 	/**
+	 * Create a new Attack
 	 * 
-	 * @param x	: The x coordinate
-	 * @param y: The y coordinate
-	 * @param speed: The speed the attack travels
-	 * @param direction: Direction of the attack
-	 * @param name: Name of the attack
-	 * @param isStudent: If true, the attack effects students
-	 * @param AoE: If true, the attack will not disappear upon hitting a target
-	 * @param damage: The damage the attack will deal
-	 * @param tp: The amount of TP the attack consumes
-	 * @param duration: The duration the attack stays on screen
-	 * @param type: The placement of the attack
-	 * @param statusEffect: The status effect the attack induces
-	 * @param statusDuration: The length of the status effect
-	 * @param stillTime: The duration the attack makes the user stand still
-	 * @param hits: The number of hits the attack deals
-	 * @param hitDelay: The time before the target can be hit again after being hit
-	 * @param reuse: The time the user can perform another attack
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @param speed The speed the attack travels
+	 * @param direction Direction of the attack
+	 * @param name Name of the attack
+	 * @param isEnemy If true, the attack effects students
+	 * @param AoE If true, the attack will not disappear upon hitting a target
+	 * @param damage The damage the attack will deal
+	 * @param tp The amount of TP the attack consumes
+	 * @param duration The duration the attack stays on screen
+	 * @param type The placement of the attack
+	 * @param statusEffect The status effect the attack induces
+	 * @param statusDuration The length of the status effect
+	 * @param stillTime The duration the attack makes the user stand still
+	 * @param hits The number of hits the attack deals
+	 * @param hitDelay The time before the target can be hit again after being hit
+	 * @param reuse The time the user can perform another attack
 	 */
-	public Attack(	Game g,
+	public Attack(	Game game,
 					double x,
 					double y,
 					double speed,
 					int direction,
 					String name,
-					boolean isStudent,
+					boolean isEnemy,
 					boolean AoE,
 					int damage,
 					int tp,
@@ -69,31 +69,51 @@ public class Attack extends Movable
 					int hitDelay,
 					int reuse)
 	{
-		super(g, x, y, speed);
-		this.type=type;
-		this.name=name;
-		this.damage=damage;
-		this.tp=tp;
-		this.duration=duration;
-		this.direction=direction;
-		this.stillTime=stillTime;
-		this.status=statusEffect;
-		this.statusDuration=statusDuration;
-		this.AoE=AoE;
-		this.hits=hits;
-		this.hitDelay=hitDelay;
-		this.reuse=reuse;
-		this.isStudent=isStudent;
+		super(game, x, y, speed);
+		this.type			= type;
+		this.name			= name;
+		this.damage			= damage;
+		this.tp				= tp;
+		this.duration		= duration;
+		this.direction		= direction;
+		this.stillTime		= stillTime;
+		this.status			= statusEffect;
+		this.statusDuration	= statusDuration;
+		this.AoE			= AoE;
+		this.hits			= hits;
+		this.hitDelay		= hitDelay;
+		this.reuse			= reuse;
+		this.isEnemy		= isEnemy;
 		switchXY();
 	}
 	
-	public Attack(	Game g,
+	/**
+	 * Create a new Attack that does not require TP
+	 * 
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @param speed The speed the attack travels
+	 * @param direction Direction of the attack
+	 * @param name Name of the attack
+	 * @param isEnemy If true, the attack effects students
+	 * @param AoE If true, the attack will not disappear upon hitting a target
+	 * @param damage The damage the attack will deal
+	 * @param duration The duration the attack stays on screen
+	 * @param type The placement of the attack
+	 * @param statusEffect The status effect the attack induces
+	 * @param statusDuration The length of the status effect
+	 * @param stillTime The duration the attack makes the user stand still
+	 * @param hits The number of hits the attack deals
+	 * @param hitDelay The time before the target can be hit again after being hit
+	 * @param reuse The time the user can perform another attack
+	 */
+	public Attack(	Game game,
 			double x,
 			double y,
 			double speed,
 			int direction,
 			String name,
-			boolean isStudent,
+			boolean isEnemy,
 			boolean AoE,
 			int damage,
 			int duration,
@@ -105,245 +125,242 @@ public class Attack extends Movable
 			int hitDelay,
 			int reuse)
 		{
-			super(g, x, y, speed);
-			this.type=type;
-			this.name=name;
-			this.damage=damage;
-			this.duration=duration;
-			this.direction=direction;
-			this.stillTime=stillTime;
-			this.status=statusEffect;
-			this.statusDuration=statusDuration;
-			this.AoE=AoE;
-			this.hits=hits;
-			this.hitDelay=hitDelay;
-			this.reuse=reuse;
-			this.isStudent=isStudent;
+			super(game, x, y, speed);
+			this.type			= type;
+			this.name			= name;
+			this.damage			= damage;
+			this.duration		= duration;
+			this.direction		= direction;
+			this.stillTime		= stillTime;
+			this.status			= statusEffect;
+			this.statusDuration	= statusDuration;
+			this.AoE			= AoE;
+			this.hits			= hits;
+			this.hitDelay		= hitDelay;
+			this.reuse			= reuse;
+			this.isEnemy		= isEnemy;
 			switchXY();
 		}
 	
 	/**
-	 * Sets the attack's graphic
-	 */
-	protected void updateSprite()
-	{
-		try
-		{
-			if(direction==Direction.NORTH)
-			{
-				this.sprite		= DataStore.INSTANCE.getSprite("attack/"+name+"_n.png");
-			}
-			else if(direction==Direction.SOUTH)
-			{
-				this.sprite		= DataStore.INSTANCE.getSprite("attack/"+name+"_s.png");
-			}
-			else if(direction==Direction.WEST)
-			{
-				this.sprite		= DataStore.INSTANCE.getSprite("attack/"+name+"_w.png");
-			}
-			else
-			{
-				this.sprite		= DataStore.INSTANCE.getSprite("attack/"+name+"_e.png");
-			}
-		}
-		catch(Exception e)
-		{
-			try
-			{
-				this.sprite		= DataStore.INSTANCE.getSprite("attack/"+name+".png");
-			}
-			catch(Exception e1)
-			{
-				if(direction==Direction.NORTH)
-				{
-					this.sprite		= DataStore.INSTANCE.getSprite("attack/attack"+"_n.png");
-				}
-				else if(direction==Direction.SOUTH)
-				{
-					this.sprite		= DataStore.INSTANCE.getSprite("attack/attack"+"_s.png");
-				}
-				else if(direction==Direction.WEST)
-				{
-					this.sprite		= DataStore.INSTANCE.getSprite("attack/attack"+"_w.png");
-				}
-				else
-				{
-					this.sprite		= DataStore.INSTANCE.getSprite("attack/attack"+"_e.png");
-				}
-			}
-		}
-	}
-
-	/**
 	 * @return The name of the attack
 	 */
 	public String getName()
-	{
-		return name;
-	}
+	{	return name;}
 	
 	/**
 	 * @return The damage the attack deals
 	 */
 	public int getDamage()
-	{
-		return damage;
-	}
+	{	return damage;}
 	
 	/**
 	 * @return The duration the attack stays on screen
 	 */
 	public int getDuration()
-	{
-		return duration;
-	}
+	{	return duration;}
 
 	/**
 	 * @return The duration of the status effect
 	 */
 	public int getStatusDuration()
-	{
-		return statusDuration;
-	}
+	{	return statusDuration;}
+
+	/**
+	 * @return The number of hits the attack deals
+	 */
+	public int getHits()
+	{	return hits;}
 
 	/**
 	 * @return The duration that the user cannot perform an action
 	 */
 	public int getStillTime()
-	{
-		return stillTime;
-	}
+	{	return stillTime;}
 
 	/**
 	 * @return The TP attack consumes
 	 */
 	public int getTp()
-	{
-		return tp;
-	}
+	{	return tp;}
 	
 	/**
 	 * @return The status effect the attack induces
 	 */
 	public int getStatus()
-	{
-		return status;
-	}
+	{	return status;}
 	
 	/**
 	 * @return The duration before the user can perform another attack
 	 */
 	public int getReuse()
-	{
-		return reuse;
-	}
+	{	return reuse;}
 	
 	/**
 	 * @return If true, the attack will not disappear upon hitting a target
 	 */
 	public boolean isAoE()
-	{
-		return AoE;
-	}
+	{	return AoE;}
 	
 	/**
-	 * @return The duration before the target will get hit again by the same attack
+	 * @return The duration before the target can be hit again
 	 */
 	public int getHitDelay()
-	{
-		return hitDelay;
-	}
+	{	return hitDelay;}
 	
 	/**
 	 * @return If true, only students will take damage
 	 */
-	public boolean isStudent()
-	{
-		return isStudent;
-	}
+	public boolean isEnemy()
+	{	return isEnemy;}
 	
 	/**
 	 * Moves the attack and increases time by 1.
+	 * 
+	 * @param dist Distance to move
 	 */
 	public void move(int dist)
 	{
 		super.move(dist);
 		time++;
 	}
-	
+
+	/**
+	 * Sets the direction and centers the attack
+	 */
+	public void switchXY()
+	{
+		// set the graphic
+		updateSprite();
+		
+		// centers the attack
+		x = (x) - (int) this.getBounds().getWidth()/4;
+		y = (y) - (int) this.getBounds().getHeight()/4;
+		
+		// the attack will be slightly in front of the character
+		if(type == Type.FRONT)
+		{
+			if(direction == Direction.EAST)
+				x += (int) Math.round(Type.CLOSE);
+			else if(direction == Direction.WEST)
+				x -= (int) Math.round(Type.CLOSE);
+			else if(direction==Direction.SOUTH)
+				y += (int) Math.round(Type.CLOSE);
+			else
+				y -= (int) Math.round(Type.CLOSE);
+		}
+		
+		// the attack will be in front of the character
+		else if(type == Type.MID_FRONT)
+		{
+			if(direction == Direction.EAST)
+				x += (int) Math.round(Type.MID);
+			else if(direction == Direction.WEST)
+				x -= (int) Math.round(Type.MID);
+			else if(direction == Direction.SOUTH)
+				y += (int) Math.round(Type.MID);
+			else
+				y -= (int) Math.round(Type.MID);
+		}
+		
+		// the attack will be far in front of the character
+		else if(type == Type.FAR_FRONT)
+		{
+			if(direction == Direction.EAST)
+				x += (int) Math.round(Type.FAR);
+			else if(direction == Direction.WEST)
+				x -= (int) Math.round(Type.FAR);
+			else if(direction == Direction.SOUTH)
+				y += (int) Math.round(Type.FAR);
+			else
+				y -= (int) Math.round(Type.FAR);
+		}
+		
+		// the attack will appear behind the character
+		else if(type == Type.BACK)
+		{
+			if(direction == Direction.EAST)
+				x -= (int) Math.round(30);
+			else if(direction == Direction.WEST)
+				x += (int) Math.round(30);
+			else if(direction == Direction.SOUTH)
+				y -= (int) Math.round(30);
+			else
+				y += (int) Math.round(30);
+		}
+		
+		// the attack appears on the center of the character
+		else if(type == Type.CENTER)
+		{
+			//Impletment never
+		}
+	}
+
 	/**
 	 * @return If the attack has completed
 	 */
 	public boolean over()
 	{
-		if(time>duration)
+		if(time > duration)
 			return true;
 		return false;
 	}
 	
 	/**
-	 * Sets the direction of the attack and center it on the character
+	 * Sets the attack's graphic
 	 */
-	public void switchXY()
+	protected void updateSprite()
 	{
-		updateSprite();
-		
-		x = (x)-(int) this.getBounds().getWidth()/4;
-		y = (y)-(int) this.getBounds().getHeight()/4;
-		
-		if(type==Type.FRONT)
+		// search for the attack graphic in the direction it is facing
+		try
 		{
-			if(direction==Direction.EAST)
-				x+=(int) Math.round(Type.CLOSE);
-			else if(direction==Direction.WEST)
-				x-=(int) Math.round(Type.CLOSE);
-			else if(direction==Direction.SOUTH)
-				y+=(int) Math.round(Type.CLOSE);
+			if(direction == Direction.NORTH)
+			{
+				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_n.png");
+			}
+			else if(direction == Direction.SOUTH)
+			{
+				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_s.png");
+			}
+			else if(direction == Direction.WEST)
+			{
+				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_w.png");
+			}
 			else
-				y-=(int) Math.round(Type.CLOSE);
+			{
+				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_e.png");
+			}
 		}
-		
-		else if(type==Type.MID_FRONT)
+		catch(Exception e)
 		{
-			if(direction==Direction.EAST)
-				x+=(int) Math.round(Type.MID);
-			else if(direction==Direction.WEST)
-				x-=(int) Math.round(Type.MID);
-			else if(direction==Direction.SOUTH)
-				y+=(int) Math.round(Type.MID);
-			else
-				y-=(int) Math.round(Type.MID);
-		}
-		
-		else if(type==Type.FAR_FRONT)
-		{
-			if(direction==Direction.EAST)
-				x+=(int) Math.round(Type.FAR);
-			else if(direction==Direction.WEST)
-				x-=(int) Math.round(Type.FAR);
-			else if(direction==Direction.SOUTH)
-				y+=(int) Math.round(Type.FAR);
-			else
-				y-=(int) Math.round(Type.FAR);
-		}
-		
-		else if(type==Type.BACK)
-		{
-			if(direction==Direction.EAST)
-				x-=(int) Math.round(30);
-			else if(direction==Direction.WEST)
-				x+=(int) Math.round(30);
-			else if(direction==Direction.SOUTH)
-				y-=(int) Math.round(30);
-			else
-				y+=(int) Math.round(30);
-		}
-		else if(type==Type.CENTER)
-		{
-			//Impletment never
+			// search for the attack that does not have direction specific graphics
+			try
+			{
+				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + ".png");
+			}
+			// set place holder graphic if there is no available graphic
+			catch(Exception e1)
+			{
+				if(direction == Direction.NORTH)
+				{
+					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_n.png");
+				}
+				else if(direction == Direction.SOUTH)
+				{
+					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_s.png");
+				}
+				else if(direction == Direction.WEST)
+				{
+					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_w.png");
+				}
+				else
+				{
+					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_e.png");
+				}
+			}
 		}
 	}
-	
+
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException
 	{
 		os.defaultReadObject();
@@ -363,12 +380,12 @@ public class Attack extends Movable
  */
 class Type
 {
-	public static final int FRONT=0;
-	public static final int MID_FRONT=1;
-	public static final int FAR_FRONT=2;
-	public static final int BACK=3;
-	public static final int CENTER=4;
-	public static final int CLOSE=20;
-	public static final int MID=50;
-	public static final int FAR=100;
+	public static final int FRONT = 0;
+	public static final int MID_FRONT = 1;
+	public static final int FAR_FRONT = 2;
+	public static final int BACK = 3;
+	public static final int CENTER = 4;
+	public static final int CLOSE = 20;
+	public static final int MID = 50;
+	public static final int FAR = 100;
 }

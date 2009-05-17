@@ -185,7 +185,7 @@ public abstract class Staff extends Character
 		{
 			attack		= attacks.get(j);
 			
-			if(attack.getBounds().intersects(getBounds()) && isVulnerable() && !attack.isStudent())
+			if(attack.getBounds().intersects(getBounds()) && isVulnerable() && !attack.isEnemy())
 			{
 				game.hitFX((int)(getBounds().getCenterX()),
 						(int)(getBounds().getCenterY()));

@@ -10,7 +10,10 @@ import org.newdawn.slick.geom.Rectangle;
 
 public abstract class Character extends Movable
 {
-	private static final long serialVersionUID = 4L;
+	private int hpRegenRate					= 0;
+	private static final int HP_REGEN		= 1;
+	private static final int HP_REGEN_RATE	= 80;
+	
 	protected int hp;
 	protected int maxHp;
 	
@@ -26,8 +29,9 @@ public abstract class Character extends Movable
 	protected boolean again		= false;
 	protected Character pushee	= null;
 	
-	//	Keeps track of itemsMemory inquired
 	public ItemBin bin;
+	
+	private static final long serialVersionUID = 4L;
 	
 	/**
 	 * Constructor
@@ -88,6 +92,20 @@ public abstract class Character extends Movable
 			attacking=false;
 		if(againFrames<=0)
 			again=false;
+	}
+	
+	/**
+	 * Recover HP
+	 */
+	public void regain()
+	{
+		hpRegenRate++;
+		if(hpRegenRate>=HP_REGEN_RATE)
+		{
+			hpRegenRate=0;
+			if(getHp() < getMaxHp())
+				adjustHp(HP_REGEN);
+		}
 	}
 	
 	/**

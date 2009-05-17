@@ -9,41 +9,54 @@ public abstract class Boss extends Character
 {
 	private static final long serialVersionUID = 1L;
 	
-	public Boss(Game g, int x, int y, int hp, int maxHp, double speed)
+	private static final int STUN_RESISTANCE=3;
+	
+	/**
+	 * Create a new Boss
+	 * 
+	 * @param game
+	 * @param x
+	 * @param y
+	 * @param hp
+	 * @param maxHp
+	 * @param speed
+	 */
+	public Boss(Game game, int x, int y, int hp, int maxHp, double speed)
 	{
-		super(g,x,y,hp,maxHp,speed);
+		super(game, x, y, hp, maxHp, speed);
 		updateSprite();
 	}
 	
-
 	/**
-	 * Tells the boss to make a decision of what to do.
+	 * Actions the boss takes
 	 * 
-	 * @param boss - the boss to give the move to
+	 * @param game
 	 */
-	public void step(Game g)
+	// FIXME: Actually make this do something.
+	public void step(Game game)
 	{
-		moveToward(g.getPlayer(),(int)(speed));
+		moveToward(game.getPlayer(), (int)(speed));
 		recover();
 	}
 	
-	protected void updateSprite()
-	{
-		sprite = DataStore.INSTANCE.getSprite("big_boss.png");
-	}
-	
 	/**
-	 * Handles players attacks
+	 * The boss attacks with a specified attack
+	 * 
+	 * @param key
 	 */
 	public void attack(int key)
 	{
-		ArrayList<Attack> attacks=game.getAttacks();
+		ArrayList<Attack> attacks = game.getAttacks();
 		Attack attack;
-		attack			= getAttack(key);
-		setAttackFrames(attack.getStillTime());
+		
+		// gets the attack from sub class bosses
+		attack = getAttack(key);
+		
+		// set attack placement
 		attack.switchXY();
 		attacks.add(attack);
-			
+		
+		// searches for attack noise and plays it
 		try
 		{
 			ParkViewProtector.playSound(attack.getName()+".wav");
@@ -53,69 +66,81 @@ public abstract class Boss extends Character
 			System.out.println("The attack has no sound.");
 		}
 		
-		// set delay
+		// set attack frames
+		setAttackFrames(attack.getStillTime());
+		
+		// set delay before able to use another attack
 		setAgainFrames(attack.getReuse());
 	}
 	
 	/**
-	 * Handle any attacks on a student
+	 * Handles an attack on the boss
 	 * 
-	 * @param obj
-	 * @return Whether or not the attack hit the student
+	 * @return If the boss has been hit
 	 */
 	public boolean handleAttacks()
 	{
 		Attack attack;
-		ArrayList<Attack> attacks=game.getAttacks();
-		
-		// hit by an attack?
+		ArrayList<Attack> attacks = game.getAttacks();
+
+		// search for attacks that are hitting the boss
 		for(int j = 0; j < attacks.size(); j++)
 		{
-			attack		= attacks.get(j);
+			attack = attacks.get(j);
 			
-			//The student takes damage in this if loop
+			// if the boss is able to get hit, it will be hit
 			if(attack.getBounds().intersects(getBounds()) && isVulnerable() &&
-					attack.isStudent())
+					attack.isEnemy())
 			{
-				game.hitFX((int)(getBounds().getCenterX()),
-						(int)(getBounds().getCenterY()));
+				// visual effect
+				game.hitFX((int) (getBounds().getCenterX()),
+						(int) (getBounds().getCenterY()));
 				
-				if(attack.getStatus()==Status.STUN && !isStunned())
+				// sets stunned frames
+				if(attack.getStatus() == Status.STUN && !isStunned())
 				{
-					setStunFrames((int)(attack.getStatusDuration()/3));
+					setStunFrames((int) (attack.getStatusDuration()/STUN_RESISTANCE));
 				}
 				
+				// removes attack if not AoE
 				if(!attack.isAoE())
 				{
 					attacks.remove(j);
 				}
 				
-				// FIXME: should be variable depending on strength
+				// boss takes damage
 				if(getHp()>0)
-					adjustHp(-attack.getDamage()/2);
+					adjustHp(-attack.getDamage());
 				
-				//System.out.println("Student took "+ attack.getDamage()/2 + ", now has "+ getCharge());
+				// sets invulnerable frames
 				setInvulFrames(attack.getHitDelay());
 				
 				return true;
 			}
 		}
-		
 		return false;
 	}
-
-	public void showCharge()
+	
+	// display the HP of the boss
+	public void showHp()
 	{
-		GLRect rect				= new GLRect((int) x, (int) y, (int) getBounds().getWidth(),
+		GLRect rect	= new GLRect((int) x, (int) y, (int) getBounds().getWidth(),
 				(int) getBounds().getHeight());
 		rect.setColor(new Color(ParkViewProtector.COLOR_BG_1.getRed(),
 				ParkViewProtector.COLOR_BG_1.getGreen(),
 				ParkViewProtector.COLOR_BG_1.getBlue(), 5));
 		rect.draw();
 
-		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()), (double)getHp()/getMaxHp());
-		chargeBar.draw((int)x,(int)y);
+		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,
+				(int) (getBounds().getWidth()), (double)getHp()/getMaxHp());
+		chargeBar.draw((int) x,(int) y);
 	}
 	
+	// retrieves the attack from sub class to be used
 	public abstract Attack getAttack(int i);
+
+	protected void updateSprite()
+	{
+		sprite = DataStore.INSTANCE.getSprite("big_boss.png");
+	}
 }

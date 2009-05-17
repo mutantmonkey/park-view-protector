@@ -15,115 +15,135 @@ import org.newdawn.slick.Color;
 
 public class Student extends Character implements Serializable
 {
-	public final static int GANG=0;
-	public final static double GANG_AGGRO=0.80;
-	public final static int GOTH=1;
-	public final static double GOTH_AGGRO=0.30;
-	public final static int BAND=2;
-	public final static double BAND_AGGRO=0.10;
+	public final static int GANG				= 0;
+	public final static double GANG_AGGRO		= 0.80;
+	public final static int GOTH				= 1;
+	public final static double GOTH_AGGRO		= 0.30;
+	public final static int BAND				= 2;
+	public final static double BAND_AGGRO		= 0.10;
 	
-	private static final long serialVersionUID = 2L;
-	
-	private String type	= "default";
-	
-	private boolean aggro	= false;
-	
+	private String type							= "default";
+	private boolean aggro						= false;
 	private char gender;
-	private int chargeRegenRate=0;
-	private static final int CHARGE_REGEN=1; 
-	private static final int CHARGE_REGEN_RATE=80;
+	private static final int ATTACK_RANGE		= 50;
+	private static final int SIGHT_RANGE		= 200;
+	
+	private static final long serialVersionUID	= 2L;
 	
 	/**
 	 * Create a new student
 	 * 
-	 * @param g			Instance of Game
-	 * @param hp		HP of student
-	 * @param maxHp		Max HP of student
-	 * @param spd		Speed of student
-	 * @param gender	Gender of student
+	 * @param game
+	 * @param hp
+	 * @param maxHp
+	 * @param speed
+	 * @param gender
 	 */
-	public Student(Game g, int x, int y, int hp, int maxHp, double spd, char gender,
+	public Student(Game game, int x, int y, int maxHp, double speed, char gender,
 			int type)
 	{
-		super(g, x, y, hp, maxHp, spd);
+		super(game, x, y, maxHp, maxHp, speed);
 		
-		this.gender		= gender;
+		// sets the gender
+		this.gender = gender;
 		
-		// generate a random charge
+		// generate random HP
 		setHp((int) (Math.random() * getMaxHp() + 1));
 		
-		// FIXME: this is just for testing; determining type should probably be handled in
-		// the driver
+		// sets the type of student
 		switch(type)
 		{
 			case Student.GANG:
 				this.type = "gangster";
-				if(Math.random()<GANG_AGGRO)
-					aggro=true;
+				if(Math.random() < GANG_AGGRO)
+					aggro = true;
 				break;
+				
 			case Student.GOTH:
 				this.type = "goth";
-				if(Math.random()<GOTH_AGGRO)
-					aggro=true;
+				if(Math.random() < GOTH_AGGRO)
+					aggro = true;
 				break;
+				
 			case Student.BAND:
 				this.type = "band";
+				if(Math.random() < BAND_AGGRO)
+					aggro = true;
 				break;
+				
 			default:
 				this.type = "default";
-			if(Math.random()<BAND_AGGRO)
-				aggro=true;
 			break;
 		}
 		
 		// give the student some items
 		int random = (int)(Math.random()*4);
-		//there is a 1/2 chance of a health item, 1/4 chance of a teacher item, and 1/4 chance of no item
+		// there is a 1/2 chance of a health item, 1/4 chance of a teacher item, and 1/4 chance of no item
 		switch(random)
 		{
 			case 0:
 			case 1:
-				pickItem(new Item(g, 'h', 0, 0));
+				pickItem(new Item(game, 'h', 0, 0));
 				break;
 				
 			case 2:
-				pickItem(new Item(g, 't', 0, 0));
+				pickItem(new Item(game, 't', 0, 0));
 				break;
 				
 			default:
 				break;
 		}
 		
+		// sets graphic
 		updateSprite();
 	}
 	
 	public void step(Game game)
 	{
+		// attempt to couple with other students
 		if(getHp() > 0)
 		{
 			attemptCoupling();
 		}
 		
-		// random movement
+		// move toward and attack player if aggro and in range, otherwise, move random
 		if(!isStunned() && !isAttacking())
-			if(aggro && inRange(game.getPlayer(), 50))
+		{
+			// if student wants to attack the player
+			if(aggro)
 			{
-				setDirection(getDirectionToward(game.getPlayer()));
-				attack();
-			}
-			else if(aggro && inRange(game.getPlayer(),200))
-			{
-				moveToward(game.getPlayer(),10);
+				// if in attack range, attack
+				if(inRange(game.getPlayer(), ATTACK_RANGE))
+				{
+					setDirection(getDirectionToward(game.getPlayer()));
+					attack();
+				}
+				
+				// if in sight range, move toward
+				else if(inRange(game.getPlayer(), SIGHT_RANGE))
+				{
+					moveToward(game.getPlayer(), ATTACK_RANGE);
+				}
+				
+				else
+				{
+					moveRandom();
+				}
 			}
 			else
+			{
 				moveRandom();
+			}
+		}
 		
-		// decrement the hit delay
+		// recover from status effects
 		recover();
 		
+		// recover hp
 		if(!isStunned())
-			recharge();
+			regain();
 		
+		// receive attacks
 		handleAttacks();
 	}
 
@@ -132,11 +152,11 @@ public class Student extends Character implements Serializable
 	 */
 	protected void updateSprite()
 	{
-		sprite			= DataStore.INSTANCE.getSprite("student/" + type + "_" + gender + ".png");
+		sprite = DataStore.INSTANCE.getSprite("student/" + type + "_" + gender + ".png");
 	}
 	
 	/**
-	 * @return The type of the student (used for the sprite)
+	 * @return The type of the student
 	 */
 	public String getType()
 	{
@@ -151,37 +171,27 @@ public class Student extends Character implements Serializable
 		return gender;
 	}
 	
+	/**
+	 * Sets the aggro of the student
+	 * 
+	 * @param agg
+	 */
 	public void setAggro(boolean agg)
 	{
-		aggro=agg;
-	}
-	
-	/**
-	 * Recharge students
-	 */
-	public void recharge()
-	{
-		chargeRegenRate++;
-		if(chargeRegenRate>=CHARGE_REGEN_RATE)
-		{
-			chargeRegenRate=0;
-			if(getHp()<getMaxHp())
-				adjustHp(CHARGE_REGEN);
-		}
+		aggro = agg;
 	}
 	
 	/**
 	 * Attempt to couple with another student
 	 * 
-	 * @param currStudent
-	 * @return Whether or not the coupling succeeded
+	 * @return If the couple was successful
 	 */
 	public boolean attemptCoupling()
 	{
+		ArrayList<Student> students = game.getStudents();
+		ArrayList<Couple> couples = game.getCouples();
 		int charge, student1, student2;
-		Student testStudent;
-		ArrayList<Student> students=game.getStudents();
-		ArrayList<Couple> couples=game.getCouples();
+		Student student;
 		
 		int i						= students.indexOf(this);
 		
@@ -193,7 +203,7 @@ public class Student extends Character implements Serializable
 		
 		for(int j = 0; j < students.size(); j++)
 		{
-			testStudent				= students.get(j);
+			student				= students.get(j);
 			
 			// don't do anything if it's us
 			if(i == j)
@@ -202,21 +212,21 @@ public class Student extends Character implements Serializable
 			}
 			
 			// no same-sex couples (for now at least)
-			if(getGender() == testStudent.getGender())
+			if(getGender() == student.getGender())
 			{
 				continue;
 			}
 
 			// did we hit another student with a charge?
 			if(getNewBounds(Game.MOVE_SPEED).intersects(students.get(j).getBounds())
-					&& testStudent.getHp() > 0)
+					&& student.getHp() > 0)
 			{
 				charge				= getHp() +
-										testStudent.getHp();
+										student.getHp();
 				
 				if(Math.random() * Game.COUPLE_CHANCE_MULTIPLIER < charge)
 				{
-					couples.add(new Couple(game, this, testStudent));
+					couples.add(new Couple(game, this, student));
 					
 					student1			= i;
 					student2			= j;
@@ -262,7 +272,7 @@ public class Student extends Character implements Serializable
 			
 			//The student takes damage in this if loop
 			if(attack.getBounds().intersects(getBounds()) && isVulnerable() &&
-					attack.isStudent())
+					attack.isEnemy())
 			{
 				game.hitFX((int)(getBounds().getCenterX()),
 						(int)(getBounds().getCenterY()));
@@ -277,7 +287,6 @@ public class Student extends Character implements Serializable
 					attacks.remove(j);
 				}
 				
-				// FIXME: should be variable depending on strength
 				if(getHp()>-10)
 					adjustHp(-attack.getDamage()/2);
 				
@@ -320,7 +329,7 @@ public class Student extends Character implements Serializable
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
-		boolean 	isStudent=false,
+		boolean 	isEnemy=false,
 					AoE=false;
 		
 		name="honk";
@@ -335,10 +344,10 @@ public class Student extends Character implements Serializable
 		hitDelay=duration/hits;
 		status=status;
 		statusLength=statusLength;
-		isStudent=isStudent;
+		isEnemy=isEnemy;
 		AoE=true;
 		
-		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isEnemy, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		if(inRange(game.getPlayer(),50) && isAgain())
 		{
 			setAttackFrames(attack.getStillTime());
@@ -359,7 +368,7 @@ public class Student extends Character implements Serializable
 		}
 	}
 	
-	public void showCharge()
+	public void showHp()
 	{
 		GLRect rect				= new GLRect((int) x, (int) y, (int) getBounds().getWidth(),
 				(int) getBounds().getHeight());

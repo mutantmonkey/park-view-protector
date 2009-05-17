@@ -52,7 +52,7 @@ public class Level1 implements Level
 			type					= (int)(Math.random()*3);
 			maxHp					= (int)(Math.random()*30);
 			
-			student					= new Student(game, x, y, maxHp, maxHp, speed, gender, type);
+			student					= new Student(game, x, y, maxHp, speed, gender, type);
 			
 			// make sure that the student is not spawned on top of a wall)
 			while(!student.canMove(student.getBounds()))
