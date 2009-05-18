@@ -105,6 +105,10 @@ public class Couple extends Character
 			{
 				moveToward(game.getPlayer(),10);
 			}
+			else
+			{
+				moveRandom();
+			}
 		}
 		else
 			moveRandom();

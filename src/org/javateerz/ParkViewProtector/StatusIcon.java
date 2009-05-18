@@ -18,6 +18,9 @@ public class StatusIcon
 	protected double x;
 	protected double y;
 	
+	public static final int X_OFFSET	= 1;
+	public static final int Y_OFFSET	= -2;
+	
 	protected int status;
 	protected Staff player;
 	
@@ -119,9 +122,9 @@ public class StatusIcon
 		sprite.draw(x, y);
 		
 		GLString frames = new GLString(time+"");
-		frames.setColor(Color.black);
+		frames.setColor(Color.yellow);
 		frames.setFont(font);
-		frames.draw(x+1, y-2);
+		frames.draw(x+X_OFFSET, y+Y_OFFSET);
 	}
 
 	/**

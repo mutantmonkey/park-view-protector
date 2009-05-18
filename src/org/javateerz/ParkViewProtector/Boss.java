@@ -9,7 +9,7 @@ public abstract class Boss extends Character
 {
 	private static final long serialVersionUID = 1L;
 	
-	private static final int STUN_RESISTANCE=3;
+	private static final int STATUS_RESISTANCE=3;
 	
 	/**
 	 * Create a new Boss
@@ -99,7 +99,7 @@ public abstract class Boss extends Character
 				// sets stunned frames
 				if(attack.getStatus() == Status.STUN && !isStunned())
 				{
-					setStunFrames((int) (attack.getStatusDuration()/STUN_RESISTANCE));
+					setStunFrames((int) (attack.getStatusDuration()/STATUS_RESISTANCE));
 				}
 				
 				// removes attack if not AoE

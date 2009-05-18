@@ -20,6 +20,7 @@ public class TitleScreen extends Menu
 	private MenuItem[] items			= {
 			new MenuItem("New Game", 1),
 			new MenuItem("Load Game", 2),
+			new MenuItem("Quit Game", 9)
 		};
 	
 	private Sprite mainLogo;
@@ -131,6 +132,9 @@ public class TitleScreen extends Menu
 					bgMusic.stop();
 				}
 				
+				break;
+			case 9:
+				driver.quitGame();
 				break;
 		}
 	}

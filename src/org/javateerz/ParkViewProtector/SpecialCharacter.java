@@ -49,7 +49,7 @@ public class SpecialCharacter extends Staff
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
-		boolean 	isStudent=true,
+		boolean 	isEnemy=true,
 					AoE=false;
 		/*
 		 * FORMAT
@@ -65,14 +65,14 @@ public class SpecialCharacter extends Staff
 				hitDelay=duration/hits;
 				status=status;
 				statusLength=statusLength;
-				isStudent=isStudent;
+				isEnemy=isEnemy;
 				AoE=AoE;
 		 */
 		switch(i)
 		{
 			case 0:
 				name="honk";
-				damage=10;
+				damage=7;
 				tp=10;
 				type=Type.FRONT;
 				speed=0;
@@ -82,8 +82,8 @@ public class SpecialCharacter extends Staff
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=10;
-				isStudent=isStudent;
+				statusLength=50;
+				isEnemy=isEnemy;
 				AoE=true;
 				break;
 			case 1:
@@ -99,7 +99,7 @@ public class SpecialCharacter extends Staff
 				hitDelay=duration/hits;
 				status=Status.INVULNERABLE;
 				statusLength=200;
-				isStudent=false;
+				isEnemy=false;
 				AoE=true;
 				break;
 			case 2:
@@ -115,11 +115,11 @@ public class SpecialCharacter extends Staff
 				hitDelay=duration/hits;
 				status=Status.STUN;
 				statusLength=300;
-				isStudent=isStudent;
+				isEnemy=isEnemy;
 				AoE=true;
 				break;
 		}
-		attack=new Attack(game, this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(game, this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isEnemy, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
 }

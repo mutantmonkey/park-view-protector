@@ -8,9 +8,15 @@ public class FatMan extends Boss
 	
 	private static final long serialVersionUID = 1L;
 	
-	public FatMan(Game game,int x,int y)
+	public FatMan(Game game, int x, int y)
 	{
 		super(game, x, y, MAX_HP, MAX_HP, SPEED);
+		updateSprite();	// FIXME: this is redundant, it is called in the Boss constructor
+	}
+
+	public FatMan(Game g,int x, int y, int hp, int maxHp, double speed)
+	{
+		super(g, x, y, maxHp, maxHp, speed);
 		updateSprite();	// FIXME: this is redundant, it is called in the Boss constructor
 	}
 	
@@ -66,12 +72,6 @@ public class FatMan extends Boss
 		recover();
 		
 		handleAttacks();
-	}
-
-	public FatMan(Game g,int x, int y, int hp, int maxHp, double speed)
-	{
-		super(g,x,y,hp,maxHp,speed);
-		updateSprite();	// FIXME: this is redundant, it is called in the Boss constructor
 	}
 	
 	public Attack getAttack(int i)

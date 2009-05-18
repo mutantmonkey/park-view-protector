@@ -50,33 +50,33 @@ public class Stark extends Staff
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
-		boolean 	isStudent=true,
+		boolean 	isEnemy=true,
 					AoE=false;
 		/*
 		 * FORMAT
-		 * 		name=name;
-				damage=damage;
-				tp=tp;
-				type=type;
-				speed=speed;
-				duration=duration;
-				reuse=reuse;
-				stillTime=stillTime;
-				hits=hits;
-				hitDelay=duration/hits;
-				status=status;
-				statusLength=statusLength;
-				isStudent=isStudent;
-				AoE=AoE;
+		 * 		name			= name;
+				damage			= damage;
+				tp				= tp;
+				type			= type;
+				speed			= speed;
+				duration		= duration;
+				reuse			= reuse;
+				stillTime		= stillTime;
+				hits			= hits;
+				hitDelay		= duration/hits;
+				status			= status;
+				statusLength	= statusLength;
+				isEnemy			= isEnemy;
+				AoE				= AoE;
 		 */
 		switch(i)
 		{
 			case 0:
 				name="physball";
-				damage=5;
+				damage=10;
 				tp=10;
 				type=Type.FRONT;
-				speed=5;
+				speed=10;
 				duration=40;
 				reuse=30;
 				stillTime=stillTime;
@@ -84,23 +84,23 @@ public class Stark extends Staff
 				hitDelay=duration/hits;
 				status=status;
 				statusLength=statusLength;
-				isStudent=isStudent;
+				isEnemy=isEnemy;
 				AoE=AoE;
 				break;
 			case 1:
 				name="meterstick";
-				damage=10;
+				damage=15;
 				tp=10;
 				type=Type.FRONT;
 				speed=0;
 				duration=20;
-				reuse=duration;
+				reuse=25;
 				stillTime=duration;
 				hits=hits;
 				hitDelay=duration/hits;
 				status=status;
 				statusLength=statusLength;
-				isStudent=isStudent;
+				isEnemy=isEnemy;
 				AoE=true;
 				break;
 			case 2:
@@ -112,15 +112,15 @@ public class Stark extends Staff
 				duration=50;
 				reuse=duration;
 				stillTime=duration;
-				hits=hits;
+				hits=3;
 				hitDelay=duration/hits;
 				status=Status.STUN;
 				statusLength=100;
-				isStudent=isStudent;
+				isEnemy=isEnemy;
 				AoE=true;
 				break;
 		}
-		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isEnemy, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
 }
