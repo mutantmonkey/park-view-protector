@@ -11,9 +11,10 @@ public class FatMan extends Boss
 	public FatMan(Game game,int x,int y)
 	{
 		super(game, x, y, MAX_HP, MAX_HP, SPEED);
-		updateSprite();
+		updateSprite();	// FIXME: this is redundant, it is called in the Boss constructor
 	}
 	
+	// FIXME: this belongs in the Boss class
 	public void step(Game g)
 	{
 		ArrayList <Attack> gameAttacks = g.getAttacks();
@@ -70,7 +71,7 @@ public class FatMan extends Boss
 	public FatMan(Game g,int x, int y, int hp, int maxHp, double speed)
 	{
 		super(g,x,y,hp,maxHp,speed);
-		updateSprite();
+		updateSprite();	// FIXME: this is redundant, it is called in the Boss constructor
 	}
 	
 	public Attack getAttack(int i)

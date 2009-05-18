@@ -139,6 +139,7 @@ public abstract class Boss extends Character
 	// retrieves the attack from sub class to be used
 	public abstract Attack getAttack(int i);
 
+	// FIXME: this belongs in the FatMan class
 	protected void updateSprite()
 	{
 		sprite = DataStore.INSTANCE.getSprite("big_boss.png");

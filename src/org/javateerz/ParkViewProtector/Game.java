@@ -63,7 +63,7 @@ public class Game extends GameScreen implements Serializable
 	private transient Level lev;
 	
 	// objects on the screen
-	private int level							= 2;
+	private int level							= 3;
 	private Staff player;
 	private Boss boss;
 	private VisualFX background					= new VisualFX(this,"background1",0,0,0);
@@ -172,6 +172,10 @@ public class Game extends GameScreen implements Serializable
 				
 			case 2:
 				lev					= new Level2(this);
+				break;
+				
+			case 3:
+				lev					= new Level3(this);
 				break;
 		}
 		
