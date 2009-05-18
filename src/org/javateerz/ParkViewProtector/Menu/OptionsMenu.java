@@ -132,7 +132,7 @@ public class OptionsMenu extends Menu
 	 * 
 	 * @param actionId
 	 */
-	private void execute(int actionId)
+	protected void execute(int actionId)
 	{
 		switch(actionId)
 		{

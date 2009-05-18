@@ -10,10 +10,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 import org.javateerz.ParkViewProtector.Levels.*;
+import org.javateerz.ParkViewProtector.Menu.GameOver;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.SlickException;
 
 public class Game extends GameScreen implements Serializable
 {
@@ -59,6 +57,7 @@ public class Game extends GameScreen implements Serializable
 	
 	private static final long serialVersionUID	= 7L;
 	
+	private transient GameOver gameOver;
 	private transient Statistics stats;
 	private transient Level lev;
 	
@@ -481,32 +480,12 @@ public class Game extends GameScreen implements Serializable
 	 */
 	public void gameOver()
 	{
-		try
-		{
-			ParkViewProtector.playSound("game_over.wav");
-		}
-		catch(SlickException e1)
-		{
-			System.out.println("Couldn't play 'game over' sound");
-		}
+		bgMusic.stop();
 		
-		Sprite gameOver					= DataStore.INSTANCE.getSprite("game_over.png");
+		if(gameOver == null)
+			gameOver				= new GameOver(driver);
 		
-		gameOver.draw(0, 0);
-		
-		// show rendered content
-		GL11.glFlush();
-		Display.update();
-		
-		try
-		{
-			Thread.sleep(GAME_OVER_DELAY);
-		}
-		catch(Exception e)
-		{
-		}
-		
-		driver.quitGame();
+		gameOver.show();
 	}
 	
 	/**

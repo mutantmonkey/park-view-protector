@@ -26,6 +26,9 @@ public class Menu extends GameScreen implements KeyListener
 	public static final Color TEXT_COLOR			= new Color(255, 255, 255);
 	public static final Color SELECTED_TEXT_COLOR	= new Color(255, 0, 255);
 	
+	public static final int RESET					= 8;
+	public static final int QUIT 					= 9;
+	
 	protected static Font textFont;
 	
 	private MenuItem[] items						= {
@@ -33,7 +36,8 @@ public class Menu extends GameScreen implements KeyListener
 			new MenuItem("Options", 2),
 			new MenuItem("Save Game", 4),
 			new MenuItem("Load Game", 5),
-			new MenuItem("Quit Game", 9),
+			new MenuItem("Reset", Menu.RESET),
+			new MenuItem("Quit Game", Menu.QUIT),
 		};
 	protected int selectedItem						= 0;
 	
@@ -129,7 +133,7 @@ public class Menu extends GameScreen implements KeyListener
 	 * 
 	 * @param actionId
 	 */
-	private void execute(int actionId)
+	protected void execute(int actionId)
 	{
 		switch(actionId)
 		{
@@ -163,7 +167,11 @@ public class Menu extends GameScreen implements KeyListener
 				
 				break;
 				
-			case 9:
+			case Menu.RESET:
+				driver.restart();
+				break;
+				
+			case Menu.QUIT:
 				driver.quitGame();
 				break;
 		}

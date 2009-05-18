@@ -182,6 +182,19 @@ public class ParkViewProtector
 	}
 	
 	/**
+	 * Restart the game (return to the title screen)
+	 */
+	public void restart()
+	{
+		showTitle					= true;
+		showMenu					= false;
+		showOptions					= false;
+		selectChar					= true;
+		
+		init();
+	}
+	
+	/**
 	 * The main game loop
 	 */
 	public void mainLoop()
