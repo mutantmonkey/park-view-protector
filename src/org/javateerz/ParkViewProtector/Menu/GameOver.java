@@ -1,6 +1,7 @@
 package org.javateerz.ParkViewProtector.Menu;
 
 import org.javateerz.ParkViewProtector.DataStore;
+import org.javateerz.ParkViewProtector.KeyboardConfig;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Sprite;
 import org.newdawn.slick.KeyListener;
@@ -31,6 +32,37 @@ public class GameOver extends Menu implements KeyListener
 		}
 		
 		gameOver						= DataStore.INSTANCE.getSprite("game_over.png");
+	}
+	
+	public void keyPressed(int key, char c)
+	{
+		switch(key)
+		{
+			case KeyboardConfig.NAV_UP:
+				if(selectedItem > 0)
+					selectedItem--;
+				break;
+		
+			case KeyboardConfig.NAV_DOWN:
+				if(selectedItem < items.length - 1)
+					selectedItem++;
+				break;
+				
+			case KeyboardConfig.ENTER:
+				execute(items[selectedItem].getAction());
+				break;
+		
+			case KeyboardConfig.BACK:
+				ParkViewProtector.showMenu	= false;
+				break;
+		}
+		
+		clearKeyPressedRecord();
+	}
+	
+	public boolean isAcceptingInput()
+	{
+		return true;
 	}
 	
 	public void show()
