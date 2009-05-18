@@ -199,6 +199,17 @@ public class Game extends GameScreen implements Serializable
 		{
 			driver.quitGame();
 		}
+		
+		////////////////////////////////////////////////////////////////////////////////////
+		// Are we dead?
+		////////////////////////////////////////////////////////////////////////////////////
+		
+		if(player.getHp() <= 0)
+		{
+			gameOver();
+			return;
+		}
+		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw Background
 		////////////////////////////////////////////////////////////////////////////////////
@@ -426,9 +437,6 @@ public class Game extends GameScreen implements Serializable
 		// these are painted last to ensure that they are always on top
 		
 		stats.draw(player, level);
-		
-		if(player.getHp()<=0)
-			gameOver();
 		
 
 		if(!hasStatus(Status.STUN) && player.isStunned())
