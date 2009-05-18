@@ -119,12 +119,7 @@ public class OptionsMenu extends Menu
 			items[i].draw(LEFT_SPACING, TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
 		
-		// keep the game from running too fast
-		try
-		{
-			Thread.sleep(100);
-		}
-		catch(Exception e) {}
+		throttleSpeed();
 	}
 	
 	/**

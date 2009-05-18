@@ -5,6 +5,9 @@ import org.newdawn.slick.Music;
 
 public abstract class GameScreen extends Input
 {
+	// Speed at which the game slows down
+	public static final int SPEED_THROTTLE			= 10;
+	
 	protected transient ParkViewProtector driver;
 	protected transient Music bgMusic;
 	
@@ -80,5 +83,15 @@ public abstract class GameScreen extends Input
 	public boolean isAcceptingInput()
 	{
 		return false;
+	}
+	
+	public void throttleSpeed()
+	{
+		// keep the game from running too fast
+		try
+		{
+			Thread.sleep(SPEED_THROTTLE);
+		}
+		catch(Exception e) {}
 	}
 }

@@ -15,9 +15,6 @@ import org.lwjgl.input.Keyboard;
 
 public class Game extends GameScreen implements Serializable
 {
-	// Speed at which the game slows down
-	public static final int SPEED_THROTTLE		= 10;
-	
 	// Number of pixels to move
 	public static final int MOVE_SPEED			= 1;
 	
@@ -387,12 +384,7 @@ public class Game extends GameScreen implements Serializable
 			player.attack(attackKey);
 		}
 		
-		// keep the game from running too fast
-		try
-		{
-			Thread.sleep(SPEED_THROTTLE);
-		}
-		catch(Exception e) {}
+		throttleSpeed();
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Use items

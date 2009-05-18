@@ -93,6 +93,8 @@ public class CharSelect extends GameScreen implements KeyListener
 		name.setFont(nameFont);
 		name.setColor(ParkViewProtector.COLOR_TEXT_1);
 		name.draw();
+		
+		throttleSpeed();
 	}
 	
 	public void finish()
