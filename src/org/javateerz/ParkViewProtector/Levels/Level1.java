@@ -2,7 +2,6 @@ package org.javateerz.ParkViewProtector.Levels;
 
 import java.util.ArrayList;
 
-import org.javateerz.ParkViewProtector.Boss;
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Student;
@@ -20,6 +19,11 @@ public class Level1 implements Level
 	public Level1(Game g)
 	{
 		game									= g;
+	}
+	
+	public String getBG()
+	{
+		return "terrazzo_green.png";
 	}
 	
 	public String getMusic()
@@ -67,11 +71,6 @@ public class Level1 implements Level
 		}
 		
 		return students;
-	}
-	
-	public Boss getBoss()
-	{
-		return null;
 	}
 	
 	public ArrayList<Wall> getWalls() 

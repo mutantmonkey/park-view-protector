@@ -9,7 +9,7 @@ import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Student;
 import org.javateerz.ParkViewProtector.Wall;
 
-public class Level2 implements Level
+public class Level2 implements BossLevel, Level
 {
 	public static final int MIN_STUDENTS		= 5;
 	public static final int MAX_STUDENTS		= 5;
@@ -21,6 +21,11 @@ public class Level2 implements Level
 	public Level2(Game g)
 	{
 		game									= g;
+	}
+	
+	public String getBG()
+	{
+		return "terrazzo_blue.png";
 	}
 	
 	public String getMusic()

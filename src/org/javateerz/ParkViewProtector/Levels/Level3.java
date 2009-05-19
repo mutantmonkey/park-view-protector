@@ -8,7 +8,7 @@ import org.javateerz.ParkViewProtector.Mandelbrot;
 import org.javateerz.ParkViewProtector.Student;
 import org.javateerz.ParkViewProtector.Wall;
 
-public class Level3 implements Level
+public class Level3 implements BossLevel, Level
 {
 	public static final int MIN_STUDENTS		= 5;
 	public static final int MAX_STUDENTS		= 5;
@@ -20,6 +20,11 @@ public class Level3 implements Level
 	public Level3(Game g)
 	{
 		game									= g;
+	}
+	
+	public String getBG()
+	{
+		return "crazy.png";
 	}
 	
 	public String getMusic()

@@ -64,7 +64,7 @@ public class Game extends GameScreen implements Serializable
 	private int level							= 2;
 	private Staff player;
 	private Boss boss;
-	private VisualFX background					= new VisualFX(this,"background1",0,0,0);
+	private Sprite background;
 	private ArrayList<Student> students			= new ArrayList<Student>();
 	private ArrayList<Couple> couples			= new ArrayList<Couple>();
 	private ArrayList<Attack> attacks			= new ArrayList<Attack>();
@@ -90,7 +90,11 @@ public class Game extends GameScreen implements Serializable
 		initLevel();
 		
 		students					= lev.getStudents();
-		boss						= lev.getBoss();
+		
+		if(lev instanceof BossLevel)
+		{
+			boss					= ((BossLevel) lev).getBoss();
+		}
 	}
 	
 	public ArrayList<Student> getStudents()
@@ -182,6 +186,7 @@ public class Game extends GameScreen implements Serializable
 				break;
 		}
 		
+		background					= DataStore.INSTANCE.getSprite("bg/" + lev.getBG());
 		walls						= lev.getWalls();
 		
 		// initialize music
@@ -255,11 +260,16 @@ public class Game extends GameScreen implements Serializable
 			currCouple.step(this);
 		}
 		
-		//Draw Boss
+		////////////////////////////////////////////////////////////////////////////////////
+		// Draw boss
+		////////////////////////////////////////////////////////////////////////////////////
 		
-		boss.draw();
-		if(boss.getHp()>0)
-			boss.step(this);
+		if(lev instanceof BossLevel && boss != null)
+		{
+			boss.draw();
+			if(boss.getHp()>0)
+				boss.step(this);
+		}
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		// Draw player
