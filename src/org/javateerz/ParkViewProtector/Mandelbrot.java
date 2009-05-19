@@ -9,7 +9,7 @@ public class Mandelbrot extends Boss
 	public static final int BROT_HP			= 3;
 	public static final double BROT_SPEED	= 1.0;
 	
-	public static final int MAX_HP			= 200;
+	public static final int MAX_HP			= 1000;
 	public static final int SPEED			= 1;
 	
 	private static final long serialVersionUID = 1L;

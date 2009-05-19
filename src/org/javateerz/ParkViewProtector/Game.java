@@ -54,14 +54,14 @@ public class Game extends GameScreen implements Serializable
 	
 	public static boolean cheatMode				= false;
 	
-	private static final long serialVersionUID	= 7L;
+	private static final long serialVersionUID	= 8L;
 	
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	private transient Level lev;
 	
 	// objects on the screen
-	private int level							= 2;
+	private int level							= 3;
 	private Staff player;
 	private Boss boss;
 	private Sprite background;
