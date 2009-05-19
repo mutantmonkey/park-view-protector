@@ -1,23 +1,19 @@
 package org.javateerz.ParkViewProtector;
+
 import java.util.ArrayList;
 
-public class FatMan extends Boss
+public class Snake extends Boss
 {
-	public static final int MAX_HP	= 200;
-	public static final int SPEED	= 1;
-	
-	private static final long serialVersionUID = 1L;
-	
-	public FatMan(Game game, int x, int y)
+	public Snake(Game game, int x, int y)
 	{
-		super(game, x, y, MAX_HP, MAX_HP, SPEED);
+		super(game, x, y, 100, 100, 10);
 	}
 
-	public FatMan(Game g,int x, int y, int hp, int maxHp, double speed)
+	public Snake(Game g,int x, int y, int hp, int maxHp, double speed)
 	{
 		super(g, x, y, maxHp, maxHp, speed);
 	}
-	
+
 	public void step(Game g)
 	{
 		ArrayList <Attack> gameAttacks = g.getAttacks();
@@ -124,7 +120,7 @@ public class FatMan extends Boss
 				AoE=AoE;
 				break;
 			case 1:
-				name="tape";
+				name="fire";
 				damage=2;
 				tp=0;
 				type=Type.FAR_FRONT;
@@ -168,8 +164,9 @@ public class FatMan extends Boss
 		return attack;
 	}
 	
+	
 	protected void updateSprite()
 	{
-		sprite = DataStore.INSTANCE.getSprite("big_boss.png");
+		sprite = DataStore.INSTANCE.getSprite("snake_boss.png");
 	}
 }
