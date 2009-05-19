@@ -226,6 +226,12 @@ public class ParkViewProtector
 			
 			if(showFps && frames % 30 == 0)
 			{
+				if(frames >= Integer.MAX_VALUE)
+				{
+					frames			= 0;
+					startTime		= System.currentTimeMillis();
+				}
+				
 				secs				= (System.currentTimeMillis() - startTime) / 1000;
 				if(secs == 0)
 					continue;

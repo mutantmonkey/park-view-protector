@@ -6,6 +6,7 @@
 
 package org.javateerz.ParkViewProtector;
 
+import org.javateerz.EasyGL.GLRect;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Wall extends Movable
@@ -20,6 +21,8 @@ public class Wall extends Movable
 	private int width;
 	private int height;
 	private int type;
+	
+	private Sprite spriteX;
 	
 	/**
 	 * Create a new wall
@@ -46,22 +49,11 @@ public class Wall extends Movable
 		try
 		{
 			sprite				= DataStore.INSTANCE.getSprite("wall_" + type + ".png");
+			spriteX				= DataStore.INSTANCE.getSprite("wall_" + type + "x.png");
 		}
 		catch(Exception e)
 		{
 			sprite				= DataStore.INSTANCE.getSprite("wall_0.png");
-		}
-	}
-	
-	protected void updateSprite(int x)
-	{
-		try
-		{
-			sprite				= DataStore.INSTANCE.getSprite("wall_" + type + "x.png");
-		}
-		catch(Exception e)
-		{
-			updateSprite();
 		}
 	}
 	
@@ -77,13 +69,16 @@ public class Wall extends Movable
 		{
 			for(int j = 0; j < height; j ++)
 			{
-				/*if(j+1>=height)
-					updateSprite(1);
+				if(j+1>=height)
+					spriteX.draw((int) x + i * spriteWidth, (int) y + j * spriteHeight);
 				else
-					updateSprite();*/
-				sprite.draw((int) x + i * spriteWidth, (int) y + j * spriteHeight);
+					sprite.draw((int) x + i * spriteWidth, (int) y + j * spriteHeight);
 			}
 		}
+		
+		/*GLRect raw				= new GLRect((int) x, (int) y, spriteWidth * width,
+				spriteHeight * height);
+		raw.draw();*/
 	}
 	
 	/**
