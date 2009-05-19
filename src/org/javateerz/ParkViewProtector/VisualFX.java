@@ -29,7 +29,7 @@ public class VisualFX extends Movable implements Serializable
 	
 	protected void updateSprite()
 	{
-		this.sprite		= DataStore.INSTANCE.getSprite("FX/"+name+".png");
+		this.sprite		= DataStore.INSTANCE.getSprite("fx/"+name+".png");
 	}
 	
 	public void setTime(int amount)
