@@ -1,7 +1,5 @@
 package org.javateerz.ParkViewProtector;
 
-import java.util.ArrayList;
-
 import org.javateerz.EasyGL.GLString;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;

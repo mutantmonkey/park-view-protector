@@ -398,7 +398,7 @@ public class Student extends Character implements Serializable
 		boolean 	isEnemy=false,
 					AoE=false;
 		
-		name="honk";
+		name=getType();
 		damage=1;
 		tp=10;
 		type=Type.FRONT;

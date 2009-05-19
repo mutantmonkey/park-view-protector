@@ -6,7 +6,6 @@
 
 package org.javateerz.ParkViewProtector;
 
-import org.javateerz.EasyGL.GLRect;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Wall extends Movable
