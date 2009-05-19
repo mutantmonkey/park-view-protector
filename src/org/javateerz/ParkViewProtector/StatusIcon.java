@@ -86,7 +86,7 @@ public class StatusIcon
 	
 	public void setTime()
 	{
-		if(status==Status.INVULNERABLE)
+		if(status==Status.INVULNERABLE && player.getInvulHit())
 		{
 			time=player.getInvulFrames();
 		}

@@ -49,7 +49,7 @@ public class Level1 implements Level
 			y						= (int) (Math.random() * ParkViewProtector.HEIGHT);
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
-			type					= (int)(Math.random()*3);
+			type					= (int)(Math.random()*6);
 			maxHp					= (int)(Math.random()*30);
 			
 			student					= new Student(game, x, y, maxHp, speed, gender, type);

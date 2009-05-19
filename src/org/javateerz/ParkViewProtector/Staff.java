@@ -179,7 +179,6 @@ public abstract class Staff extends Character
 		Attack attack;
 		
 		ArrayList<Attack> attacks=game.getAttacks();
-		ArrayList<StatusIcon> icons=game.getIcons();
 		
 		for(int j = 0; j < attacks.size(); j++)
 		{
@@ -197,6 +196,14 @@ public abstract class Staff extends Character
 				{
 					setInvulHit(true);
 					setInvulFrames(attack.getStatusDuration());
+					if(statusIndex("invul")!=-1)
+					{
+						effects.get(statusIndex("invul")).setTime(attack.getStatusDuration());
+					}
+					else
+					{
+						effects.add(new StatusEffect(game, "invul", this, attack.getStatusDuration()));
+					}
 				}
 				else
 				{
@@ -207,6 +214,14 @@ public abstract class Staff extends Character
 				{
 					setStunHit(true);
 					setStunFrames(attack.getStatusDuration());
+					if(statusIndex("stun")!=-1)
+					{
+						effects.get(statusIndex("stun")).setTime(attack.getStatusDuration());
+					}
+					else
+					{
+						effects.add(new StatusEffect(game, "stun", this, attack.getStatusDuration()));
+					}
 				}
 
 				if(!attack.isAoE())

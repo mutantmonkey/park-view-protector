@@ -70,8 +70,15 @@ public class Couple extends Character
 	
 	protected void updateSprite()
 	{
-		sprite	= DataStore.INSTANCE.getSprite("couples/" + female.getType() + "_"
-				+ male.getType() + ".png");
+		try
+		{
+			sprite	= DataStore.INSTANCE.getSprite("couples/" + female.getType() + "_"
+					+ male.getType() + ".png");
+		}
+		catch(Exception e)
+		{
+			
+		}
 	}
 
 	public void step(Game game)

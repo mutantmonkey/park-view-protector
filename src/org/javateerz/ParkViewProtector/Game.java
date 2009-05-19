@@ -126,6 +126,11 @@ public class Game extends GameScreen implements Serializable
 		return icons;
 	}
 	
+	public ArrayList<VisualFX> getFX()
+	{
+		return fx;
+	}
+	
 	public boolean hasStatus(int status)
 	{
 		for(int i=0; i<icons.size(); i++)
@@ -439,12 +444,12 @@ public class Game extends GameScreen implements Serializable
 		stats.draw(player, level);
 		
 
-		if(!hasStatus(Status.STUN) && player.isStunned())
+		if(!hasStatus(Status.STUN) && player.getStunHit())
 		{
 			icons.add(stun);
 		}
 		
-		if(!hasStatus(Status.INVULNERABLE) && !player.isVulnerable())
+		if(!hasStatus(Status.INVULNERABLE) && player.getInvulHit())
 		{
 			icons.add(invul);
 		}
@@ -455,6 +460,10 @@ public class Game extends GameScreen implements Serializable
 			icons.get(i).draw(ICON_X_OFFSET+i*ICON_SPACING, ICON_Y_OFFSET);
 			if(icons.get(i).isOver())
 			{
+				if(icons.get(i).getStatus()==Status.INVULNERABLE)
+					player.setInvulHit(false);
+				else if(icons.get(i).getStatus()==Status.STUN)
+					player.setStunHit(false);
 				icons.remove(i);
 			}
 		}
@@ -463,7 +472,7 @@ public class Game extends GameScreen implements Serializable
 	public void hitFX(int x, int y)
 	{
 		VisualFX effect=new VisualFX(this, "blip", 10);
-		effect.moveTo(x-effect.getBounds().getWidth()/4, y-effect.getBounds().getHeight()/4);
+		effect.moveTo(x-effect.getBounds().getWidth()/2, y-effect.getBounds().getHeight()/2);
 		fx.add(effect);
 	}
 	
@@ -555,4 +564,5 @@ public class Game extends GameScreen implements Serializable
 		os.writeObject(couples);
 		os.writeObject(attacks);
 	}
+
 }

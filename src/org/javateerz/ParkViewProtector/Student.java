@@ -21,6 +21,12 @@ public class Student extends Character implements Serializable
 	public final static double GOTH_AGGRO		= 0.30;
 	public final static int BAND				= 2;
 	public final static double BAND_AGGRO		= 0.10;
+	public final static int SCI					= 3;
+	public final static double SCI_AGGRO		= 0.40;
+	public final static int ROCK				= 4;
+	public final static double ROCK_AGGRO		= 0.60;
+	public final static int SPOR				= 5;
+	public final static double SPOR_AGGRO		= 0.90;
 	
 	private String type							= "default";
 	private boolean aggro						= false;
@@ -68,6 +74,24 @@ public class Student extends Character implements Serializable
 			case Student.BAND:
 				this.type = "band";
 				if(Math.random() < BAND_AGGRO)
+					aggro = true;
+				break;
+
+			case Student.SCI:
+				this.type = "science";
+				if(Math.random() < SCI_AGGRO)
+					aggro = true;
+				break;
+				
+			case Student.ROCK:
+				this.type = "rocker";
+				if(Math.random() < ROCK_AGGRO)
+					aggro = true;
+				break;
+
+			case Student.SPOR:
+				this.type = "sport";
+				if(Math.random() < SPOR_AGGRO)
 					aggro = true;
 				break;
 				
@@ -152,7 +176,14 @@ public class Student extends Character implements Serializable
 	 */
 	protected void updateSprite()
 	{
-		sprite = DataStore.INSTANCE.getSprite("student/" + type + "_" + gender + ".png");
+		try
+		{
+			sprite = DataStore.INSTANCE.getSprite("student/" + type + "_" + gender + ".png");
+		}
+		catch(Exception e)
+		{
+			sprite = DataStore.INSTANCE.getSprite("student/default_" + gender + ".png");
+		}
 	}
 	
 	/**

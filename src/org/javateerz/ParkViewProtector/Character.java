@@ -6,6 +6,8 @@
 
 package org.javateerz.ParkViewProtector;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.geom.Rectangle;
 
 public abstract class Character extends Movable
@@ -28,6 +30,8 @@ public abstract class Character extends Movable
 	protected boolean pushing	= false;
 	protected boolean again		= false;
 	protected Character pushee	= null;
+	
+	protected ArrayList<StatusEffect> effects=new ArrayList<StatusEffect>();
 	
 	public ItemBin bin;
 	
@@ -233,6 +237,18 @@ public abstract class Character extends Movable
 	public Character getPushee()
 	{
 		return pushee;
+	}
+	
+	public int statusIndex(String name)
+	{
+		for(int i=0; i<effects.size(); i++)
+		{
+			if(effects.get(i).getName().equals(name))
+			{
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	/**
@@ -562,5 +578,20 @@ public abstract class Character extends Movable
 		{
 			throw new IllegalArgumentException("HP cannot exceed max HP");
 		}
+	}
+	
+	public void draw()
+	{
+		for(StatusEffect effect : effects)
+		{
+			effect.draw();
+			if(effect.tick())
+			{
+				effects.remove(effect);
+				break;
+			}
+		}
+		
+		super.draw();
 	}
 }
