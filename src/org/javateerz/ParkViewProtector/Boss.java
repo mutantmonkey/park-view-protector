@@ -97,9 +97,35 @@ public abstract class Boss extends Character
 						(int) (getBounds().getCenterY()));
 				
 				// sets stunned frames
-				if(attack.getStatus() == Status.STUN && !isStunned())
+				if(attack.getStatus()==Status.INVULNERABLE)
 				{
-					setStunFrames((int) (attack.getStatusDuration()/STATUS_RESISTANCE));
+					setInvulFrames(attack.getStatusDuration());
+					if(statusIndex("invulbig")!=-1)
+					{
+						effects.get(statusIndex("invulbig")).setTime(attack.getStatusDuration());
+					}
+					else
+					{
+						effects.add(new StatusEffect(game, "invulbig", this, attack.getStatusDuration()));
+					}
+				}
+				else
+				{
+					setInvulFrames(attack.getHitDelay());
+				}
+				
+				if(attack.getStatus()==Status.STUN)
+				{
+					int dura	= attack.getStatusDuration()/STATUS_RESISTANCE;
+					setStunFrames(dura);
+					if(statusIndex("stunbig")!=-1)
+					{
+						effects.get(statusIndex("stunbig")).setTime(dura);
+					}
+					else
+					{
+						effects.add(new StatusEffect(game, "stunbig", this, dura));
+					}
 				}
 				
 				// removes attack if not AoE

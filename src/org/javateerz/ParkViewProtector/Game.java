@@ -52,6 +52,8 @@ public class Game extends GameScreen implements Serializable
 	public static double hpPercent;
 	public static double tpPercent;
 	
+	public static boolean cheatMode				= false;
+	
 	private static final long serialVersionUID	= 7L;
 	
 	private transient GameOver gameOver;
@@ -443,7 +445,11 @@ public class Game extends GameScreen implements Serializable
 		
 		stats.draw(player, level);
 		
-
+		drawPlayerEffects();
+	}
+	
+	public void drawPlayerEffects()
+	{
 		if(!hasStatus(Status.STUN) && player.getStunHit())
 		{
 			icons.add(stun);

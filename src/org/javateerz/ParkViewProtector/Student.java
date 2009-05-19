@@ -15,6 +15,8 @@ import org.newdawn.slick.Color;
 
 public class Student extends Character implements Serializable
 {
+	public final static int NUM_STUDENTS		= 6;
+	
 	public final static int GANG				= 0;
 	public final static double GANG_AGGRO		= 0.80;
 	public final static int GOTH				= 1;
@@ -308,9 +310,34 @@ public class Student extends Character implements Serializable
 				game.hitFX((int)(getBounds().getCenterX()),
 						(int)(getBounds().getCenterY()));
 				
-				if(attack.getStatus()==Status.STUN && !isStunned())
+				if(attack.getStatus()==Status.INVULNERABLE)
+				{
+					setInvulFrames(attack.getStatusDuration());
+					if(statusIndex("invul")!=-1)
+					{
+						effects.get(statusIndex("invul")).setTime(attack.getStatusDuration());
+					}
+					else
+					{
+						effects.add(new StatusEffect(game, "invul", this, attack.getStatusDuration()));
+					}
+				}
+				else
+				{
+					setInvulFrames(attack.getHitDelay());
+				}
+				
+				if(attack.getStatus()==Status.STUN)
 				{
 					setStunFrames(attack.getStatusDuration());
+					if(statusIndex("stun")!=-1)
+					{
+						effects.get(statusIndex("stun")).setTime(attack.getStatusDuration());
+					}
+					else
+					{
+						effects.add(new StatusEffect(game, "stun", this, attack.getStatusDuration()));
+					}
 				}
 				
 				if(!attack.isAoE())

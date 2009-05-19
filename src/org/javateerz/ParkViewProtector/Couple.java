@@ -183,7 +183,7 @@ public class Couple extends Character
 	 */
 	public boolean handleAttacks()
 	{
-		Attack currAttack;
+		Attack attack;
 		Student male, female;
 		
 		ArrayList<Couple> couples=game.getCouples();
@@ -195,24 +195,49 @@ public class Couple extends Character
 		// hit by an attack?
 		for(int j = 0; j < attacks.size(); j++)
 		{
-			currAttack		= attacks.get(j);
+			attack		= attacks.get(j);
 			
-			if(currAttack.getBounds().intersects(getBounds()) &&
-					isVulnerable() && currAttack.isEnemy())
+			if(attack.getBounds().intersects(getBounds()) &&
+					isVulnerable() && attack.isEnemy())
 			{
 				game.hitFX((int)(getBounds().getCenterX()),
 						(int)(getBounds().getCenterY()));
-				adjustHp(-currAttack.getDamage());
-				setInvulFrames(currAttack.getHitDelay());
+				adjustHp(-attack.getDamage());
+				setInvulFrames(attack.getHitDelay());
 				
-				if(!currAttack.isAoE())
+				if(attack.getStatus()==Status.INVULNERABLE)
 				{
-					attacks.remove(j);
+					setInvulFrames(attack.getStatusDuration());
+					if(statusIndex("invul")!=-1)
+					{
+						effects.get(statusIndex("invul")).setTime(attack.getStatusDuration());
+					}
+					else
+					{
+						effects.add(new StatusEffect(game, "invul", this, attack.getStatusDuration()));
+					}
+				}
+				else
+				{
+					setInvulFrames(attack.getHitDelay());
 				}
 				
-				if(currAttack.getStatus()==Status.STUN)
+				if(attack.getStatus()==Status.STUN)
 				{
-					setStunFrames(currAttack.getStatusDuration());
+					setStunFrames(attack.getStatusDuration());
+					if(statusIndex("stun")!=-1)
+					{
+						effects.get(statusIndex("stun")).setTime(attack.getStatusDuration());
+					}
+					else
+					{
+						effects.add(new StatusEffect(game, "stun", this, attack.getStatusDuration()));
+					}
+				}
+				
+				if(!attack.isAoE())
+				{
+					attacks.remove(j);
 				}
 				
 				// FIXME: If multiple attacks hit something or what?
@@ -230,7 +255,7 @@ public class Couple extends Character
 
 						male.moveTo(x,y);
 					}
-					male.setInvulFrames(currAttack.getHitDelay());
+					male.setInvulFrames(attack.getHitDelay());
 					male.setHp(-10);
 					
 					x=(int) getBounds().getX();
@@ -245,7 +270,7 @@ public class Couple extends Character
 
 						female.moveTo(x,y);
 					}
-					female.setInvulFrames(currAttack.getHitDelay());
+					female.setInvulFrames(attack.getHitDelay());
 					female.setHp(-10);
 					
 					// create students before removing couple

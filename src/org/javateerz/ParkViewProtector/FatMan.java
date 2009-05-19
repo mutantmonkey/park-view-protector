@@ -159,6 +159,14 @@ public class FatMan extends Boss
 				AoE=true;
 				break;
 		}
+		
+		if(Game.cheatMode)
+		{
+			tp=0;
+			reuse=0;
+			stillTime=2;
+		}
+		
 		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
