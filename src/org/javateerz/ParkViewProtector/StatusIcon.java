@@ -1,12 +1,14 @@
 package org.javateerz.ParkViewProtector;
 
+import java.io.Serializable;
+
 import org.javateerz.EasyGL.GLString;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 
-public class StatusIcon
+public class StatusIcon implements Serializable
 {
 	protected Game game;
 	

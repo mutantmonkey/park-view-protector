@@ -4,10 +4,8 @@ import java.io.*;
 
 public class VisualFX extends Movable implements Serializable
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
 	protected String name;
 	int time=0;
 	
