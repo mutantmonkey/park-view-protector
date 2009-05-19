@@ -102,6 +102,11 @@ public class Game extends GameScreen implements Serializable
 		return students;
 	}
 	
+	public boolean addStudent(Student stu)
+	{
+		return students.add(stu);
+	}
+	
 	public ArrayList<Couple> getCouples()
 	{
 		return couples;

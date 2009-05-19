@@ -20,7 +20,6 @@ public class FatMan extends Boss
 		updateSprite();	// FIXME: this is redundant, it is called in the Boss constructor
 	}
 	
-	// FIXME: this belongs in the Boss class
 	public void step(Game g)
 	{
 		ArrayList <Attack> gameAttacks = g.getAttacks();

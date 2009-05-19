@@ -29,6 +29,8 @@ public class Student extends Character implements Serializable
 	public final static double ROCK_AGGRO		= 0.60;
 	public final static int SPOR				= 5;
 	public final static double SPOR_AGGRO		= 0.90;
+	public final static int MANDELBROT			= 9999;
+	public final static double MANDELBROT_AGGRO	= 1.0;
 	
 	private String type							= "default";
 	private boolean aggro						= false;
@@ -94,6 +96,12 @@ public class Student extends Character implements Serializable
 			case Student.SPOR:
 				this.type = "sport";
 				if(Math.random() < SPOR_AGGRO)
+					aggro = true;
+				break;
+				
+			case Student.MANDELBROT:
+				this.type = "mandelbrot";
+				if(Math.random() < MANDELBROT_AGGRO)
 					aggro = true;
 				break;
 				

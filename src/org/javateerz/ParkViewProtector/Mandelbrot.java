@@ -4,8 +4,13 @@ import java.util.ArrayList;
 
 public class Mandelbrot extends Boss
 {
-	public static final int MAX_HP	= 200;
-	public static final int SPEED	= 1;
+	public static final int MIN_BROTCHEN	= 3;
+	public static final int MAX_BROTCHEN	= 5;
+	public static final int BROT_HP			= 3;
+	public static final double BROT_SPEED	= 1.0;
+	
+	public static final int MAX_HP			= 200;
+	public static final int SPEED			= 1;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -24,7 +29,6 @@ public class Mandelbrot extends Boss
 		sprite = DataStore.INSTANCE.getSprite("mandelbrot.png");
 	}
 	
-	// FIXME: this belongs in the Boss class
 	public void step(Game g)
 	{
 		ArrayList <Attack> gameAttacks = g.getAttacks();
@@ -35,38 +39,46 @@ public class Mandelbrot extends Boss
 			{
 				setDirection(getDirectionToward(g.getPlayer()));
 				Attack attack;
-				int attackKey=0;
+
 				if(percent >= 30)
 				{
-					attackKey=0;
+					// Mandelbrotchen
+					
+					int numBrotchen	= (int) (Math.random() * (MAX_BROTCHEN - MAX_BROTCHEN)) +
+						MIN_BROTCHEN;
+					int brotX, brotY;
+					Student brot;
+					
+					for(int i = 0; i < numBrotchen; i++)
+					{
+						brotX		= (int) (Math.random() * ParkViewProtector.WIDTH);
+						brotY		= (int) (Math.random() * ParkViewProtector.HEIGHT);
+						
+						brot		= new Student(game, brotX, brotY, BROT_HP,
+								BROT_SPEED, 'm', Student.MANDELBROT);
+						
+						game.addStudent(brot);
+					}
 				}
-				else if(percent >= 10)
-				{
-					attackKey=1;
+				else {
+					attack = getAttack(0);
+					
+					setAttackFrames(attack.getStillTime());
+					
+					attack.switchXY();
+					gameAttacks.add(attack);
+					
+					try
+					{
+						ParkViewProtector.playSound(attack.getName()+".wav");
+					}
+					catch(Exception e)
+					{
+						System.out.println("The attack has no sound.");
+					}
+					
+					setAgainFrames(attack.getReuse());
 				}
-				else
-				{
-					attackKey=2;
-				}
-				
-				attack = getAttack(attackKey);
-				
-				setAttackFrames(attack.getStillTime());
-				
-				attack.switchXY();
-				gameAttacks.add(attack);
-				
-				
-				try
-				{
-					ParkViewProtector.playSound(attack.getName()+".wav");
-				}
-				catch(Exception e)
-				{
-					System.out.println("The attack has no sound.");
-				}
-				
-				setAgainFrames(attack.getReuse());
 			}
 		}
 		else if(!isStunned() && !isAttacking() && percent>100)
@@ -114,39 +126,7 @@ public class Mandelbrot extends Boss
 		 */
 		switch(i)
 		{
-			case 0:
-				name="choco";
-				damage=3;
-				tp=0;
-				type=Type.FRONT;
-				speed=20;
-				duration=300;
-				reuse=30;
-				stillTime=30;
-				hits=hits;
-				hitDelay=0;
-				status=status;
-				statusLength=statusLength;
-				isStudent=isStudent;
-				AoE=AoE;
-				break;
-			case 1:
-				name="tape";
-				damage=2;
-				tp=0;
-				type=Type.FAR_FRONT;
-				speed=0;
-				duration=20;
-				reuse=duration;
-				stillTime=duration;
-				hits=hits;
-				hitDelay=duration/hits;
-				status=status;
-				statusLength=statusLength;
-				isStudent=isStudent;
-				AoE=true;
-				break;
-			case 2:
+			default:
 				name="rage";
 				damage=1;
 				tp=0;
