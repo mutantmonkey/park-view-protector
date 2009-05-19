@@ -38,7 +38,7 @@ public class Game extends GameScreen implements Serializable
 	public static final double COUPLE_CHARGE_CHANCE	= 0.1;
 	public static final int COUPLE_CHARGE_AMOUNT	= 1;
 	
-	public static final double Couple_CHANCE	= 0.6;
+	public static final double COUPLE_CHANCE	= 0.6;
 	public static final double ATTACK_CHANCE	= 0.1;
 	
 	public static final int MIN_NUM_MOVES		= 10;
