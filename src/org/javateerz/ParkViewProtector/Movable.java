@@ -232,23 +232,6 @@ public abstract class Movable implements Serializable
 	}
 	
 	/**
-	 * @return The students that collided with the character
-	 */
-	public ArrayList<Student> getCollidedStudents()
-	{
-		ArrayList<Student> students=game.getStudents();
-		ArrayList<Student> colliders=new ArrayList<Student>();
-		for(Student s : students)
-		{
-			if(this.intersects(s))
-			{
-				colliders.add(s);
-			}
-		}
-		return colliders;
-	}
-	
-	/**
 	 * @param couple
 	 * @return If the character intersects specified couple
 	 */
@@ -263,6 +246,37 @@ public abstract class Movable implements Serializable
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @param player
+	 * @return If the character intersects the player
+	 */
+	public boolean intersects(Staff player)
+	{
+		Staff curr=game.getPlayer();
+		if(curr.getBounds().intersects(getBounds()) && curr==this)
+		{
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @return The students that collided with the character
+	 */
+	public ArrayList<Student> getCollidedStudents()
+	{
+		ArrayList<Student> students=game.getStudents();
+		ArrayList<Student> colliders=new ArrayList<Student>();
+		for(Student s : students)
+		{
+			if(this.intersects(s))
+			{
+				colliders.add(s);
+			}
+		}
+		return colliders;
 	}
 	
 	/**
@@ -281,28 +295,6 @@ public abstract class Movable implements Serializable
 		}
 		return colliders;
 	}
-	
-	/**
-	 * @param player
-	 * @return If the character intersects the player
-	 */
-	public boolean intersects(Staff player)
-	{
-		Staff curr=game.getPlayer();
-		if(curr.getBounds().intersects(getBounds()) && curr==this)
-		{
-				return true;
-		}
-		return false;
-	}
-	
-	// TODO: Add a will intersect (getNewBounds() intersects obj, return true;)
-	/**public boolean willIntersect(Movable obj)
-	{
-		if(obj instanceof Student)
-			
-		return false;
-	}*/
 	
 	/**
 	 * @return Returns the speed of the object
