@@ -37,6 +37,8 @@ public class ParkViewProtector
 	public static final Color STATS_BAR_HP	= new Color(255, 0, 255);
 	public static final Color STATS_BAR_TP	= new Color(0, 255, 0);
 	
+	public static final int OPENING_TIME	= 3000;
+	
 	private static final long serialVersionUID = 1L;
 	
 	private boolean running					= true;
@@ -48,9 +50,6 @@ public class ParkViewProtector
 	private boolean showFps					= true;
 	private long frames						= 0;
 	private long startTime;
-	
-	// logos
-	private Sprite jtzLogo;
 	
 	private TitleScreen title;
 	private Game game;
@@ -98,9 +97,6 @@ public class ParkViewProtector
 		
 		GL11.glOrtho(0, WIDTH, HEIGHT, 0, -1, 1);
 		
-		// load logos
-		jtzLogo						= DataStore.INSTANCE.getSprite("javateerslogo.png");
-		
 		// set the Swing look and feel to the system one so the file selector looks native
 		try
 		{
@@ -141,33 +137,6 @@ public class ParkViewProtector
 	}
 	
 	/**
-	 * Show opening graphics
-	 */
-	public void showOpening()
-	{
-		// try to play "Clock Home Start" startup clip
-		try
-		{
-			playSound("clockhomestart.wav");
-		}
-		catch(Exception e)
-		{
-			System.out.println("No clock home start!");
-		}
-		
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		
-		// Javateerz logo
-		jtzLogo.draw(WIDTH / 2 - jtzLogo.getWidth() / 2, HEIGHT / 2 - jtzLogo.getHeight() / 2);
-		
-		// show rendered content
-		GL11.glFlush();
-		Display.update();
-		
-		try{Thread.sleep(3000);}catch(Exception e){}
-	}
-	
-	/**
 	 * Initialize game
 	 */
 	public void init()
@@ -192,6 +161,35 @@ public class ParkViewProtector
 		selectChar					= true;
 		
 		init();
+	}
+	
+	/**
+	 * Show opening graphics
+	 */
+	public void showOpening()
+	{
+		Opening opening				= new Opening();
+		
+		long startMillis			= System.currentTimeMillis();
+		long currMillis				= startMillis;
+		
+		while(currMillis < startMillis + OPENING_TIME)
+		{
+			// clear screen
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glLoadIdentity();
+			
+			// render content
+			opening.show();
+			
+			// show rendered content
+			GL11.glFlush();
+			Display.update();
+			
+			currMillis				= System.currentTimeMillis();
+		}
 	}
 	
 	/**
@@ -387,11 +385,12 @@ public class ParkViewProtector
 		
 		ParkViewProtector game			= new ParkViewProtector(fullscreen);
 		
+		game.init();
+		
 		// show intro
 		if(!skipIntro)
 			game.showOpening();
 		
-		game.init();
 		game.mainLoop();
 	}
 }
