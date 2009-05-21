@@ -2,15 +2,21 @@ package org.javateerz.ParkViewProtector;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.geom.Rectangle;
+
 public class Mandelbrot extends Boss
 {
-	public static final int MIN_BROTCHEN	= 3;
-	public static final int MAX_BROTCHEN	= 5;
+	public static final int MIN_BROTCHEN_PER_ATTACK	= 3;
+	public static final int MAX_BROTCHEN_PER_ATTACK	= 5;
 	public static final int BROT_HP			= 3;
 	public static final double BROT_SPEED	= 1.0;
 	
 	public static final int MAX_HP			= 1000;
 	public static final int SPEED			= 1;
+	
+	public static final int MANDEL_SIZE		= 100;
+	public static final int MAX_BROTCHEN	= 20;
+	public static final int BROTCHEN_DUR	= 60;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -33,19 +39,20 @@ public class Mandelbrot extends Boss
 	{
 		ArrayList <Attack> gameAttacks = g.getAttacks();
 		int percent=(int)(Math.random()*1000);
-		if(inRange(g.getPlayer(),120) && percent<=100)
+		if(percent<=100)
 		{
 			if(!isStunned() && !isAttacking() && isAgain())
 			{
 				setDirection(getDirectionToward(g.getPlayer()));
 				Attack attack;
 
-				if(percent >= 30)
+				if(percent >= 30 && game.getStudents().size() < MAX_BROTCHEN)
 				{
 					// Mandelbrotchen
 					
-					int numBrotchen	= (int) (Math.random() * (MAX_BROTCHEN - MAX_BROTCHEN)) +
-						MIN_BROTCHEN;
+					int numBrotchen	= (int) (Math.random() *
+							(MAX_BROTCHEN_PER_ATTACK - MAX_BROTCHEN_PER_ATTACK)) +
+							MIN_BROTCHEN_PER_ATTACK;
 					int brotX, brotY;
 					Student brot;
 					
@@ -58,6 +65,15 @@ public class Mandelbrot extends Boss
 								BROT_SPEED, 'm', Student.MANDELBROT);
 						
 						game.addStudent(brot);
+					}
+					
+					if(statusIndex("mandelbrotchen") >= 0)
+					{
+						effects.get(statusIndex("mandelbrotchen")).setTime(BROTCHEN_DUR);
+					}
+					else {
+						effects.add(new StatusEffect(game, "mandelbrotchen", this,
+								BROTCHEN_DUR));
 					}
 				}
 				else {
@@ -80,10 +96,6 @@ public class Mandelbrot extends Boss
 					setAgainFrames(attack.getReuse());
 				}
 			}
-		}
-		else if(!isStunned() && !isAttacking() && percent>100)
-		{
-			moveToward(game.getPlayer(),(int)(speed));
 		}
 		recover();
 		
@@ -145,5 +157,15 @@ public class Mandelbrot extends Boss
 		}
 		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
+	}
+	
+	public Rectangle getBounds()
+	{
+		double x	= super.getBounds().getCenterX() - MANDEL_SIZE / 2;
+		double y	= super.getBounds().getCenterY() - MANDEL_SIZE / 2;
+		int w		= MANDEL_SIZE;
+		int h		= MANDEL_SIZE;
+		
+		return new Rectangle((int) x, (int) y, w, h);
 	}
 }
