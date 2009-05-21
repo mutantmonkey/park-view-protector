@@ -1,20 +1,29 @@
-package org.javateerz.ParkViewProtector;
-
+package org.javateerz.ParkViewProtector.Bosses;
 import java.util.ArrayList;
 
-public class Snake extends Boss
+import org.javateerz.ParkViewProtector.Attack;
+import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.ParkViewProtector;
+import org.javateerz.ParkViewProtector.Status;
+import org.javateerz.ParkViewProtector.Type;
+
+public class FatMan extends Boss
 {
+	public static final int MAX_HP	= 200;
+	public static final int SPEED	= 1;
 	
-	public Snake(Game game, int x, int y)
+	private static final long serialVersionUID = 1L;
+	
+	public FatMan(Game game, int x, int y)
 	{
-		super("snake",game, x, y, 100, 200, 1);
+		super("big",game, x, y, MAX_HP, MAX_HP, SPEED);
 	}
 
-	public Snake(Game g,int x, int y, int hp, int maxHp, double speed)
+	public FatMan(Game g,int x, int y, int hp, int maxHp, double speed)
 	{
-		super("snake",g, x, y, maxHp, maxHp, speed);
+		super("big",g, x, y, maxHp, maxHp, speed);
 	}
-
+	
 	public void step(Game g)
 	{
 		ArrayList <Attack> gameAttacks = g.getAttacks();
@@ -26,11 +35,11 @@ public class Snake extends Boss
 				setDirection(getDirectionToward(g.getPlayer()));
 				Attack attack;
 				int attackKey=0;
-				if(percent >= 20)
+				if(percent >= 30)
 				{
 					attackKey=0;
 				}
-				else if(percent >= 7)
+				else if(percent >= 10)
 				{
 					attackKey=1;
 				}
@@ -105,13 +114,13 @@ public class Snake extends Boss
 		switch(i)
 		{
 			case 0:
-				name="fire";
-				damage=5;
+				name="choco";
+				damage=3;
 				tp=0;
 				type=Type.FRONT;
-				speed = (int)(Math.random()*6+1);
-				duration=500;
-				reuse=0;
+				speed=20;
+				duration=300;
+				reuse=30;
 				stillTime=30;
 				hits=hits;
 				hitDelay=0;
@@ -121,8 +130,8 @@ public class Snake extends Boss
 				AoE=AoE;
 				break;
 			case 1:
-				name="tongue";
-				damage=10;
+				name="tape";
+				damage=2;
 				tp=0;
 				type=Type.FAR_FRONT;
 				speed=0;

@@ -9,6 +9,8 @@ package org.javateerz.ParkViewProtector;
 
 import java.io.*;
 import java.util.ArrayList;
+
+import org.javateerz.ParkViewProtector.Students.Student;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Couple extends Character

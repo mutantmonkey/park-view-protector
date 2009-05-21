@@ -9,8 +9,11 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.javateerz.ParkViewProtector.Bosses.Boss;
 import org.javateerz.ParkViewProtector.Levels.*;
 import org.javateerz.ParkViewProtector.Menu.GameOver;
+import org.javateerz.ParkViewProtector.Staff.Staff;
+import org.javateerz.ParkViewProtector.Students.Student;
 import org.lwjgl.input.Keyboard;
 
 public class Game extends GameScreen implements Serializable
@@ -61,7 +64,7 @@ public class Game extends GameScreen implements Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 3;
+	private int levelNum						= 5;
 	
 	private transient Boss boss;
 	private transient Level level;
@@ -137,6 +140,10 @@ public class Game extends GameScreen implements Serializable
 				
 			case 4:
 				level				= new Level4(this);
+				break;
+				
+			case 5:
+				level				= new Level5(this);
 				break;
 		}
 		

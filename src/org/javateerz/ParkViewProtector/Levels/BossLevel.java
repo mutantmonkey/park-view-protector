@@ -1,6 +1,6 @@
 package org.javateerz.ParkViewProtector.Levels;
 
-import org.javateerz.ParkViewProtector.Boss;
+import org.javateerz.ParkViewProtector.Bosses.Boss;
 
 public interface BossLevel
 {

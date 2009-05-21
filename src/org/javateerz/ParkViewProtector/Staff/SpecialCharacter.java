@@ -6,7 +6,13 @@
  *
  */
 
-package org.javateerz.ParkViewProtector;
+package org.javateerz.ParkViewProtector.Staff;
+
+import org.javateerz.ParkViewProtector.Attack;
+import org.javateerz.ParkViewProtector.DataStore;
+import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.Status;
+import org.javateerz.ParkViewProtector.Type;
 
 public class SpecialCharacter extends Staff
 {

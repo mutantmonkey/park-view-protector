@@ -5,10 +5,21 @@
  * @serial
  */
 
-package org.javateerz.ParkViewProtector;
+package org.javateerz.ParkViewProtector.Students;
 
 import java.io.*;
 import java.util.ArrayList;
+
+import org.javateerz.ParkViewProtector.Attack;
+import org.javateerz.ParkViewProtector.Character;
+import org.javateerz.ParkViewProtector.Couple;
+import org.javateerz.ParkViewProtector.DataStore;
+import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.Item;
+import org.javateerz.ParkViewProtector.ParkViewProtector;
+import org.javateerz.ParkViewProtector.Status;
+import org.javateerz.ParkViewProtector.StatusEffect;
+import org.javateerz.ParkViewProtector.Type;
 
 public class Student extends Character implements Serializable
 {
@@ -283,7 +294,7 @@ public class Student extends Character implements Serializable
 					}
 					catch(Exception e)
 					{
-						game.driver.error("Something went wrong when deleting someone :O", false);
+						//game.getDriver().error("Something went wrong when deleting someone :O", false);
 					}
 					
 					return true;

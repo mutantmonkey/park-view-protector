@@ -2,8 +2,8 @@ package org.javateerz.ParkViewProtector.Levels;
 
 import java.util.ArrayList;
 
-import org.javateerz.ParkViewProtector.Student;
 import org.javateerz.ParkViewProtector.Wall;
+import org.javateerz.ParkViewProtector.Students.Student;
 
 public interface Level
 {

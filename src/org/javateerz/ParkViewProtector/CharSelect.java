@@ -1,6 +1,9 @@
 package org.javateerz.ParkViewProtector;
 
 import org.javateerz.EasyGL.GLString;
+import org.javateerz.ParkViewProtector.Staff.SpecialCharacter;
+import org.javateerz.ParkViewProtector.Staff.Staff;
+import org.javateerz.ParkViewProtector.Staff.Stark;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.TrueTypeFont;

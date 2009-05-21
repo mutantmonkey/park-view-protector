@@ -2,6 +2,7 @@ package org.javateerz.ParkViewProtector;
 
 import org.javateerz.EasyGL.GLRect;
 import org.javateerz.EasyGL.GLString;
+import org.javateerz.ParkViewProtector.Staff.Staff;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.TrueTypeFont;
 

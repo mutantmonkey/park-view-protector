@@ -2,12 +2,12 @@ package org.javateerz.ParkViewProtector.Levels;
 
 import java.util.ArrayList;
 
-import org.javateerz.ParkViewProtector.Boss;
-import org.javateerz.ParkViewProtector.FatMan;
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
-import org.javateerz.ParkViewProtector.Student;
 import org.javateerz.ParkViewProtector.Wall;
+import org.javateerz.ParkViewProtector.Bosses.Boss;
+import org.javateerz.ParkViewProtector.Bosses.FatMan;
+import org.javateerz.ParkViewProtector.Students.Student;
 
 public class Level2 implements BossLevel, Level
 {

@@ -3,6 +3,7 @@ package org.javateerz.ParkViewProtector;
 import java.io.Serializable;
 
 import org.javateerz.EasyGL.GLString;
+import org.javateerz.ParkViewProtector.Staff.Staff;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.TrueTypeFont;

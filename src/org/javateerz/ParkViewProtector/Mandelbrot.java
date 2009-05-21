@@ -2,6 +2,8 @@ package org.javateerz.ParkViewProtector;
 
 import java.util.ArrayList;
 
+import org.javateerz.ParkViewProtector.Bosses.Boss;
+import org.javateerz.ParkViewProtector.Students.Student;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 

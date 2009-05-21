@@ -7,10 +7,18 @@
  *
  */
 
-package org.javateerz.ParkViewProtector;
+package org.javateerz.ParkViewProtector.Staff;
 
 import java.io.*;
 import java.util.ArrayList;
+
+import org.javateerz.ParkViewProtector.Attack;
+import org.javateerz.ParkViewProtector.Character;
+import org.javateerz.ParkViewProtector.DataStore;
+import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.ParkViewProtector;
+import org.javateerz.ParkViewProtector.Status;
+import org.javateerz.ParkViewProtector.StatusEffect;
 
 public abstract class Staff extends Character
 {

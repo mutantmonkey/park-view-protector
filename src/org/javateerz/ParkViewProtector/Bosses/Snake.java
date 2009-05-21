@@ -1,23 +1,26 @@
-package org.javateerz.ParkViewProtector;
+package org.javateerz.ParkViewProtector.Bosses;
+
 import java.util.ArrayList;
 
-public class FatMan extends Boss
+import org.javateerz.ParkViewProtector.Attack;
+import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.ParkViewProtector;
+import org.javateerz.ParkViewProtector.Status;
+import org.javateerz.ParkViewProtector.Type;
+
+public class Snake extends Boss
 {
-	public static final int MAX_HP	= 200;
-	public static final int SPEED	= 1;
 	
-	private static final long serialVersionUID = 1L;
-	
-	public FatMan(Game game, int x, int y)
+	public Snake(Game game, int x, int y)
 	{
-		super("big",game, x, y, MAX_HP, MAX_HP, SPEED);
+		super("snake",game, x, y, 100, 200, 1);
 	}
 
-	public FatMan(Game g,int x, int y, int hp, int maxHp, double speed)
+	public Snake(Game g,int x, int y, int hp, int maxHp, double speed)
 	{
-		super("big",g, x, y, maxHp, maxHp, speed);
+		super("snake",g, x, y, maxHp, maxHp, speed);
 	}
-	
+
 	public void step(Game g)
 	{
 		ArrayList <Attack> gameAttacks = g.getAttacks();
@@ -29,11 +32,11 @@ public class FatMan extends Boss
 				setDirection(getDirectionToward(g.getPlayer()));
 				Attack attack;
 				int attackKey=0;
-				if(percent >= 30)
+				if(percent >= 20)
 				{
 					attackKey=0;
 				}
-				else if(percent >= 10)
+				else if(percent >= 7)
 				{
 					attackKey=1;
 				}
@@ -108,13 +111,13 @@ public class FatMan extends Boss
 		switch(i)
 		{
 			case 0:
-				name="choco";
-				damage=3;
+				name="fire";
+				damage=5;
 				tp=0;
 				type=Type.FRONT;
-				speed=20;
-				duration=300;
-				reuse=30;
+				speed = (int)(Math.random()*6+1);
+				duration=500;
+				reuse=0;
 				stillTime=30;
 				hits=hits;
 				hitDelay=0;
@@ -124,8 +127,8 @@ public class FatMan extends Boss
 				AoE=AoE;
 				break;
 			case 1:
-				name="tape";
-				damage=2;
+				name="tongue";
+				damage=10;
 				tp=0;
 				type=Type.FAR_FRONT;
 				speed=0;
@@ -166,10 +169,5 @@ public class FatMan extends Boss
 		
 		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
-	}
-	
-	protected void updateSprite()
-	{
-		sprite = DataStore.INSTANCE.getSprite("big_boss.png");
 	}
 }

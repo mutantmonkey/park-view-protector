@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
-import org.javateerz.ParkViewProtector.Student;
 import org.javateerz.ParkViewProtector.Wall;
+import org.javateerz.ParkViewProtector.Students.Student;
 
 public class Level1 implements Level
 {

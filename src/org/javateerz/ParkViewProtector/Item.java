@@ -8,6 +8,8 @@
 
 package org.javateerz.ParkViewProtector;
 
+import org.javateerz.ParkViewProtector.Staff.Staff;
+
 public class Item extends Movable
 {
 	private char type; //'h' is for health restore, 't' is for teacher point restore

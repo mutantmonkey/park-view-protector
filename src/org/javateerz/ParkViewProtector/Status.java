@@ -2,7 +2,7 @@ package org.javateerz.ParkViewProtector;
 /**
  * Status effect variables
  */
-class Status
+public class Status
 {
 	public static final int STUN=1;
 	public static final int POISON=2;
