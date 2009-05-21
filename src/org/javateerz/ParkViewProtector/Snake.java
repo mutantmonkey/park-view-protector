@@ -164,10 +164,4 @@ public class Snake extends Boss
 		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
-	
-	
-	protected void updateSprite()
-	{
-		sprite = DataStore.INSTANCE.getSprite("snake_boss.png");
-	}
 }

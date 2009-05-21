@@ -2,6 +2,7 @@ package org.javateerz.ParkViewProtector;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Mandelbrot extends Boss
@@ -22,17 +23,12 @@ public class Mandelbrot extends Boss
 	
 	public Mandelbrot(Game game, int x, int y)
 	{
-		super(game, x, y, MAX_HP, MAX_HP, SPEED);
+		super("mandelbrot", game, x, y, MAX_HP, MAX_HP, SPEED);
 	}
 
 	public Mandelbrot(Game g, int x, int y, int hp, int maxHp, double speed)
 	{
-		super(g, x, y, hp, maxHp, speed);
-	}
-	
-	protected void updateSprite()
-	{
-		sprite = DataStore.INSTANCE.getSprite("mandelbrot.png");
+		super("mandelbrot", g, x, y, hp, maxHp, speed);
 	}
 	
 	public void step(Game g)
@@ -67,6 +63,17 @@ public class Mandelbrot extends Boss
 						game.addStudent(brot);
 					}
 					
+					// play sound
+					try
+					{
+						ParkViewProtector.playSound("mandelbrotchen.wav");
+					}
+					catch (SlickException e)
+					{
+						System.out.println("Couldn't play brotchen sound!");
+					}
+					
+					// add status effect
 					if(statusIndex("mandelbrotchen") >= 0)
 					{
 						effects.get(statusIndex("mandelbrotchen")).setTime(BROTCHEN_DUR);

@@ -23,8 +23,8 @@ public abstract class Boss extends Character
 	public Boss(String name,Game game, int x, int y, int hp, int maxHp, double speed)
 	{
 		super(game, x, y, hp, maxHp, speed);
-		updateSprite();
 		this.name = name;
+		updateSprite();
 		bar.setName("blue1");
 		bar.updateSprite();
 	}
@@ -142,7 +142,7 @@ public abstract class Boss extends Character
 				
 				if(getHp() <= 0)
 				{
-					sprite = DataStore.INSTANCE.getSprite(name+"_dead.png");
+					updateSprite();
 				}
 				
 				// sets invulnerable frames
@@ -159,6 +159,12 @@ public abstract class Boss extends Character
 	
 	protected void updateSprite()
 	{
-		sprite = DataStore.INSTANCE.getSprite(name+"_boss.png");
+		if(getHp() <= 0)
+		{
+			sprite = DataStore.INSTANCE.getSprite("boss/" + name + "_dead.png");
+		}
+		else {
+			sprite = DataStore.INSTANCE.getSprite("boss/" + name + ".png");
+		}
 	}
 }

@@ -61,7 +61,7 @@ public class Game extends GameScreen implements Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 4;
+	private int levelNum						= 3;
 	
 	private transient Boss boss;
 	private transient Level level;
