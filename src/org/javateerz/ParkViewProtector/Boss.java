@@ -2,9 +2,6 @@ package org.javateerz.ParkViewProtector;
 
 import java.util.ArrayList;
 
-import org.javateerz.EasyGL.GLRect;
-import org.newdawn.slick.Color;
-
 public abstract class Boss extends Character
 {
 	private static final long serialVersionUID = 1L;

@@ -541,7 +541,7 @@ public class Game extends GameScreen implements Serializable
 	}
 	
 	/**
-	 * Shows the charges of the students
+	 * Shows the HP of all characters on-screen
 	 */
 	public void showHp()
 	{
@@ -561,7 +561,7 @@ public class Game extends GameScreen implements Serializable
 			}
 		}
 		
-		if(boss.getHp()>0)
+		if(level instanceof BossLevel && boss.getHp()>0)
 			boss.showHp();
 	}
 	

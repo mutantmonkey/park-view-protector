@@ -31,7 +31,8 @@ public abstract class Character extends Movable
 	protected boolean again		= false;
 	protected Character pushee	= null;
 	
-	GraphicBar bar;
+	protected GraphicBar bar	= new GraphicBar(game, 
+			"red", (int)(sprite.getWidth()), (double)getHp()/getMaxHp());
 	protected ArrayList<StatusEffect> effects=new ArrayList<StatusEffect>();
 	
 	public ItemBin bin;
@@ -55,8 +56,6 @@ public abstract class Character extends Movable
 		this.hp		= hp;
 		this.maxHp	= maxHp;
 		bin = new ItemBin(this);
-		bar								= new GraphicBar(game, 
-			"red", (int)(sprite.getWidth()), (double)getHp()/getMaxHp());
 	}
 	
 	/**
@@ -585,6 +584,7 @@ public abstract class Character extends Movable
 	
 	public void showHp()
 	{
+		bar.setWidth(this.sprite.getWidth());
 		bar.setFilled((double) getHp()/getMaxHp());
 		bar.draw((int)x,(int)y);
 	}

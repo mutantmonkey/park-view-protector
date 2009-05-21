@@ -45,6 +45,11 @@ public class GraphicBar
 		this.width				= (int) (percent * maxWidth);
 	}
 	
+	public void setWidth(int amount)
+	{
+		this.maxWidth			= amount;
+	}
+	
 	/**
 	 * Draw the bar at the given position
 	 * 
