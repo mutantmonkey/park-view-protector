@@ -11,7 +11,7 @@ package org.javateerz.ParkViewProtector.Staff;
 
 import org.javateerz.ParkViewProtector.Attack;
 import org.javateerz.ParkViewProtector.Game;
-import org.javateerz.ParkViewProtector.Type;
+import org.javateerz.ParkViewProtector.Attack.AttackType;
 
 public class Minshoe extends Staff
 {
@@ -39,7 +39,6 @@ public class Minshoe extends Staff
 		String		name="attack";
 		int			damage=0,
 					tp=0,
-					type=0,
 					speed=0,
 					duration=0,
 					reuse=duration,
@@ -48,6 +47,7 @@ public class Minshoe extends Staff
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
+		AttackType type=null;
 		boolean 	isStudent=false,
 					AoE=false;
 		/*
@@ -73,7 +73,7 @@ public class Minshoe extends Staff
 				name="tardy";
 				damage=20;
 				tp=tp;
-				type=Type.FRONT;
+				type=AttackType.FRONT;
 				speed=0;
 				duration=1000;
 				reuse=duration;

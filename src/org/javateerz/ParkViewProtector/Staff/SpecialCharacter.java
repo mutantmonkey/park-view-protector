@@ -12,7 +12,7 @@ import org.javateerz.ParkViewProtector.Attack;
 import org.javateerz.ParkViewProtector.DataStore;
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.Status;
-import org.javateerz.ParkViewProtector.Type;
+import org.javateerz.ParkViewProtector.Attack.AttackType;
 
 public class SpecialCharacter extends Staff
 {
@@ -46,7 +46,6 @@ public class SpecialCharacter extends Staff
 		String		name="attack";
 		int			damage=0,
 					tp=0,
-					type=0,
 					speed=0,
 					duration=0,
 					reuse=duration,
@@ -55,6 +54,7 @@ public class SpecialCharacter extends Staff
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
+		AttackType type=null;
 		boolean 	isEnemy=true,
 					AoE=false;
 		/*
@@ -80,7 +80,7 @@ public class SpecialCharacter extends Staff
 				name="honk";
 				damage=7;
 				tp=10;
-				type=Type.FRONT;
+				type=AttackType.FRONT;
 				speed=0;
 				duration=70;
 				reuse=40;
@@ -95,7 +95,7 @@ public class SpecialCharacter extends Staff
 			case 1:
 				name="cake";
 				damage=-60;
-				type=Type.CENTER;
+				type=AttackType.CENTER;
 				tp=250;
 				speed=0;
 				duration=40;
@@ -112,7 +112,7 @@ public class SpecialCharacter extends Staff
 				name="screech";
 				damage=1;
 				tp=25;
-				type=Type.CENTER;
+				type=AttackType.CENTER;
 				speed=0;
 				duration=1;
 				reuse=50;

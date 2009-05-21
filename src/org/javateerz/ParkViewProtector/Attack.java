@@ -12,7 +12,15 @@ import java.io.*;
 
 public class Attack extends Movable
 {
+	public enum AttackType { FRONT, MID_FRONT, FAR_FRONT, BACK, CENTER, CLOSE, MID, FAR };
+	
+	public int	PLACEMENT_CLOSE		= 20,
+				PLACEMENT_MID_CLOSE	= 30,
+				PLACEMENT_MID		= 50,
+				PLACEMENT_FAR		= 100;
+	
 	private String 		name;
+	private AttackType	type;
 	private int 		damage,
 						tp, 
 						duration, 
@@ -25,7 +33,6 @@ public class Attack extends Movable
 						reuse;
 	private boolean 	isEnemy, 
 						AoE;
-	private int 		type;
 	
 	private static final long serialVersionUID = 4L;
 	
@@ -61,7 +68,7 @@ public class Attack extends Movable
 					int damage,
 					int tp,
 					int duration,
-					int type,
+					AttackType type,
 					int statusEffect,
 					int statusDuration,
 					int stillTime,
@@ -117,7 +124,7 @@ public class Attack extends Movable
 			boolean AoE,
 			int damage,
 			int duration,
-			int type,
+			AttackType type,
 			int statusEffect,
 			int statusDuration,
 			int stillTime,
@@ -238,59 +245,59 @@ public class Attack extends Movable
 		y = (y) - (int) this.getBounds().getHeight()/4;
 		
 		// the attack will be slightly in front of the character
-		if(type == Type.FRONT)
+		if(type == AttackType.FRONT)
 		{
 			if(direction == Direction.EAST)
-				x += (int) Math.round(Type.CLOSE);
+				x += (int) Math.round(PLACEMENT_CLOSE);
 			else if(direction == Direction.WEST)
-				x -= (int) Math.round(Type.CLOSE);
+				x -= (int) Math.round(PLACEMENT_CLOSE);
 			else if(direction==Direction.SOUTH)
-				y += (int) Math.round(Type.CLOSE);
+				y += (int) Math.round(PLACEMENT_CLOSE);
 			else
-				y -= (int) Math.round(Type.CLOSE);
+				y -= (int) Math.round(PLACEMENT_CLOSE);
 		}
 		
 		// the attack will be in front of the character
-		else if(type == Type.MID_FRONT)
+		else if(type == AttackType.MID_FRONT)
 		{
 			if(direction == Direction.EAST)
-				x += (int) Math.round(Type.MID);
+				x += (int) Math.round(PLACEMENT_MID);
 			else if(direction == Direction.WEST)
-				x -= (int) Math.round(Type.MID);
+				x -= (int) Math.round(PLACEMENT_MID);
 			else if(direction == Direction.SOUTH)
-				y += (int) Math.round(Type.MID);
+				y += (int) Math.round(PLACEMENT_MID);
 			else
-				y -= (int) Math.round(Type.MID);
+				y -= (int) Math.round(PLACEMENT_MID);
 		}
 		
 		// the attack will be far in front of the character
-		else if(type == Type.FAR_FRONT)
+		else if(type == AttackType.FAR_FRONT)
 		{
 			if(direction == Direction.EAST)
-				x += (int) Math.round(Type.FAR);
+				x += (int) Math.round(PLACEMENT_FAR);
 			else if(direction == Direction.WEST)
-				x -= (int) Math.round(Type.FAR);
+				x -= (int) Math.round(PLACEMENT_FAR);
 			else if(direction == Direction.SOUTH)
-				y += (int) Math.round(Type.FAR);
+				y += (int) Math.round(PLACEMENT_FAR);
 			else
-				y -= (int) Math.round(Type.FAR);
+				y -= (int) Math.round(PLACEMENT_FAR);
 		}
 		
 		// the attack will appear behind the character
-		else if(type == Type.BACK)
+		else if(type == AttackType.BACK)
 		{
 			if(direction == Direction.EAST)
-				x -= (int) Math.round(30);
+				x -= (int) Math.round(PLACEMENT_MID_CLOSE);
 			else if(direction == Direction.WEST)
-				x += (int) Math.round(30);
+				x += (int) Math.round(PLACEMENT_MID_CLOSE);
 			else if(direction == Direction.SOUTH)
-				y -= (int) Math.round(30);
+				y -= (int) Math.round(PLACEMENT_MID_CLOSE);
 			else
-				y += (int) Math.round(30);
+				y += (int) Math.round(PLACEMENT_MID_CLOSE);
 		}
 		
 		// the attack appears on the center of the character
-		else if(type == Type.CENTER)
+		else if(type == AttackType.CENTER)
 		{
 			//Impletment never
 		}

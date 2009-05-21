@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Wall;
+import org.javateerz.ParkViewProtector.Students.BandStudent;
 import org.javateerz.ParkViewProtector.Students.Student;
 
 public class Level5 implements Level
@@ -55,7 +56,7 @@ public class Level5 implements Level
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
 			maxHp					= (int)(Math.random()*30);
 			
-			student					= new Student(game, x, y, maxHp, speed, gender, Student.BAND);
+			student					= new BandStudent(game, x, y, maxHp, speed, gender);
 			
 			// make sure that the student is not spawned on top of a wall)
 			while(!student.canMove(student.getBounds()))

@@ -10,6 +10,7 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.javateerz.ParkViewProtector.Attack.AttackType;
 import org.javateerz.ParkViewProtector.Students.Student;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -292,7 +293,6 @@ public class Couple extends Character
 		String		name="attack";
 		int			damage=0,
 					tp=0,
-					type=0,
 					speed=0,
 					duration=0,
 					reuse=duration,
@@ -301,13 +301,14 @@ public class Couple extends Character
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
+		AttackType type=null;
 		boolean 	isEnemy=false,
 					AoE=false;
 		
 		name="honk";
 		damage=1;
 		tp=10;
-		type=Type.FRONT;
+		type=AttackType.FRONT;
 		speed=0;
 		duration=30;
 		reuse=100;

@@ -6,7 +6,7 @@ import org.javateerz.ParkViewProtector.Attack;
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Status;
-import org.javateerz.ParkViewProtector.Type;
+import org.javateerz.ParkViewProtector.Attack.AttackType;
 
 public class Snake extends Boss
 {
@@ -80,7 +80,6 @@ public class Snake extends Boss
 		String		name="attack";
 		int			damage=0,
 					tp=0,
-					type=0,
 					speed=0,
 					duration=0,
 					reuse=duration,
@@ -89,6 +88,7 @@ public class Snake extends Boss
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
+		AttackType type=null;
 		boolean 	isStudent=false,
 					AoE=false;
 		/*
@@ -114,7 +114,7 @@ public class Snake extends Boss
 				name="fire";
 				damage=5;
 				tp=0;
-				type=Type.FRONT;
+				type=AttackType.FRONT;
 				speed = (int)(Math.random()*6+1);
 				duration=500;
 				reuse=0;
@@ -130,7 +130,7 @@ public class Snake extends Boss
 				name="tongue";
 				damage=10;
 				tp=0;
-				type=Type.FAR_FRONT;
+				type=AttackType.FAR_FRONT;
 				speed=0;
 				duration=20;
 				reuse=duration;
@@ -146,7 +146,7 @@ public class Snake extends Boss
 				name="rage";
 				damage=1;
 				tp=0;
-				type=Type.CENTER;
+				type=AttackType.CENTER;
 				speed=0;
 				duration=100;
 				reuse=200;

@@ -58,7 +58,7 @@ public class Level2 implements BossLevel, Level
 			type					= (int)(Math.random()*Student.NUM_STUDENTS);
 			maxHp					= (int)(Math.random()*30);
 			
-			student					= new Student(game, x, y, maxHp, speed, gender, type);
+			student					= Student.create(game, x, y, maxHp, speed, gender, type);
 			
 			// make sure that the student is not spawned on top of a wall)
 			while(!student.canMove(student.getBounds()))

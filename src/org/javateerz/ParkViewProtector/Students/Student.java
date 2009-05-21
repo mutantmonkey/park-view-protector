@@ -19,34 +19,19 @@ import org.javateerz.ParkViewProtector.Item;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Status;
 import org.javateerz.ParkViewProtector.StatusEffect;
-import org.javateerz.ParkViewProtector.Type;
+import org.javateerz.ParkViewProtector.Attack.AttackType;
 
-public class Student extends Character implements Serializable
+public abstract class Student extends Character implements Serializable
 {
 	public final static int NUM_STUDENTS		= 6;
 	
-	public final static int GANG				= 0;
-	public final static double GANG_AGGRO		= 0.80;
-	public final static int GOTH				= 1;
-	public final static double GOTH_AGGRO		= 0.30;
-	public final static int BAND				= 2;
-	public final static double BAND_AGGRO		= 0.10;
-	public final static int SCI					= 3;
-	public final static double SCI_AGGRO		= 0.40;
-	public final static int ROCK				= 4;
-	public final static double ROCK_AGGRO		= 0.60;
-	public final static int SPOR				= 5;
-	public final static double SPOR_AGGRO		= 0.90;
-	public final static int MANDELBROT			= 9999;
-	public final static double MANDELBROT_AGGRO	= 1.0;
-	
 	private String type							= "default";
-	private boolean aggro						= false;
-	private char gender;
+	protected boolean aggro						= false;
+	protected char gender;
 	private static final int ATTACK_RANGE		= 50;
 	private static final int SIGHT_RANGE		= 200;
 	
-	private static final long serialVersionUID	= 2L;
+	private static final long serialVersionUID	= 3L;
 	
 	/**
 	 * Create a new student
@@ -58,65 +43,15 @@ public class Student extends Character implements Serializable
 	 * @param gender
 	 */
 	public Student(Game game, int x, int y, int maxHp, double speed, char gender,
-			int type)
+			String type)
 	{
 		super(game, x, y, maxHp, maxHp, speed);
 		
-		// sets the gender
-		this.gender = gender;
+		this.gender	= gender;
+		this.type	= type;
 		
 		// generate random HP
 		setHp((int) (Math.random() * getMaxHp() + 1));
-		
-		// sets the type of student
-		switch(type)
-		{
-			case Student.GANG:
-				this.type = "gangster";
-				if(Math.random() < GANG_AGGRO)
-					aggro = true;
-				break;
-				
-			case Student.GOTH:
-				this.type = "goth";
-				if(Math.random() < GOTH_AGGRO)
-					aggro = true;
-				break;
-				
-			case Student.BAND:
-				this.type = "band";
-				if(Math.random() < BAND_AGGRO)
-					aggro = true;
-				break;
-
-			case Student.SCI:
-				this.type = "science";
-				if(Math.random() < SCI_AGGRO)
-					aggro = true;
-				break;
-				
-			case Student.ROCK:
-				this.type = "rocker";
-				if(Math.random() < ROCK_AGGRO)
-					aggro = true;
-				break;
-
-			case Student.SPOR:
-				this.type = "sport";
-				if(Math.random() < SPOR_AGGRO)
-					aggro = true;
-				break;
-				
-			case Student.MANDELBROT:
-				this.type = "mandelbrot";
-				if(Math.random() < MANDELBROT_AGGRO)
-					aggro = true;
-				break;
-				
-			default:
-				this.type = "default";
-			break;
-		}
 		
 		// give the student some items
 		int random = (int)(Math.random()*4);
@@ -388,42 +323,92 @@ public class Student extends Character implements Serializable
 		return false;
 	}
 	
+	/**
+	 * Perform a default attack
+	 */
 	public void attack()
 	{
+		attack(type + "_" + gender);
+	}
+	
+	/**
+	 * Perform an attack
+	 * 
+	 * @param name Name of attack
+	 */
+	protected void attack(String name)
+	{
+		int	speed		= 0,
+			damage		= 1,
+			tp			= 10,
+			duration	= 30,
+			stillTime	= 30,
+			reuse		= 100;
+		
+		attack(name, speed, damage, tp, duration, stillTime, reuse);
+	}
+	
+	/**
+	 * Perform an attack
+	 * 
+	 * @param name Name of attack
+	 * @param speed The speed the attack travels
+	 * @param damage The damage the attack will deal
+	 * @param tp The amount of TP the attack consumes
+	 * @param duration The duration the attack stays on screen
+	 * @param stillTime The duration the attack makes the user stand still
+	 * @param reuse The time the user can perform another attack
+	 */
+	protected void attack(String name, int speed, int damage, int tp, int duration,
+			int stillTime, int reuse)
+	{
+		int hits			= 1;
+		
+		attack(name, speed, damage, tp, AttackType.FRONT, duration, stillTime, hits,
+				duration / hits, reuse, 0, 0, true);
+	}
+	
+	/**
+	 * Perform an attack
+	 * 
+	 * @param name Name of attack
+	 * @param speed The speed the attack travels
+	 * @param damage The damage the attack will deal
+	 * @param tp The amount of TP the attack consumes
+	 * @param type The placement of the attack
+	 * @param duration The duration the attack stays on screen
+	 * @param stillTime The duration the attack makes the user stand still
+	 * @param hits The number of hits the attack deals
+	 * @param hitDelay The time before the target can be hit again after being hit
+	 * @param reuse The time the user can perform another attack
+	 * @param status The status effect the attack induces
+	 * @param statusDuration The length of the status effect
+	 * @param AoE If true, the attack will not disappear upon hitting a target
+	 */
+	protected void attack(String name, int speed, int damage, int tp, AttackType type,
+			int duration, int stillTime, int hits, int hitDelay, int reuse, int status,
+			int statusLength, boolean AoE)
+	{
 		ArrayList<Attack> attacks=game.getAttacks();
-		Attack attack;
 		
-		String		name="attack";
-		int			damage=0,
-					tp=0,
-					type=0,
-					speed=0,
-					duration=0,
-					reuse=duration,
-					stillTime=0,
-					hits=1,
-					hitDelay=duration,
-					status=0,
-					statusLength=0;
-		boolean 	isEnemy=false,
-					AoE=false;
+		Attack attack		= new Attack(game, this.getBounds().getCenterX(),
+				this.getBounds().getCenterY(),
+				speed,
+				this.getDirection(),
+				name,
+				false,
+				AoE,
+				damage,
+				tp,
+				duration,
+				type,
+				status,
+				statusLength,
+				stillTime,
+				hits,
+				hitDelay,
+				reuse);
 		
-		name=getType() + "_" + gender;
-		damage=1;
-		tp=10;
-		type=Type.FRONT;
-		speed=0;
-		duration=30;
-		reuse=100;
-		stillTime=30;
-		hits=1;
-		hitDelay=duration/hits;
-		status=status;
-		statusLength=statusLength;
-		isEnemy=isEnemy;
-		AoE=true;
-		
-		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isEnemy, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		if(inRange(game.getPlayer(),50) && isAgain())
 		{
 			setAttackFrames(attack.getStillTime());
@@ -454,5 +439,54 @@ public class Student extends Character implements Serializable
 	private void writeObject(ObjectOutputStream os) throws IOException
 	{
 		os.defaultWriteObject();
+	}
+	
+	public final static int GANG				= 0;
+	public final static int GOTH				= 1;
+	public final static int BAND				= 2;
+	public final static int SCI					= 3;
+	public final static int ROCK				= 4;
+	public final static int SPOR				= 5;
+	
+	public static Student create(Game game, int x, int y, int maxHp, double speed,
+			char gender, int type)
+	{
+		Student student;
+		
+		switch(type)
+		{
+			case BAND:
+				student							= new BandStudent(game, x, y, maxHp,
+						speed, gender);
+				break;
+		
+			case GANG:
+				student							= new GangsterStudent(game, x, y, maxHp,
+						speed, gender);
+				break;
+				
+			case GOTH:
+				student							= new GothStudent(game, x, y, maxHp,
+						speed, gender);
+				break;
+				
+			case ROCK:
+				student							= new RockerStudent(game, x, y, maxHp,
+						speed, gender);
+				break;
+				
+			case SCI:
+				student							= new ScientistStudent(game, x, y, maxHp,
+						speed, gender);
+				break;
+				
+			default:
+			case SPOR:
+				student							= new SportStudent(game, x, y, maxHp,
+						speed, gender);
+				break;
+		}
+		
+		return student;
 	}
 }

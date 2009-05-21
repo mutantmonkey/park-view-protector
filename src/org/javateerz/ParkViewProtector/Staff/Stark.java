@@ -13,7 +13,7 @@ import org.javateerz.ParkViewProtector.Attack;
 import org.javateerz.ParkViewProtector.DataStore;
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.Status;
-import org.javateerz.ParkViewProtector.Type;
+import org.javateerz.ParkViewProtector.Attack.AttackType;
 
 public class Stark extends Staff
 {
@@ -47,7 +47,6 @@ public class Stark extends Staff
 		String		name="attack";
 		int			damage=0,
 					tp=0,
-					type=0,
 					speed=0,
 					duration=0,
 					reuse=duration,
@@ -56,6 +55,7 @@ public class Stark extends Staff
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
+		AttackType type = null;
 		boolean 	isEnemy=true,
 					AoE=false;
 		/*
@@ -81,7 +81,7 @@ public class Stark extends Staff
 				name="physball";
 				damage=10;
 				tp=10;
-				type=Type.FRONT;
+				type=AttackType.FRONT;
 				speed=10;
 				duration=40;
 				reuse=30;
@@ -97,7 +97,7 @@ public class Stark extends Staff
 				name="meterstick";
 				damage=15;
 				tp=10;
-				type=Type.FRONT;
+				type=AttackType.FRONT;
 				speed=0;
 				duration=20;
 				reuse=25;
@@ -113,7 +113,7 @@ public class Stark extends Staff
 				name="goodnight";
 				damage=3;
 				tp=30;
-				type=Type.CENTER;
+				type=AttackType.CENTER;
 				speed=0;
 				duration=50;
 				reuse=duration;

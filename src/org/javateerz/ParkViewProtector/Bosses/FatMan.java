@@ -5,7 +5,7 @@ import org.javateerz.ParkViewProtector.Attack;
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Status;
-import org.javateerz.ParkViewProtector.Type;
+import org.javateerz.ParkViewProtector.Attack.AttackType;
 
 public class FatMan extends Boss
 {
@@ -83,7 +83,6 @@ public class FatMan extends Boss
 		String		name="attack";
 		int			damage=0,
 					tp=0,
-					type=0,
 					speed=0,
 					duration=0,
 					reuse=duration,
@@ -92,6 +91,7 @@ public class FatMan extends Boss
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
+		AttackType type=null;
 		boolean 	isStudent=false,
 					AoE=false;
 		/*
@@ -117,7 +117,7 @@ public class FatMan extends Boss
 				name="choco";
 				damage=3;
 				tp=0;
-				type=Type.FRONT;
+				type=AttackType.FRONT;
 				speed=20;
 				duration=300;
 				reuse=30;
@@ -133,7 +133,7 @@ public class FatMan extends Boss
 				name="tape";
 				damage=2;
 				tp=0;
-				type=Type.FAR_FRONT;
+				type=AttackType.FAR_FRONT;
 				speed=0;
 				duration=20;
 				reuse=duration;
@@ -149,7 +149,7 @@ public class FatMan extends Boss
 				name="rage";
 				damage=1;
 				tp=0;
-				type=Type.CENTER;
+				type=AttackType.CENTER;
 				speed=0;
 				duration=100;
 				reuse=200;

@@ -2,7 +2,9 @@ package org.javateerz.ParkViewProtector;
 
 import java.util.ArrayList;
 
+import org.javateerz.ParkViewProtector.Attack.AttackType;
 import org.javateerz.ParkViewProtector.Bosses.Boss;
+import org.javateerz.ParkViewProtector.Students.Mandelbrotchen;
 import org.javateerz.ParkViewProtector.Students.Student;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
@@ -59,8 +61,8 @@ public class Mandelbrot extends Boss
 						brotX		= (int) (Math.random() * ParkViewProtector.WIDTH);
 						brotY		= (int) (Math.random() * ParkViewProtector.HEIGHT);
 						
-						brot		= new Student(game, brotX, brotY, BROT_HP,
-								BROT_SPEED, 'm', Student.MANDELBROT);
+						brot		= new Mandelbrotchen(game, brotX, brotY, BROT_HP,
+								BROT_SPEED);
 						
 						game.addStudent(brot);
 					}
@@ -117,7 +119,6 @@ public class Mandelbrot extends Boss
 		String		name="attack";
 		int			damage=0,
 					tp=0,
-					type=0,
 					speed=0,
 					duration=0,
 					reuse=duration,
@@ -126,6 +127,7 @@ public class Mandelbrot extends Boss
 					hitDelay=duration,
 					status=0,
 					statusLength=0;
+		AttackType type=null;
 		boolean 	isStudent=false,
 					AoE=false;
 		/*
@@ -151,7 +153,7 @@ public class Mandelbrot extends Boss
 				name="rage";
 				damage=1;
 				tp=0;
-				type=Type.CENTER;
+				type=AttackType.CENTER;
 				speed=0;
 				duration=100;
 				reuse=200;
