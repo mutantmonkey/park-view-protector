@@ -112,9 +112,11 @@ public class Menu extends GameScreen implements KeyListener
 			if(i == selectedItem)
 			{
 				items[i].setColor(SELECTED_TEXT_COLOR);
+				items[i].setSelected(true);
 			}
 			else {
 				items[i].setColor(TEXT_COLOR);
+				items[i].setSelected(false);
 			}
 			
 			items[i].drawCentered(ParkViewProtector.WIDTH / 2, TOP_SPACING + (i + 1) * LINE_SPACING);
