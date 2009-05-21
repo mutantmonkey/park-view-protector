@@ -89,9 +89,11 @@ public class TitleScreen extends Menu
 			if(i == selectedItem)
 			{
 				items[i].setColor(SELECTED_TEXT_COLOR);
+				items[i].setSelected(true);
 			}
 			else {
 				items[i].setColor(TEXT_COLOR);
+				items[i].setSelected(false);
 			}
 			
 			items[i].draw(ParkViewProtector.WIDTH - items[i].getBounds().getWidth() - RIGHT_SPACING,
