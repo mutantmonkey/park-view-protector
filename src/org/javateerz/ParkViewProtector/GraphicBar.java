@@ -46,6 +46,11 @@ public class GraphicBar
 		updateSprite();
 	}
 	
+	public Sprite getSprite()
+	{
+		return m1;
+	}
+	
 	public void updateSprite()
 	{
 		this.m1		= DataStore.INSTANCE.getSprite("bar/" + name + "_1.png");
