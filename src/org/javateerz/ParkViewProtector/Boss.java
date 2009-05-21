@@ -8,6 +8,8 @@ public abstract class Boss extends Character
 	
 	private static final int STATUS_RESISTANCE=3;
 	
+	protected String name;
+	
 	/**
 	 * Create a new Boss
 	 * 
@@ -18,10 +20,11 @@ public abstract class Boss extends Character
 	 * @param maxHp
 	 * @param speed
 	 */
-	public Boss(Game game, int x, int y, int hp, int maxHp, double speed)
+	public Boss(String name,Game game, int x, int y, int hp, int maxHp, double speed)
 	{
 		super(game, x, y, hp, maxHp, speed);
 		updateSprite();
+		this.name = name;
 		bar.setName("blue1");
 		bar.updateSprite();
 	}
@@ -137,6 +140,11 @@ public abstract class Boss extends Character
 				if(getHp()>0)
 					adjustHp(-attack.getDamage());
 				
+				if(getHp() <= 0)
+				{
+					sprite = DataStore.INSTANCE.getSprite(name+"_dead.png");
+				}
+				
 				// sets invulnerable frames
 				setInvulFrames(attack.getHitDelay());
 				
@@ -148,4 +156,9 @@ public abstract class Boss extends Character
 	
 	// retrieves the attack from sub class to be used
 	public abstract Attack getAttack(int i);
+	
+	protected void updateSprite()
+	{
+		sprite = DataStore.INSTANCE.getSprite(name+"_boss.png");
+	}
 }

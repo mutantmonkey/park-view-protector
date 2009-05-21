@@ -61,7 +61,8 @@ public class Game extends GameScreen implements Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 2;
+	private int levelNum						= 4;
+	
 	private transient Boss boss;
 	private transient Level level;
 	private transient Sprite background;
@@ -132,6 +133,10 @@ public class Game extends GameScreen implements Serializable
 				
 			case 3:
 				level				= new Level3(this);
+				break;
+				
+			case 4:
+				level				= new Level4(this);
 				break;
 		}
 		

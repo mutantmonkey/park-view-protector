@@ -10,12 +10,12 @@ public class FatMan extends Boss
 	
 	public FatMan(Game game, int x, int y)
 	{
-		super(game, x, y, MAX_HP, MAX_HP, SPEED);
+		super("big",game, x, y, MAX_HP, MAX_HP, SPEED);
 	}
 
 	public FatMan(Game g,int x, int y, int hp, int maxHp, double speed)
 	{
-		super(g, x, y, maxHp, maxHp, speed);
+		super("big",g, x, y, maxHp, maxHp, speed);
 	}
 	
 	public void step(Game g)
