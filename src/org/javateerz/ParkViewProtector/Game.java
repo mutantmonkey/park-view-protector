@@ -208,7 +208,6 @@ public class Game extends GameScreen implements Serializable
 		return boss;
 	}
 	
-	// FIXME: decide if this should be part of the constructor
 	public void setPlayer(Staff player)
 	{
 		this.player					= player;

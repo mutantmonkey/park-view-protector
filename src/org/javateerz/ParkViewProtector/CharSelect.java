@@ -99,7 +99,6 @@ public class CharSelect extends GameScreen implements KeyListener
 	
 	public void finish()
 	{
-		// FIXME: there should be a better way of doing this
 		ParkViewProtector.selectChar	= false;
 		driver.getGame().setPlayer(choices[selectedIndex]);
 		
