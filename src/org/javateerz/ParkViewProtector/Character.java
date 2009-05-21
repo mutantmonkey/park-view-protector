@@ -31,6 +31,7 @@ public abstract class Character extends Movable
 	protected boolean again		= false;
 	protected Character pushee	= null;
 	
+	GraphicBar bar;
 	protected ArrayList<StatusEffect> effects=new ArrayList<StatusEffect>();
 	
 	public ItemBin bin;
@@ -54,6 +55,8 @@ public abstract class Character extends Movable
 		this.hp		= hp;
 		this.maxHp	= maxHp;
 		bin = new ItemBin(this);
+		bar								= new GraphicBar(game, 
+			"red", (int)(sprite.getWidth()), (double)getHp()/getMaxHp());
 	}
 	
 	/**
@@ -578,6 +581,12 @@ public abstract class Character extends Movable
 		{
 			throw new IllegalArgumentException("HP cannot exceed max HP");
 		}
+	}
+	
+	public void showHp()
+	{
+		bar.setFilled((double) getHp()/getMaxHp());
+		bar.draw((int)x,(int)y);
 	}
 	
 	public void draw()

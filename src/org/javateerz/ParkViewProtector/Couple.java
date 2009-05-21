@@ -354,17 +354,4 @@ public class Couple extends Character
 	{
 		os.defaultWriteObject();
 	}
-
-	public void showHp()
-	{
-		GLRect rect				= new GLRect((int) x, (int) y, (int) getBounds().getWidth(),
-				(int) getBounds().getHeight());
-		rect.setColor(new Color(ParkViewProtector.COLOR_BG_1.getRed(),
-				ParkViewProtector.COLOR_BG_1.getGreen(),
-				ParkViewProtector.COLOR_BG_1.getBlue(), 5));
-		rect.draw();
-
-		Bar chargeBar = new Bar(ParkViewProtector.STATS_BAR_HP,(int)(getBounds().getWidth()), (double)getHp()/getMaxHp());
-		chargeBar.draw((int)x,(int)y);
-	}
 }

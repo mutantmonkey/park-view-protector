@@ -19,10 +19,13 @@ public class Statistics
 	
 	private Font font;
 	
-	public Statistics()
+	Game g;
+	
+	public Statistics(Game g)
 	{
 		font						= new TrueTypeFont(new java.awt.Font("Monospaced",
 				java.awt.Font.PLAIN, 10), false);
+		this.g=g;
 	}
 	
 	public void draw(Staff player, int level)
@@ -42,7 +45,7 @@ public class Statistics
 		// draw HP bar
 		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
 
-		Bar hpBar					= new Bar(ParkViewProtector.STATS_BAR_HP, hpMaxWidth,
+		GraphicBar hpBar					= new GraphicBar(g, "red", hpMaxWidth,
 				(double) player.getHp() / player.getMaxHp());
 		hpBar.draw(PAD_LEFT_BAR, PAD_TOP);
 		
@@ -55,7 +58,7 @@ public class Statistics
 		// draw TP bar
 		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
 		
-		Bar tpBar					= new Bar(ParkViewProtector.STATS_BAR_TP, tpMaxWidth,
+		GraphicBar tpBar					= new GraphicBar(g, "blue", tpMaxWidth,
 				(double) player.getTp() / player.getMaxTp());
 		tpBar.draw(PAD_LEFT_BAR, PAD_TOP + BAR_HEIGHT + BAR_SPACING);
 		

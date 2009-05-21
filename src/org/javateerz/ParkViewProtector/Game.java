@@ -106,7 +106,7 @@ public class Game extends GameScreen implements Serializable
 	 */
 	private void initGame()
 	{
-		stats						= new Statistics();
+		stats						= new Statistics(this);
 		
 		// initialize level
 		initLevel();
