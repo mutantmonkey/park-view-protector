@@ -61,7 +61,7 @@ public class Game extends GameScreen implements Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 2;
+	private int levelNum						= 1;
 	private transient Boss boss;
 	private transient Level level;
 	private transient Sprite background;
@@ -200,6 +200,13 @@ public class Game extends GameScreen implements Serializable
 			if(icons.get(i).getStatus()==status)
 				return true;
 		}
+		return false;
+	}
+	
+	public boolean isBossLevel()
+	{
+		if(level instanceof BossLevel)
+			return true;
 		return false;
 	}
 	
@@ -544,6 +551,8 @@ public class Game extends GameScreen implements Serializable
 	 */
 	public void showHp()
 	{
+		player.showHp();
+		
 		for(int i = 0;i < students.size();i++)
 		{
 			if(students.get(i).getHp() > 0)

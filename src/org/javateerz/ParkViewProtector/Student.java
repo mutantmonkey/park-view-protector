@@ -127,6 +127,8 @@ public class Student extends Character implements Serializable
 		
 		// sets graphic
 		updateSprite();
+		bar.setName("red1");
+		bar.updateSprite();
 	}
 	
 	public void step(Game game)

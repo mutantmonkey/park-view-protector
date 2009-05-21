@@ -22,6 +22,8 @@ public abstract class Boss extends Character
 	{
 		super(game, x, y, hp, maxHp, speed);
 		updateSprite();
+		bar.setName("blue1");
+		bar.updateSprite();
 	}
 	
 	/**

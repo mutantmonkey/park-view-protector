@@ -449,7 +449,7 @@ public abstract class Movable implements Serializable
 			{
 				if(!s.isStunned() && newRect.intersects(s.getBounds()))
 				{
-					if(!(s instanceof Student) || s!=this)
+					if(/*!(s instanceof Student) || */s!=this)
 						return false;
 				}
 			}
@@ -463,7 +463,7 @@ public abstract class Movable implements Serializable
 			{
 				if(!c.isStunned() && newRect.intersects(c.getBounds()))
 				{
-					if(!(c instanceof Couple) || c!=this)
+					if(/*!(c instanceof Couple) || */c!=this)
 						return false;
 				}
 			}
@@ -480,6 +480,12 @@ public abstract class Movable implements Serializable
 					return false;
 				}
 			}
+		}
+		
+		if(game.isBossLevel() && newRect.intersects(game.getBoss().getBounds()))
+		{
+			if(!(this instanceof Boss))
+				return false;
 		}
 		
 		return true;

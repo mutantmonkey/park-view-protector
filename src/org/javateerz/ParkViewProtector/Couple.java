@@ -63,6 +63,8 @@ public class Couple extends Character
 		
 		// temp graphic
 		updateSprite();
+		bar.setName("red1");
+		bar.updateSprite();
 	}
 	
 	protected void updateSprite()
@@ -80,7 +82,8 @@ public class Couple extends Character
 
 	public void step(Game game)
 	{
-		if(likesWall && game.getWalls().size()>0 && !(aggro && inRange(game.getPlayer(), 50)))
+		if(likesWall && game.getWalls().size()>0 &&
+				!(aggro && inRange(game.getPlayer(), 50)))
 		{
 			// find nearest wall
 			if(wallId == 0)
@@ -94,18 +97,15 @@ public class Couple extends Character
 				Wall wall	= game.getWall(wallId);
 				moveToward(wall);
 			}
-			else {
-				
-			}
 		}
-		else if(!isStunned() && !isAttacking() && aggro)
+		else if(!isStunned() && !isAttacking())
 		{
-			if(inRange(game.getPlayer(), 50))
+			if(aggro && inRange(game.getPlayer(), 50))
 			{
 				setDirection(getDirectionToward(game.getPlayer()));
 				attack();
 			}
-			else if(inRange(game.getPlayer(),200))
+			else if(aggro && inRange(game.getPlayer(),200))
 			{
 				moveToward(game.getPlayer(),10);
 			}
@@ -114,8 +114,6 @@ public class Couple extends Character
 				moveRandom();
 			}
 		}
-		else
-			moveRandom();
 		
 		// decrement the hit delay
 		recover();

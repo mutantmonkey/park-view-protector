@@ -57,6 +57,8 @@ public abstract class Staff extends Character
 		this.name = name;
 		this.tp=tp;
 		this.maxTp=maxTp;
+		bar.setName("green1");
+		bar.updateSprite();
 	}
 	
 	public void step(Game game)

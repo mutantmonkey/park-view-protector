@@ -33,6 +33,7 @@ public abstract class Character extends Movable
 	
 	protected GraphicBar bar	= new GraphicBar(game, 
 			"red", (int)(sprite.getWidth()), (double)getHp()/getMaxHp());
+	
 	protected ArrayList<StatusEffect> effects=new ArrayList<StatusEffect>();
 	
 	public ItemBin bin;
@@ -586,7 +587,7 @@ public abstract class Character extends Movable
 	{
 		bar.setWidth(this.sprite.getWidth());
 		bar.setFilled((double) getHp()/getMaxHp());
-		bar.draw((int)x,(int)y);
+		bar.draw((int)x,(int)y+this.sprite.getHeight());
 	}
 	
 	public void draw()
