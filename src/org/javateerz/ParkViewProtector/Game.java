@@ -61,7 +61,7 @@ public class Game extends GameScreen implements Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 1;
+	private int levelNum						= 2;
 	private transient Boss boss;
 	private transient Level level;
 	private transient Sprite background;
@@ -106,8 +106,6 @@ public class Game extends GameScreen implements Serializable
 	 */
 	private void initGame()
 	{
-		stats						= new Statistics(this);
-		
 		// initialize level
 		initLevel();
 		
@@ -221,6 +219,9 @@ public class Game extends GameScreen implements Serializable
 		this.player.moveTo(PLAYER_X, PLAYER_Y);
 		stun= new StatusIcon(this, Status.STUN);
 		invul= new StatusIcon(this, Status.INVULNERABLE);
+		
+		// INIRIRAIOOSFO STATISTICS
+		stats						= new Statistics(this);
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////

@@ -19,6 +19,11 @@ public class Statistics
 	
 	private Font font;
 	
+	GraphicBar hpBar;
+	GraphicBar tpBar;
+	
+	Staff player;
+	
 	Game g;
 	
 	public Statistics(Game g)
@@ -26,6 +31,11 @@ public class Statistics
 		font						= new TrueTypeFont(new java.awt.Font("Monospaced",
 				java.awt.Font.PLAIN, 10), false);
 		this.g=g;
+		this.player=g.getPlayer();
+		hpBar = new GraphicBar(g, "red", player.getMaxHp()*BAR_MULTIPLIER,
+				(double) player.getHp() / player.getMaxHp());
+		tpBar = new GraphicBar(g, "blue", player.getMaxTp()*BAR_MULTIPLIER,
+				(double) player.getTp() / player.getMaxTp());
 	}
 	
 	public void draw(Staff player, int level)
@@ -41,12 +51,8 @@ public class Statistics
 		hpStr.setColor(ParkViewProtector.STATS_BAR_FG);
 		hpStr.setFont(font);
 		hpStr.draw();
-		
-		// draw HP bar
-		int hpMaxWidth				= player.getMaxHp() * BAR_MULTIPLIER;
 
-		GraphicBar hpBar					= new GraphicBar(g, "red", hpMaxWidth,
-				(double) player.getHp() / player.getMaxHp());
+		hpBar.setFilled((double)player.getHp() / player.getMaxHp());
 		hpBar.draw(PAD_LEFT_BAR, PAD_TOP);
 		
 		GLString tpStr				= new GLString("TP:", PAD_TOP, PAD_TOP +
@@ -56,10 +62,7 @@ public class Statistics
 		tpStr.draw();
 		
 		// draw TP bar
-		int tpMaxWidth				= player.getMaxTp() * BAR_MULTIPLIER;
-		
-		GraphicBar tpBar					= new GraphicBar(g, "blue", tpMaxWidth,
-				(double) player.getTp() / player.getMaxTp());
+		tpBar.setFilled((double)player.getTp() / player.getMaxTp());
 		tpBar.draw(PAD_LEFT_BAR, PAD_TOP + BAR_HEIGHT + BAR_SPACING);
 		
 		// draw speed
