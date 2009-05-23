@@ -444,6 +444,13 @@ public abstract class Movable implements Serializable
 	
 	public boolean canMove(Rectangle newRect)
 	{
+		// can never move off the screen
+		if(newRect.getX() < 0 || newRect.getX() >= ParkViewProtector.WIDTH ||
+				newRect.getY() < 0 || newRect.getY() >= ParkViewProtector.HEIGHT)
+		{
+			return false;
+		}
+		
 		// students
 		ArrayList<Student> students = game.getStudents();
 		if(students.size() > 0)
