@@ -59,17 +59,36 @@ public class Bar
 	/**
 	 * Adjust the percentage filled
 	 * 
-	 * @param width
+	 * @param percent Percent filled
 	 */
 	public void setFilled(double percent)
 	{
 		this.width				= (int) (percent * maxWidth);
 	}
 	
+	public void setName(String name)
+	{
+		
+	}
+	
+	public void updateSprite()
+	{
+		
+	}
+	
+	/**
+	 * Adjust the maximum width
+	 * 
+	 * @param w Width
+	 */
+	public void setWidth(int w)
+	{
+		maxWidth				= w;
+	}
+	
 	/**
 	 * Draw the bar at the given position
 	 * 
-	 * @param g Graphics context
 	 * @param x X-position
 	 * @param y Y-position
 	 */

@@ -31,8 +31,10 @@ public abstract class Character extends Movable
 	protected boolean again		= false;
 	protected Character pushee	= null;
 	
-	protected GraphicBar bar	= new GraphicBar(game, 
-			"red", (int)(sprite.getWidth()), (double)getHp()/getMaxHp());
+	/*protected GraphicBar bar	= new GraphicBar(game, 
+			"red", (int)(sprite.getWidth()), (double)getHp()/getMaxHp());*/
+	protected Bar bar			= new Bar(ParkViewProtector.STATS_BAR_HP,
+			(int) sprite.getWidth(), (int) sprite.getWidth());
 	
 	protected ArrayList<StatusEffect> effects=new ArrayList<StatusEffect>();
 	
@@ -587,7 +589,8 @@ public abstract class Character extends Movable
 	{
 		bar.setWidth(this.sprite.getWidth());
 		bar.setFilled((double) getHp()/getMaxHp());
-		bar.draw((int) x, (int) y-bar.getSprite().getHeight());
+		//bar.draw((int) x, (int) y-bar.getSprite().getHeight());
+		bar.draw((int) x, (int) y);
 	}
 	
 	public void draw()
