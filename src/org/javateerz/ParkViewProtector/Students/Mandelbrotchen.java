@@ -20,4 +20,19 @@ public class Mandelbrotchen extends Student
 		
 		setAggro(true);
 	}
+	
+	public boolean handleAttacks()
+	{
+		boolean ret				= super.handleAttacks();
+		
+		// WARNING: I haven't checked, but this may cause one loop in Game to be off by
+		// one on the student count. But since the loops run so quickly, I don't think
+		// that this will create a noticeable problem.
+		if(hp <= 0)
+		{
+			game.getStudents().remove(game.getStudents().indexOf(this));
+		}
+			
+		return ret;
+	}
 }
