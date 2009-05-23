@@ -1,9 +1,7 @@
 package org.javateerz.ParkViewProtector;
 
 import org.javateerz.EasyGL.GLString;
-import org.javateerz.ParkViewProtector.Staff.SpecialCharacter;
-import org.javateerz.ParkViewProtector.Staff.Staff;
-import org.javateerz.ParkViewProtector.Staff.Stark;
+import org.javateerz.ParkViewProtector.Staff.*;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.TrueTypeFont;
@@ -30,10 +28,11 @@ public class CharSelect extends GameScreen implements KeyListener
 		nameFont						= new TrueTypeFont(new java.awt.Font(
 				"System", java.awt.Font.PLAIN, 32), true);
 		
-		choices							= new Staff[2];
+		choices							= new Staff[3];
 		choices[0]						= new Stark(driver.getGame(), CHAR_X, CHAR_Y);
 		choices[1]						= new SpecialCharacter(driver.getGame(), CHAR_X,
 				CHAR_Y);
+		choices[2]						= new Jamie(driver.getGame(), CHAR_X, CHAR_Y);
 	}
 	
 	public void keyPressed(int key, char c)
