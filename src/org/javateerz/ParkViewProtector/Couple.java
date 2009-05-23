@@ -30,6 +30,8 @@ public class Couple extends Character
 	
 	private boolean aggro	= false;
 	
+	public static final double ATTACK_MALE_CHANCE	= 0.5;
+	
 	/**
 	 * Maximum distance from a wall in pixels that couples will
 	 * "stick" to
@@ -117,6 +119,7 @@ public class Couple extends Character
 				moveRandom();
 			}
 		}
+		attack();
 		
 		// decrement the hit delay
 		recover();
@@ -287,57 +290,14 @@ public class Couple extends Character
 
 	public void attack()
 	{
-		ArrayList<Attack> attacks=game.getAttacks();
-		Attack attack;
-		
-		String		name="attack";
-		int			damage=0,
-					tp=0,
-					speed=0,
-					duration=0,
-					reuse=duration,
-					stillTime=0,
-					hits=1,
-					hitDelay=duration,
-					status=0,
-					statusLength=0;
-		AttackType type=null;
-		boolean 	isEnemy=false,
-					AoE=false;
-		
-		name="honk";
-		damage=1;
-		tp=10;
-		type=AttackType.FRONT;
-		speed=0;
-		duration=30;
-		reuse=100;
-		stillTime=30;
-		hits=1;
-		hitDelay=duration/hits;
-		status=status;
-		statusLength=statusLength;
-		isEnemy=isEnemy;
-		AoE=true;
-		
-		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isEnemy, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
-		if(inRange(game.getPlayer(),50) && isAgain())
+		if(Math.random() < ATTACK_MALE_CHANCE)
 		{
-			setAttackFrames(attack.getStillTime());
-			attack.switchXY();
-			attacks.add(attack);
-			
-			try
-			{
-				ParkViewProtector.playSound(attack.getName()+".wav");
-			}
-			catch(Exception e)
-			{
-				System.out.println("The attack has no sound.");
-			}
-			
-			// set delay
-			setAgainFrames(attack.getReuse());
+			male.moveTo(x, y);
+			male.attack();
+		}
+		else {
+			female.moveTo(x, y);
+			female.attack();
 		}
 	}
 	
