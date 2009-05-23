@@ -587,9 +587,14 @@ public abstract class Character extends Movable
 	
 	public void showHp()
 	{
+		// determine vertical placement
+		int y;
+		y				= (int) this.y - Bar.BAR_HEIGHT;
+		//y				= this.y - bar.getSprite().getHeight();
+		y				= (y < 0) ? 0 : y;
+		
 		bar.setWidth(this.sprite.getWidth());
 		bar.setFilled((double) getHp()/getMaxHp());
-		//bar.draw((int) x, (int) y-bar.getSprite().getHeight());
 		bar.draw((int) x, (int) y);
 	}
 	
