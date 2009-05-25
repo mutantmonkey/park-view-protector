@@ -8,7 +8,7 @@ import org.javateerz.ParkViewProtector.Bosses.Boss;
 import org.javateerz.ParkViewProtector.Bosses.Mandelbrot;
 import org.javateerz.ParkViewProtector.Students.Student;
 
-public class Level3 implements BossLevel, Level
+public class Level15 implements BossLevel, Level
 {
 	public static final int MIN_STUDENTS		= 5;
 	public static final int MAX_STUDENTS		= 5;
@@ -18,7 +18,7 @@ public class Level3 implements BossLevel, Level
 	private Game game;
 	private Boss boss;
 	
-	public Level3(Game g)
+	public Level15(Game g)
 	{
 		game									= g;
 	}
