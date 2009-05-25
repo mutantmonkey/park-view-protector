@@ -33,6 +33,9 @@ public abstract class GameScreen extends Input
 		{
 			System.out.println("Error playing background music");
 		}
+		
+		// reset music position
+		musicPosition								= 0f;
 	}
 	
 	protected void ensureMusicPlaying()
