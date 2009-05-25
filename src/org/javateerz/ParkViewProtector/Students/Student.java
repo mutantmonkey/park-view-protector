@@ -118,10 +118,6 @@ public abstract class Student extends Character implements Serializable
 		// recover from status effects
 		recover();
 		
-		// recover hp
-		if(!isStunned())
-			regain();
-		
 		// receive attacks
 		handleAttacks();
 	}

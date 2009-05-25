@@ -72,7 +72,6 @@ public abstract class Staff extends Character
 	public void step(Game game)
 	{
 		recover();
-		regain();
 		tpRegen();
 		handleAttack();
 	}
