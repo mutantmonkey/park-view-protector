@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Wall;
-import org.javateerz.ParkViewProtector.Students.BandStudent;
+import org.javateerz.ParkViewProtector.Bosses.Boss;
+import org.javateerz.ParkViewProtector.Bosses.FatMan;
 import org.javateerz.ParkViewProtector.Students.Student;
 
-public class Level5 implements Level
+public class Level5 implements BossLevel, Level
 {
-	public static final int MIN_STUDENTS		= 4;
-	public static final int MAX_STUDENTS		= 10;
+	public static final int MIN_STUDENTS		= 5;
+	public static final int MAX_STUDENTS		= 5;
 	public static final int MAX_STUDENT_SPEED	= 1;
 	public static final double GENDER_CHANCE	= 0.5;
 	
 	private Game game;
+	private Boss boss;
 	
 	public Level5(Game g)
 	{
@@ -24,12 +26,12 @@ public class Level5 implements Level
 	
 	public String getBG()
 	{
-		return "terrazzo_green.png";
+		return "terrazzo_blue.png";
 	}
 	
 	public String getMusic()
 	{
-		return "heavyset.ogg";
+		return "bloated.ogg";
 	}
 	
 	public ArrayList<Student> getStudents()
@@ -44,7 +46,7 @@ public class Level5 implements Level
 		
 		Student student				= null;
 		
-		int x, y, maxHp;
+		int x, y, type, maxHp;
 		double speed;
 		char gender;
 		
@@ -54,9 +56,10 @@ public class Level5 implements Level
 			y						= (int) (Math.random() * ParkViewProtector.HEIGHT);
 			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
+			type					= (int)(Math.random()*Student.NUM_STUDENTS);
 			maxHp					= (int)(Math.random()*30);
 			
-			student					= new BandStudent(game, x, y, maxHp, speed, gender);
+			student					= Student.create(game, x, y, maxHp, speed, gender, type);
 			
 			// make sure that the student is not spawned on top of a wall)
 			while(!student.canMove(student.getBounds()))
@@ -75,8 +78,19 @@ public class Level5 implements Level
 		return students;
 	}
 	
+	public Boss getBoss()
+	{
+		boss=new FatMan(game, 400, 400);
+		return boss;
+	}
+
 	public ArrayList<Wall> getWalls()
 	{
 		return new ArrayList<Wall>();
+	}
+	
+	public boolean levelComplete()
+	{
+		return boss.getHp() <= 0;
 	}
 }

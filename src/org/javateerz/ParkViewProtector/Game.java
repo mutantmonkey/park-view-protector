@@ -32,7 +32,7 @@ public class Game extends GameScreen implements Serializable
 	public static final int ICON_Y_OFFSET		= 38;
 	public static final int ICON_SPACING		= 30;
 	
-	public static final int MAX_LEVEL			= 5;
+	public static final int MAX_LEVEL			= 15;
 	
 	////////////////////////////////////////////////////
 	public static final int CHARGE_REGEN		= 10;
@@ -146,6 +146,46 @@ public class Game extends GameScreen implements Serializable
 				
 			case 5:
 				level				= new Level5(this);
+				break;
+				
+			case 6:
+				level				= new Level6(this);
+				break;
+				
+			case 7:
+				level				= new Level7(this);
+				break;
+				
+			case 8:
+				level				= new Level8(this);
+				break;
+				
+			case 9:
+				level				= new Level9(this);
+				break;
+				
+			case 10:
+				level				= new Level10(this);
+				break;
+				
+			case 11:
+				level				= new Level11(this);
+				break;
+				
+			case 12:
+				level				= new Level12(this);
+				break;
+				
+			case 13:
+				level				= new Level13(this);
+				break;
+				
+			case 14:
+				level				= new Level14(this);
+				break;
+				
+			case 15:
+				level				= new Level15(this);
 				break;
 		}
 		
