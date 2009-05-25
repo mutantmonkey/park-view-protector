@@ -6,15 +6,9 @@
 
 package org.javateerz.ParkViewProtector.Menu;
 
-import org.javateerz.ParkViewProtector.DataStore;
-import org.javateerz.ParkViewProtector.Sprite;
-
 public class MenuItem extends MenuBlock
 {
 	private int action;
-	
-	private boolean selected;
-	private Sprite selectedSprite;
 	
 	/**
 	 * Creates a new menu item with the specified label
@@ -50,20 +44,14 @@ public class MenuItem extends MenuBlock
 		return action;
 	}
 	
-	public void setSelected(boolean isSelected)
-	{
-		selected			= isSelected;
-	}
-	
+	/**
+	 * Draws the menu item at the specified position
+	 * 
+	 * @param x x position
+	 * @param y y position
+	 */
 	public void draw(int x, int y)
 	{
-		if(selected)
-		{
-			selectedSprite	= DataStore.INSTANCE.getSprite("arrow.png");
-			selectedSprite.draw(x - selectedSprite.getWidth(),
-					y - selectedSprite.getHeight() / 2 + getBounds().getHeight() / 2);
-		}
-		
 		super.draw(x, y);
 	}
 }

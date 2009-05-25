@@ -20,6 +20,7 @@ public class OptionsMenu extends Menu
 	public static final int RIGHT_SPACING	= 60;
 	
 	private MenuBlock[] items;
+	private int selectedItem				= -1;
 	
 	private Sprite optionsBg;
 	
@@ -77,7 +78,11 @@ public class OptionsMenu extends Menu
 		poll();
 		
 		// menu items are different
-		if(items[selectedItem] instanceof MenuItem)
+		if(selectedItem < 0)
+		{
+			// do nothing! :D
+		}
+		else if(items[selectedItem] instanceof MenuItem)
 		{
 			if(Keyboard.isKeyDown(KeyboardConfig.ENTER))
 			{
@@ -111,9 +116,11 @@ public class OptionsMenu extends Menu
 			if(i == selectedItem)
 			{
 				items[i].setColor(SELECTED_TEXT_COLOR);
+				items[i].setSelected(true);
 			}
 			else {
 				items[i].setColor(TEXT_COLOR);
+				items[i].setSelected(false);
 			}
 			
 			items[i].draw(LEFT_SPACING, TOP_SPACING + (i + 1) * LINE_SPACING);
