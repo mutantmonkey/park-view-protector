@@ -44,7 +44,7 @@ public class OptionsMenu extends Menu
 		
 		i++;
 		items[i]	= new FloatOption("Effects Volume"	, "sfx_volume",
-				Options.INSTANCE.getFloat("music_volume", 1.0f));
+				Options.INSTANCE.getFloat("sfx_volume", 1.0f));
 		
 		optionsBg							= DataStore.INSTANCE.getSprite("options.png");
 	}
