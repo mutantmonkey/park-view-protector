@@ -462,6 +462,9 @@ public class Game extends GameScreen implements Serializable
 		{
 			if(!player.canMove(player.getNewBounds(distX,distY)))
 			{
+				// set direction even though we cannot move
+				player.setDirection(distX, distY);
+				
 				for(int i=0; i<students.size(); i++)
 				{
 					Student s = students.get(i);

@@ -62,11 +62,7 @@ public abstract class Movable implements Serializable
 	 */
 	public void move(int distX, int distY)
 	{
-		// determine and change direction if necessary
-		if(distY > 0)	direction	= Direction.SOUTH;
-		if(distX < 0)	direction	= Direction.WEST;
-		if(distY < 0)	direction	= Direction.NORTH;
-		if(distX > 0)	direction	= Direction.EAST;
+		setDirection(distX, distY);
 		
 		x		   += distX * speed;
 		y		   += distY * speed;
@@ -333,6 +329,28 @@ public abstract class Movable implements Serializable
 	public void setDirection(int dir)
 	{
 		direction	= dir;
+	}
+	
+	/**
+	 * Changes the direction that the object is facing given an X distance and and a Y
+	 * distance
+	 * 
+	 * @param distX x distance
+	 * @param distY y distance
+	 */
+	public void setDirection(int distX, int distY)
+	{
+		if(distY > 0)
+			direction	= Direction.SOUTH;
+		
+		if(distX < 0)
+			direction	= Direction.WEST;
+		
+		if(distY < 0)
+			direction	= Direction.NORTH;
+		
+		if(distX > 0)
+			direction	= Direction.EAST;
 	}
 	
 	/**
