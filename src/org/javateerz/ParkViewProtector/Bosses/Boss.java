@@ -169,7 +169,14 @@ public abstract class Boss extends Character
 	{
 		if(getHp() <= 0)
 		{
-			sprite = DataStore.INSTANCE.getSprite("boss/" + name + "_dead.png");
+			try
+			{
+				sprite = DataStore.INSTANCE.getSprite("boss/" + name + "_dead.png");
+			}
+			catch(Exception e)
+			{
+				sprite = DataStore.INSTANCE.getSprite("boss/" + name + ".png");
+			}
 		}
 		else {
 			sprite = DataStore.INSTANCE.getSprite("boss/" + name + ".png");
