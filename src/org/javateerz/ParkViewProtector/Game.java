@@ -533,12 +533,20 @@ public class Game extends GameScreen implements Serializable
 		{
 			if(levelNum < MAX_LEVEL)
 			{
-				levelNum++;
-				initLevel();
+				advanceLevel();
 			}
 			else
 				gameOver();
 		}
+	}
+	
+	public void advanceLevel()
+	{
+		levelNum++;
+		
+		initGame();
+		
+		students			= level.getStudents();
 	}
 	
 	public void drawPlayerEffects()
