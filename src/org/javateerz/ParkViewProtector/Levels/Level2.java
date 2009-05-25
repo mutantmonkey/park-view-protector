@@ -17,6 +17,7 @@ public class Level2 implements BossLevel, Level
 	public static final double GENDER_CHANCE	= 0.5;
 	
 	private Game game;
+	private Boss boss;
 	
 	public Level2(Game g)
 	{
@@ -79,7 +80,7 @@ public class Level2 implements BossLevel, Level
 	
 	public Boss getBoss()
 	{
-		Boss boss=new FatMan(game, 400, 400);
+		boss=new FatMan(game, 400, 400);
 		return boss;
 	}
 
@@ -87,5 +88,9 @@ public class Level2 implements BossLevel, Level
 	{
 		return new ArrayList<Wall>();
 	}
-
+	
+	public boolean levelComplete()
+	{
+		return boss.getHp() <= 0;
+	}
 }

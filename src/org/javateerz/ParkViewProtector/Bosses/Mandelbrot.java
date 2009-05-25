@@ -1,9 +1,13 @@
-package org.javateerz.ParkViewProtector;
+package org.javateerz.ParkViewProtector.Bosses;
 
 import java.util.ArrayList;
 
+import org.javateerz.ParkViewProtector.Attack;
+import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.ParkViewProtector;
+import org.javateerz.ParkViewProtector.Status;
+import org.javateerz.ParkViewProtector.StatusEffect;
 import org.javateerz.ParkViewProtector.Attack.AttackType;
-import org.javateerz.ParkViewProtector.Bosses.Boss;
 import org.javateerz.ParkViewProtector.Students.Mandelbrotchen;
 import org.javateerz.ParkViewProtector.Students.Student;
 import org.newdawn.slick.SlickException;

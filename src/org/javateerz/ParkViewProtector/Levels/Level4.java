@@ -3,10 +3,8 @@ package org.javateerz.ParkViewProtector.Levels;
 import java.util.ArrayList;
 
 import org.javateerz.ParkViewProtector.Game;
-import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Wall;
 import org.javateerz.ParkViewProtector.Bosses.Boss;
-import org.javateerz.ParkViewProtector.Bosses.FatMan;
 import org.javateerz.ParkViewProtector.Bosses.Snake;
 import org.javateerz.ParkViewProtector.Students.Student;
 
@@ -18,6 +16,7 @@ public class Level4 implements BossLevel, Level
 	public static final double GENDER_CHANCE	= 0.5;
 	
 	private Game game;
+	private Boss boss;
 	
 	public Level4(Game g)
 	{
@@ -43,12 +42,17 @@ public class Level4 implements BossLevel, Level
 	
 	public Boss getBoss()
 	{
-		Boss boss=new Snake(game, 400, 400);
+		boss=new Snake(game, 400, 400);
 		return boss;
 	}
 
 	public ArrayList<Wall> getWalls()
 	{
 		return new ArrayList<Wall>();
+	}
+	
+	public boolean levelComplete()
+	{
+		return boss.getHp() <= 0;
 	}
 }

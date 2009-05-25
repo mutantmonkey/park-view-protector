@@ -32,6 +32,8 @@ public class Game extends GameScreen implements Serializable
 	public static final int ICON_Y_OFFSET		= 38;
 	public static final int ICON_SPACING		= 30;
 	
+	public static final int MAX_LEVEL			= 5;
+	
 	////////////////////////////////////////////////////
 	public static final int CHARGE_REGEN		= 10;
 	public static int chargeRegen				= 0;
@@ -64,7 +66,7 @@ public class Game extends GameScreen implements Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 3;
+	private int levelNum						= 1;
 	
 	private transient Boss boss;
 	private transient Level level;
@@ -502,6 +504,41 @@ public class Game extends GameScreen implements Serializable
 		stats.draw(player, levelNum);
 		
 		drawPlayerEffects();
+		
+		//////////////////////////////////////////////////////////////////////////////////
+		// Advance to next level?
+		//////////////////////////////////////////////////////////////////////////////////
+		
+		boolean advanceLevel	= false;
+		
+		if(level instanceof BossLevel)
+		{
+			advanceLevel		= ((BossLevel) level).levelComplete();
+		}
+		else if(couples.size() <= 0)
+		{
+			advanceLevel		= true;
+			
+			for(Student s : students)
+			{
+				if(s.getHp() > 0)
+				{
+					advanceLevel		= false;
+					break;
+				}
+			}
+		}
+		
+		if(advanceLevel)
+		{
+			if(levelNum < MAX_LEVEL)
+			{
+				levelNum++;
+				initLevel();
+			}
+			else
+				gameOver();
+		}
 	}
 	
 	public void drawPlayerEffects()
