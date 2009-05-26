@@ -199,13 +199,20 @@ public class ParkViewProtector
 	{
 		long secs, fps;
 		
-		/*Graphics g					= new Graphics(this);
-		g.start();*/
+		try {
+			Display.releaseContext();
+		} catch (LWJGLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Graphics g					= new Graphics(this);
+		g.start();
 		
 		while(running)
 		{
 			// close requested?
-			if(Display.isCloseRequested())
+			/*if(Display.isCloseRequested())
 			{
 				running				= false;
 			}
@@ -214,11 +221,11 @@ public class ParkViewProtector
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glLoadIdentity();
+			GL11.glLoadIdentity();*/
 			
 			// render content
 			getActiveDriver().step();
-			getActiveDriver().draw();
+			/*getActiveDriver().draw();
 			
 			// show rendered content
 			GL11.glFlush();
@@ -235,7 +242,7 @@ public class ParkViewProtector
 				fps					= frames / secs;
 				
 				Display.setTitle("Park View Protector (fps: " + fps + ")");
-			}
+			}*/
 		}
 		
 		quit();
@@ -408,11 +415,42 @@ class Graphics extends Thread
 		pvp								= p;
 	}
 	
+	private void grabContext()
+	{
+		try {
+			Display.makeCurrent();
+		} catch (LWJGLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void run()
 	{
+		//grabContext();
+		
 		while(true)
 		{
-			pvp.getActiveDriver().step();
+			grabContext();
+			
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+			GL11.glLoadIdentity();
+			
+			// render content
+			pvp.getActiveDriver().draw();
+			
+			// show rendered content
+			GL11.glFlush();
+			Display.update();
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
