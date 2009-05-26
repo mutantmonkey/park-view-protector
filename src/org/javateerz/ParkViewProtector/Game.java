@@ -590,6 +590,7 @@ public class Game extends GameScreen implements Serializable
 		initGame();
 		
 		students			= level.getStudents();
+		attacks				= new ArrayList<Attack>();
 		items				= new ArrayList<Item>();
 		fx					= new ArrayList<VisualFX>();
 	}
