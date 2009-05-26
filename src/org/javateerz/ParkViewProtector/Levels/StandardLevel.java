@@ -9,7 +9,7 @@ import org.javateerz.ParkViewProtector.Students.Student;
 public abstract class StandardLevel
 {
 	public ArrayList<Student> getStudents(Game game, int minStudents, int maxStudents,
-			double genderChance, int minSpeed, int maxSpeed)
+			double genderChance, int minHp, int maxHp, int minSpeed, int maxSpeed)
 	{
 		ArrayList<Student> students	= new ArrayList<Student>();
 		
@@ -21,7 +21,7 @@ public abstract class StandardLevel
 		
 		Student student				= null;
 		
-		int x, y, type, maxHp;
+		int x, y, type, hp;
 		double speed;
 		char gender;
 		
@@ -31,10 +31,10 @@ public abstract class StandardLevel
 			y						= (int) (Math.random() * ParkViewProtector.HEIGHT);
 			speed					= Math.random() * (maxSpeed - minSpeed) + minSpeed;
 			gender					= (Math.random() <= genderChance) ? 'm' : 'f';
-			type					= (int)(Math.random()*Student.NUM_STUDENTS);
-			maxHp					= (int)(Math.random()*30);
+			type					= (int) (Math.random() * Student.NUM_STUDENTS);
+			hp						= (int) (Math.random() * (maxHp - minHp) + minHp);
 			
-			student					= Student.create(game, x, y, maxHp, speed, gender, type);
+			student					= Student.create(game, x, y, hp, speed, gender, type);
 			
 			// make sure that the student is not spawned on top of a wall)
 			while(!student.canMove(student.getBounds()))

@@ -11,8 +11,10 @@ public class Level9 implements Level
 {
 	public static final int MIN_STUDENTS		= 20;
 	public static final int MAX_STUDENTS		= 30;
-	public static final int MIN_STUDENT_SPEED	= 2;
-	public static final int MAX_STUDENT_SPEED	= 3;
+	public static final int STUDENT_MIN_HP		= 30;
+	public static final int STUDENT_MAX_HP		= 50;
+	public static final int STUDENT_MIN_SPEED	= 2;
+	public static final int STUDENT_MAX_SPEED	= 3;
 	public static final double GENDER_CHANCE	= 0.5;
 	
 	private Game game;
@@ -44,7 +46,7 @@ public class Level9 implements Level
 		
 		Student student				= null;
 		
-		int x, y, maxHp;
+		int x, y, hp;
 		double speed;
 		char gender;
 		
@@ -52,12 +54,13 @@ public class Level9 implements Level
 		{
 			x						= (int) (Math.random() * ParkViewProtector.WIDTH);
 			y						= (int) (Math.random() * ParkViewProtector.HEIGHT);
-			speed					= Math.random() * (MAX_STUDENT_SPEED -
-					MIN_STUDENT_SPEED) + MIN_STUDENT_SPEED;
+			speed					= Math.random() * (STUDENT_MAX_SPEED -
+					STUDENT_MIN_SPEED) + STUDENT_MIN_SPEED;
 			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
-			maxHp					= (int)(Math.random()*30);
+			hp						= (int) (Math.random() * (STUDENT_MAX_HP -
+					STUDENT_MIN_HP) + STUDENT_MIN_HP);
 			
-			student					= new ScientistStudent(game, x, y, maxHp, speed,
+			student					= new ScientistStudent(game, x, y, hp, speed,
 					gender);
 			
 			// make sure that the student is not spawned on top of a wall)

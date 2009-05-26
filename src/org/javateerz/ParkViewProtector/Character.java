@@ -594,7 +594,7 @@ public abstract class Character extends Movable
 		y				= (y < 0) ? 0 : y;
 		
 		bar.setWidth(this.sprite.getWidth());
-		bar.setFilled((double) getHp()/getMaxHp());
+		bar.setFilled((double) hp/maxHp);
 		bar.draw((int) x, (int) y);
 	}
 	

@@ -10,11 +10,6 @@ import org.javateerz.ParkViewProtector.Students.Student;
 
 public class Level15 implements BossLevel, Level
 {
-	public static final int MIN_STUDENTS		= 5;
-	public static final int MAX_STUDENTS		= 5;
-	public static final int MAX_STUDENT_SPEED	= 1;
-	public static final double GENDER_CHANCE	= 0.5;
-	
 	private Game game;
 	private Boss boss;
 	

@@ -10,8 +10,10 @@ public class Level2 extends StandardLevel implements Level
 {
 	public static final int MIN_STUDENTS		= 20;
 	public static final int MAX_STUDENTS		= 30;
-	public static final int MIN_STUDENT_SPEED	= 1;
-	public static final int MAX_STUDENT_SPEED	= 2;
+	public static final int STUDENT_MIN_HP		= 10;
+	public static final int STUDENT_MAX_HP		= 30;
+	public static final int STUDENT_MIN_SPEED	= 1;
+	public static final int STUDENT_MAX_SPEED	= 2;
 	public static final double GENDER_CHANCE	= 0.5;
 	
 	private Game game;
@@ -34,7 +36,7 @@ public class Level2 extends StandardLevel implements Level
 	public ArrayList<Student> getStudents()
 	{
 		return getStudents(game, MIN_STUDENTS, MAX_STUDENTS, GENDER_CHANCE,
-				MIN_STUDENT_SPEED, MAX_STUDENT_SPEED);
+				STUDENT_MIN_HP, STUDENT_MAX_HP, STUDENT_MIN_SPEED, STUDENT_MAX_SPEED);
 	}
 	
 	public ArrayList<Wall> getWalls() 

@@ -3,17 +3,19 @@ package org.javateerz.ParkViewProtector.Levels;
 import java.util.ArrayList;
 
 import org.javateerz.ParkViewProtector.Game;
-import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Wall;
 import org.javateerz.ParkViewProtector.Bosses.Boss;
 import org.javateerz.ParkViewProtector.Bosses.FatMan;
 import org.javateerz.ParkViewProtector.Students.Student;
 
-public class Level5 implements BossLevel, Level
+public class Level5 extends StandardLevel implements BossLevel, Level
 {
 	public static final int MIN_STUDENTS		= 5;
 	public static final int MAX_STUDENTS		= 5;
-	public static final int MAX_STUDENT_SPEED	= 1;
+	public static final int STUDENT_MIN_HP		= 10;
+	public static final int STUDENT_MAX_HP		= 30;
+	public static final int STUDENT_MIN_SPEED	= 1;
+	public static final int STUDENT_MAX_SPEED	= 2;
 	public static final double GENDER_CHANCE	= 0.5;
 	
 	private Game game;
@@ -36,46 +38,8 @@ public class Level5 implements BossLevel, Level
 	
 	public ArrayList<Student> getStudents()
 	{
-		ArrayList<Student> students	= new ArrayList<Student>();
-		
-		// create a random number of students using MIN_STUDENTS and MAX_STUDENTS; multiply
-		// it by 2 and divide to ensure that an even number is created to ensure proper
-		// coupling
-		int numStudents				= (int) (Math.random() * (MAX_STUDENTS - MIN_STUDENTS + 1)) + MIN_STUDENTS;
-		numStudents					= Math.round(numStudents * 2 / 2);
-		
-		Student student				= null;
-		
-		int x, y, type, maxHp;
-		double speed;
-		char gender;
-		
-		for(int i = 0; i < numStudents; i++)
-		{
-			x						= (int) (Math.random() * ParkViewProtector.WIDTH);
-			y						= (int) (Math.random() * ParkViewProtector.HEIGHT);
-			speed					= Math.random() * MAX_STUDENT_SPEED + 1;
-			gender					= (Math.random() <= GENDER_CHANCE) ? 'm' : 'f';
-			type					= (int)(Math.random()*Student.NUM_STUDENTS);
-			maxHp					= (int)(Math.random()*30);
-			
-			student					= Student.create(game, x, y, maxHp, speed, gender, type);
-			
-			// make sure that the student is not spawned on top of a wall)
-			while(!student.canMove(student.getBounds()))
-			{
-				x					= (int) (Math.random() * ParkViewProtector.WIDTH) + 1;
-				y					= (int) (Math.random() * ParkViewProtector.HEIGHT) + 1;
-				
-				student.moveTo(x, y);
-			}
-			
-			student.setAggro(true);
-			
-			students.add(student);
-		}
-		
-		return students;
+		return getStudents(game, MIN_STUDENTS, MAX_STUDENTS, GENDER_CHANCE,
+				STUDENT_MIN_HP, STUDENT_MAX_HP, STUDENT_MIN_SPEED, STUDENT_MAX_SPEED);
 	}
 	
 	public Boss getBoss()
