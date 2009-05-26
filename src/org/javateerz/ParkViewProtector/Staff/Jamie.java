@@ -79,14 +79,14 @@ public class Jamie extends Staff
 			case 0:
 				name="lawnmower";
 				damage=100;
-				tp=10;
+				tp=0;
 				type=AttackType.FRONT;
-				speed=1;
-				duration=1000;
-				reuse=400;
+				speed=0;
+				duration=0;
+				reuse=0;
 				stillTime=0;
 				hits=1;
-				hitDelay=duration/hits;
+				hitDelay=300;
 				status=Status.STUN;
 				statusLength=50;
 				isEnemy=isEnemy;
