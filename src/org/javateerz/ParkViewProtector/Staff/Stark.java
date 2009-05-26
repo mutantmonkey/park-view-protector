@@ -20,7 +20,7 @@ public class Stark extends Staff
 	public static final String CHAR_NAME		= "Mr. David Stark";
 	
 	private static final double SPEED= 2.0;
-	private static final int MAX_HP=100;
+	private static final int MAX_HP=150;
 	private static final int MAX_TP=100;
 	private static final long serialVersionUID = 4L;
 	

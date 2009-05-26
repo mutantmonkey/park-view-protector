@@ -19,8 +19,8 @@ public class Jamie extends Staff
 	public static final String CHAR_NAME		= "James Schwinabart";
 	
 	private static final double SPEED= 5.0;
-	private static final int MAX_HP = 50;
-	private static final int MAX_TP = 300;
+	private static final int MAX_HP = 100;
+	private static final int MAX_TP = 60;
 	private static final long serialVersionUID = 1L;
 	
 	public Jamie(Game g, int x, int y)
