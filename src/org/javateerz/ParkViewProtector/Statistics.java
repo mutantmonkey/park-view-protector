@@ -29,7 +29,7 @@ public class Statistics
 	
 	public Statistics(Game g)
 	{
-		font						= new TrueTypeFont(new java.awt.Font("Monospaced",
+		font						= new TrueTypeFont(new java.awt.Font("System",
 				java.awt.Font.PLAIN, 10), false);
 		this.g=g;
 		this.player=g.getPlayer();
