@@ -88,14 +88,19 @@ public class Menu extends GameScreen implements KeyListener
 		return true;
 	}
 	
-	public void show()
+	public void step()
 	{
-		// ensure music is playing
-		ensureMusicPlaying();
-		
 		// key events
 		addKeyListener(this);
 		poll();
+		
+		throttleSpeed();
+	}
+	
+	public void draw()
+	{
+		// ensure music is playing
+		ensureMusicPlaying();
 		
 		// draw the background
 		GLRect bg							= new GLRect(0, 0, ParkViewProtector.WIDTH,
@@ -121,8 +126,6 @@ public class Menu extends GameScreen implements KeyListener
 			
 			items[i].drawCentered(ParkViewProtector.WIDTH / 2, TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
-		
-		throttleSpeed();
 	}
 	
 	/**

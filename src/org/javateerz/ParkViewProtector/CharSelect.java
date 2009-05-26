@@ -74,11 +74,16 @@ public class CharSelect extends GameScreen implements KeyListener
 		return true;
 	}
 	
-	public void show()
+	public void step()
 	{
 		addKeyListener(this);
 		poll();
 		
+		throttleSpeed();
+	}
+	
+	public void draw()
+	{
 		bgImage.draw();
 		
 		Staff selectedChar				= choices[selectedIndex];
@@ -95,8 +100,6 @@ public class CharSelect extends GameScreen implements KeyListener
 		name.setFont(nameFont);
 		name.setColor(ParkViewProtector.COLOR_TEXT_1);
 		name.draw();
-		
-		throttleSpeed();
 	}
 	
 	public void finish()

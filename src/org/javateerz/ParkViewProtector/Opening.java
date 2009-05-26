@@ -19,7 +19,7 @@ public class Opening extends GameScreen
 		}
 	}
 	
-	public void show()
+	public void draw()
 	{
 		jtzLogo.draw(ParkViewProtector.WIDTH / 2 - jtzLogo.getWidth() / 2,
 				ParkViewProtector.HEIGHT / 2 - jtzLogo.getHeight() / 2);

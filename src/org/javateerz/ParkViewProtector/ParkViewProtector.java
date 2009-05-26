@@ -182,7 +182,7 @@ public class ParkViewProtector
 			GL11.glLoadIdentity();
 			
 			// render content
-			opening.show();
+			opening.draw();
 			
 			// show rendered content
 			GL11.glFlush();
@@ -199,6 +199,9 @@ public class ParkViewProtector
 	{
 		long secs, fps;
 		
+		/*Graphics g					= new Graphics(this);
+		g.start();*/
+		
 		while(running)
 		{
 			// close requested?
@@ -214,7 +217,8 @@ public class ParkViewProtector
 			GL11.glLoadIdentity();
 			
 			// render content
-			getActiveDriver().show();
+			getActiveDriver().step();
+			getActiveDriver().draw();
 			
 			// show rendered content
 			GL11.glFlush();
@@ -392,5 +396,23 @@ public class ParkViewProtector
 			game.showOpening();
 		
 		game.mainLoop();
+	}
+}
+
+class Graphics extends Thread
+{
+	private ParkViewProtector pvp;
+	
+	public Graphics(ParkViewProtector p)
+	{
+		pvp								= p;
+	}
+	
+	public void run()
+	{
+		while(true)
+		{
+			pvp.getActiveDriver().step();
+		}
 	}
 }

@@ -71,11 +71,9 @@ public class OptionsMenu extends Menu
 		clearKeyPressedRecord();
 	}
 	
-	public void show()
+	public void step()
 	{
-		// key events
-		addKeyListener(this);
-		poll();
+		super.step();
 		
 		// menu items are different
 		if(selectedItem < 0)
@@ -102,7 +100,10 @@ public class OptionsMenu extends Menu
 				((OptionItem) items[selectedItem]).update(driver);
 			}
 		}
-		
+	}
+	
+	public void draw()
+	{
 		// draw the background
 		optionsBg.draw(0, 0);
 		
@@ -125,8 +126,6 @@ public class OptionsMenu extends Menu
 			
 			items[i].draw(LEFT_SPACING, TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
-		
-		throttleSpeed();
 	}
 	
 	/**

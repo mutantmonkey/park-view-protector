@@ -385,7 +385,11 @@ public abstract class Student extends Character implements Serializable
 			int duration, int stillTime, int hits, int hitDelay, int reuse, int status,
 			int statusLength, boolean AoE)
 	{
-		ArrayList<Attack> attacks=game.getAttacks();
+		/*
+		 * FIXME: Load attack images and sounds in the background and store them in the
+		 * character so that they do not have to be loaded each time (it will be slow)
+		 */
+		/*ArrayList<Attack> attacks=game.getAttacks();
 		
 		Attack attack		= new Attack(game, this.getBounds().getCenterX(),
 				this.getBounds().getCenterY(),
@@ -422,7 +426,7 @@ public abstract class Student extends Character implements Serializable
 			
 			// set delay
 			setAgainFrames(attack.getReuse());
-		}
+		}*/
 	}
 	
 	private void readObject(ObjectInputStream os) throws ClassNotFoundException, IOException

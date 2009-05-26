@@ -68,14 +68,10 @@ public class TitleScreen extends Menu
 		return true;
 	}
 	
-	public void show()
+	public void draw()
 	{
 		// ensure music is playing
 		ensureMusicPlaying();
-		
-		// key events
-		addKeyListener(this);
-		poll();
 		
 		// draw logo
 		mainLogo.draw(0, 0);
@@ -99,8 +95,6 @@ public class TitleScreen extends Menu
 			items[i].draw(ParkViewProtector.WIDTH - items[i].getBounds().getWidth() - RIGHT_SPACING,
 					TOP_SPACING + (i + 1) * LINE_SPACING);
 		}
-		
-		throttleSpeed();
 	}
 	
 	/**

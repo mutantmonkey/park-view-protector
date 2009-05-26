@@ -18,7 +18,12 @@ public abstract class GameScreen extends Input
 		super(ParkViewProtector.HEIGHT);
 	}
 	
-	public abstract void show();
+	public void step()
+	{
+		
+	}
+	
+	public abstract void draw();
 	
 	protected void setMusic(String file)
 	{
