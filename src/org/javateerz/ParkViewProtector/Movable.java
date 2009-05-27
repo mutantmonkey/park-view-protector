@@ -11,7 +11,6 @@ package org.javateerz.ParkViewProtector;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import org.javateerz.EasyGL.GLRect;
 import org.javateerz.ParkViewProtector.Bosses.Boss;
 import org.javateerz.ParkViewProtector.Staff.Staff;
 import org.javateerz.ParkViewProtector.Students.Student;

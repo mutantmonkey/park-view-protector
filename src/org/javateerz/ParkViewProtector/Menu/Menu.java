@@ -93,8 +93,6 @@ public class Menu extends GameScreen implements KeyListener
 		// key events
 		addKeyListener(this);
 		poll();
-		
-		throttleSpeed();
 	}
 	
 	public void draw()

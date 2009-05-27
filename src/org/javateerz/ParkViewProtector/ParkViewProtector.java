@@ -215,7 +215,8 @@ public class ParkViewProtector
 			tick();
 			
 			// run the active driver
-			getActiveDriver().step();
+			getActiveScreen().step();
+			getActiveScreen().throttleSpeed();
 			
 			frames++;
 			
@@ -235,6 +236,10 @@ public class ParkViewProtector
 		quit();
 	}
 	
+	/**
+	 * "Tick" goes the game timer
+	 * "Tock" responds the clock
+	 */
 	private void tick()
 	{
 		Timer.tick();
@@ -244,6 +249,9 @@ public class ParkViewProtector
 		lastTime					= timer.getTime();
 	}
 	
+	/**
+	 * Render what goes on the screen
+	 */
 	private void render()
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -252,7 +260,7 @@ public class ParkViewProtector
 		GL11.glLoadIdentity();
 		
 		// render content
-		getActiveDriver().draw();
+		getActiveScreen().draw();
 		
 		// show rendered content
 		GL11.glFlush();
@@ -260,6 +268,9 @@ public class ParkViewProtector
 		renderDeltas				= 0;
 	}
 	
+	/**
+	 * @return Basically, how many frames of movement to render
+	 */
 	public static float getRenderDeltas()
 	{
 		float delta					= renderDeltas * RENDER_SPEED;
@@ -300,14 +311,14 @@ public class ParkViewProtector
 		
 		if(key == "music_volume")
 		{
-			getActiveDriver().getMusic().setVolume(value);
+			getActiveScreen().getMusic().setVolume(value);
 		}
 	}
 
 	/**
 	 * @return The screen driver that is currently being displayed
 	 */
-	public GameScreen getActiveDriver()
+	public GameScreen getActiveScreen()
 	{
 		if(showTitle)
 		{
@@ -384,7 +395,7 @@ public class ParkViewProtector
 		running							= false;
 		
 		// stop music
-		getActiveDriver().getMusic().stop();
+		getActiveScreen().getMusic().stop();
 		
 		// make sure options get stored
 		Options.INSTANCE.sync();
