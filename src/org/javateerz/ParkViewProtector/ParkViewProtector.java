@@ -16,6 +16,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.Timer;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
@@ -49,7 +50,13 @@ public class ParkViewProtector
 	
 	private boolean showFps					= true;
 	private long frames						= 0;
-	private long startTime;
+	
+	public static final float RENDER_SPEED	= 100f;
+	
+	private static Timer timer				= new Timer();
+	private static float ticks;
+	public static float renderDeltas;
+	private static float lastTime			= timer.getTime();
 	
 	private TitleScreen title;
 	private Game game;
@@ -146,8 +153,6 @@ public class ParkViewProtector
 		menu						= new Menu(this);
 		optMenu						= new OptionsMenu(this);
 		charSelect					= new CharSelect(this);
-		
-		startTime					= System.currentTimeMillis();
 	}
 	
 	/**
@@ -197,55 +202,69 @@ public class ParkViewProtector
 	 */
 	public void mainLoop()
 	{
-		long secs, fps;
-		
-		try {
-			Display.releaseContext();
-		} catch (LWJGLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		Graphics g					= new Graphics(this);
-		g.start();
+		int fps;
 		
 		while(running)
 		{
 			// close requested?
-			/*if(Display.isCloseRequested())
+			if(Display.isCloseRequested())
 			{
 				running				= false;
 			}
 			
-			// clear screen
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			tick();
 			
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glLoadIdentity();*/
-			
-			// render content
+			// run the active driver
 			getActiveDriver().step();
-			/*getActiveDriver().draw();
-			
-			// show rendered content
-			GL11.glFlush();
-			Display.update();
 			
 			frames++;
 			
-			if(showFps && frames % 30 == 0)
+			if(showFps && frames == 50)
 			{
-				secs				= (System.currentTimeMillis() - startTime) / 1000;
-				if(secs == 0)
-					continue;
-				
-				fps					= frames / secs;
+				fps					= (int) (frames / (renderDeltas * 100));
+				frames				= 0;
 				
 				Display.setTitle("Park View Protector (fps: " + fps + ")");
-			}*/
+			}
+			
+			// render
+			render();
+			Display.update();
 		}
 		
 		quit();
+	}
+	
+	private void tick()
+	{
+		Timer.tick();
+		
+		ticks						= timer.getTime() - lastTime;
+		renderDeltas			   += ticks;
+		lastTime					= timer.getTime();
+	}
+	
+	private void render()
+	{
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glLoadIdentity();
+		
+		// render content
+		getActiveDriver().draw();
+		
+		// show rendered content
+		GL11.glFlush();
+		
+		renderDeltas				= 0;
+	}
+	
+	public static float getRenderDeltas()
+	{
+		float delta					= renderDeltas * RENDER_SPEED;
+		
+		return delta;
 	}
 	
 	/**
@@ -403,54 +422,5 @@ public class ParkViewProtector
 			game.showOpening();
 		
 		game.mainLoop();
-	}
-}
-
-class Graphics extends Thread
-{
-	private ParkViewProtector pvp;
-	
-	public Graphics(ParkViewProtector p)
-	{
-		pvp								= p;
-	}
-	
-	private void grabContext()
-	{
-		try {
-			Display.makeCurrent();
-		} catch (LWJGLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void run()
-	{
-		//grabContext();
-		
-		while(true)
-		{
-			grabContext();
-			
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glLoadIdentity();
-			
-			// render content
-			pvp.getActiveDriver().draw();
-			
-			// show rendered content
-			GL11.glFlush();
-			Display.update();
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 }

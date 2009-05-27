@@ -11,6 +11,7 @@ package org.javateerz.ParkViewProtector;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.javateerz.EasyGL.GLRect;
 import org.javateerz.ParkViewProtector.Bosses.Boss;
 import org.javateerz.ParkViewProtector.Staff.Staff;
 import org.javateerz.ParkViewProtector.Students.Student;
@@ -64,10 +65,7 @@ public abstract class Movable implements Serializable
 	{
 		setDirection(distX, distY);
 		
-		x		   += distX * speed;
-		y		   += distY * speed;
-		
-		incrementMoveCount();
+		move(distX, distY, 0);
 	}
 	
 	/**
@@ -78,8 +76,10 @@ public abstract class Movable implements Serializable
 	 */
 	public void move(int distX, int distY, int any)
 	{
-		x		   += distX * speed;
-		y		   += distY * speed;
+		float delta			= ParkViewProtector.getRenderDeltas();
+		
+		x				   += distX * speed * delta;
+		y				   += distY * speed * delta;
 		
 		incrementMoveCount();
 	}
@@ -91,25 +91,27 @@ public abstract class Movable implements Serializable
 	 */
 	public void move(int dist)
 	{
-		double distance		= dist * speed;
+		float delta			= ParkViewProtector.getRenderDeltas();
+		
+		double distance		= dist * speed * delta;
 
 		// determine and change direction if necessary
 		switch(direction)
 		{
 			case Direction.NORTH:
-				y		-= distance;
+				y		   -= distance;
 				break;
 			
 			case Direction.EAST:
-				x		+= distance;
+				x		   += distance;
 				break;
 				
 			case Direction.SOUTH:
-				y		+= distance;
+				y		   += distance;
 				break;
 			
 			case Direction.WEST:
-				x		-= distance;
+				x		   -= distance;
 				break;
 		}
 			
@@ -414,8 +416,10 @@ public abstract class Movable implements Serializable
 		int newX				= (int) x;
 		int newY				= (int) y;
 		
-		newX				   += (int) (distX * speed);
-		newY				   += (int) (distY * speed);
+		newX				   += (int) (distX * speed *
+				ParkViewProtector.getRenderDeltas());
+		newY				   += (int) (distY * speed *
+				ParkViewProtector.getRenderDeltas());
 		
 		Rectangle bounds		= new Rectangle(newX, newY, sprite.getWidth(),
 				sprite.getHeight());
@@ -432,25 +436,26 @@ public abstract class Movable implements Serializable
 		int newX				= (int) x;
 		int newY				= (int) y;
 		
-		int dist				= (int) (distance * speed);
+		int dist				= (int) (distance * speed *
+				ParkViewProtector.getRenderDeltas());
 		
 		// determine and change direction if necessary
 		switch(direction)
 		{
 			case Direction.NORTH:
-				newY	-= dist;
+				newY		   -= dist;
 				break;
 			
 			case Direction.EAST:
-				newX	+= dist;
+				newX		   += dist;
 				break;
 				
 			case Direction.SOUTH:
-				newY	+= dist;
+				newY		   += dist;
 				break;
 			
 			case Direction.WEST:
-				newX	-= dist;
+				newX		   -= dist;
 				break;
 		}
 		

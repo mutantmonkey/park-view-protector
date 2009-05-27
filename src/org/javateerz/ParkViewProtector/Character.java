@@ -508,8 +508,10 @@ public abstract class Character extends Movable
 		int newX				= (int) x;
 		int newY				= (int) y;
 		
-		newX				   += (int) (distX * speed);
-		newY				   += (int) (distY * speed);
+		newX				   += (int) (distX * speed *
+				ParkViewProtector.getRenderDeltas());
+		newY				   += (int) (distY * speed *
+				ParkViewProtector.getRenderDeltas());
 		
 		Rectangle bounds;
 		
@@ -537,7 +539,8 @@ public abstract class Character extends Movable
 		int newX				= (int) x;
 		int newY				= (int) y;
 		
-		int dist				= (int) (distance * speed);
+		int dist				= (int) (distance * speed *
+				ParkViewProtector.getRenderDeltas());
 		
 		// determine and change direction if necessary
 		switch(direction)
