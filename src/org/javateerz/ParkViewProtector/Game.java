@@ -23,8 +23,6 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public static final int MOVE_SPEED			= 1;
 	
 	// delay (in number of frames) before another attack can be used
-	// FIXME: should probably go in Staff
-	public static final int ATTACK_DELAY		= 20;
 	public static final int ITEM_USE_DELAY		= 20;
 	private int itemDelay						= 0;
 	public static final int TP_REGEN			= 5;
