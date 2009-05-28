@@ -429,6 +429,7 @@ public abstract class Character extends Movable
 		int speed					= Game.MOVE_SPEED;
 		int changeMoves				= (int) (Math.random() * (Game.MAX_NUM_MOVES - Game.MIN_NUM_MOVES) +
 				Game.MIN_NUM_MOVES + 1);
+		changeMoves				   /= ParkViewProtector.getRenderDeltas();
 		
 		// change direction if the move count exceeds the number of moves to change after
 		if(getMoveCount() <= 0 || getMoveCount() > changeMoves)
