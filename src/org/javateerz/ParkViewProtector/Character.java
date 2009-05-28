@@ -505,29 +505,26 @@ public abstract class Character extends Movable
 	 */
 	public Rectangle getNewBounds(int distX, int distY)
 	{
-		int newX				= (int) x;
-		int newY				= (int) y;
-		
-		// round up to ensure that not even a fraction of a pixel intersects
-		newX				   += (int) Math.ceil(distX * speed *
-				ParkViewProtector.getRenderDeltas());
-		newY				   += (int) Math.ceil(distY * speed *
-				ParkViewProtector.getRenderDeltas());
-		
-		Rectangle bounds;
-		
 		if(sprite.getHeight()>sprite.getWidth())
 		{
-			bounds = new Rectangle(newX, newY+(sprite.getHeight()-sprite.getWidth())/2, sprite.getWidth(),
-					sprite.getWidth());
-		}
-		else
-		{
-			bounds = new Rectangle(newX, newY, sprite.getWidth(),
-					sprite.getHeight());
-		}
+			int newX			= (int) x;
+			int newY			= (int) y;
+			
+			newX			   += (int) Math.ceil(distX * speed *
+					ParkViewProtector.getRenderDeltas());
+			newY			   += (int) Math.ceil(distY * speed *
+					ParkViewProtector.getRenderDeltas());
+			
+			Rectangle bounds;
 		
-		return bounds;
+			bounds = new Rectangle(newX, newY+(sprite.getHeight()-sprite.getWidth())/2,
+					sprite.getWidth(), sprite.getWidth());
+			
+			return bounds;
+		}
+		else {
+			return super.getNewBounds(distX, distY);
+		}
 	}
 	
 	/**
@@ -537,47 +534,44 @@ public abstract class Character extends Movable
 	 */
 	public Rectangle getNewBounds(int distance)
 	{
-		int newX				= (int) x;
-		int newY				= (int) y;
-		
-		// round up to ensure that not even a fraction of a pixel intersects
-		int dist				= (int) Math.ceil(distance * speed *
-				ParkViewProtector.getRenderDeltas());
-		
-		// determine and change direction if necessary
-		switch(direction)
-		{
-			case Direction.NORTH:
-				newY	-= dist;
-				break;
-			
-			case Direction.EAST:
-				newX	+= dist;
-				break;
-				
-			case Direction.SOUTH:
-				newY	+= dist;
-				break;
-			
-			case Direction.WEST:
-				newX	-= dist;
-				break;
-		}
-		
-		Rectangle bounds;
-		
 		if(sprite.getHeight()>sprite.getWidth())
 		{
-			bounds		= new Rectangle(newX, newY+(sprite.getHeight()-sprite.getWidth())/2, sprite.getWidth(),
-				sprite.getWidth());
-		}
-		else
-		{
-			bounds		= new Rectangle(newX, newY, sprite.getWidth(),
-					sprite.getHeight());
-		}
+			int newX			= (int) x;
+			int newY			= (int) y;
+			
+			int dist			= (int) (distance * speed *
+					ParkViewProtector.getRenderDeltas());
+			
+			// determine and change direction if necessary
+			switch(direction)
+			{
+				case Direction.NORTH:
+					newY	-= dist;
+					break;
+				
+				case Direction.EAST:
+					newX	+= dist;
+					break;
+					
+				case Direction.SOUTH:
+					newY	+= dist;
+					break;
+				
+				case Direction.WEST:
+					newX	-= dist;
+					break;
+			}
+			
+			Rectangle bounds;
 		
-		return bounds;
+			bounds		= new Rectangle(newX, newY+(sprite.getHeight()-sprite.getWidth())/2,
+					sprite.getWidth(), sprite.getWidth());
+			
+			return bounds;
+		}
+		else {
+			return super.getNewBounds(distance);
+		}
 	}
 
 	protected void validateState()
