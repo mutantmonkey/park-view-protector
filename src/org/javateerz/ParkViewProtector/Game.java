@@ -84,6 +84,8 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	
 	private StatusIcon stun;
 	private StatusIcon invul;
+	
+	OpeningWords words;
 
 	/**
 	 * Constructor
@@ -304,6 +306,17 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public boolean isAcceptingInput()
 	{
 		return true;
+	}
+	
+	public void runOpening()
+	{
+		words = new OpeningWords();
+		words.init();;
+		while(words.running)
+		{
+			words.step();
+			words.draw();
+		}
 	}
 	
 	public void step()
