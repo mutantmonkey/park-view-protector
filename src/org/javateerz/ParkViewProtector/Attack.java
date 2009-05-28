@@ -308,7 +308,7 @@ public class Attack extends Movable
 	 */
 	public boolean over()
 	{
-		if(time > duration)
+		if(time > ParkViewProtector.secsToFrames(duration))
 			return true;
 		return false;
 	}

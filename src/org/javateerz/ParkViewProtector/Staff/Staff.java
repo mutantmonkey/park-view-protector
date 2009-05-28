@@ -171,7 +171,7 @@ public abstract class Staff extends Character
 	public void tpRegen()
 	{
 		tpRegenRate+=1;
-		if(tpRegenRate>=TP_REGEN_RATE)
+		if(tpRegenRate>=TP_REGEN_RATE / ParkViewProtector.getRenderDeltas())
 		{
 			if(game.getPlayer().getTp()<game.getPlayer().getMaxTp())
 				game.getPlayer().adjustTp(TP_REGEN);

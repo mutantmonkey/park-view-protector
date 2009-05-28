@@ -39,6 +39,7 @@ public class ParkViewProtector
 	public static final Color STATS_BAR_TP	= new Color(0, 255, 0);
 	
 	public static final int OPENING_TIME	= 3000;
+	public static final float RENDER_SPEED	= 50f;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -50,8 +51,6 @@ public class ParkViewProtector
 	
 	private boolean showFps					= true;
 	private long frames						= 0;
-	
-	public static final float RENDER_SPEED	= 100f;
 	
 	private static Timer timer				= new Timer();
 	private static float ticks;
@@ -276,6 +275,17 @@ public class ParkViewProtector
 		float delta					= renderDeltas * RENDER_SPEED;
 		
 		return delta;
+	}
+	
+	/**
+	 * Converts number of seconds to number of frames
+	 * 
+	 * @param Number of seconds
+	 * @return Number of frames
+	 */
+	public static int secsToFrames(int secs)
+	{
+		return (int) (secs * getRenderDeltas() * 100);
 	}
 	
 	/**

@@ -13,7 +13,7 @@ public class VisualFX extends Movable implements Serializable
 	{
 		super(g, x, y, 0);
 		this.name=name;
-		this.time=time;
+		setTime(time);
 		updateSprite();
 	}
 	
@@ -21,7 +21,7 @@ public class VisualFX extends Movable implements Serializable
 	{
 		super(g, 0, 0, 0);
 		this.name=name;
-		this.time=time;
+		setTime(time);
 		updateSprite();
 	}
 	
@@ -32,7 +32,7 @@ public class VisualFX extends Movable implements Serializable
 	
 	public void setTime(int amount)
 	{
-		time=amount;
+		time=ParkViewProtector.secsToFrames(amount);
 	}
 	
 	public boolean tick()
