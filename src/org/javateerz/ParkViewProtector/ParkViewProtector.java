@@ -48,8 +48,9 @@ public class ParkViewProtector
 	public static boolean showMenu			= false;
 	public static boolean showOptions		= false;
 	public static boolean selectChar		= true;
+	public static boolean showCredits		= false;
 	
-	private static Timer timer				= new Timer();
+	public static Timer timer				= new Timer();
 	private static float ticks;
 	public static float renderDeltas;
 	private static float lastTime			= timer.getTime();
@@ -63,6 +64,7 @@ public class ParkViewProtector
 	private Menu menu;
 	private OptionsMenu optMenu;
 	private CharSelect charSelect;
+	private Credits credits;
 	
 	public ParkViewProtector(boolean fullscreen)
 	{
@@ -153,6 +155,7 @@ public class ParkViewProtector
 		menu						= new Menu(this);
 		optMenu						= new OptionsMenu(this);
 		charSelect					= new CharSelect(this);
+		credits						= new Credits(this);
 	}
 	
 	/**
@@ -164,6 +167,7 @@ public class ParkViewProtector
 		showMenu					= false;
 		showOptions					= false;
 		selectChar					= true;
+		showCredits					= false;
 		
 		init();
 	}
@@ -347,6 +351,10 @@ public class ParkViewProtector
 		else if(selectChar)
 		{
 			return charSelect;
+		}
+		else if(showCredits)
+		{
+			return credits;
 		}
 		else {
 			return game;

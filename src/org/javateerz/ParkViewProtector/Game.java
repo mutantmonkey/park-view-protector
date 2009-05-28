@@ -553,7 +553,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 				advanceLevel();
 			}
 			else
-				gameOver();
+				ParkViewProtector.showCredits = true;
 		}
 	}
 	
