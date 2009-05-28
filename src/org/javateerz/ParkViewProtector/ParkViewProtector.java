@@ -49,13 +49,14 @@ public class ParkViewProtector
 	public static boolean showOptions		= false;
 	public static boolean selectChar		= true;
 	
-	private boolean showFps					= true;
-	private long frames						= 0;
-	
 	private static Timer timer				= new Timer();
 	private static float ticks;
 	public static float renderDeltas;
 	private static float lastTime			= timer.getTime();
+	
+	private boolean showFps					= true;
+	private long frames						= 0;
+	private float frameTime					= timer.getTime();
 	
 	private TitleScreen title;
 	private Game game;
@@ -221,8 +222,9 @@ public class ParkViewProtector
 			
 			if(showFps && frames == 50)
 			{
-				fps					= (int) (frames / (renderDeltas * 100));
+				fps					= (int) (frames / (timer.getTime() - frameTime));
 				frames				= 0;
+				frameTime			= timer.getTime();
 				
 				Display.setTitle("Park View Protector (fps: " + fps + ")");
 			}
