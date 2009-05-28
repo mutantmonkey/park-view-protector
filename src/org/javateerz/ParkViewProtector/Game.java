@@ -9,16 +9,15 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
-import org.javateerz.EasyGL.GLRect;
 import org.javateerz.ParkViewProtector.Bosses.Boss;
 import org.javateerz.ParkViewProtector.Levels.*;
 import org.javateerz.ParkViewProtector.Menu.GameOver;
 import org.javateerz.ParkViewProtector.Staff.Staff;
 import org.javateerz.ParkViewProtector.Students.Student;
 import org.lwjgl.input.Keyboard;
-import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.KeyListener;
 
-public class Game extends GameScreen implements Serializable
+public class Game extends GameScreen implements KeyListener, Serializable
 {
 	// Number of pixels to move
 	public static final int MOVE_SPEED			= 1;
@@ -288,21 +287,29 @@ public class Game extends GameScreen implements Serializable
 	
 	//////////////////////////////////////////////////////////////////////////////////////
 	
+	public void keyPressed(int key, char c)
+	{
+		switch(key)
+		{
+			case KeyboardConfig.MENU:
+				ParkViewProtector.showMenu		= true;
+				break;
+				
+			case Keyboard.KEY_ESCAPE:
+				driver.quitGame();
+				break;
+		}
+	}
+	
+	public boolean isAcceptingInput()
+	{
+		return true;
+	}
+	
 	public void step()
 	{
-		Student currStudent; 
-		Couple currCouple;
-		Attack currAttack;
-		
-		// key handling
-		if(Keyboard.isKeyDown(KeyboardConfig.MENU))
-		{
-			ParkViewProtector.showMenu			= true;
-		}
-		else if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
-		{
-			driver.quitGame();
-		}
+		addKeyListener(this);
+		poll();
 		
 		//////////////////////////////////////////////////////////////////////////////////
 		// Are we dead?
@@ -310,13 +317,14 @@ public class Game extends GameScreen implements Serializable
 		
 		if(player.getHp() <= 0)
 		{
-			gameOver();
 			return;
 		}
 		
 		//////////////////////////////////////////////////////////////////////////////////
 		// Draw students
 		//////////////////////////////////////////////////////////////////////////////////
+		
+		Student currStudent; 
 		
 		for(int i = 0; i < students.size(); i++)
 		{
@@ -327,6 +335,8 @@ public class Game extends GameScreen implements Serializable
 		//////////////////////////////////////////////////////////////////////////////////
 		// Draw couples
 		//////////////////////////////////////////////////////////////////////////////////
+		
+		Couple currCouple;
 		
 		for(int i = 0; i < couples.size(); i++)
 		{
@@ -353,6 +363,8 @@ public class Game extends GameScreen implements Serializable
 		//////////////////////////////////////////////////////////////////////////////////
 		// Draw attacks
 		//////////////////////////////////////////////////////////////////////////////////
+		
+		Attack currAttack;
 		
 		for(int i = 0; i < attacks.size(); i++)
 		{
@@ -565,6 +577,16 @@ public class Game extends GameScreen implements Serializable
 		ensureMusicPlaying();
 		
 		//////////////////////////////////////////////////////////////////////////////////
+		// Are we dead?
+		//////////////////////////////////////////////////////////////////////////////////
+		
+		if(player.getHp() <= 0)
+		{
+			gameOver();
+			return;
+		}
+		
+		//////////////////////////////////////////////////////////////////////////////////
 		// Draw Background
 		//////////////////////////////////////////////////////////////////////////////////
 		
@@ -707,7 +729,8 @@ public class Game extends GameScreen implements Serializable
 		if(gameOver == null)
 			gameOver				= new GameOver(driver);
 		
-		gameOver.show();
+		gameOver.step();
+		gameOver.draw();
 	}
 	
 	/**

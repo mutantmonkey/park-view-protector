@@ -65,12 +65,15 @@ public class GameOver extends Menu implements KeyListener
 		return true;
 	}
 	
-	public void show()
+	public void step()
 	{
 		// key events
 		addKeyListener(this);
 		poll();
-		
+	}
+	
+	public void draw()
+	{
 		// draw background
 		gameOver.draw(0, 0);
 		
