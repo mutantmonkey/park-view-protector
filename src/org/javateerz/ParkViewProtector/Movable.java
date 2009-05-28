@@ -415,9 +415,10 @@ public abstract class Movable implements Serializable
 		int newX				= (int) x;
 		int newY				= (int) y;
 		
-		newX				   += (int) (distX * speed *
+		// round up to ensure that not even a fraction of a pixel intersects
+		newX				   += (int) Math.ceil(distX * speed *
 				ParkViewProtector.getRenderDeltas());
-		newY				   += (int) (distY * speed *
+		newY				   += (int) Math.ceil(distY * speed *
 				ParkViewProtector.getRenderDeltas());
 		
 		Rectangle bounds		= new Rectangle(newX, newY, sprite.getWidth(),
@@ -435,7 +436,8 @@ public abstract class Movable implements Serializable
 		int newX				= (int) x;
 		int newY				= (int) y;
 		
-		int dist				= (int) (distance * speed *
+		// round up to ensure that not even a fraction of a pixel intersects
+		int dist				= (int) Math.ceil(distance * speed *
 				ParkViewProtector.getRenderDeltas());
 		
 		// determine and change direction if necessary

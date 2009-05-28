@@ -9,12 +9,14 @@ package org.javateerz.ParkViewProtector;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.javateerz.EasyGL.GLRect;
 import org.javateerz.ParkViewProtector.Bosses.Boss;
 import org.javateerz.ParkViewProtector.Levels.*;
 import org.javateerz.ParkViewProtector.Menu.GameOver;
 import org.javateerz.ParkViewProtector.Staff.Staff;
 import org.javateerz.ParkViewProtector.Students.Student;
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.geom.Rectangle;
 
 public class Game extends GameScreen implements Serializable
 {
@@ -453,8 +455,7 @@ public class Game extends GameScreen implements Serializable
 					}
 				}
 			}
-			else if(player.canMove(player.getNewBounds(distX, distY)))
-			{
+			else {
 				player.move(distX, distY);
 			}
 		}

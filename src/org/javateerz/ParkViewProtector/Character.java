@@ -160,7 +160,6 @@ public abstract class Character extends Movable
 	public void setAgainFrames(int amount)
 	{
 		againFrames=ParkViewProtector.secsToFrames(amount);
-		System.out.println(againFrames);
 		if(amount>0)
 			again=true;
 	}
@@ -509,9 +508,10 @@ public abstract class Character extends Movable
 		int newX				= (int) x;
 		int newY				= (int) y;
 		
-		newX				   += (int) (distX * speed *
+		// round up to ensure that not even a fraction of a pixel intersects
+		newX				   += (int) Math.ceil(distX * speed *
 				ParkViewProtector.getRenderDeltas());
-		newY				   += (int) (distY * speed *
+		newY				   += (int) Math.ceil(distY * speed *
 				ParkViewProtector.getRenderDeltas());
 		
 		Rectangle bounds;
@@ -540,7 +540,8 @@ public abstract class Character extends Movable
 		int newX				= (int) x;
 		int newY				= (int) y;
 		
-		int dist				= (int) (distance * speed *
+		// round up to ensure that not even a fraction of a pixel intersects
+		int dist				= (int) Math.ceil(distance * speed *
 				ParkViewProtector.getRenderDeltas());
 		
 		// determine and change direction if necessary
