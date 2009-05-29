@@ -126,7 +126,7 @@ public abstract class Boss extends Character
 				
 				if(attack.getStatus()==Status.STUN)
 				{
-					int dura	= attack.getStatusDuration()/STATUS_RESISTANCE;
+					double dura	= attack.getStatusDuration()/STATUS_RESISTANCE;
 					setStunFrames(dura);
 					if(statusIndex("stunbig")!=-1)
 					{

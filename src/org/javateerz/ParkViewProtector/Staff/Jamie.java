@@ -47,12 +47,12 @@ public class Jamie extends Staff
 		int			damage=0,
 					tp=0,
 					speed=0,
-					duration=0,
-					reuse=duration,
-					stillTime=0,
 					hits=1,
+					status=0;
+		double		duration=0,
+					stillTime=0,
+					reuse=duration,
 					hitDelay=duration,
-					status=0,
 					statusLength=0;
 		AttackType type=null;
 		boolean 	isEnemy=true,
@@ -98,13 +98,13 @@ public class Jamie extends Staff
 				type=AttackType.CENTER;
 				tp=250;
 				speed=0;
-				duration=40;
-				reuse=10;
+				duration=1;
+				reuse=5;
 				stillTime=stillTime;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.INVULNERABLE;
-				statusLength=200;
+				statusLength=20;
 				isEnemy=false;
 				AoE=true;
 				break;
@@ -116,11 +116,11 @@ public class Jamie extends Staff
 				speed=0;
 				duration=1;
 				reuse=50;
-				stillTime=40;
+				stillTime=1;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=300;
+				statusLength=10;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;

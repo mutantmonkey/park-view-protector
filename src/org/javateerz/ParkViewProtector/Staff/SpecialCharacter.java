@@ -47,12 +47,12 @@ public class SpecialCharacter extends Staff
 		int			damage=0,
 					tp=0,
 					speed=0,
-					duration=0,
-					reuse=duration,
-					stillTime=0,
 					hits=1,
+					status=0;
+		double		duration=0,
+					stillTime=0,
+					reuse=duration,
 					hitDelay=duration,
-					status=0,
 					statusLength=0;
 		AttackType type=null;
 		boolean 	isEnemy=true,
@@ -82,13 +82,13 @@ public class SpecialCharacter extends Staff
 				tp=10;
 				type=AttackType.FRONT;
 				speed=0;
-				duration=70;
-				reuse=40;
-				stillTime=20;
+				duration=0.7;
+				reuse=1;
+				stillTime=2;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=50;
+				statusLength=5;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;
@@ -98,13 +98,13 @@ public class SpecialCharacter extends Staff
 				type=AttackType.CENTER;
 				tp=250;
 				speed=0;
-				duration=40;
-				reuse=10;
+				duration=4;
+				reuse=1;
 				stillTime=stillTime;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.INVULNERABLE;
-				statusLength=200;
+				statusLength=2;
 				isEnemy=false;
 				AoE=true;
 				break;
@@ -114,13 +114,13 @@ public class SpecialCharacter extends Staff
 				tp=25;
 				type=AttackType.CENTER;
 				speed=0;
-				duration=1;
-				reuse=50;
-				stillTime=40;
+				duration=0.5;
+				reuse=5;
+				stillTime=1;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=300;
+				statusLength=3;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;

@@ -122,10 +122,10 @@ public abstract class Character extends Movable
 	 * 
 	 * @param amount
 	 */
-	public void setInvulFrames(int amount)
+	public void setInvulFrames(double amount)
 	{
 		invulFrames=ParkViewProtector.secsToFrames(amount) + 1;
-		if(amount>0)
+		if(invulFrames>0)
 			invul=true;
 	}
 	
@@ -134,10 +134,10 @@ public abstract class Character extends Movable
 	 * 
 	 * @param amount
 	 */
-	public void setStunFrames(int amount)
+	public void setStunFrames(double amount)
 	{
 		stunFrames=ParkViewProtector.secsToFrames(amount);
-		if(amount>0)
+		if(stunFrames>0)
 			stunned=true;
 	}
 	
@@ -146,10 +146,10 @@ public abstract class Character extends Movable
 	 * 
 	 * @param amount
 	 */
-	public void setAttackFrames(int amount)
+	public void setAttackFrames(double amount)
 	{
 		attackFrames=ParkViewProtector.secsToFrames(amount);
-		if(amount>0)
+		if(attackFrames>0)
 			attacking=true;
 	}
 	
@@ -157,10 +157,10 @@ public abstract class Character extends Movable
 	 * Sets time for the character to attack again
 	 * @param amount
 	 */
-	public void setAgainFrames(int amount)
+	public void setAgainFrames(double amount)
 	{
 		againFrames=ParkViewProtector.secsToFrames(amount);
-		if(amount>0)
+		if(againFrames>0)
 			again=true;
 	}
 	

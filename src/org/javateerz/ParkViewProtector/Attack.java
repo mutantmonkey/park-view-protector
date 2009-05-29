@@ -22,14 +22,14 @@ public class Attack extends Movable
 	private String 		name;
 	private AttackType	type;
 	private int 		damage,
-						tp, 
-						duration, 
-						time = 0, 
-						status, 
-						statusDuration, 
-						stillTime, 
-						hits, 
-						hitDelay, 
+						tp,
+						time=0,
+						status,
+						hits;
+	private double		duration,
+						statusDuration,
+						stillTime,
+						hitDelay,
 						reuse;
 	private boolean 	isEnemy, 
 						AoE;
@@ -67,14 +67,14 @@ public class Attack extends Movable
 					boolean AoE,
 					int damage,
 					int tp,
-					int duration,
+					double duration,
 					AttackType type,
 					int statusEffect,
-					int statusDuration,
-					int stillTime,
+					double statusDuration,
+					double stillTime,
 					int hits,
-					int hitDelay,
-					int reuse)
+					double hitDelay,
+					double reuse)
 	{
 		super(game, x, y, speed);
 		this.type			= type;
@@ -91,7 +91,7 @@ public class Attack extends Movable
 		this.hitDelay		= hitDelay;
 		this.reuse			= reuse;
 		this.isEnemy		= isEnemy;
-		switchXY();
+		init();
 	}
 	
 	/**
@@ -123,31 +123,39 @@ public class Attack extends Movable
 			boolean isEnemy,
 			boolean AoE,
 			int damage,
-			int duration,
+			double duration,
 			AttackType type,
 			int statusEffect,
-			int statusDuration,
-			int stillTime,
+			double statusDuration,
+			double stillTime,
 			int hits,
-			int hitDelay,
-			int reuse)
-		{
-			super(game, x, y, speed);
-			this.type			= type;
-			this.name			= name;
-			this.damage			= damage;
-			this.duration		= duration;
-			this.direction		= direction;
-			this.stillTime		= stillTime;
-			this.status			= statusEffect;
-			this.statusDuration	= statusDuration;
-			this.AoE			= AoE;
-			this.hits			= hits;
-			this.hitDelay		= hitDelay;
-			this.reuse			= reuse;
-			this.isEnemy		= isEnemy;
-			switchXY();
-		}
+			double hitDelay,
+			double reuse)
+	{
+		super(game, x, y, speed);
+		this.type			= type;
+		this.name			= name;
+		this.damage			= damage;
+		this.duration		= duration;
+		this.direction		= direction;
+		this.stillTime		= stillTime;
+		this.status			= statusEffect;
+		this.statusDuration	= statusDuration;
+		this.AoE			= AoE;
+		this.hits			= hits;
+		this.hitDelay		= hitDelay;
+		this.reuse			= reuse;
+		this.isEnemy		= isEnemy;
+		init();
+	}
+	
+	private void init()
+	{
+		time					= ParkViewProtector.secsToFrames(duration);
+		
+		updateSprite();
+		switchXY();
+	}
 	
 	/**
 	 * @return The name of the attack
@@ -164,13 +172,13 @@ public class Attack extends Movable
 	/**
 	 * @return The duration the attack stays on screen
 	 */
-	public int getDuration()
+	public double getDuration()
 	{	return duration;}
 
 	/**
 	 * @return The duration of the status effect
 	 */
-	public int getStatusDuration()
+	public double getStatusDuration()
 	{	return statusDuration;}
 
 	/**
@@ -182,7 +190,7 @@ public class Attack extends Movable
 	/**
 	 * @return The duration that the user cannot perform an action
 	 */
-	public int getStillTime()
+	public double getStillTime()
 	{	return stillTime;}
 
 	/**
@@ -200,7 +208,7 @@ public class Attack extends Movable
 	/**
 	 * @return The duration before the user can perform another attack
 	 */
-	public int getReuse()
+	public double getReuse()
 	{	return reuse;}
 	
 	/**
@@ -212,7 +220,7 @@ public class Attack extends Movable
 	/**
 	 * @return The duration before the target can be hit again
 	 */
-	public int getHitDelay()
+	public double getHitDelay()
 	{	return hitDelay;}
 	
 	/**
@@ -229,7 +237,7 @@ public class Attack extends Movable
 	public void move(int dist)
 	{
 		super.move(dist);
-		time++;
+		time--;
 	}
 
 	/**
@@ -237,9 +245,6 @@ public class Attack extends Movable
 	 */
 	public void switchXY()
 	{
-		// set the graphic
-		updateSprite();
-		
 		// centers the attack
 		x = (x) - (int) this.getBounds().getWidth()/4;
 		y = (y) - (int) this.getBounds().getHeight()/4;
@@ -308,9 +313,7 @@ public class Attack extends Movable
 	 */
 	public boolean over()
 	{
-		if(time > ParkViewProtector.secsToFrames(duration))
-			return true;
-		return false;
+		return (time <= 0);
 	}
 	
 	/**

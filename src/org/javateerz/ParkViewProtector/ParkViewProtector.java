@@ -289,9 +289,9 @@ public class ParkViewProtector
 	 * @param Number of seconds
 	 * @return Number of frames
 	 */
-	public static int secsToFrames(int secs)
+	public static int secsToFrames(double secs)
 	{
-		return (int) (secs * getRenderDeltas() * 100);
+		return (int) (secs * getRenderDeltas() * 1000);
 	}
 	
 	/**
