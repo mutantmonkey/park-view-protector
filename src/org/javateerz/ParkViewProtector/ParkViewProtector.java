@@ -55,7 +55,7 @@ public class ParkViewProtector
 	public static float renderDelta;
 	private static float lastTime			= timer.getTime();
 	
-	private boolean showFps					= true;
+	private boolean showFps					= false;
 	private long frames						= 0;
 	private float frameTime					= timer.getTime();
 	
@@ -66,7 +66,7 @@ public class ParkViewProtector
 	private CharSelect charSelect;
 	private Credits credits;
 	
-	public ParkViewProtector(boolean fullscreen)
+	public ParkViewProtector(boolean fullscreen, boolean showFps)
 	{
 		try
 		{
@@ -76,6 +76,8 @@ public class ParkViewProtector
 			{
 				Display.setFullscreen(true);
 			}
+			
+			this.showFps					= showFps;
 			
 			Display.setTitle("Park View Protector");
 			Display.create();
@@ -438,6 +440,7 @@ public class ParkViewProtector
 	{
 		boolean fullscreen				= false;
 		boolean skipIntro				= false;
+		boolean showFps					= false;
 		
 		// command line arguments
 		if(args.length > 0)
@@ -452,10 +455,14 @@ public class ParkViewProtector
 				{
 					skipIntro			= true;
 				}
+				else if(arg.equals("-showfps"))
+				{
+					showFps				= true;
+				}
 			}
 		}
 		
-		ParkViewProtector game			= new ParkViewProtector(fullscreen);
+		ParkViewProtector game			= new ParkViewProtector(fullscreen, showFps);
 		
 		game.init();
 		

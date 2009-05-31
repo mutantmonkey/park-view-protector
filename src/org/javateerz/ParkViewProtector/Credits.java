@@ -102,6 +102,9 @@ public class Credits extends GameScreen implements KeyListener
 		
 		background.draw();
 		
+		if(sectionText == null || nameText == null)
+			return;
+		
 		sectionText.drawCentered(ParkViewProtector.WIDTH / 2, SECTION_Y);
 		nameText.drawCentered(ParkViewProtector.WIDTH / 2, NAME_Y);
 	}

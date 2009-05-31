@@ -10,7 +10,8 @@ import org.javateerz.ParkViewProtector.Attack.AttackType;
 
 public class Snake extends Boss
 {
-	
+	private static final long serialVersionUID	= 1L;
+
 	public Snake(Game game, int x, int y)
 	{
 		super("snake",game, x, y, 100, 200, 1);
@@ -116,7 +117,7 @@ public class Snake extends Boss
 				tp=0;
 				type=AttackType.FRONT;
 				speed = (int)(Math.random()*6+1);
-				duration=500;
+				duration=5;
 				reuse=0;
 				stillTime=30;
 				hits=hits;
@@ -132,7 +133,7 @@ public class Snake extends Boss
 				tp=0;
 				type=AttackType.FAR_FRONT;
 				speed=0;
-				duration=20;
+				duration=2;
 				reuse=duration;
 				stillTime=duration;
 				hits=hits;
@@ -148,8 +149,8 @@ public class Snake extends Boss
 				tp=0;
 				type=AttackType.CENTER;
 				speed=0;
-				duration=100;
-				reuse=200;
+				duration=5;
+				reuse=10;
 				stillTime=duration;
 				hits=10;
 				hitDelay=duration/hits;

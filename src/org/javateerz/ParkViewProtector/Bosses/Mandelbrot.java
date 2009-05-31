@@ -159,8 +159,8 @@ public class Mandelbrot extends Boss
 				tp=0;
 				type=AttackType.CENTER;
 				speed=0;
-				duration=100;
-				reuse=200;
+				duration=5;
+				reuse=10;
 				stillTime=duration;
 				hits=10;
 				hitDelay=duration/hits;

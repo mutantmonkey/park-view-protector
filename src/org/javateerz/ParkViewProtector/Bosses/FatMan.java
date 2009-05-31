@@ -119,8 +119,8 @@ public class FatMan extends Boss
 				tp=0;
 				type=AttackType.FRONT;
 				speed=20;
-				duration=300;
-				reuse=30;
+				duration=2;
+				reuse=3;
 				stillTime=30;
 				hits=hits;
 				hitDelay=0;
@@ -135,7 +135,7 @@ public class FatMan extends Boss
 				tp=0;
 				type=AttackType.FAR_FRONT;
 				speed=0;
-				duration=20;
+				duration=2;
 				reuse=duration;
 				stillTime=duration;
 				hits=hits;
@@ -151,13 +151,13 @@ public class FatMan extends Boss
 				tp=0;
 				type=AttackType.CENTER;
 				speed=0;
-				duration=100;
-				reuse=200;
+				duration=5;
+				reuse=10;
 				stillTime=duration;
 				hits=10;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=50;
+				statusLength=5;
 				isStudent=isStudent;
 				AoE=true;
 				break;
