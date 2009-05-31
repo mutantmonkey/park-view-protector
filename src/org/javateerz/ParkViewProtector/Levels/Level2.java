@@ -30,7 +30,7 @@ public class Level2 extends StandardLevel implements Level
 	
 	public String getMusic()
 	{
-		return "heavyset.ogg";
+		return "hornet.ogg";
 	}
 	
 	public ArrayList<Student> getStudents()
