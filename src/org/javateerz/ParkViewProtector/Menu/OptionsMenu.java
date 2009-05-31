@@ -12,7 +12,6 @@ import org.javateerz.ParkViewProtector.KeyboardConfig;
 import org.javateerz.ParkViewProtector.Options;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Sprite;
-import org.lwjgl.input.Keyboard;
 
 public class OptionsMenu extends Menu
 {
@@ -63,43 +62,33 @@ public class OptionsMenu extends Menu
 					selectedItem++;
 				break;
 				
+			case KeyboardConfig.NAV_LEFT:
+				if(selectedItem >= 0 && items[selectedItem] instanceof OptionItem)
+				{
+					((OptionItem) items[selectedItem]).leftPressed();
+					((OptionItem) items[selectedItem]).update(driver);
+				}
+				break;
+				
+			case KeyboardConfig.NAV_RIGHT:
+				if(selectedItem >= 0 && items[selectedItem] instanceof OptionItem)
+				{
+					((OptionItem) items[selectedItem]).rightPressed();
+					((OptionItem) items[selectedItem]).update(driver);
+				}
+				break;
+				
+			case KeyboardConfig.ENTER:
+				if(selectedItem >= 0 && items[selectedItem] instanceof MenuItem)
+					execute(((MenuItem) items[selectedItem]).getAction());
+				break;
+				
 			case KeyboardConfig.BACK:
 				ParkViewProtector.showOptions	= false;
 				break;
 		}
 		
 		clearKeyPressedRecord();
-	}
-	
-	public void step()
-	{
-		super.step();
-		
-		// menu items are different
-		if(selectedItem < 0)
-		{
-			// do nothing! :D
-		}
-		else if(items[selectedItem] instanceof MenuItem)
-		{
-			if(Keyboard.isKeyDown(KeyboardConfig.ENTER))
-			{
-				execute(((MenuItem) items[selectedItem]).getAction());
-			}
-		}
-		else if(items[selectedItem] instanceof OptionItem)
-		{
-			if(Keyboard.isKeyDown(KeyboardConfig.NAV_LEFT))
-			{
-				((OptionItem) items[selectedItem]).leftPressed();
-				((OptionItem) items[selectedItem]).update(driver);
-			}
-			else if(Keyboard.isKeyDown(KeyboardConfig.NAV_RIGHT))
-			{
-				((OptionItem) items[selectedItem]).rightPressed();
-				((OptionItem) items[selectedItem]).update(driver);
-			}
-		}
 	}
 	
 	public void draw()
