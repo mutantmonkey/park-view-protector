@@ -30,6 +30,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public static final int ICON_X_OFFSET		= 28;
 	public static final int ICON_Y_OFFSET		= 38;
 	public static final int ICON_SPACING		= 30;
+	public static final double HIT_BLIP_TIME	= 0.5;
 	
 	public static final int MAX_LEVEL			= 15;
 	
@@ -717,7 +718,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	
 	public void hitFX(int x, int y)
 	{
-		VisualFX effect=new VisualFX(this, "blip", 10);
+		VisualFX effect=new VisualFX(this, "blip", HIT_BLIP_TIME);
 		effect.moveTo(x-effect.getBounds().getWidth()/2, y-effect.getBounds().getHeight()/2);
 		fx.add(effect);
 	}

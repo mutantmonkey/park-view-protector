@@ -285,11 +285,3 @@ public abstract class Staff extends Character
 		os.defaultWriteObject();
 	}
 }
-
-class Stats
-{
-	public static final int STARK_HP=100;
-	public static final int STARK_TP=100;
-	public static final int SPECIAL_HP=50;
-	public static final int SPECIAL_TP=300;
-}
