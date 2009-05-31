@@ -31,7 +31,7 @@ public class Level12 extends StandardLevel implements Level
 	
 	public String getMusic()
 	{
-		return "heavyset.ogg";
+		return "twice.ogg";
 	}
 	
 	public Location getStartLocation()

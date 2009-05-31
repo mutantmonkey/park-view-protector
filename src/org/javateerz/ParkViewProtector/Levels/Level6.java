@@ -30,7 +30,7 @@ public class Level6 implements Level
 	
 	public String getMusic()
 	{
-		return "heavyset.ogg";
+		return "twice.ogg";
 	}
 	
 	public Location getStartLocation()

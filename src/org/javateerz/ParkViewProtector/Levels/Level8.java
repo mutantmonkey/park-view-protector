@@ -32,7 +32,7 @@ public class Level8 implements Level
 	
 	public String getMusic()
 	{
-		return "heavyset.ogg";
+		return "twice.ogg";
 	}
 	
 	public Location getStartLocation()
