@@ -83,7 +83,7 @@ public class Stark extends Staff
 				tp=10;
 				type=AttackType.FRONT;
 				speed=10;
-				duration=1;
+				duration=2;
 				reuse=duration;
 				stillTime=stillTime;
 				hits=hits;
@@ -99,7 +99,7 @@ public class Stark extends Staff
 				tp=10;
 				type=AttackType.FRONT;
 				speed=0;
-				duration=0.5;
+				duration=1;
 				reuse=duration + 1;
 				stillTime=duration;
 				hits=hits;

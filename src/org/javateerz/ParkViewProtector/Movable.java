@@ -75,7 +75,7 @@ public abstract class Movable implements Serializable
 	 */
 	public void move(int distX, int distY, int any)
 	{
-		float delta			= ParkViewProtector.getRenderDeltas();
+		float delta			= ParkViewProtector.getRenderDelta();
 		
 		x				   += distX * speed * delta;
 		y				   += distY * speed * delta;
@@ -90,7 +90,7 @@ public abstract class Movable implements Serializable
 	 */
 	public void move(int dist)
 	{
-		float delta			= ParkViewProtector.getRenderDeltas();
+		float delta			= ParkViewProtector.getRenderDelta();
 		
 		double distance		= dist * speed * delta;
 
@@ -427,9 +427,9 @@ public abstract class Movable implements Serializable
 		int newY				= (int) y;
 		
 		newX				   += (int) (distX * speed *
-				ParkViewProtector.getRenderDeltas());
+				ParkViewProtector.getRenderDelta());
 		newY				   += (int) (distY * speed *
-				ParkViewProtector.getRenderDeltas());
+				ParkViewProtector.getRenderDelta());
 		
 		
 		Rectangle bounds		= new Rectangle(newX, newY, sprite.getWidth(),
@@ -448,7 +448,7 @@ public abstract class Movable implements Serializable
 		int newY				= (int) y;
 		
 		int dist				= (int) (distance * speed *
-				ParkViewProtector.getRenderDeltas());
+				ParkViewProtector.getRenderDelta());
 		
 		// determine and change direction if necessary
 		switch(direction)

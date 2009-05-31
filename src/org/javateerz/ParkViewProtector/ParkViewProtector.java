@@ -52,7 +52,7 @@ public class ParkViewProtector
 	
 	public static Timer timer				= new Timer();
 	private static float ticks;
-	public static float renderDeltas;
+	public static float renderDelta;
 	private static float lastTime			= timer.getTime();
 	
 	private boolean showFps					= true;
@@ -250,7 +250,7 @@ public class ParkViewProtector
 		Timer.tick();
 		
 		ticks						= timer.getTime() - lastTime;
-		renderDeltas			   += ticks;
+		renderDelta				   += ticks;
 		lastTime					= timer.getTime();
 	}
 	
@@ -270,28 +270,39 @@ public class ParkViewProtector
 		// show rendered content
 		GL11.glFlush();
 		
-		renderDeltas				= 0;
+		renderDelta					= 0;
 	}
 	
 	/**
 	 * @return Basically, how many frames of movement to render
 	 */
-	public static float getRenderDeltas()
+	public static float getRenderDelta()
 	{
-		float delta					= renderDeltas * RENDER_SPEED;
+		float delta					= renderDelta * RENDER_SPEED;
 		
 		return delta;
 	}
 	
 	/**
+	 * Converts number of frames to number of seconds
+	 * 
+	 * @param frames Number of frames
+	 * @return Number of seconds
+	 */
+	public static double framesToSecs(int frames)
+	{
+		return (double) frames / (getRenderDelta() * 1000);
+	}
+	
+	/**
 	 * Converts number of seconds to number of frames
 	 * 
-	 * @param Number of seconds
+	 * @param secs Number of seconds
 	 * @return Number of frames
 	 */
 	public static int secsToFrames(double secs)
 	{
-		return (int) (secs * getRenderDeltas() * 1000);
+		return (int) (secs * getRenderDelta() * 1000);
 	}
 	
 	/**

@@ -429,7 +429,7 @@ public abstract class Character extends Movable
 		int speed					= Game.MOVE_SPEED;
 		int changeMoves				= (int) (Math.random() * (Game.MAX_NUM_MOVES - Game.MIN_NUM_MOVES) +
 				Game.MIN_NUM_MOVES + 1);
-		changeMoves				   /= ParkViewProtector.getRenderDeltas();
+		changeMoves				   /= ParkViewProtector.getRenderDelta();
 		
 		// change direction if the move count exceeds the number of moves to change after
 		if(getMoveCount() <= 0 || getMoveCount() > changeMoves)
@@ -512,9 +512,9 @@ public abstract class Character extends Movable
 			int newY			= (int) y;
 			
 			newX			   += (int) Math.ceil(distX * speed *
-					ParkViewProtector.getRenderDeltas());
+					ParkViewProtector.getRenderDelta());
 			newY			   += (int) Math.ceil(distY * speed *
-					ParkViewProtector.getRenderDeltas());
+					ParkViewProtector.getRenderDelta());
 			
 			Rectangle bounds;
 		
@@ -541,7 +541,7 @@ public abstract class Character extends Movable
 			int newY			= (int) y;
 			
 			int dist			= (int) (distance * speed *
-					ParkViewProtector.getRenderDeltas());
+					ParkViewProtector.getRenderDelta());
 			
 			// determine and change direction if necessary
 			switch(direction)

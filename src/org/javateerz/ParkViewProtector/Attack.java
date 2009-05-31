@@ -23,10 +23,10 @@ public class Attack extends Movable
 	private AttackType	type;
 	private int 		damage,
 						tp,
-						time=0,
 						status,
 						hits;
-	private double		duration,
+	private double		time,
+						duration,
 						statusDuration,
 						stillTime,
 						hitDelay,
@@ -151,7 +151,7 @@ public class Attack extends Movable
 	
 	private void init()
 	{
-		time					= ParkViewProtector.secsToFrames(duration);
+		time					= duration;
 		
 		updateSprite();
 		switchXY();
@@ -230,14 +230,15 @@ public class Attack extends Movable
 	{	return isEnemy;}
 	
 	/**
-	 * Moves the attack and increases time by 1.
+	 * Moves the attack and decreases time
 	 * 
 	 * @param dist Distance to move
 	 */
 	public void move(int dist)
 	{
 		super.move(dist);
-		time--;
+		
+		time -= ParkViewProtector.framesToSecs(1);
 	}
 
 	/**
