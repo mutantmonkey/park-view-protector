@@ -51,8 +51,6 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public static final int DECOUPLE_SPACING	= 40;
 	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
 	
-	public static final int PLAYER_X			= 10;
-	public static final int PLAYER_Y			= 30;
 	public static double hpPercent;
 	public static double tpPercent;
 	
@@ -65,7 +63,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 1;
+	private int levelNum						= 15;
 	
 	private transient Boss boss;
 	private transient Level level;
@@ -280,7 +278,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public void setPlayer(Staff player)
 	{
 		this.player					= player;
-		this.player.moveTo(PLAYER_X, PLAYER_Y);
+		this.player.moveTo(level.getStartLocation());
 		
 		initGraphics();
 	}
@@ -580,6 +578,8 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		attacks				= new ArrayList<Attack>();
 		items				= new ArrayList<Item>();
 		fx					= new ArrayList<VisualFX>();
+		
+		player.moveTo(level.getStartLocation());
 	}
 	
 	public void draw()

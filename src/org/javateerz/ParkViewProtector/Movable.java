@@ -120,6 +120,17 @@ public abstract class Movable implements Serializable
 	/**
 	 * Move the object to a location
 	 * 
+	 * @param loc
+	 */
+	public void moveTo(Location loc)
+	{
+		this.x			= loc.getX();
+		this.y			= loc.getY();
+	}
+	
+	/**
+	 * Move the object to a location
+	 * 
 	 * @param x
 	 * @param y
 	 */

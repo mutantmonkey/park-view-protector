@@ -3,6 +3,7 @@ package org.javateerz.ParkViewProtector.Levels;
 import java.util.ArrayList;
 
 import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.Location;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
 import org.javateerz.ParkViewProtector.Wall;
 import org.javateerz.ParkViewProtector.Students.*;
@@ -32,6 +33,11 @@ public class Level9 implements Level
 	public String getMusic()
 	{
 		return "hornet.ogg";
+	}
+	
+	public Location getStartLocation()
+	{
+		return new Location(100, 100);
 	}
 	
 	public ArrayList<Student> getStudents()
