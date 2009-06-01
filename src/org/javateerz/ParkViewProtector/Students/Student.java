@@ -164,11 +164,18 @@ public abstract class Student extends Character implements Serializable
 			{
 				try
 				{
-					attackX = DataStore.INSTANCE.getSprite("attack/band.png");
+					attackX = DataStore.INSTANCE.getSprite("attack/"+type+".png");
 				}
 				catch(Exception e2)
 				{
-					attackX = DataStore.INSTANCE.getSprite("attack/attack.png");
+					try
+					{
+						attackX = DataStore.INSTANCE.getSprite("attack/goodnight.png");
+					}
+					catch(Exception e3)
+					{
+						
+					}
 				}
 			}
 		}
