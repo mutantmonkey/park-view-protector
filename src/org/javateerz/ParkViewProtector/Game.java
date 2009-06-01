@@ -142,6 +142,8 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		{
 			default:
 				level				= new Level1(this);
+				words				= new OpeningWords();
+				words.init();
 				break;
 				
 			case 2:
@@ -308,17 +310,6 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		return true;
 	}
 	
-	public void runOpening()
-	{
-		words = new OpeningWords();
-		words.init();;
-		while(words.running)
-		{
-			words.step();
-			words.draw();
-		}
-	}
-	
 	public void step()
 	{
 		addKeyListener(this);
@@ -330,6 +321,16 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		
 		if(player.getHp() <= 0)
 		{
+			return;
+		}
+		
+		if(words != null)
+		{
+			words.step();
+			if(!words.running)
+			{
+				words = null;
+			}
 			return;
 		}
 		
@@ -612,6 +613,12 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		for(Wall w : walls)
 		{
 			w.draw();
+		}
+		
+		if(words != null)
+		{
+			words.draw();
+			return;
 		}
 		
 		//////////////////////////////////////////////////////////////////////////////////

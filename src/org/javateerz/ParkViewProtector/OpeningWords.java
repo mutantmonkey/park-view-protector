@@ -1,25 +1,31 @@
 package org.javateerz.ParkViewProtector;
 
+import org.lwjgl.input.Keyboard;
+
 public class OpeningWords extends GameScreen
 {
+	public boolean running;
+	private int currTime;
+	
 	private Sprite words;
 	private int wordsY;
+	
 	private int numImages;
 	private	Sprite[] images;
 	private int[] imageStarts;
 	private int[] imageDurations;
 	private boolean[] imagesToDraw;
-	private int currTime;
-	public boolean running;
+	
+	private Sprite bg;
 	
 	public OpeningWords()
 	{
 		super();
 	}
 	
-	public String getBG()
+	public Sprite getBg()
 	{
-		return "terrazzo_green.png";
+		return bg;
 	}
 	
 	public void init()
@@ -37,14 +43,17 @@ public class OpeningWords extends GameScreen
 			imagesToDraw[i] = false;
 		}
 		currTime = 0;
+		bg = DataStore.INSTANCE.getSprite("bg/stark_head.png");
 	}
-	
 	
 	public void step()
 	{
 		currTime++;
-		wordsY--;
-		if(wordsY <= -1*words.getHeight())
+		if(currTime % 5 == 0 || Keyboard.isKeyDown(KeyboardConfig.ENTER))
+		{
+			wordsY-=2;
+		}
+		if(wordsY <= -1*words.getHeight() || Keyboard.isKeyDown(Keyboard.KEY_DELETE))
 		{
 			running = false;
 		}
@@ -59,6 +68,7 @@ public class OpeningWords extends GameScreen
 	
 	public void draw()
 	{
+		bg.draw(0,0);
 		words.draw(0,wordsY);
 	}
 
