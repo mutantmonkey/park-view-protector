@@ -58,6 +58,7 @@ public class ParkViewProtector
 	private boolean showFps					= false;
 	private long frames						= 0;
 	private float frameTime					= timer.getTime();
+	private static int fps					= 100;
 	
 	private TitleScreen title;
 	private Game game;
@@ -208,8 +209,6 @@ public class ParkViewProtector
 	 */
 	public void mainLoop()
 	{
-		int fps;
-		
 		while(running)
 		{
 			// close requested?
@@ -293,7 +292,7 @@ public class ParkViewProtector
 	 */
 	public static double framesToSecs(int frames)
 	{
-		return (double) frames / (getRenderDelta() * 1000);
+		return (double) frames / fps;
 	}
 	
 	/**
@@ -304,7 +303,7 @@ public class ParkViewProtector
 	 */
 	public static int secsToFrames(double secs)
 	{
-		return (int) (secs * getRenderDelta() * 1000);
+		return (int) (secs * fps);
 	}
 	
 	/**
