@@ -14,15 +14,80 @@ import org.javateerz.ParkViewProtector.Attack;
 import org.javateerz.ParkViewProtector.Character;
 import org.javateerz.ParkViewProtector.Couple;
 import org.javateerz.ParkViewProtector.DataStore;
+import org.javateerz.ParkViewProtector.Direction;
 import org.javateerz.ParkViewProtector.Game;
 import org.javateerz.ParkViewProtector.Item;
 import org.javateerz.ParkViewProtector.ParkViewProtector;
+import org.javateerz.ParkViewProtector.Sprite;
 import org.javateerz.ParkViewProtector.Status;
 import org.javateerz.ParkViewProtector.StatusEffect;
 import org.javateerz.ParkViewProtector.Attack.AttackType;
 
 public abstract class Student extends Character implements Serializable
 {
+	protected int 			MAtkSpd;
+	protected boolean		MAtkAoE;
+	protected int			MAtkDamage;
+	protected double		MAtkDuration;
+	protected AttackType	MAtkType;
+	protected int			MAtkStatus;
+	protected double		MAtkStatusDuration;
+	protected double		MAtkStillTime;
+	protected int			MAtkHits;
+	protected double		MAtkHitsDelay;
+	protected double		MAtkReuse;
+	protected boolean		MAtkEnemy;
+	protected boolean		MAtkHasDirection;
+	protected int			MAtkRange;
+
+	protected int 			FAtkSpd;
+	protected boolean		FAtkAoE;
+	protected int			FAtkDamage;
+	protected double		FAtkDuration;
+	protected AttackType	FAtkType;
+	protected int			FAtkStatus;
+	protected double		FAtkStatusDuration;
+	protected double		FAtkStillTime;
+	protected int			FAtkHits;
+	protected double		FAtkHitsDelay;
+	protected double		FAtkReuse;
+	protected boolean		FAtkEnemy;
+	protected boolean		FAtkHasDirection;
+	protected int			FAtkRange;
+	
+	/* TEMPLATE!*/
+	/*
+	protected int 			MAtkSpd				= 0;
+	protected boolean		MAtkAoE				= true;
+	protected int			MAtkDamage			= 1;
+	protected double		MAtkDuration		= 1;
+	protected AttackType	MAtkType			= AttackType.FRONT;
+	protected int			MAtkStatus			= Status.NONE;
+	protected double		MAtkStatusDuration	= 0;
+	protected double		MAtkStillTime		= 1;
+	protected int			MAtkHits			= 1;
+	protected double		MAtkHitsDelay		= 1;
+	protected double		MAtkReuse			= 1;
+	protected boolean		MAtkEnemy			= true;
+	protected boolean		MAtkHasDirection	= false;
+	protected int			MAtkRange			= 50;
+
+	protected int 			FAtkSpd				= 0;
+	protected boolean		FAtkAoE				= true;
+	protected int			FAtkDamage			= 1;
+	protected double		FAtkDuration		= 1;
+	protected AttackType	FAtkType			= AttackType.FRONT;
+	protected int			FAtkStatus			= Status.NONE;
+	protected double		FAtkStatusDuration	= 0;
+	protected double		FAtkStillTime		= 1;
+	protected int			FAtkHits			= 1;
+	protected double		FAtkHitsDelay		= 1;
+	protected double		FAtkReuse			= 1;
+	protected boolean		FAtkEnemy			= true;
+	protected boolean		FAtkHasDirection	= false;
+	protected int			FAtkRange			= 50;
+	*/
+	
 	public final static int NUM_STUDENTS		= 6;
 	
 	private String type							= "default";
@@ -30,6 +95,12 @@ public abstract class Student extends Character implements Serializable
 	protected char gender;
 	private static final int ATTACK_RANGE		= 50;
 	private static final int SIGHT_RANGE		= 200;
+	
+	protected Sprite	attackN,
+						attackS,
+						attackE,
+						attackW,
+						attackX;
 	
 	private static final long serialVersionUID	= 3L;
 	
@@ -75,6 +146,32 @@ public abstract class Student extends Character implements Serializable
 		updateSprite();
 		bar.setName("red1");
 		bar.updateSprite();
+
+		try
+		{
+			attackN = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_n.png");
+			attackS = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_s.png");
+			attackE = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_e.png");
+			attackW = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_w.png");
+		}
+		catch(Exception e)
+		{
+			try
+			{
+				attackX = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+".png");
+			}
+			catch(Exception e1)
+			{
+				try
+				{
+					attackX = DataStore.INSTANCE.getSprite("attack/band.png");
+				}
+				catch(Exception e2)
+				{
+					attackX = DataStore.INSTANCE.getSprite("attack/attack.png");
+				}
+			}
+		}
 	}
 	
 	public void step(Game game)
@@ -324,7 +421,132 @@ public abstract class Student extends Character implements Serializable
 	 */
 	public void attack()
 	{
-		attack(type + "_" + gender);
+		/*
+		 * FIXME: Load attack images and sounds in the background and store them in the
+		 * character so that they do not have to be loaded each time (it will be slow)
+		 */
+		ArrayList<Attack> attacks=game.getAttacks();
+		Sprite tempSprite=attackX;
+		
+		if(gender == 'm')
+		{
+			if(MAtkHasDirection)
+			{
+				switch(this.getDirection())
+				{
+					case Direction.NORTH:
+						tempSprite=attackN;
+						break;
+					case Direction.SOUTH:
+						tempSprite=attackS;
+						break;
+					case Direction.WEST:
+						tempSprite=attackW;
+						break;
+					case Direction.EAST:
+						tempSprite=attackE;
+						break;
+				}
+			}
+			
+			Attack attack		= new Attack(
+					game,
+					this.getBounds().getCenterX(),
+					this.getBounds().getCenterY(),
+					MAtkSpd,
+					this.getDirection(),
+					tempSprite,
+					false,
+					MAtkAoE,
+					MAtkDamage,
+					MAtkDuration,
+					MAtkType,
+					MAtkStatus,
+					MAtkStatusDuration,
+					MAtkStillTime,
+					MAtkHits,
+					MAtkHitsDelay,
+					MAtkReuse);
+			
+			if(inRange(game.getPlayer(), MAtkRange) && isAgain())
+			{
+				setAttackFrames(attack.getStillTime());
+				attack.switchXY();
+				attacks.add(attack);
+				
+				try
+				{
+					ParkViewProtector.playSound(attack.getName()+".wav");
+				}
+				catch(Exception e)
+				{
+					System.out.println("The attack has no sound.");
+				}
+				
+				// set delay
+				setAgainFrames(attack.getReuse());
+			}
+		}
+		
+		else
+		{
+			if(FAtkHasDirection)
+			{
+				switch(this.getDirection())
+				{
+					case Direction.NORTH:
+						tempSprite=attackN;
+						break;
+					case Direction.SOUTH:
+						tempSprite=attackS;
+						break;
+					case Direction.WEST:
+						tempSprite=attackW;
+						break;
+					case Direction.EAST:
+						tempSprite=attackE;
+						break;
+				}
+			}
+			
+			Attack attack		= new Attack(
+					game,
+					this.getBounds().getCenterX(),
+					this.getBounds().getCenterY(),
+					FAtkSpd,
+					this.getDirection(),
+					tempSprite,
+					false,
+					FAtkAoE,
+					FAtkDamage,
+					FAtkDuration,
+					FAtkType,
+					FAtkStatus,
+					FAtkStatusDuration,
+					FAtkStillTime,
+					FAtkHits,
+					FAtkHitsDelay,
+					FAtkReuse);
+			
+			if(inRange(game.getPlayer(), FAtkRange) && isAgain())
+			{
+				setAttackFrames(attack.getStillTime());
+				attack.switchXY();
+				attacks.add(attack);
+				
+				try
+				{
+					ParkViewProtector.playSound(attack.getName()+".wav");
+				}
+				catch(Exception e)
+				{
+					System.out.println("The attack has no sound.");
+				}
+				
+				// set delay
+				setAgainFrames(attack.getReuse());
+			}
+		}
 	}
 	
 	/**
@@ -332,7 +554,7 @@ public abstract class Student extends Character implements Serializable
 	 * 
 	 * @param name Name of attack
 	 */
-	protected void attack(String name)
+	/*protected void attack(String name)
 	{
 		int	speed		= 0,
 			damage		= 1,
@@ -342,7 +564,7 @@ public abstract class Student extends Character implements Serializable
 			reuse		= 100;
 		
 		attack(name, speed, damage, tp, duration, stillTime, reuse);
-	}
+	}*/
 	
 	/**
 	 * Perform an attack
@@ -355,14 +577,14 @@ public abstract class Student extends Character implements Serializable
 	 * @param stillTime The duration the attack makes the user stand still
 	 * @param reuse The time the user can perform another attack
 	 */
-	protected void attack(String name, int speed, int damage, int tp, int duration,
+	/*protected void attack(String name, int speed, int damage, int tp, int duration,
 			int stillTime, int reuse)
 	{
 		int hits			= 1;
 		
-		attack(name, speed, damage, tp, AttackType.FRONT, duration, stillTime, hits,
+		attack(name, MAtkSpd, MAtkDamage, tp, AttackType.FRONT, duration, stillTime, hits,
 				duration / hits, reuse, 0, 0, true);
-	}
+	}*/
 	
 	/**
 	 * Perform an attack

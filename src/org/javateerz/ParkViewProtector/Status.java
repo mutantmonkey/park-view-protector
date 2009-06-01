@@ -4,7 +4,8 @@ package org.javateerz.ParkViewProtector;
  */
 public class Status
 {
-	public static final int STUN=1;
-	public static final int POISON=2;
-	public static final int INVULNERABLE=3;
+	public static final int NONE			= 0;
+	public static final int STUN			= 1;
+	public static final int POISON		= 2;
+	public static final int INVULNERABLE	= 3;
 }

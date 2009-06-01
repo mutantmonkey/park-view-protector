@@ -33,6 +33,8 @@ public class Attack extends Movable
 						reuse;
 	private boolean 	isEnemy, 
 						AoE;
+
+	private boolean hasSprite		= false;
 	
 	private static final long serialVersionUID = 4L;
 	
@@ -95,6 +97,121 @@ public class Attack extends Movable
 	}
 	
 	/**
+	 * Create a new Attack
+	 * 
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @param speed The speed the attack travels
+	 * @param direction Direction of the attack
+	 * @param name Name of the attack
+	 * @param isEnemy If true, the attack effects students
+	 * @param AoE If true, the attack will not disappear upon hitting a target
+	 * @param damage The damage the attack will deal
+	 * @param tp The amount of TP the attack consumes
+	 * @param duration The duration the attack stays on screen
+	 * @param type The placement of the attack
+	 * @param statusEffect The status effect the attack induces
+	 * @param statusDuration The length of the status effect
+	 * @param stillTime The duration the attack makes the user stand still
+	 * @param hits The number of hits the attack deals
+	 * @param hitDelay The time before the target can be hit again after being hit
+	 * @param reuse The time the user can perform another attack
+	 */
+	public Attack(	Game game,
+					double x,
+					double y,
+					double speed,
+					int direction,
+					Sprite sprite,
+					boolean isEnemy,
+					boolean AoE,
+					int damage,
+					int tp,
+					double duration,
+					AttackType type,
+					int statusEffect,
+					double statusDuration,
+					double stillTime,
+					int hits,
+					double hitDelay,
+					double reuse)
+	{
+		super(game, x, y, speed);
+		this.type			= type;
+		this.damage			= damage;
+		this.tp				= tp;
+		this.duration		= duration;
+		this.direction		= direction;
+		this.stillTime		= stillTime;
+		this.status			= statusEffect;
+		this.statusDuration	= statusDuration;
+		this.AoE			= AoE;
+		this.hits			= hits;
+		this.hitDelay		= hitDelay;
+		this.reuse			= reuse;
+		this.isEnemy		= isEnemy;
+		this.sprite			= sprite;
+		this.hasSprite 			= true;
+		init();
+	}
+	/**
+	 * Create a new Attack
+	 * 
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @param speed The speed the attack travels
+	 * @param direction Direction of the attack
+	 * @param name Name of the attack
+	 * @param isEnemy If true, the attack effects students
+	 * @param AoE If true, the attack will not disappear upon hitting a target
+	 * @param damage The damage the attack will deal
+	 * @param tp The amount of TP the attack consumes
+	 * @param duration The duration the attack stays on screen
+	 * @param type The placement of the attack
+	 * @param statusEffect The status effect the attack induces
+	 * @param statusDuration The length of the status effect
+	 * @param stillTime The duration the attack makes the user stand still
+	 * @param hits The number of hits the attack deals
+	 * @param hitDelay The time before the target can be hit again after being hit
+	 * @param reuse The time the user can perform another attack
+	 */
+	public Attack(	Game game,
+					double x,
+					double y,
+					double speed,
+					int direction,
+					Sprite sprite,
+					boolean isEnemy,
+					boolean AoE,
+					int damage,
+					double duration,
+					AttackType type,
+					int statusEffect,
+					double statusDuration,
+					double stillTime,
+					int hits,
+					double hitDelay,
+					double reuse)
+	{
+		super(game, x, y, speed);
+		this.type			= type;
+		this.damage			= damage;
+		this.duration		= duration;
+		this.direction		= direction;
+		this.stillTime		= stillTime;
+		this.status			= statusEffect;
+		this.statusDuration	= statusDuration;
+		this.AoE			= AoE;
+		this.hits			= hits;
+		this.hitDelay		= hitDelay;
+		this.reuse			= reuse;
+		this.isEnemy		= isEnemy;
+		this.sprite			= sprite;
+		this.hasSprite 			= true;
+		init();
+	}
+	
+	/**
 	 * Create a new Attack that does not require TP
 	 * 
 	 * @param x The x coordinate
@@ -152,8 +269,10 @@ public class Attack extends Movable
 	private void init()
 	{
 		time					= duration;
-		
-		updateSprite();
+		if(!hasSprite)
+		{
+			updateSprite();
+		}
 		switchXY();
 	}
 	
