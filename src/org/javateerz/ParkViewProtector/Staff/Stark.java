@@ -115,8 +115,8 @@ public class Stark extends Staff
 				tp=30;
 				type=AttackType.CENTER;
 				speed=0;
-				duration=5;
-				reuse=duration + 5;
+				duration=3;
+				reuse=duration + 2;
 				stillTime=duration;
 				hits=3;
 				hitDelay=duration/hits;
