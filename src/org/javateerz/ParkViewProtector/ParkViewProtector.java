@@ -225,13 +225,14 @@ public class ParkViewProtector
 			
 			frames++;
 			
-			if(showFps && frames == 50)
+			if(frames == 50)
 			{
 				fps					= (int) (frames / (timer.getTime() - frameTime));
 				frames				= 0;
 				frameTime			= timer.getTime();
 				
-				Display.setTitle("Park View Protector (fps: " + fps + ")");
+				if(showFps)
+					Display.setTitle("Park View Protector (fps: " + fps + ")");
 			}
 			
 			// render
