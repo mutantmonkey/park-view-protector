@@ -28,6 +28,7 @@ public abstract class Student extends Character implements Serializable
 	protected int 			MAtkSpd;
 	protected boolean		MAtkAoE;
 	protected int			MAtkDamage;
+	protected String		MAtkName;
 	protected double		MAtkDuration;
 	protected AttackType	MAtkType;
 	protected int			MAtkStatus;
@@ -43,6 +44,7 @@ public abstract class Student extends Character implements Serializable
 	protected int 			FAtkSpd;
 	protected boolean		FAtkAoE;
 	protected int			FAtkDamage;
+	protected String		FAtkName;
 	protected double		FAtkDuration;
 	protected AttackType	FAtkType;
 	protected int			FAtkStatus;
@@ -57,35 +59,37 @@ public abstract class Student extends Character implements Serializable
 	
 	/* TEMPLATE!*/
 	/*
-	protected int 			MAtkSpd				= 0;
-	protected boolean		MAtkAoE				= true;
-	protected int			MAtkDamage			= 1;
-	protected double		MAtkDuration		= 1;
-	protected AttackType	MAtkType			= AttackType.FRONT;
-	protected int			MAtkStatus			= Status.NONE;
-	protected double		MAtkStatusDuration	= 0;
-	protected double		MAtkStillTime		= 1;
-	protected int			MAtkHits			= 1;
-	protected double		MAtkHitsDelay		= 1;
-	protected double		MAtkReuse			= 1;
-	protected boolean		MAtkEnemy			= true;
-	protected boolean		MAtkHasDirection	= false;
-	protected int			MAtkRange			= 50;
+	MAtkSpd				= 0;
+	MAtkAoE				= true;
+	MAtkDamage			= 1;
+	MAtkName			= "attack";
+	MAtkDuration		= 1;
+	MAtkType			= AttackType.FRONT;
+	MAtkStatus			= Status.NONE;
+	MAtkStatusDuration	= 0;
+	MAtkStillTime		= 1;
+	MAtkHits			= 1;
+	MAtkHitsDelay		= 1;
+	MAtkReuse			= 1;
+	MAtkEnemy			= true;
+	MAtkHasDirection	= false;
+	MAtkRange			= 50;
 
-	protected int 			FAtkSpd				= 0;
-	protected boolean		FAtkAoE				= true;
-	protected int			FAtkDamage			= 1;
-	protected double		FAtkDuration		= 1;
-	protected AttackType	FAtkType			= AttackType.FRONT;
-	protected int			FAtkStatus			= Status.NONE;
-	protected double		FAtkStatusDuration	= 0;
-	protected double		FAtkStillTime		= 1;
-	protected int			FAtkHits			= 1;
-	protected double		FAtkHitsDelay		= 1;
-	protected double		FAtkReuse			= 1;
-	protected boolean		FAtkEnemy			= true;
-	protected boolean		FAtkHasDirection	= false;
-	protected int			FAtkRange			= 50;
+	FAtkSpd				= 0;
+	FAtkAoE				= true;
+	FAtkDamage			= 1;
+	MAtkName			= "attack";
+	FAtkDuration		= 1;
+	FAtkType			= AttackType.FRONT;
+	FAtkStatus			= Status.NONE;
+	FAtkStatusDuration	= 0;
+	FAtkStillTime		= 1;
+	FAtkHits			= 1;
+	FAtkHitsDelay		= 1;
+	FAtkReuse			= 1;
+	FAtkEnemy			= true;
+	FAtkHasDirection	= false;
+	FAtkRange			= 50;
 	*/
 	
 	public final static int NUM_STUDENTS		= 6;
@@ -146,31 +150,41 @@ public abstract class Student extends Character implements Serializable
 		updateSprite();
 		bar.setName("red1");
 		bar.updateSprite();
-
+	}
+	
+	public void setAttack()
+	{
 		try
 		{
 			attackN = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_n.png");
 			attackS = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_s.png");
 			attackE = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_e.png");
 			attackW = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_w.png");
+			System.out.print(1);
 		}
 		catch(Exception e)
 		{
 			try
 			{
 				attackX = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+".png");
+				System.out.print(2);
 			}
 			catch(Exception e1)
 			{
 				try
 				{
 					attackX = DataStore.INSTANCE.getSprite("attack/"+type+".png");
+					System.out.print(3);
 				}
 				catch(Exception e2)
 				{
 					try
 					{
-						attackX = DataStore.INSTANCE.getSprite("attack/goodnight.png");
+						attackN = DataStore.INSTANCE.getSprite("attack/"+type+"_n.png");
+						attackS = DataStore.INSTANCE.getSprite("attack/"+type+"_s.png");
+						attackW = DataStore.INSTANCE.getSprite("attack/"+type+"_w.png");
+						attackE = DataStore.INSTANCE.getSprite("attack/"+type+"_e.png");
+						System.out.print(4);
 					}
 					catch(Exception e3)
 					{
@@ -179,9 +193,10 @@ public abstract class Student extends Character implements Serializable
 				}
 			}
 		}
+		System.out.println();
 	}
 	
-	public void step(Game game)
+	public void step()
 	{
 		// attempt to couple with other students
 		if(getHp() > 0)
@@ -432,9 +447,10 @@ public abstract class Student extends Character implements Serializable
 		 * FIXME: Load attack images and sounds in the background and store them in the
 		 * character so that they do not have to be loaded each time (it will be slow)
 		 */
+		
 		ArrayList<Attack> attacks=game.getAttacks();
 		Sprite tempSprite=attackX;
-		
+		Attack attack;
 		if(gender == 'm')
 		{
 			if(MAtkHasDirection)
@@ -456,12 +472,20 @@ public abstract class Student extends Character implements Serializable
 				}
 			}
 			
-			Attack attack		= new Attack(
+			try{
+				System.out.println(tempSprite.getResourceReference());
+				System.out.println("x: "+this.getBounds().getCenterX());
+				System.out.println("y: "+this.getBounds().getCenterY());
+			}
+			catch(Exception e){}
+			
+			attack		= new Attack(
 					game,
 					this.getBounds().getCenterX(),
 					this.getBounds().getCenterY(),
 					MAtkSpd,
 					this.getDirection(),
+					MAtkName,
 					tempSprite,
 					false,
 					MAtkAoE,
@@ -476,13 +500,14 @@ public abstract class Student extends Character implements Serializable
 					MAtkReuse);
 			
 			if(inRange(game.getPlayer(), MAtkRange) && isAgain())
-			{
+			{				
 				setAttackFrames(attack.getStillTime());
 				attack.switchXY();
 				attacks.add(attack);
 				
 				try
 				{
+					System.out.println(attack.getName()+".wav");
 					ParkViewProtector.playSound(attack.getName()+".wav");
 				}
 				catch(Exception e)
@@ -516,12 +541,13 @@ public abstract class Student extends Character implements Serializable
 				}
 			}
 			
-			Attack attack		= new Attack(
+			attack		= new Attack(
 					game,
 					this.getBounds().getCenterX(),
 					this.getBounds().getCenterY(),
 					FAtkSpd,
 					this.getDirection(),
+					FAtkName,
 					tempSprite,
 					false,
 					FAtkAoE,

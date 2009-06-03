@@ -34,6 +34,7 @@ public class Attack extends Movable
 	private boolean 	isEnemy, 
 						AoE;
 
+	private Sprite loadedSprite;
 	private boolean hasSprite		= false;
 	
 	private static final long serialVersionUID = 4L;
@@ -122,6 +123,7 @@ public class Attack extends Movable
 					double y,
 					double speed,
 					int direction,
+					String name,
 					Sprite sprite,
 					boolean isEnemy,
 					boolean AoE,
@@ -139,6 +141,7 @@ public class Attack extends Movable
 		super(game, x, y, speed);
 		this.type			= type;
 		this.damage			= damage;
+		this.name			= name;
 		this.tp				= tp;
 		this.duration		= duration;
 		this.direction		= direction;
@@ -150,8 +153,8 @@ public class Attack extends Movable
 		this.hitDelay		= hitDelay;
 		this.reuse			= reuse;
 		this.isEnemy		= isEnemy;
-		this.sprite			= sprite;
-		this.hasSprite 			= true;
+		this.loadedSprite	= sprite;
+		this.hasSprite 		= true;
 		init();
 	}
 	/**
@@ -180,6 +183,7 @@ public class Attack extends Movable
 					double y,
 					double speed,
 					int direction,
+					String name,
 					Sprite sprite,
 					boolean isEnemy,
 					boolean AoE,
@@ -196,6 +200,7 @@ public class Attack extends Movable
 		super(game, x, y, speed);
 		this.type			= type;
 		this.damage			= damage;
+		this.name			= name;
 		this.duration		= duration;
 		this.direction		= direction;
 		this.stillTime		= stillTime;
@@ -206,8 +211,8 @@ public class Attack extends Movable
 		this.hitDelay		= hitDelay;
 		this.reuse			= reuse;
 		this.isEnemy		= isEnemy;
-		this.sprite			= sprite;
-		this.hasSprite 			= true;
+		this.loadedSprite	= sprite;
+		this.hasSprite 		= true;
 		init();
 	}
 	
@@ -269,10 +274,7 @@ public class Attack extends Movable
 	private void init()
 	{
 		time					= duration;
-		if(!hasSprite)
-		{
-			updateSprite();
-		}
+		updateSprite();
 		switchXY();
 	}
 	
@@ -281,6 +283,11 @@ public class Attack extends Movable
 	 */
 	public String getName()
 	{	return name;}
+	
+	public String getSpriteName()
+	{
+		return sprite.getResourceReference();
+	}
 	
 	/**
 	 * @return The damage the attack deals
@@ -442,52 +449,59 @@ public class Attack extends Movable
 	protected void updateSprite()
 	{
 		// search for the attack graphic in the direction it is facing
-		try
+		if(!hasSprite)
 		{
-			if(direction == Direction.NORTH)
-			{
-				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_n.png");
-			}
-			else if(direction == Direction.SOUTH)
-			{
-				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_s.png");
-			}
-			else if(direction == Direction.WEST)
-			{
-				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_w.png");
-			}
-			else
-			{
-				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_e.png");
-			}
-		}
-		catch(Exception e)
-		{
-			// search for the attack that does not have direction specific graphics
 			try
-			{
-				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + ".png");
-			}
-			// set place holder graphic if there is no available graphic
-			catch(Exception e1)
 			{
 				if(direction == Direction.NORTH)
 				{
-					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_n.png");
+					this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_n.png");
 				}
 				else if(direction == Direction.SOUTH)
 				{
-					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_s.png");
+					this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_s.png");
 				}
 				else if(direction == Direction.WEST)
 				{
-					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_w.png");
+					this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_w.png");
 				}
 				else
 				{
-					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_e.png");
+					this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_e.png");
 				}
 			}
+			catch(Exception e)
+			{
+				// search for the attack that does not have direction specific graphics
+				try
+				{
+					this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + ".png");
+				}
+				// set place holder graphic if there is no available graphic
+				catch(Exception e1)
+				{
+					if(direction == Direction.NORTH)
+					{
+						this.sprite = DataStore.INSTANCE.getSprite("attack/attack_n.png");
+					}
+					else if(direction == Direction.SOUTH)
+					{
+						this.sprite = DataStore.INSTANCE.getSprite("attack/attack_s.png");
+					}
+					else if(direction == Direction.WEST)
+					{
+						this.sprite = DataStore.INSTANCE.getSprite("attack/attack_w.png");
+					}
+					else
+					{
+						this.sprite = DataStore.INSTANCE.getSprite("attack/attack_e.png");
+					}
+				}
+			}
+		}
+		else
+		{
+			this.sprite = loadedSprite;
 		}
 	}
 

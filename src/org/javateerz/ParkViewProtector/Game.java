@@ -64,7 +64,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 1;
+	private int levelNum						= 4;
 	
 	private transient Boss boss;
 	private transient Level level;
@@ -338,8 +338,8 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		
 		for(int i = 0; i < students.size(); i++)
 		{
-			currStudent			= students.get(i);
-			currStudent.step(this);
+			currStudent		= students.get(i);
+			currStudent.step();
 		}
 		
 		//////////////////////////////////////////////////////////////////////////////////

@@ -134,6 +134,7 @@ public class SpecialCharacter extends Staff
 		}
 		
 		attack=new Attack(game, this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isEnemy, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		System.out.println(attack.getSpriteName());
 		return attack;
 	}
 }
