@@ -64,7 +64,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 4;
+	private int levelNum						= 1;
 	
 	private transient Boss boss;
 	private transient Level level;
@@ -470,17 +470,18 @@ public class Game extends GameScreen implements KeyListener, Serializable
 				// set direction even though we cannot move
 				player.setDirection(distX, distY);
 				
-				for(int i=0; i<students.size(); i++)
+				/*for(int i=0; i<students.size(); i++)
 				{
 					Student s = students.get(i);
 					if(player.getNewBounds(MOVE_SPEED).intersects(s.getBounds()))
 					{
 						player.push(students.get(i));
 					}
-				}
+				}*/
 			}
-			else {
-				player.move(distX, distY);
+			else if(player.canMove(player.getNewBounds(distX, distY)))
+			{
+				player.moveAndTurn(distX, distY);
 			}
 		}
 		

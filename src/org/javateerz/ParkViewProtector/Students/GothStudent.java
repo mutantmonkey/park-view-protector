@@ -6,36 +6,6 @@ import org.javateerz.ParkViewProtector.Attack.AttackType;
 
 public class GothStudent extends Student
 {
-	protected int 			MAtkSpd				= 0;
-	protected boolean		MAtkAoE				= true;
-	protected int			MAtkDamage			= 1;
-	protected double		MAtkDuration		= 1;
-	protected AttackType	MAtkType			= AttackType.FRONT;
-	protected int			MAtkStatus			= Status.NONE;
-	protected double		MAtkStatusDuration	= 0;
-	protected double		MAtkStillTime		= 1;
-	protected int			MAtkHits			= 1;
-	protected double		MAtkHitsDelay		= 1;
-	protected double		MAtkReuse			= 1;
-	protected boolean		MAtkEnemy			= true;
-	protected boolean		MAtkHasDirection	= false;
-	protected int			MAtkRange			= 50;
-
-	protected int 			FAtkSpd				= 0;
-	protected boolean		FAtkAoE				= true;
-	protected int			FAtkDamage			= 1;
-	protected double		FAtkDuration		= 1;
-	protected AttackType	FAtkType			= AttackType.FRONT;
-	protected int			FAtkStatus			= Status.NONE;
-	protected double		FAtkStatusDuration	= 0;
-	protected double		FAtkStillTime		= 1;
-	protected int			FAtkHits			= 1;
-	protected double		FAtkHitsDelay		= 1;
-	protected double		FAtkReuse			= 1;
-	protected boolean		FAtkEnemy			= true;
-	protected boolean		FAtkHasDirection	= false;
-	protected int			FAtkRange			= 50;
-	
 	public final static double AGGRO		= 0.30;
 	
 	private static final long serialVersionUID	= 1L;
@@ -55,5 +25,41 @@ public class GothStudent extends Student
 		
 		if(Math.random() < AGGRO)
 			setAggro(true);
+		
+		MAtkSpd				= 0;
+		MAtkAoE				= true;
+		MAtkDamage			= 1;
+		MAtkName			= "attack";
+		MAtkDuration		= 1;
+		MAtkType			= AttackType.FRONT;
+		MAtkStatus			= Status.NONE;
+		MAtkStatusDuration	= 0;
+		MAtkStillTime		= MAtkDuration+0.3;
+		MAtkHits			= 1;
+		MAtkHitsDelay		= MAtkDuration/MAtkHits;
+		MAtkReuse			= MAtkDuration+0.6;
+		MAtkEnemy			= true;
+		MAtkHasDirection	= true;
+		MAtkRange			= 40;
+		MSight				= 200;
+
+		FAtkSpd				= 0;
+		FAtkAoE				= true;
+		FAtkDamage			= 1;
+		FAtkName			= "attack";
+		FAtkDuration		= 1;
+		FAtkType			= AttackType.FRONT;
+		FAtkStatus			= Status.NONE;
+		FAtkStatusDuration	= 0;
+		FAtkStillTime		= FAtkDuration+0.3;
+		FAtkHits			= 1;
+		FAtkHitsDelay		= FAtkDuration/FAtkHits;
+		FAtkReuse			= FAtkDuration+0.6;
+		FAtkEnemy			= true;
+		FAtkHasDirection	= true;
+		FAtkRange			= 40;
+		FSight				= 200;
+		
+		setAttack();
 	}
 }

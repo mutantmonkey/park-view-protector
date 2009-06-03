@@ -172,7 +172,7 @@ public class Couple extends Character
 			distY				   += Game.MOVE_SPEED;
 		}
 		
-		move(distX, distY);
+		moveAndTurn(distX, distY);
 	}
 	
 	/**

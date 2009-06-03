@@ -40,6 +40,7 @@ public abstract class Student extends Character implements Serializable
 	protected boolean		MAtkEnemy;
 	protected boolean		MAtkHasDirection;
 	protected int			MAtkRange;
+	protected int			MSight;
 
 	protected int 			FAtkSpd;
 	protected boolean		FAtkAoE;
@@ -56,6 +57,7 @@ public abstract class Student extends Character implements Serializable
 	protected boolean		FAtkEnemy;
 	protected boolean		FAtkHasDirection;
 	protected int			FAtkRange;
+	protected int			FSight;
 	
 	/* TEMPLATE!*/
 	/*
@@ -67,29 +69,33 @@ public abstract class Student extends Character implements Serializable
 	MAtkType			= AttackType.FRONT;
 	MAtkStatus			= Status.NONE;
 	MAtkStatusDuration	= 0;
-	MAtkStillTime		= 1;
+	MAtkStillTime		= MAtkDuration+0.3;
 	MAtkHits			= 1;
-	MAtkHitsDelay		= 1;
-	MAtkReuse			= 1;
+	MAtkHitsDelay		= MAtkDuration/MAtkHits;
+	MAtkReuse			= MAtkDuration+0.6;
 	MAtkEnemy			= true;
-	MAtkHasDirection	= false;
-	MAtkRange			= 50;
+	MAtkHasDirection	= true;
+	MAtkRange			= 40;
+	MSight				= 200;
 
 	FAtkSpd				= 0;
 	FAtkAoE				= true;
 	FAtkDamage			= 1;
-	MAtkName			= "attack";
+	FAtkName			= "attack";
 	FAtkDuration		= 1;
 	FAtkType			= AttackType.FRONT;
 	FAtkStatus			= Status.NONE;
 	FAtkStatusDuration	= 0;
-	FAtkStillTime		= 1;
+	FAtkStillTime		= FAtkDuration+0.3;
 	FAtkHits			= 1;
-	FAtkHitsDelay		= 1;
-	FAtkReuse			= 1;
+	FAtkHitsDelay		= FAtkDuration/FAtkHits;
+	FAtkReuse			= FAtkDuration+0.6;
 	FAtkEnemy			= true;
-	FAtkHasDirection	= false;
-	FAtkRange			= 50;
+	FAtkHasDirection	= true;
+	FAtkRange			= 40;
+	FSight				= 200;
+		
+	setAttack();
 	*/
 	
 	public final static int NUM_STUDENTS		= 6;
@@ -97,8 +103,8 @@ public abstract class Student extends Character implements Serializable
 	private String type							= "default";
 	protected boolean aggro						= false;
 	protected char gender;
-	private static final int ATTACK_RANGE		= 50;
-	private static final int SIGHT_RANGE		= 200;
+	private int attackRange;
+	private int sightRange;
 	
 	protected Sprite	attackN,
 						attackS,
@@ -154,27 +160,36 @@ public abstract class Student extends Character implements Serializable
 	
 	public void setAttack()
 	{
+		if(gender == 'm')
+		{
+			attackRange	= MAtkRange;
+			sightRange	= MSight;
+		}
+		else
+		{
+			attackRange = FAtkRange;
+			sightRange	= FSight;
+		}
+		System.out.println("A: "+attackRange +"\tS: "+ sightRange);
+		
 		try
 		{
 			attackN = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_n.png");
 			attackS = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_s.png");
 			attackE = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_e.png");
 			attackW = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+"_w.png");
-			System.out.print(1);
 		}
 		catch(Exception e)
 		{
 			try
 			{
 				attackX = DataStore.INSTANCE.getSprite("attack/"+type+"_"+gender+".png");
-				System.out.print(2);
 			}
 			catch(Exception e1)
 			{
 				try
 				{
 					attackX = DataStore.INSTANCE.getSprite("attack/"+type+".png");
-					System.out.print(3);
 				}
 				catch(Exception e2)
 				{
@@ -184,16 +199,18 @@ public abstract class Student extends Character implements Serializable
 						attackS = DataStore.INSTANCE.getSprite("attack/"+type+"_s.png");
 						attackW = DataStore.INSTANCE.getSprite("attack/"+type+"_w.png");
 						attackE = DataStore.INSTANCE.getSprite("attack/"+type+"_e.png");
-						System.out.print(4);
 					}
 					catch(Exception e3)
 					{
-						
+						attackN = DataStore.INSTANCE.getSprite("attack/attack_n.png");
+						attackS = DataStore.INSTANCE.getSprite("attack/attack_s.png");
+						attackW = DataStore.INSTANCE.getSprite("attack/attack_w.png");
+						attackE = DataStore.INSTANCE.getSprite("attack/attack_e.png");
+						attackX = DataStore.INSTANCE.getSprite("attack/attack_x.png");
 					}
 				}
 			}
 		}
-		System.out.println();
 	}
 	
 	public void step()
@@ -211,16 +228,16 @@ public abstract class Student extends Character implements Serializable
 			if(aggro)
 			{
 				// if in attack range, attack
-				if(inRange(game.getPlayer(), ATTACK_RANGE))
+				if(inRange(game.getPlayer(), attackRange))
 				{
 					setDirection(getDirectionToward(game.getPlayer()));
 					attack();
 				}
 				
 				// if in sight range, move toward
-				else if(inRange(game.getPlayer(), SIGHT_RANGE))
+				else if(inRange(game.getPlayer(), sightRange))
 				{
-					moveToward(game.getPlayer(), ATTACK_RANGE);
+					moveToward(game.getPlayer(), attackRange);
 				}
 				
 				else
@@ -448,137 +465,137 @@ public abstract class Student extends Character implements Serializable
 		 * character so that they do not have to be loaded each time (it will be slow)
 		 */
 		
-		ArrayList<Attack> attacks=game.getAttacks();
-		Sprite tempSprite=attackX;
-		Attack attack;
-		if(gender == 'm')
+		try
 		{
-			if(MAtkHasDirection)
+			ArrayList<Attack> attacks=game.getAttacks();Sprite tempSprite=attackX;
+			Attack attack;
+			if(gender == 'm')
 			{
-				switch(this.getDirection())
+				if(MAtkHasDirection)
 				{
-					case Direction.NORTH:
-						tempSprite=attackN;
-						break;
-					case Direction.SOUTH:
-						tempSprite=attackS;
-						break;
-					case Direction.WEST:
-						tempSprite=attackW;
-						break;
-					case Direction.EAST:
-						tempSprite=attackE;
-						break;
+					switch(this.getDirection())
+					{
+						case Direction.NORTH:
+							tempSprite=attackN;
+							break;
+						case Direction.SOUTH:
+							tempSprite=attackS;
+							break;
+						case Direction.WEST:
+							tempSprite=attackW;
+							break;
+						case Direction.EAST:
+							tempSprite=attackE;
+							break;
+					}
+				}
+				
+				attack		= new Attack(
+						game,
+						this.getBounds().getCenterX(),
+						this.getBounds().getCenterY(),
+						MAtkSpd,
+						this.getDirection(),
+						MAtkName,
+						tempSprite,
+						false,
+						MAtkAoE,
+						MAtkDamage,
+						MAtkDuration,
+						MAtkType,
+						MAtkStatus,
+						MAtkStatusDuration,
+						MAtkStillTime,
+						MAtkHits,
+						MAtkHitsDelay,
+						MAtkReuse);
+				
+				if(inRange(game.getPlayer(), MAtkRange) && isAgain())
+				{				
+					setAttackFrames(attack.getStillTime());
+					attack.switchXY();
+					attacks.add(attack);
+					
+					try
+					{
+						System.out.println(attack.getName()+".wav");
+						ParkViewProtector.playSound(attack.getName()+".wav");
+					}
+					catch(Exception e)
+					{
+						System.out.println("The attack has no sound.");
+					}
+					
+					// set delay
+					setAgainFrames(attack.getReuse());
 				}
 			}
 			
-			try{
-				System.out.println(tempSprite.getResourceReference());
-				System.out.println("x: "+this.getBounds().getCenterX());
-				System.out.println("y: "+this.getBounds().getCenterY());
-			}
-			catch(Exception e){}
-			
-			attack		= new Attack(
-					game,
-					this.getBounds().getCenterX(),
-					this.getBounds().getCenterY(),
-					MAtkSpd,
-					this.getDirection(),
-					MAtkName,
-					tempSprite,
-					false,
-					MAtkAoE,
-					MAtkDamage,
-					MAtkDuration,
-					MAtkType,
-					MAtkStatus,
-					MAtkStatusDuration,
-					MAtkStillTime,
-					MAtkHits,
-					MAtkHitsDelay,
-					MAtkReuse);
-			
-			if(inRange(game.getPlayer(), MAtkRange) && isAgain())
-			{				
-				setAttackFrames(attack.getStillTime());
-				attack.switchXY();
-				attacks.add(attack);
-				
-				try
+			else
+			{
+				if(FAtkHasDirection)
 				{
-					System.out.println(attack.getName()+".wav");
-					ParkViewProtector.playSound(attack.getName()+".wav");
-				}
-				catch(Exception e)
-				{
-					System.out.println("The attack has no sound.");
+					switch(this.getDirection())
+					{
+						case Direction.NORTH:
+							tempSprite=attackN;
+							break;
+						case Direction.SOUTH:
+							tempSprite=attackS;
+							break;
+						case Direction.WEST:
+							tempSprite=attackW;
+							break;
+						case Direction.EAST:
+							tempSprite=attackE;
+							break;
+					}
 				}
 				
-				// set delay
-				setAgainFrames(attack.getReuse());
+				attack		= new Attack(
+						game,
+						this.getBounds().getCenterX(),
+						this.getBounds().getCenterY(),
+						FAtkSpd,
+						this.getDirection(),
+						FAtkName,
+						tempSprite,
+						false,
+						FAtkAoE,
+						FAtkDamage,
+						FAtkDuration,
+						FAtkType,
+						FAtkStatus,
+						FAtkStatusDuration,
+						FAtkStillTime,
+						FAtkHits,
+						FAtkHitsDelay,
+						FAtkReuse);
+				
+				if(inRange(game.getPlayer(), FAtkRange) && isAgain())
+				{
+					setAttackFrames(attack.getStillTime());
+					attack.switchXY();
+					attacks.add(attack);
+					
+					try
+					{
+						ParkViewProtector.playSound(attack.getName()+".wav");
+					}
+					catch(Exception e)
+					{
+						System.out.println("The attack has no sound.");
+					}
+					
+					// set delay
+					setAgainFrames(attack.getReuse());
+				}
 			}
 		}
-		
-		else
+		catch(Exception e5)
 		{
-			if(FAtkHasDirection)
-			{
-				switch(this.getDirection())
-				{
-					case Direction.NORTH:
-						tempSprite=attackN;
-						break;
-					case Direction.SOUTH:
-						tempSprite=attackS;
-						break;
-					case Direction.WEST:
-						tempSprite=attackW;
-						break;
-					case Direction.EAST:
-						tempSprite=attackE;
-						break;
-				}
-			}
-			
-			attack		= new Attack(
-					game,
-					this.getBounds().getCenterX(),
-					this.getBounds().getCenterY(),
-					FAtkSpd,
-					this.getDirection(),
-					FAtkName,
-					tempSprite,
-					false,
-					FAtkAoE,
-					FAtkDamage,
-					FAtkDuration,
-					FAtkType,
-					FAtkStatus,
-					FAtkStatusDuration,
-					FAtkStillTime,
-					FAtkHits,
-					FAtkHitsDelay,
-					FAtkReuse);
-			
-			if(inRange(game.getPlayer(), FAtkRange) && isAgain())
-			{
-				setAttackFrames(attack.getStillTime());
-				attack.switchXY();
-				attacks.add(attack);
-				
-				try
-				{
-					ParkViewProtector.playSound(attack.getName()+".wav");
-				}
-				catch(Exception e)
-				{
-					System.out.println("The attack has no sound.");
-				}
-				
-				// set delay
-				setAgainFrames(attack.getReuse());
-			}
+			System.out.println("A student attack failed for some odd reason. " +
+					"Please fix!!!");
 		}
 	}
 	

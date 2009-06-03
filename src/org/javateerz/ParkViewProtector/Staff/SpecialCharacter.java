@@ -82,13 +82,13 @@ public class SpecialCharacter extends Staff
 				tp=10;
 				type=AttackType.FRONT;
 				speed=0;
-				duration=0.7;
-				reuse=1;
-				stillTime=2;
+				duration=0.6;
+				reuse=.8;
+				stillTime=.7;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=5;
+				statusLength=3;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;
@@ -98,13 +98,13 @@ public class SpecialCharacter extends Staff
 				type=AttackType.CENTER;
 				tp=250;
 				speed=0;
-				duration=4;
-				reuse=1;
-				stillTime=stillTime;
+				duration=2;
+				reuse=0;
+				stillTime=0;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.INVULNERABLE;
-				statusLength=2;
+				statusLength=10;
 				isEnemy=false;
 				AoE=true;
 				break;
@@ -115,12 +115,12 @@ public class SpecialCharacter extends Staff
 				type=AttackType.CENTER;
 				speed=0;
 				duration=0.5;
-				reuse=5;
-				stillTime=1;
+				reuse=1;
+				stillTime=.8;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=3;
+				statusLength=5;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;
@@ -133,8 +133,11 @@ public class SpecialCharacter extends Staff
 			stillTime=2;
 		}
 		
-		attack=new Attack(game, this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isEnemy, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
-		System.out.println(attack.getSpriteName());
+		attack=new Attack(game, this.getBounds().getCenterX(),
+				this.getBounds().getCenterY(), speed, this.getDirection(),
+				name, isEnemy, AoE, damage, tp, duration,
+				type, status, statusLength, stillTime,
+				hits, hitDelay, reuse);
 		return attack;
 	}
 }

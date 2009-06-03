@@ -32,35 +32,37 @@ public class BandStudent extends Student
 		
 		MAtkSpd				= 0;
 		MAtkAoE				= true;
-		MAtkDamage			= 1;
+		MAtkDamage			= 2;
 		MAtkName			= "band_m";
-		MAtkDuration		= 2;
+		MAtkDuration		= 1.4;
 		MAtkType			= AttackType.FRONT;
 		MAtkStatus			= Status.NONE;
 		MAtkStatusDuration	= 0;
-		MAtkStillTime		= MAtkDuration+.1;
+		MAtkStillTime		= MAtkDuration+.03;
 		MAtkHits			= 3;
 		MAtkHitsDelay		= MAtkDuration/MAtkHits;
-		MAtkReuse			= MAtkDuration+1;
+		MAtkReuse			= MAtkDuration+0.6;
 		MAtkEnemy			= true;
 		MAtkHasDirection	= false;
-		MAtkRange			= 50;
+		MAtkRange			= 35;
+		MSight				= 200;
 
 		FAtkSpd				= 0;
 		FAtkAoE				= true;
 		FAtkDamage			= 1;
-		FAtkName			= "band_f";
+		FAtkName			= "attack";
 		FAtkDuration		= 1;
-		FAtkType			= AttackType.FRONT;
+		FAtkType			= AttackType.MID_FRONT;
 		FAtkStatus			= Status.NONE;
 		FAtkStatusDuration	= 0;
-		FAtkStillTime		= 1;
+		FAtkStillTime		= FAtkDuration+0.3;
 		FAtkHits			= 1;
-		FAtkHitsDelay		= 1;
-		FAtkReuse			= 1;
+		FAtkHitsDelay		= FAtkDuration/FAtkHits;
+		FAtkReuse			= FAtkDuration+0.6;
 		FAtkEnemy			= true;
 		FAtkHasDirection	= false;
 		FAtkRange			= 50;
+		FSight				= 200;
 		
 		setAttack();
 	}
