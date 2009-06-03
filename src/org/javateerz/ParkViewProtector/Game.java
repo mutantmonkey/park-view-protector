@@ -571,9 +571,14 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		}
 	}
 	
+	/**
+	 * Advance to the next level
+	 */
 	public void advanceLevel()
 	{
 		levelNum++;
+		
+		// FIXME: make level transition smoother
 		
 		initGame();
 		
