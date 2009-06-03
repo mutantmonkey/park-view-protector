@@ -143,7 +143,6 @@ public class Game extends GameScreen implements KeyListener, Serializable
 			default:
 				level				= new Level1(this);
 				words				= new OpeningWords();
-				words.init();
 				break;
 				
 			case 2:
