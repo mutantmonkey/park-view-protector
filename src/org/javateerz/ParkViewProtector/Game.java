@@ -15,6 +15,8 @@ import org.javateerz.ParkViewProtector.Menu.GameOver;
 import org.javateerz.ParkViewProtector.Staff.Staff;
 import org.javateerz.ParkViewProtector.Students.Student;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.KeyListener;
 
 public class Game extends GameScreen implements KeyListener, Serializable
@@ -595,6 +597,10 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		
 		transitionSecs		= TRANSITION_SECS;
 		showTransition();
+		
+		// XXX: hack to force the display to update - shhh!
+		GL11.glFlush();
+		Display.update();
 		
 		initGame();
 		
