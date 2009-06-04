@@ -32,6 +32,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public static final int ICON_SPACING		= 30;
 	public static final double HIT_BLIP_TIME	= 0.5;
 	
+	public static final int MIN_LEVEL			= 1;
 	public static final int MAX_LEVEL			= 15;
 	
 	////////////////////////////////////////////////////
@@ -52,6 +53,9 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public static final int DECOUPLE_SPACING	= 40;
 	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
 	
+	public static final double TRANSITION_SECS	= 3;
+	public double transitionSecs				= 0;
+	
 	public static double hpPercent;
 	public static double tpPercent;
 	
@@ -64,10 +68,11 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 1;
+	private int levelNum						= MIN_LEVEL;
 	
 	private transient Boss boss;
 	private transient Level level;
+	private transient Sprite levelComplete;
 	private transient Sprite background;
 	private transient ArrayList<Wall> walls;
 	
@@ -99,6 +104,8 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	
 	public void initGraphics()
 	{
+		levelComplete				= DataStore.INSTANCE.getSprite("level_complete.png");
+		
 		stun						= new StatusIcon(this, Status.STUN);
 		invul						= new StatusIcon(this, Status.INVULNERABLE);
 		
@@ -324,7 +331,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		// Are we dead?
 		//////////////////////////////////////////////////////////////////////////////////
 		
-		if(player.getHp() <= 0)
+		if(player.getHp() <= 0 || transitionSecs > 0)
 		{
 			return;
 		}
@@ -572,6 +579,13 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		}
 	}
 	
+	public void showTransition()
+	{
+		levelComplete.draw(0, 0);
+		
+		transitionSecs	   -= ParkViewProtector.framesToSecs(1);
+	}
+	
 	/**
 	 * Advance to the next level
 	 */
@@ -579,7 +593,8 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	{
 		levelNum++;
 		
-		// FIXME: make level transition smoother
+		transitionSecs		= TRANSITION_SECS;
+		showTransition();
 		
 		initGame();
 		
@@ -603,6 +618,16 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		if(player.getHp() <= 0)
 		{
 			gameOver();
+			return;
+		}
+		
+		//////////////////////////////////////////////////////////////////////////////////
+		// Showing a transition?
+		//////////////////////////////////////////////////////////////////////////////////
+		
+		if(transitionSecs > 0)
+		{
+			showTransition();
 			return;
 		}
 		
