@@ -170,7 +170,6 @@ public abstract class Student extends Character implements Serializable
 			attackRange = FAtkRange;
 			sightRange	= FSight;
 		}
-		System.out.println("A: "+attackRange +"\tS: "+ sightRange);
 		
 		try
 		{
@@ -518,7 +517,6 @@ public abstract class Student extends Character implements Serializable
 					
 					try
 					{
-						System.out.println(attack.getName()+".wav");
 						ParkViewProtector.playSound(attack.getName()+".wav");
 					}
 					catch(Exception e)

@@ -81,7 +81,7 @@ public class Jamie extends Staff
 		{
 			case 0:
 				name="lawnmower";
-				damage=1;
+				damage=3;
 				if(getTp()>40)
 				{
 					if(lawnTick>=LAWN_MAX)

@@ -28,7 +28,7 @@ public class FatMan extends Boss
 	{
 		ArrayList <Attack> gameAttacks = g.getAttacks();
 		int percent=(int)(Math.random()*1000);
-		if(inRange(g.getPlayer(),120) && percent<=100)
+		if(inRange(g.getPlayer(),200) && percent<=100)
 		{
 			if(!isStunned() && !isAttacking() && isAgain())
 			{
@@ -82,15 +82,15 @@ public class FatMan extends Boss
 		Attack attack;
 		String		name="attack";
 		int			damage=0,
-					tp=0,
-					speed=0,
+					hits=1,
+					status=0;
+		double		speed=0,
 					duration=0,
 					reuse=duration,
 					stillTime=0,
-					hits=1,
 					hitDelay=duration,
-					status=0,
 					statusLength=0;
+					
 		AttackType type=null;
 		boolean 	isStudent=false,
 					AoE=false;
@@ -98,7 +98,6 @@ public class FatMan extends Boss
 		 * FORMAT
 		 * 		name=name;
 				damage=damage;
-				tp=tp;
 				type=type;
 				speed=speed;
 				duration=duration;
@@ -115,29 +114,27 @@ public class FatMan extends Boss
 		{
 			case 0:
 				name="choco";
-				damage=3;
-				tp=0;
+				damage=5;
 				type=AttackType.FRONT;
-				speed=20;
+				speed=15;
 				duration=2;
-				reuse=3;
-				stillTime=30;
+				reuse=.8;
+				stillTime=0;
 				hits=hits;
-				hitDelay=0;
+				hitDelay=.3;
 				status=status;
 				statusLength=statusLength;
 				isStudent=isStudent;
-				AoE=AoE;
+				AoE=false;
 				break;
 			case 1:
 				name="tape";
-				damage=2;
-				tp=0;
+				damage=10;
 				type=AttackType.FAR_FRONT;
 				speed=0;
-				duration=2;
-				reuse=duration;
-				stillTime=duration;
+				duration=.5;
+				reuse=duration + 0.1;
+				stillTime=duration + 0.02;
 				hits=hits;
 				hitDelay=duration/hits;
 				status=status;
@@ -148,16 +145,15 @@ public class FatMan extends Boss
 			case 2:
 				name="rage";
 				damage=1;
-				tp=0;
 				type=AttackType.CENTER;
 				speed=0;
-				duration=5;
-				reuse=10;
-				stillTime=duration;
+				duration=1.5;
+				reuse=duration + 1;
+				stillTime=duration + 0.3;
 				hits=10;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=5;
+				statusLength=2;
 				isStudent=isStudent;
 				AoE=true;
 				break;
@@ -165,12 +161,11 @@ public class FatMan extends Boss
 		
 		if(Game.cheatMode)
 		{
-			tp=0;
 			reuse=0;
 			stillTime=2;
 		}
 		
-		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
 }
