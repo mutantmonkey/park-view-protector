@@ -270,7 +270,8 @@ public abstract class Movable implements Serializable
 	
 	public boolean intersectsCharacter()
 	{
-		if(intersectsStudent() || intersectsPlayer() || intersectsCouple() || intersectsBoss())
+		if(intersectsStudent() || intersectsPlayer() ||
+				intersectsCouple() || intersectsBoss())
 		{
 			return true;
 		}
@@ -327,9 +328,9 @@ public abstract class Movable implements Serializable
 	
 	public boolean intersectsBoss()
 	{
-		if(game.getBoss() != null)
+		if(boss != null)
 		{
-			if(boss.getBounds().intersects(getBounds()) && boss!=this)
+			if(boss!=this && boss.getBounds().intersects(getBounds()))
 				return true;
 		}
 		return false;

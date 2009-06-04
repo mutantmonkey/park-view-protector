@@ -83,7 +83,7 @@ public class Stark extends Staff
 				tp=10;
 				type=AttackType.FRONT;
 				speed=10;
-				duration=2;
+				duration=1;
 				reuse=duration;
 				stillTime=stillTime;
 				hits=hits;
@@ -99,9 +99,9 @@ public class Stark extends Staff
 				tp=10;
 				type=AttackType.FRONT;
 				speed=0;
-				duration=0.4;
-				reuse=duration + 0.2;
-				stillTime=duration;
+				duration=0.3;
+				reuse=duration + 0.08;
+				stillTime=duration + .02;
 				hits=hits;
 				hitDelay=duration/hits;
 				status=status;
@@ -116,9 +116,9 @@ public class Stark extends Staff
 				tp=30;
 				type=AttackType.CENTER;
 				speed=0;
-				duration=3;
-				reuse=duration + 2;
-				stillTime=duration;
+				duration=1.5;
+				reuse=duration + 0.3;
+				stillTime=duration + 0.1;
 				hits=3;
 				hitDelay=duration/hits;
 				status=Status.STUN;

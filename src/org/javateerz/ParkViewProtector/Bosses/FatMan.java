@@ -70,7 +70,7 @@ public class FatMan extends Boss
 		}
 		else if(!isStunned() && !isAttacking() && percent>100)
 		{
-			moveToward(game.getPlayer(),(int)(speed));
+			moveToward(game.getPlayer(), (int)(speed));
 		}
 		recover();
 		

@@ -21,6 +21,9 @@ public class Jamie extends Staff
 	private static final double SPEED= 5.0;
 	private static final int MAX_HP = 100;
 	private static final int MAX_TP = 60;
+	
+	private int lawnTick		= 0;
+	private final int LAWN_MAX	= 20;
 	private static final long serialVersionUID = 1L;
 	
 	public Jamie(Game g, int x, int y)
@@ -78,17 +81,32 @@ public class Jamie extends Staff
 		{
 			case 0:
 				name="lawnmower";
-				damage=100;
-				tp=0;
+				damage=1;
+				if(getTp()>40)
+				{
+					if(lawnTick>=LAWN_MAX)
+					{
+						tp=5;
+						lawnTick=0;
+					}
+					else
+					{
+						lawnTick++;
+					}
+				}
+				else
+				{
+					tp=99999;
+				}
 				type=AttackType.FRONT;
 				speed=0;
 				duration=0;
 				reuse=0;
 				stillTime=0;
 				hits=1;
-				hitDelay=300;
-				status=Status.STUN;
-				statusLength=50;
+				hitDelay=0.1;
+				status=Status.NONE;
+				statusLength=0;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;
