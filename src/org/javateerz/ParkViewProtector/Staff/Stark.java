@@ -110,7 +110,6 @@ public class Stark extends Staff
 				AoE=true;
 				break;
 			case 2:
-				// FIXME: "good freakin' night" > "good night"
 				name="goodnight";
 				damage=3;
 				tp=20;
