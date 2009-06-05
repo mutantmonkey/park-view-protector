@@ -20,7 +20,7 @@ public class SpecialCharacter extends Staff
 	
 	private static final double SPEED= 5.0;
 	private static final int MAX_HP = 50;
-	private static final int MAX_TP = 300;
+	private static final int MAX_TP = 270;
 	private static final long serialVersionUID = 4L;
 	
 	public SpecialCharacter(Game g, int x, int y)
@@ -88,7 +88,7 @@ public class SpecialCharacter extends Staff
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=3;
+				statusLength=.8;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;
@@ -104,7 +104,7 @@ public class SpecialCharacter extends Staff
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.INVULNERABLE;
-				statusLength=10;
+				statusLength=7;
 				isEnemy=false;
 				AoE=true;
 				break;
@@ -120,7 +120,7 @@ public class SpecialCharacter extends Staff
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=5;
+				statusLength=2;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;
