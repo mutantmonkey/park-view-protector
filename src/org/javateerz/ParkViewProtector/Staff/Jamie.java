@@ -23,7 +23,13 @@ public class Jamie extends Staff
 	private static final int MAX_TP = 60;
 	
 	private int lawnTick		= 0;
+	private final int LAWN_TP	= 5;
 	private final int LAWN_MAX	= 20;
+	
+	private int pillowTick			= 0;
+	private final int PILLOW_TP		= 5;
+	private final int PILLOW_MAX	= 20;
+	
 	private static final long serialVersionUID = 1L;
 	
 	public Jamie(Game g, int x, int y)
@@ -86,7 +92,7 @@ public class Jamie extends Staff
 				{
 					if(lawnTick>=LAWN_MAX)
 					{
-						tp=5;
+						tp=LAWN_TP;
 						lawnTick=0;
 					}
 					else
@@ -96,7 +102,7 @@ public class Jamie extends Staff
 				}
 				else
 				{
-					tp=99999;
+					tp=Integer.MAX_VALUE;
 				}
 				type=AttackType.FRONT;
 				speed=0;
@@ -111,14 +117,29 @@ public class Jamie extends Staff
 				AoE=true;
 				break;
 			case 1:
-				name="javateerz";
-				damage=-60;
+				name="pillow";
+				damage=-10;
+				if(getTp()>40)
+				{
+					if(pillowTick>=PILLOW_MAX)
+					{
+						tp=PILLOW_TP;
+						pillowTick=0;
+					}
+					else
+					{
+						pillowTick++;
+					}
+				}
+				else
+				{
+					tp=Integer.MAX_VALUE;
+				}
 				type=AttackType.CENTER;
-				tp=250;
 				speed=0;
-				duration=1;
-				reuse=5;
-				stillTime=stillTime;
+				duration=5;
+				reuse=0;
+				stillTime=duration;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.INVULNERABLE;
