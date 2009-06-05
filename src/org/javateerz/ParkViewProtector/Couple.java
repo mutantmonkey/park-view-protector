@@ -172,7 +172,7 @@ public class Couple extends Character
 			distY				   += Game.MOVE_SPEED;
 		}
 		
-		move(distX, distY);
+		moveAndTurn(distX, distY);
 	}
 	
 	/**
@@ -243,33 +243,53 @@ public class Couple extends Character
 				// FIXME: If multiple attacks hit something or what?
 				if(getHp() <=0)
 				{
-					int 	x=(int) getBounds().getX(),
-							y=(int) getBounds().getY();
+					int newX, newY;
 					
+					newX		= (int) x;
+					newY		= (int) y;
+					
+					// MALE
 					male		= getMale();
-					male.moveTo(x,y);
+					male.moveTo(newX, newY);
+					
 					while(!male.canMove(male.getBounds()))
 					{
-						x					= x + 1;
-						y					= y + 1;
-
-						male.moveTo(x,y);
+						if(newX > ParkViewProtector.WIDTH ||
+								newY > ParkViewProtector.HEIGHT)
+						{
+							break;
+						}
+						
+						newX++;
+						newY++;
+						
+						male.moveTo(newX, newY);
 					}
+					
 					male.setInvulFrames(attack.getHitDelay());
 					male.setHp(-10);
 					
-					x=(int) getBounds().getX();
-					y=(int) getBounds().getY();
+					newX		= (int) x + Game.DECOUPLE_SPACING;
+					newY		= (int) y;
 					
+					// FEMALE
 					female		= getFemale();
-					female.moveTo(x + Game.DECOUPLE_SPACING, y);
+					female.moveTo(newX, newY);
+					
 					while(!female.canMove(female.getBounds()))
 					{
-						x					= x + Game.DECOUPLE_SPACING + 1;
-						y					= y + 1;
-
-						female.moveTo(x,y);
+						if(newX > ParkViewProtector.WIDTH ||
+								newY > ParkViewProtector.HEIGHT)
+						{
+							break;
+						}
+						
+						newX++;
+						newY++;
+						
+						male.moveTo(newX, newY);
 					}
+					
 					female.setInvulFrames(attack.getHitDelay());
 					female.setHp(-10);
 					

@@ -9,7 +9,7 @@ public class StatusEffect extends VisualFX
 	
 	private Character c;
 
-	public StatusEffect(Game g, String name, Character c, int time)
+	public StatusEffect(Game g, String name, Character c, double time)
 	{
 		super(g, name, time);
 		this.c=c;

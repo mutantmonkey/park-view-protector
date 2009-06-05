@@ -7,21 +7,21 @@ public class VisualFX extends Movable implements Serializable
 	private static final long serialVersionUID = 1L;
 	
 	protected String name;
-	int time=0;
+	protected double time=0;
 	
-	public VisualFX(Game g, String name, int time, double x, double y)
+	public VisualFX(Game g, String name, double time, double x, double y)
 	{
 		super(g, x, y, 0);
 		this.name=name;
-		setTime(time);
+		this.time=time;
 		updateSprite();
 	}
 	
-	public VisualFX(Game g, String name, int time)
+	public VisualFX(Game g, String name, double time)
 	{
 		super(g, 0, 0, 0);
 		this.name=name;
-		setTime(time);
+		this.time=time;
 		updateSprite();
 	}
 	
@@ -30,16 +30,18 @@ public class VisualFX extends Movable implements Serializable
 		this.sprite		= DataStore.INSTANCE.getSprite("fx/"+name+".png");
 	}
 	
-	public void setTime(int amount)
+	public void setTime(double amount)
 	{
-		time=ParkViewProtector.secsToFrames(amount);
+		time=amount;
 	}
 	
 	public boolean tick()
 	{
-		time--;
+		time -= ParkViewProtector.framesToSecs(1);
+		
 		if(time<=0)
 			return true;
+		
 		return false;
 	}
 	

@@ -22,17 +22,20 @@ public class Attack extends Movable
 	private String 		name;
 	private AttackType	type;
 	private int 		damage,
-						tp, 
-						duration, 
-						time = 0, 
-						status, 
-						statusDuration, 
-						stillTime, 
-						hits, 
-						hitDelay, 
+						tp,
+						status,
+						hits;
+	private double		time,
+						duration,
+						statusDuration,
+						stillTime,
+						hitDelay,
 						reuse;
 	private boolean 	isEnemy, 
 						AoE;
+
+	private Sprite loadedSprite;
+	private boolean hasSprite		= false;
 	
 	private static final long serialVersionUID = 4L;
 	
@@ -67,14 +70,14 @@ public class Attack extends Movable
 					boolean AoE,
 					int damage,
 					int tp,
-					int duration,
+					double duration,
 					AttackType type,
 					int statusEffect,
-					int statusDuration,
-					int stillTime,
+					double statusDuration,
+					double stillTime,
 					int hits,
-					int hitDelay,
-					int reuse)
+					double hitDelay,
+					double reuse)
 	{
 		super(game, x, y, speed);
 		this.type			= type;
@@ -91,7 +94,126 @@ public class Attack extends Movable
 		this.hitDelay		= hitDelay;
 		this.reuse			= reuse;
 		this.isEnemy		= isEnemy;
-		switchXY();
+		init();
+	}
+	
+	/**
+	 * Create a new Attack
+	 * 
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @param speed The speed the attack travels
+	 * @param direction Direction of the attack
+	 * @param name Name of the attack
+	 * @param isEnemy If true, the attack effects students
+	 * @param AoE If true, the attack will not disappear upon hitting a target
+	 * @param damage The damage the attack will deal
+	 * @param tp The amount of TP the attack consumes
+	 * @param duration The duration the attack stays on screen
+	 * @param type The placement of the attack
+	 * @param statusEffect The status effect the attack induces
+	 * @param statusDuration The length of the status effect
+	 * @param stillTime The duration the attack makes the user stand still
+	 * @param hits The number of hits the attack deals
+	 * @param hitDelay The time before the target can be hit again after being hit
+	 * @param reuse The time the user can perform another attack
+	 */
+	public Attack(	Game game,
+					double x,
+					double y,
+					double speed,
+					int direction,
+					String name,
+					Sprite sprite,
+					boolean isEnemy,
+					boolean AoE,
+					int damage,
+					int tp,
+					double duration,
+					AttackType type,
+					int statusEffect,
+					double statusDuration,
+					double stillTime,
+					int hits,
+					double hitDelay,
+					double reuse)
+	{
+		super(game, x, y, speed);
+		this.type			= type;
+		this.damage			= damage;
+		this.name			= name;
+		this.tp				= tp;
+		this.duration		= duration;
+		this.direction		= direction;
+		this.stillTime		= stillTime;
+		this.status			= statusEffect;
+		this.statusDuration	= statusDuration;
+		this.AoE			= AoE;
+		this.hits			= hits;
+		this.hitDelay		= hitDelay;
+		this.reuse			= reuse;
+		this.isEnemy		= isEnemy;
+		this.loadedSprite	= sprite;
+		this.hasSprite 		= true;
+		init();
+	}
+	/**
+	 * Create a new Attack
+	 * 
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @param speed The speed the attack travels
+	 * @param direction Direction of the attack
+	 * @param name Name of the attack
+	 * @param isEnemy If true, the attack effects students
+	 * @param AoE If true, the attack will not disappear upon hitting a target
+	 * @param damage The damage the attack will deal
+	 * @param tp The amount of TP the attack consumes
+	 * @param duration The duration the attack stays on screen
+	 * @param type The placement of the attack
+	 * @param statusEffect The status effect the attack induces
+	 * @param statusDuration The length of the status effect
+	 * @param stillTime The duration the attack makes the user stand still
+	 * @param hits The number of hits the attack deals
+	 * @param hitDelay The time before the target can be hit again after being hit
+	 * @param reuse The time the user can perform another attack
+	 */
+	public Attack(	Game game,
+					double x,
+					double y,
+					double speed,
+					int direction,
+					String name,
+					Sprite sprite,
+					boolean isEnemy,
+					boolean AoE,
+					int damage,
+					double duration,
+					AttackType type,
+					int statusEffect,
+					double statusDuration,
+					double stillTime,
+					int hits,
+					double hitDelay,
+					double reuse)
+	{
+		super(game, x, y, speed);
+		this.type			= type;
+		this.damage			= damage;
+		this.name			= name;
+		this.duration		= duration;
+		this.direction		= direction;
+		this.stillTime		= stillTime;
+		this.status			= statusEffect;
+		this.statusDuration	= statusDuration;
+		this.AoE			= AoE;
+		this.hits			= hits;
+		this.hitDelay		= hitDelay;
+		this.reuse			= reuse;
+		this.isEnemy		= isEnemy;
+		this.loadedSprite	= sprite;
+		this.hasSprite 		= true;
+		init();
 	}
 	
 	/**
@@ -123,37 +245,49 @@ public class Attack extends Movable
 			boolean isEnemy,
 			boolean AoE,
 			int damage,
-			int duration,
+			double duration,
 			AttackType type,
 			int statusEffect,
-			int statusDuration,
-			int stillTime,
+			double statusDuration,
+			double stillTime,
 			int hits,
-			int hitDelay,
-			int reuse)
-		{
-			super(game, x, y, speed);
-			this.type			= type;
-			this.name			= name;
-			this.damage			= damage;
-			this.duration		= duration;
-			this.direction		= direction;
-			this.stillTime		= stillTime;
-			this.status			= statusEffect;
-			this.statusDuration	= statusDuration;
-			this.AoE			= AoE;
-			this.hits			= hits;
-			this.hitDelay		= hitDelay;
-			this.reuse			= reuse;
-			this.isEnemy		= isEnemy;
-			switchXY();
-		}
+			double hitDelay,
+			double reuse)
+	{
+		super(game, x, y, speed);
+		this.type			= type;
+		this.name			= name;
+		this.damage			= damage;
+		this.duration		= duration;
+		this.direction		= direction;
+		this.stillTime		= stillTime;
+		this.status			= statusEffect;
+		this.statusDuration	= statusDuration;
+		this.AoE			= AoE;
+		this.hits			= hits;
+		this.hitDelay		= hitDelay;
+		this.reuse			= reuse;
+		this.isEnemy		= isEnemy;
+		init();
+	}
+	
+	private void init()
+	{
+		time					= duration;
+		updateSprite();
+		switchXY();
+	}
 	
 	/**
 	 * @return The name of the attack
 	 */
 	public String getName()
 	{	return name;}
+	
+	public String getSpriteName()
+	{
+		return sprite.getResourceReference();
+	}
 	
 	/**
 	 * @return The damage the attack deals
@@ -164,13 +298,13 @@ public class Attack extends Movable
 	/**
 	 * @return The duration the attack stays on screen
 	 */
-	public int getDuration()
+	public double getDuration()
 	{	return duration;}
 
 	/**
 	 * @return The duration of the status effect
 	 */
-	public int getStatusDuration()
+	public double getStatusDuration()
 	{	return statusDuration;}
 
 	/**
@@ -182,7 +316,7 @@ public class Attack extends Movable
 	/**
 	 * @return The duration that the user cannot perform an action
 	 */
-	public int getStillTime()
+	public double getStillTime()
 	{	return stillTime;}
 
 	/**
@@ -200,7 +334,7 @@ public class Attack extends Movable
 	/**
 	 * @return The duration before the user can perform another attack
 	 */
-	public int getReuse()
+	public double getReuse()
 	{	return reuse;}
 	
 	/**
@@ -212,7 +346,7 @@ public class Attack extends Movable
 	/**
 	 * @return The duration before the target can be hit again
 	 */
-	public int getHitDelay()
+	public double getHitDelay()
 	{	return hitDelay;}
 	
 	/**
@@ -222,14 +356,15 @@ public class Attack extends Movable
 	{	return isEnemy;}
 	
 	/**
-	 * Moves the attack and increases time by 1.
+	 * Moves the attack and decreases time
 	 * 
 	 * @param dist Distance to move
 	 */
 	public void move(int dist)
 	{
 		super.move(dist);
-		time++;
+		
+		time -= ParkViewProtector.framesToSecs(1);
 	}
 
 	/**
@@ -237,9 +372,6 @@ public class Attack extends Movable
 	 */
 	public void switchXY()
 	{
-		// set the graphic
-		updateSprite();
-		
 		// centers the attack
 		x = (x) - (int) this.getBounds().getWidth()/4;
 		y = (y) - (int) this.getBounds().getHeight()/4;
@@ -308,9 +440,7 @@ public class Attack extends Movable
 	 */
 	public boolean over()
 	{
-		if(time > ParkViewProtector.secsToFrames(duration))
-			return true;
-		return false;
+		return (time <= 0);
 	}
 	
 	/**
@@ -319,52 +449,59 @@ public class Attack extends Movable
 	protected void updateSprite()
 	{
 		// search for the attack graphic in the direction it is facing
-		try
+		if(!hasSprite)
 		{
-			if(direction == Direction.NORTH)
-			{
-				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_n.png");
-			}
-			else if(direction == Direction.SOUTH)
-			{
-				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_s.png");
-			}
-			else if(direction == Direction.WEST)
-			{
-				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_w.png");
-			}
-			else
-			{
-				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_e.png");
-			}
-		}
-		catch(Exception e)
-		{
-			// search for the attack that does not have direction specific graphics
 			try
-			{
-				this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + ".png");
-			}
-			// set place holder graphic if there is no available graphic
-			catch(Exception e1)
 			{
 				if(direction == Direction.NORTH)
 				{
-					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_n.png");
+					this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_n.png");
 				}
 				else if(direction == Direction.SOUTH)
 				{
-					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_s.png");
+					this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_s.png");
 				}
 				else if(direction == Direction.WEST)
 				{
-					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_w.png");
+					this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_w.png");
 				}
 				else
 				{
-					this.sprite = DataStore.INSTANCE.getSprite("attack/attack_e.png");
+					this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + "_e.png");
 				}
 			}
+			catch(Exception e)
+			{
+				// search for the attack that does not have direction specific graphics
+				try
+				{
+					this.sprite = DataStore.INSTANCE.getSprite("attack/" + name + ".png");
+				}
+				// set place holder graphic if there is no available graphic
+				catch(Exception e1)
+				{
+					if(direction == Direction.NORTH)
+					{
+						this.sprite = DataStore.INSTANCE.getSprite("attack/attack_n.png");
+					}
+					else if(direction == Direction.SOUTH)
+					{
+						this.sprite = DataStore.INSTANCE.getSprite("attack/attack_s.png");
+					}
+					else if(direction == Direction.WEST)
+					{
+						this.sprite = DataStore.INSTANCE.getSprite("attack/attack_w.png");
+					}
+					else
+					{
+						this.sprite = DataStore.INSTANCE.getSprite("attack/attack_e.png");
+					}
+				}
+			}
+		}
+		else
+		{
+			this.sprite = loadedSprite;
 		}
 	}
 

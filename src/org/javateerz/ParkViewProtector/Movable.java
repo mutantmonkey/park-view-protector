@@ -21,6 +21,7 @@ public abstract class Movable implements Serializable
 	protected Game game;
 	
 	protected double speed;
+	protected double realSpeed;
 	
 	// placement
 	protected double x;
@@ -31,6 +32,14 @@ public abstract class Movable implements Serializable
 	
 	protected transient Sprite sprite;
 	protected int moveCount;
+	
+	protected boolean slowDown		= false;
+	protected boolean slowerDown	= false;
+	
+	ArrayList<Student> students;
+	ArrayList<Couple> couples;
+	Staff player;
+	Boss boss;
 	
 	private static final long serialVersionUID = 2L;
 	
@@ -50,8 +59,26 @@ public abstract class Movable implements Serializable
 		this.y		= y;
 		
 		this.speed	= speed;
+		this.realSpeed = speed;
 		
 		this.sprite	= DataStore.INSTANCE.getSprite("placeholder.png");
+		students	= game.getStudents();
+		couples		= game.getCouples();
+		player		= game.getPlayer();
+		boss		= game.getBoss();
+	}
+	
+	/**
+	 * Moves the object a distance (which is multiplied by speed)
+	 * 
+	 * @param distX	x distance
+	 * @param distY	x distance
+	 */
+	public void moveAndTurn(int distX, int distY)
+	{
+		setDirection(distX, distY);
+		
+		move(distX, distY);
 	}
 	
 	/**
@@ -62,20 +89,9 @@ public abstract class Movable implements Serializable
 	 */
 	public void move(int distX, int distY)
 	{
-		setDirection(distX, distY);
+		float delta			= ParkViewProtector.getRenderDelta();
 		
-		move(distX, distY, 0);
-	}
-	
-	/**
-	 * Moves the object a distance (which is multiplied by speed)
-	 * 
-	 * @param distX	x distance
-	 * @param distY	x distance
-	 */
-	public void move(int distX, int distY, int any)
-	{
-		float delta			= ParkViewProtector.getRenderDeltas();
+		speedSetting();
 		
 		x				   += distX * speed * delta;
 		y				   += distY * speed * delta;
@@ -90,7 +106,9 @@ public abstract class Movable implements Serializable
 	 */
 	public void move(int dist)
 	{
-		float delta			= ParkViewProtector.getRenderDeltas();
+		float delta			= ParkViewProtector.getRenderDelta();
+		
+		speedSetting();
 		
 		double distance		= dist * speed * delta;
 
@@ -115,6 +133,17 @@ public abstract class Movable implements Serializable
 		}
 			
 		incrementMoveCount();
+	}
+	
+	/**
+	 * Move the object to a location
+	 * 
+	 * @param loc
+	 */
+	public void moveTo(Location loc)
+	{
+		this.x			= loc.getX();
+		this.y			= loc.getY();
 	}
 	
 	/**
@@ -214,16 +243,50 @@ public abstract class Movable implements Serializable
 		return direct;
 	}
 	
+	public void speedSetting()
+	{
+		if(intersectsCharacter())
+		{
+			slowDown=true;
+		}
+		else
+		{
+			slowDown=false;
+		}
+		
+		if(slowDown)
+		{
+			speed = realSpeed/2;
+		}
+		else if(slowerDown)
+		{
+			speed = realSpeed/3;
+		}
+		else
+		{
+			speed = realSpeed;
+		}
+	}
+	
+	public boolean intersectsCharacter()
+	{
+		if(intersectsStudent() || intersectsPlayer() ||
+				intersectsCouple() || intersectsBoss())
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * @param student
 	 * @return If the character intersects specified student
 	 */
-	public boolean intersects(Student student)
+	public boolean intersectsStudent()
 	{
-		ArrayList<Student> students=game.getStudents();
 		for(Student s : students)
 		{
-			if(s.getBounds().intersects(getBounds()) && s==this)
+			if(s.getBounds().intersects(getBounds()) && s!=this)
 			{
 				return true;
 			}
@@ -235,12 +298,11 @@ public abstract class Movable implements Serializable
 	 * @param couple
 	 * @return If the character intersects specified couple
 	 */
-	public boolean intersects(Couple couple)
+	public boolean intersectsCouple()
 	{
-		ArrayList<Couple> couples=game.getCouples();
 		for(Couple c : couples)
 		{
-			if(c.getBounds().intersects(getBounds()) && c==this)
+			if(c.getBounds().intersects(getBounds()) && c!=this)
 			{
 				return true;
 			}
@@ -252,11 +314,23 @@ public abstract class Movable implements Serializable
 	 * @param player
 	 * @return If the character intersects the player
 	 */
-	public boolean intersects(Staff player)
+	public boolean intersectsPlayer()
 	{
-		Staff curr=game.getPlayer();
-		if(curr.getBounds().intersects(getBounds()) && curr==this)
+		if(player != null)
 		{
+			if(player.getBounds().intersects(getBounds()) && player!=this)
+			{
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean intersectsBoss()
+	{
+		if(boss != null)
+		{
+			if(boss!=this && boss.getBounds().intersects(getBounds()))
 				return true;
 		}
 		return false;
@@ -265,24 +339,24 @@ public abstract class Movable implements Serializable
 	/**
 	 * @return The students that collided with the character
 	 */
-	public ArrayList<Student> getCollidedStudents()
+	/*public ArrayList<Student> getCollidedStudents()
 	{
 		ArrayList<Student> students=game.getStudents();
 		ArrayList<Student> colliders=new ArrayList<Student>();
 		for(Student s : students)
 		{
-			if(this.intersects(s))
+			if(this.intersectsStudent())
 			{
 				colliders.add(s);
 			}
 		}
 		return colliders;
-	}
+	}*/
 	
 	/**
 	 * @return The couples that collided with the character
 	 */
-	public ArrayList<Couple> getCollidedCouples()
+	/*public ArrayList<Couple> getCollidedCouples()
 	{
 		ArrayList<Couple> couples=game.getCouples();
 		ArrayList<Couple> colliders=new ArrayList<Couple>();
@@ -294,7 +368,7 @@ public abstract class Movable implements Serializable
 			}
 		}
 		return colliders;
-	}
+	}*/
 	
 	/**
 	 * @return Returns the speed of the object
@@ -416,9 +490,9 @@ public abstract class Movable implements Serializable
 		int newY				= (int) y;
 		
 		newX				   += (int) (distX * speed *
-				ParkViewProtector.getRenderDeltas());
+				ParkViewProtector.getRenderDelta());
 		newY				   += (int) (distY * speed *
-				ParkViewProtector.getRenderDeltas());
+				ParkViewProtector.getRenderDelta());
 		
 		
 		Rectangle bounds		= new Rectangle(newX, newY, sprite.getWidth(),
@@ -437,7 +511,7 @@ public abstract class Movable implements Serializable
 		int newY				= (int) y;
 		
 		int dist				= (int) (distance * speed *
-				ParkViewProtector.getRenderDeltas());
+				ParkViewProtector.getRenderDelta());
 		
 		// determine and change direction if necessary
 		switch(direction)
@@ -475,32 +549,32 @@ public abstract class Movable implements Serializable
 		}
 		
 		// students
-		ArrayList<Student> students = game.getStudents();
+		/*ArrayList<Student> students = game.getStudents();
 		if(students.size() > 0)
 		{
 			for(Student s : students)
 			{
 				if(!s.isStunned() && newRect.intersects(s.getBounds()))
 				{
-					if(/*!(s instanceof Student) || */s!=this)
+					if(s!=this)
 						return false;
 				}
 			}
-		}
+		}*/
 		
 		// couples
-		ArrayList<Couple> couples = game.getCouples();
+		/*ArrayList<Couple> couples = game.getCouples();
 		if(couples.size() > 0)
 		{
 			for(Couple c : couples)
 			{
 				if(!c.isStunned() && newRect.intersects(c.getBounds()))
 				{
-					if(/*!(c instanceof Couple) || */c!=this)
+					if(c!=this)
 						return false;
 				}
 			}
-		}
+		}*/
 			
 		// walls
 		ArrayList<Wall> walls=game.getWalls();
@@ -515,11 +589,11 @@ public abstract class Movable implements Serializable
 			}
 		}
 		
-		if(game.isBossLevel() && newRect.intersects(game.getBoss().getBounds()))
+		/*if(game.isBossLevel() && newRect.intersects(game.getBoss().getBounds()))
 		{
 			if(!(this instanceof Boss))
 				return false;
-		}
+		}*/
 		
 		return true;
 	}
@@ -605,16 +679,4 @@ public abstract class Movable implements Serializable
 	{
 		updateSprite();
 	}
-}
-
-
-/**
- * Direction variables
- */
-class Direction
-{
-	public static final int NORTH	= 0;
-	public static final int EAST	= 1;
-	public static final int SOUTH	= 2;
-	public static final int WEST	= 3;
 }

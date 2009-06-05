@@ -48,22 +48,26 @@ public class ParkViewProtector
 	public static boolean showMenu			= false;
 	public static boolean showOptions		= false;
 	public static boolean selectChar		= true;
+	public static boolean showCredits		= false;
 	
-	private boolean showFps					= true;
-	private long frames						= 0;
-	
-	private static Timer timer				= new Timer();
+	public static Timer timer				= new Timer();
 	private static float ticks;
-	public static float renderDeltas;
+	public static float renderDelta;
 	private static float lastTime			= timer.getTime();
+	
+	private boolean showFps					= false;
+	private long frames						= 0;
+	private float frameTime					= timer.getTime();
+	private static int fps					= 100;
 	
 	private TitleScreen title;
 	private Game game;
 	private Menu menu;
 	private OptionsMenu optMenu;
 	private CharSelect charSelect;
+	private Credits credits;
 	
-	public ParkViewProtector(boolean fullscreen)
+	public ParkViewProtector(boolean fullscreen, boolean showFps)
 	{
 		try
 		{
@@ -73,6 +77,8 @@ public class ParkViewProtector
 			{
 				Display.setFullscreen(true);
 			}
+			
+			this.showFps					= showFps;
 			
 			Display.setTitle("Park View Protector");
 			Display.create();
@@ -152,6 +158,7 @@ public class ParkViewProtector
 		menu						= new Menu(this);
 		optMenu						= new OptionsMenu(this);
 		charSelect					= new CharSelect(this);
+		credits						= new Credits(this);
 	}
 	
 	/**
@@ -163,6 +170,7 @@ public class ParkViewProtector
 		showMenu					= false;
 		showOptions					= false;
 		selectChar					= true;
+		showCredits					= false;
 		
 		init();
 	}
@@ -201,8 +209,6 @@ public class ParkViewProtector
 	 */
 	public void mainLoop()
 	{
-		int fps;
-		
 		while(running)
 		{
 			// close requested?
@@ -219,12 +225,14 @@ public class ParkViewProtector
 			
 			frames++;
 			
-			if(showFps && frames == 50)
+			if(frames == 50)
 			{
-				fps					= (int) (frames / (renderDeltas * 100));
+				fps					= (int) (frames / (timer.getTime() - frameTime));
 				frames				= 0;
+				frameTime			= timer.getTime();
 				
-				Display.setTitle("Park View Protector (fps: " + fps + ")");
+				if(showFps)
+					Display.setTitle("Park View Protector (fps: " + fps + ")");
 			}
 			
 			// render
@@ -244,7 +252,7 @@ public class ParkViewProtector
 		Timer.tick();
 		
 		ticks						= timer.getTime() - lastTime;
-		renderDeltas			   += ticks;
+		renderDelta				   += ticks;
 		lastTime					= timer.getTime();
 	}
 	
@@ -264,28 +272,39 @@ public class ParkViewProtector
 		// show rendered content
 		GL11.glFlush();
 		
-		renderDeltas				= 0;
+		renderDelta					= 0;
 	}
 	
 	/**
 	 * @return Basically, how many frames of movement to render
 	 */
-	public static float getRenderDeltas()
+	public static float getRenderDelta()
 	{
-		float delta					= renderDeltas * RENDER_SPEED;
+		float delta					= renderDelta * RENDER_SPEED;
 		
 		return delta;
 	}
 	
 	/**
+	 * Converts number of frames to number of seconds
+	 * 
+	 * @param frames Number of frames
+	 * @return Number of seconds
+	 */
+	public static double framesToSecs(int frames)
+	{
+		return (double) frames / fps;
+	}
+	
+	/**
 	 * Converts number of seconds to number of frames
 	 * 
-	 * @param Number of seconds
+	 * @param secs Number of seconds
 	 * @return Number of frames
 	 */
-	public static int secsToFrames(int secs)
+	public static int secsToFrames(double secs)
 	{
-		return (int) (secs * getRenderDeltas() * 100);
+		return (int) (secs * fps);
 	}
 	
 	/**
@@ -345,6 +364,10 @@ public class ParkViewProtector
 		else if(selectChar)
 		{
 			return charSelect;
+		}
+		else if(showCredits)
+		{
+			return credits;
 		}
 		else {
 			return game;
@@ -417,6 +440,7 @@ public class ParkViewProtector
 	{
 		boolean fullscreen				= false;
 		boolean skipIntro				= false;
+		boolean showFps					= false;
 		
 		// command line arguments
 		if(args.length > 0)
@@ -431,10 +455,14 @@ public class ParkViewProtector
 				{
 					skipIntro			= true;
 				}
+				else if(arg.equals("-showfps"))
+				{
+					showFps				= true;
+				}
 			}
 		}
 		
-		ParkViewProtector game			= new ParkViewProtector(fullscreen);
+		ParkViewProtector game			= new ParkViewProtector(fullscreen, showFps);
 		
 		game.init();
 		

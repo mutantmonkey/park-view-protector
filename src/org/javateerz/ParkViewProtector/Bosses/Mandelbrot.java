@@ -122,15 +122,15 @@ public class Mandelbrot extends Boss
 		Attack attack;
 		String		name="attack";
 		int			damage=0,
-					tp=0,
-					speed=0,
+					hits=1,
+					status=0;
+		double		speed=0,
 					duration=0,
 					reuse=duration,
 					stillTime=0,
-					hits=1,
 					hitDelay=duration,
-					status=0,
 					statusLength=0;
+					
 		AttackType type=null;
 		boolean 	isStudent=false,
 					AoE=false;
@@ -138,7 +138,6 @@ public class Mandelbrot extends Boss
 		 * FORMAT
 		 * 		name=name;
 				damage=damage;
-				tp=tp;
 				type=type;
 				speed=speed;
 				duration=duration;
@@ -156,11 +155,10 @@ public class Mandelbrot extends Boss
 			default:
 				name="rage";
 				damage=1;
-				tp=0;
 				type=AttackType.CENTER;
 				speed=0;
-				duration=100;
-				reuse=200;
+				duration=5;
+				reuse=10;
 				stillTime=duration;
 				hits=10;
 				hitDelay=duration/hits;
@@ -170,7 +168,7 @@ public class Mandelbrot extends Boss
 				AoE=true;
 				break;
 		}
-		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
 	

@@ -3,6 +3,7 @@ package org.javateerz.ParkViewProtector.Levels;
 import java.util.ArrayList;
 
 import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.Location;
 import org.javateerz.ParkViewProtector.Wall;
 import org.javateerz.ParkViewProtector.Students.*;
 
@@ -30,7 +31,12 @@ public class Level12 extends StandardLevel implements Level
 	
 	public String getMusic()
 	{
-		return "heavyset.ogg";
+		return "twice.ogg";
+	}
+	
+	public Location getStartLocation()
+	{
+		return new Location(20, 30);
 	}
 	
 	public ArrayList<Student> getStudents()

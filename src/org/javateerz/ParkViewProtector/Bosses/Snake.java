@@ -10,7 +10,8 @@ import org.javateerz.ParkViewProtector.Attack.AttackType;
 
 public class Snake extends Boss
 {
-	
+	private static final long serialVersionUID	= 1L;
+
 	public Snake(Game game, int x, int y)
 	{
 		super("snake",game, x, y, 100, 200, 1);
@@ -79,15 +80,15 @@ public class Snake extends Boss
 		Attack attack;
 		String		name="attack";
 		int			damage=0,
-					tp=0,
-					speed=0,
+					hits=1,
+					status=0;
+		double		speed=0,
 					duration=0,
 					reuse=duration,
 					stillTime=0,
-					hits=1,
 					hitDelay=duration,
-					status=0,
 					statusLength=0;
+					
 		AttackType type=null;
 		boolean 	isStudent=false,
 					AoE=false;
@@ -95,7 +96,6 @@ public class Snake extends Boss
 		 * FORMAT
 		 * 		name=name;
 				damage=damage;
-				tp=tp;
 				type=type;
 				speed=speed;
 				duration=duration;
@@ -113,10 +113,9 @@ public class Snake extends Boss
 			case 0:
 				name="fire";
 				damage=5;
-				tp=0;
 				type=AttackType.FRONT;
 				speed = (int)(Math.random()*6+1);
-				duration=500;
+				duration=5;
 				reuse=0;
 				stillTime=30;
 				hits=hits;
@@ -129,10 +128,9 @@ public class Snake extends Boss
 			case 1:
 				name="tongue";
 				damage=10;
-				tp=0;
 				type=AttackType.FAR_FRONT;
 				speed=0;
-				duration=20;
+				duration=2;
 				reuse=duration;
 				stillTime=duration;
 				hits=hits;
@@ -145,11 +143,10 @@ public class Snake extends Boss
 			case 2:
 				name="rage";
 				damage=1;
-				tp=0;
 				type=AttackType.CENTER;
 				speed=0;
-				duration=100;
-				reuse=200;
+				duration=5;
+				reuse=10;
 				stillTime=duration;
 				hits=10;
 				hitDelay=duration/hits;
@@ -162,12 +159,11 @@ public class Snake extends Boss
 		
 		if(Game.cheatMode)
 		{
-			tp=0;
 			reuse=0;
 			stillTime=2;
 		}
 		
-		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, tp, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
+		attack=new Attack(game,this.getBounds().getCenterX(), this.getBounds().getCenterY(), speed, this.getDirection(), name, isStudent, AoE, damage, duration, type, status, statusLength, stillTime, hits, hitDelay, reuse);
 		return attack;
 	}
 }

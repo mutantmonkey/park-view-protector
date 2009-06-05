@@ -3,6 +3,7 @@ package org.javateerz.ParkViewProtector.Levels;
 import java.util.ArrayList;
 
 import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.Location;
 import org.javateerz.ParkViewProtector.Wall;
 import org.javateerz.ParkViewProtector.Bosses.Boss;
 import org.javateerz.ParkViewProtector.Bosses.FatMan;
@@ -34,6 +35,11 @@ public class Level5 extends StandardLevel implements BossLevel, Level
 	public String getMusic()
 	{
 		return "bloated.ogg";
+	}
+	
+	public Location getStartLocation()
+	{
+		return new Location(100, 100);
 	}
 	
 	public ArrayList<Student> getStudents()

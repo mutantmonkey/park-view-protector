@@ -28,11 +28,12 @@ public class CharSelect extends GameScreen implements KeyListener
 		nameFont						= new TrueTypeFont(new java.awt.Font(
 				"System", java.awt.Font.PLAIN, 32), true);
 		
-		choices							= new Staff[3];
+		choices							= new Staff[4];
 		choices[0]						= new Stark(driver.getGame(), CHAR_X, CHAR_Y);
-		choices[1]						= new SpecialCharacter(driver.getGame(), CHAR_X,
+		choices[1]						= new Frau(driver.getGame(), CHAR_X, CHAR_Y);
+		choices[2]						= new SpecialCharacter(driver.getGame(), CHAR_X,
 				CHAR_Y);
-		choices[2]						= new Jamie(driver.getGame(), CHAR_X, CHAR_Y);
+		choices[3]						= new Jamie(driver.getGame(), CHAR_X, CHAR_Y);
 	}
 	
 	public void keyPressed(int key, char c)

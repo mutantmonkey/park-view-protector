@@ -48,12 +48,12 @@ public class Stark extends Staff
 		int			damage=0,
 					tp=0,
 					speed=0,
-					duration=0,
-					reuse=duration,
-					stillTime=0,
 					hits=1,
+					status=0;
+		double		duration=0,
+					stillTime=0,
+					reuse=duration,
 					hitDelay=duration,
-					status=0,
 					statusLength=0;
 		AttackType type = null;
 		boolean 	isEnemy=true,
@@ -83,8 +83,8 @@ public class Stark extends Staff
 				tp=10;
 				type=AttackType.FRONT;
 				speed=10;
-				duration=40;
-				reuse=30;
+				duration=1;
+				reuse=duration;
 				stillTime=stillTime;
 				hits=hits;
 				hitDelay=duration/hits;
@@ -99,9 +99,9 @@ public class Stark extends Staff
 				tp=10;
 				type=AttackType.FRONT;
 				speed=0;
-				duration=20;
-				reuse=25;
-				stillTime=duration;
+				duration=0.3;
+				reuse=duration + 0.08;
+				stillTime=duration + .02;
 				hits=hits;
 				hitDelay=duration/hits;
 				status=status;
@@ -110,18 +110,19 @@ public class Stark extends Staff
 				AoE=true;
 				break;
 			case 2:
+				// FIXME: "good freakin' night" > "good night"
 				name="goodnight";
 				damage=3;
 				tp=30;
 				type=AttackType.CENTER;
 				speed=0;
-				duration=50;
-				reuse=duration;
-				stillTime=duration;
+				duration=1.5;
+				reuse=duration + 0.3;
+				stillTime=duration + 0.1;
 				hits=3;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=100;
+				statusLength=5;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;

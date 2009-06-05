@@ -122,10 +122,10 @@ public abstract class Character extends Movable
 	 * 
 	 * @param amount
 	 */
-	public void setInvulFrames(int amount)
+	public void setInvulFrames(double amount)
 	{
 		invulFrames=ParkViewProtector.secsToFrames(amount) + 1;
-		if(amount>0)
+		if(invulFrames>0)
 			invul=true;
 	}
 	
@@ -134,10 +134,10 @@ public abstract class Character extends Movable
 	 * 
 	 * @param amount
 	 */
-	public void setStunFrames(int amount)
+	public void setStunFrames(double amount)
 	{
 		stunFrames=ParkViewProtector.secsToFrames(amount);
-		if(amount>0)
+		if(stunFrames>0)
 			stunned=true;
 	}
 	
@@ -146,10 +146,10 @@ public abstract class Character extends Movable
 	 * 
 	 * @param amount
 	 */
-	public void setAttackFrames(int amount)
+	public void setAttackFrames(double amount)
 	{
 		attackFrames=ParkViewProtector.secsToFrames(amount);
-		if(amount>0)
+		if(attackFrames>0)
 			attacking=true;
 	}
 	
@@ -157,10 +157,10 @@ public abstract class Character extends Movable
 	 * Sets time for the character to attack again
 	 * @param amount
 	 */
-	public void setAgainFrames(int amount)
+	public void setAgainFrames(double amount)
 	{
 		againFrames=ParkViewProtector.secsToFrames(amount);
-		if(amount>0)
+		if(againFrames>0)
 			again=true;
 	}
 	
@@ -231,18 +231,18 @@ public abstract class Character extends Movable
 	/**
 	 * @return If the character is pushing
 	 */
-	public boolean isPushing()
+	/*public boolean isPushing()
 	{
 		return pushing;
-	}
+	}*/
 	
 	/**
 	 * @return The other character that is being pushed
 	 */
-	public Character getPushee()
+	/*public Character getPushee()
 	{
 		return pushee;
-	}
+	}*/
 	
 	public int statusIndex(String name)
 	{
@@ -321,7 +321,7 @@ public abstract class Character extends Movable
 	 * 
 	 * 		Does not work when an object is colliding with 2 players! D:
 	 */
-	public void push(Character c)
+	/*public void push(Character c)
 	{
 		pushing = true;
 		double	temp1=getSpeed(),
@@ -416,7 +416,7 @@ public abstract class Character extends Movable
 		}
 		setSpeed(temp1);
 		c.setSpeed(temp2);
-	}
+	}*/
 
 	
 	/**
@@ -429,7 +429,7 @@ public abstract class Character extends Movable
 		int speed					= Game.MOVE_SPEED;
 		int changeMoves				= (int) (Math.random() * (Game.MAX_NUM_MOVES - Game.MIN_NUM_MOVES) +
 				Game.MIN_NUM_MOVES + 1);
-		changeMoves				   /= ParkViewProtector.getRenderDeltas();
+		changeMoves				   /= ParkViewProtector.getRenderDelta();
 		
 		// change direction if the move count exceeds the number of moves to change after
 		if(getMoveCount() <= 0 || getMoveCount() > changeMoves)
@@ -468,18 +468,10 @@ public abstract class Character extends Movable
 		}
 		
 		// check for collisions
-		if(getNewBounds(speed).intersects(game.getPlayer().getBounds())
-				|| !this.canMove(getNewBounds(speed)))
+		if(!this.canMove(getNewBounds(speed)))
 		{
 			// collision, must choose new direction
-			
-			if(this instanceof Character && getNewBounds(speed).intersects(game.getPlayer().getBounds()))
-			{
-				this.push(game.getPlayer());
-				incrementMoveCount();
-			}
-			else
-				resetMoveCount();
+			resetMoveCount();
 		}
 		
 		else
@@ -512,9 +504,9 @@ public abstract class Character extends Movable
 			int newY			= (int) y;
 			
 			newX			   += (int) Math.ceil(distX * speed *
-					ParkViewProtector.getRenderDeltas());
+					ParkViewProtector.getRenderDelta());
 			newY			   += (int) Math.ceil(distY * speed *
-					ParkViewProtector.getRenderDeltas());
+					ParkViewProtector.getRenderDelta());
 			
 			Rectangle bounds;
 		
@@ -541,7 +533,7 @@ public abstract class Character extends Movable
 			int newY			= (int) y;
 			
 			int dist			= (int) (distance * speed *
-					ParkViewProtector.getRenderDeltas());
+					ParkViewProtector.getRenderDelta());
 			
 			// determine and change direction if necessary
 			switch(direction)

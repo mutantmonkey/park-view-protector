@@ -171,7 +171,7 @@ public abstract class Staff extends Character
 	public void tpRegen()
 	{
 		tpRegenRate+=1;
-		if(tpRegenRate>=TP_REGEN_RATE / ParkViewProtector.getRenderDeltas())
+		if(tpRegenRate>=TP_REGEN_RATE / ParkViewProtector.getRenderDelta())
 		{
 			if(game.getPlayer().getTp()<game.getPlayer().getMaxTp())
 				game.getPlayer().adjustTp(TP_REGEN);
@@ -284,12 +284,4 @@ public abstract class Staff extends Character
 	{
 		os.defaultWriteObject();
 	}
-}
-
-class Stats
-{
-	public static final int STARK_HP=100;
-	public static final int STARK_TP=100;
-	public static final int SPECIAL_HP=50;
-	public static final int SPECIAL_TP=300;
 }

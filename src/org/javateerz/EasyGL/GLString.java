@@ -84,4 +84,19 @@ public class GLString extends GLObject
 		
 		font.drawString(x, y, text, color);
 	}
+	
+	/**
+	 * Draws the menu item centered on the graphics context
+	 * 
+	 * @param x X position
+	 * @param y Y position
+	 */
+	public void drawCentered(int x, int y)
+	{
+		// center the string
+		int width			= getBounds().getWidth();
+		x				   -= width / 2;
+		
+		draw(x, y);
+	}
 }

@@ -21,6 +21,9 @@ public class Jamie extends Staff
 	private static final double SPEED= 5.0;
 	private static final int MAX_HP = 100;
 	private static final int MAX_TP = 60;
+	
+	private int lawnTick		= 0;
+	private final int LAWN_MAX	= 20;
 	private static final long serialVersionUID = 1L;
 	
 	public Jamie(Game g, int x, int y)
@@ -47,12 +50,12 @@ public class Jamie extends Staff
 		int			damage=0,
 					tp=0,
 					speed=0,
-					duration=0,
-					reuse=duration,
-					stillTime=0,
 					hits=1,
+					status=0;
+		double		duration=0,
+					stillTime=0,
+					reuse=duration,
 					hitDelay=duration,
-					status=0,
 					statusLength=0;
 		AttackType type=null;
 		boolean 	isEnemy=true,
@@ -78,17 +81,32 @@ public class Jamie extends Staff
 		{
 			case 0:
 				name="lawnmower";
-				damage=100;
-				tp=0;
+				damage=3;
+				if(getTp()>40)
+				{
+					if(lawnTick>=LAWN_MAX)
+					{
+						tp=5;
+						lawnTick=0;
+					}
+					else
+					{
+						lawnTick++;
+					}
+				}
+				else
+				{
+					tp=99999;
+				}
 				type=AttackType.FRONT;
 				speed=0;
 				duration=0;
 				reuse=0;
 				stillTime=0;
 				hits=1;
-				hitDelay=300;
-				status=Status.STUN;
-				statusLength=50;
+				hitDelay=0.1;
+				status=Status.NONE;
+				statusLength=0;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;
@@ -98,13 +116,13 @@ public class Jamie extends Staff
 				type=AttackType.CENTER;
 				tp=250;
 				speed=0;
-				duration=40;
-				reuse=10;
+				duration=1;
+				reuse=5;
 				stillTime=stillTime;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.INVULNERABLE;
-				statusLength=200;
+				statusLength=20;
 				isEnemy=false;
 				AoE=true;
 				break;
@@ -116,11 +134,11 @@ public class Jamie extends Staff
 				speed=0;
 				duration=1;
 				reuse=50;
-				stillTime=40;
+				stillTime=1;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=300;
+				statusLength=10;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;

@@ -15,6 +15,8 @@ import org.javateerz.ParkViewProtector.Menu.GameOver;
 import org.javateerz.ParkViewProtector.Staff.Staff;
 import org.javateerz.ParkViewProtector.Students.Student;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.KeyListener;
 
 public class Game extends GameScreen implements KeyListener, Serializable
@@ -23,8 +25,6 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public static final int MOVE_SPEED			= 1;
 	
 	// delay (in number of frames) before another attack can be used
-	// FIXME: should probably go in Staff
-	public static final int ATTACK_DELAY		= 20;
 	public static final int ITEM_USE_DELAY		= 20;
 	private int itemDelay						= 0;
 	public static final int TP_REGEN			= 5;
@@ -32,7 +32,9 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public static final int ICON_X_OFFSET		= 28;
 	public static final int ICON_Y_OFFSET		= 38;
 	public static final int ICON_SPACING		= 30;
+	public static final double HIT_BLIP_TIME	= 0.5;
 	
+	public static final int MIN_LEVEL			= 1;
 	public static final int MAX_LEVEL			= 15;
 	
 	////////////////////////////////////////////////////
@@ -53,8 +55,9 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public static final int DECOUPLE_SPACING	= 40;
 	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
 	
-	public static final int PLAYER_X			= 10;
-	public static final int PLAYER_Y			= 30;
+	public static final double TRANSITION_SECS	= 3;
+	public double transitionSecs				= 0;
+	
 	public static double hpPercent;
 	public static double tpPercent;
 	
@@ -67,11 +70,12 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	private transient GameOver gameOver;
 	private transient Statistics stats;
 	
-	private int levelNum						= 1;
+	private int levelNum						= MIN_LEVEL;
 	
 	
 	private transient Boss boss;
 	private transient Level level;
+	private transient Sprite levelComplete;
 	private transient Sprite background;
 	private transient ArrayList<Wall> walls;
 	
@@ -103,6 +107,8 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	
 	public void initGraphics()
 	{
+		levelComplete				= DataStore.INSTANCE.getSprite("level_complete.png");
+		
 		stun						= new StatusIcon(this, Status.STUN);
 		invul						= new StatusIcon(this, Status.INVULNERABLE);
 		
@@ -284,7 +290,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public void setPlayer(Staff player)
 	{
 		this.player					= player;
-		this.player.moveTo(PLAYER_X, PLAYER_Y);
+		this.player.moveTo(level.getStartLocation());
 		
 		initGraphics();
 	}
@@ -310,29 +316,30 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		return true;
 	}
 	
+	public void runOpening()
+	{
+		words = new OpeningWords();
+		words.init();;
+		while(words.running)
+		{
+			words.step();
+			words.draw();
+		}
+	}
+	
 	public void step()
 	{
-		addKeyListener(this);
-		poll();
-		
 		//////////////////////////////////////////////////////////////////////////////////
 		// Are we dead?
 		//////////////////////////////////////////////////////////////////////////////////
 		
-		if(player.getHp() <= 0)
+		if(player.getHp() <= 0 || transitionSecs > 0)
 		{
 			return;
 		}
 		
-		if(words != null)
-		{
-			words.step();
-			if(!words.running)
-			{
-				words = null;
-			}
-			return;
-		}
+		addKeyListener(this);
+		poll();
 		
 		//////////////////////////////////////////////////////////////////////////////////
 		// Draw students
@@ -342,8 +349,8 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		
 		for(int i = 0; i < students.size(); i++)
 		{
-			currStudent			= students.get(i);
-			currStudent.step(this);
+			currStudent		= students.get(i);
+			currStudent.step();
 		}
 		
 		//////////////////////////////////////////////////////////////////////////////////
@@ -472,17 +479,18 @@ public class Game extends GameScreen implements KeyListener, Serializable
 				// set direction even though we cannot move
 				player.setDirection(distX, distY);
 				
-				for(int i=0; i<students.size(); i++)
+				/*for(int i=0; i<students.size(); i++)
 				{
 					Student s = students.get(i);
 					if(player.getNewBounds(MOVE_SPEED).intersects(s.getBounds()))
 					{
 						player.push(students.get(i));
 					}
-				}
+				}*/
 			}
-			else {
-				player.move(distX, distY);
+			else if(player.canMove(player.getNewBounds(distX, distY)))
+			{
+				player.moveAndTurn(distX, distY);
 			}
 		}
 		
@@ -569,13 +577,30 @@ public class Game extends GameScreen implements KeyListener, Serializable
 				advanceLevel();
 			}
 			else
-				gameOver();
+				ParkViewProtector.showCredits = true;
 		}
 	}
 	
+	public void showTransition()
+	{
+		levelComplete.draw(0, 0);
+		
+		transitionSecs	   -= ParkViewProtector.framesToSecs(1);
+	}
+	
+	/**
+	 * Advance to the next level
+	 */
 	public void advanceLevel()
 	{
 		levelNum++;
+		
+		transitionSecs		= TRANSITION_SECS;
+		showTransition();
+		
+		// XXX: hack to force the display to update - shhh!
+		GL11.glFlush();
+		Display.update();
 		
 		initGame();
 		
@@ -583,6 +608,8 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		attacks				= new ArrayList<Attack>();
 		items				= new ArrayList<Item>();
 		fx					= new ArrayList<VisualFX>();
+		
+		player.moveTo(level.getStartLocation());
 	}
 	
 	public void draw()
@@ -601,6 +628,16 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		}
 		
 		//////////////////////////////////////////////////////////////////////////////////
+		// Showing a transition?
+		//////////////////////////////////////////////////////////////////////////////////
+		
+		if(transitionSecs > 0)
+		{
+			showTransition();
+			return;
+		}
+		
+		//////////////////////////////////////////////////////////////////////////////////
 		// Draw Background
 		//////////////////////////////////////////////////////////////////////////////////
 		
@@ -613,12 +650,6 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		for(Wall w : walls)
 		{
 			w.draw();
-		}
-		
-		if(words != null)
-		{
-			words.draw();
-			return;
 		}
 		
 		//////////////////////////////////////////////////////////////////////////////////
@@ -726,7 +757,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	
 	public void hitFX(int x, int y)
 	{
-		VisualFX effect=new VisualFX(this, "blip", 10);
+		VisualFX effect=new VisualFX(this, "blip", HIT_BLIP_TIME);
 		effect.moveTo(x-effect.getBounds().getWidth()/2, y-effect.getBounds().getHeight()/2);
 		fx.add(effect);
 	}

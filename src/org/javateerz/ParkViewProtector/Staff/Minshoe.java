@@ -40,12 +40,12 @@ public class Minshoe extends Staff
 		int			damage=0,
 					tp=0,
 					speed=0,
-					duration=0,
-					reuse=duration,
-					stillTime=0,
 					hits=1,
+					status=0;
+		double		duration=0,
+					stillTime=0,
+					reuse=duration,
 					hitDelay=duration,
-					status=0,
 					statusLength=0;
 		AttackType type=null;
 		boolean 	isStudent=false,
@@ -75,7 +75,7 @@ public class Minshoe extends Staff
 				tp=tp;
 				type=AttackType.FRONT;
 				speed=0;
-				duration=1000;
+				duration=10;
 				reuse=duration;
 				stillTime=50;
 				hits=1;
