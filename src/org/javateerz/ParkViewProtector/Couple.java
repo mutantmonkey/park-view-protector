@@ -269,7 +269,7 @@ public class Couple extends Character
 					male.setInvulFrames(attack.getHitDelay());
 					male.setHp(-10);
 					
-					newX		= (int) x + Game.DECOUPLE_SPACING;
+					newX		= (int) x;
 					newY		= (int) y;
 					
 					// FEMALE

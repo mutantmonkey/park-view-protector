@@ -52,7 +52,6 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	public static final int MIN_NUM_MOVES		= 10;
 	public static final int MAX_NUM_MOVES		= 400;
 	
-	public static final int DECOUPLE_SPACING	= 40;
 	public static final int COUPLE_CHANCE_MULTIPLIER = 400;
 	
 	public static final double TRANSITION_SECS	= 3;
