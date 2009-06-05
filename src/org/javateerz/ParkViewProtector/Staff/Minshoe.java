@@ -10,17 +10,25 @@
 package org.javateerz.ParkViewProtector.Staff;
 
 import org.javateerz.ParkViewProtector.Attack;
+import org.javateerz.ParkViewProtector.DataStore;
 import org.javateerz.ParkViewProtector.Game;
+import org.javateerz.ParkViewProtector.Status;
 import org.javateerz.ParkViewProtector.Attack.AttackType;
 
 public class Minshoe extends Staff
 {
 	public static final String CHAR_NAME		= "Dr. 'Minshoe'";
 	
-	private static final double SPEED= 1.0;
-	private static final int MAX_TP = 0;
-	private static final int MAX_HP = 0;
+	private static final double SPEED= 1.7;
+	private static final int MAX_TP = 140;
+	private static final int MAX_HP = 111;
 	private static final long serialVersionUID = 3L;
+	
+	public Minshoe(Game g, int x, int y)
+	{
+		super(CHAR_NAME, g, x, y, MAX_HP, MAX_HP, SPEED, MAX_TP, MAX_TP);
+		updateSprite();
+	}
 	
 	public Minshoe(Game g, int x, int y, int hp, int tp)
 	{
@@ -28,10 +36,10 @@ public class Minshoe extends Staff
 		updateSprite();
 	}
 
-	/*protected void updateSprite()
+	protected void updateSprite()
 	{
 		sprite = DataStore.INSTANCE.getSprite("staff/minshoe.png");
-	}*/
+	}
 	
 	public Attack getAttack(int i)
 	{
@@ -48,7 +56,7 @@ public class Minshoe extends Staff
 					hitDelay=duration,
 					statusLength=0;
 		AttackType type=null;
-		boolean 	isStudent=false,
+		boolean 	isStudent=true,
 					AoE=false;
 		/*
 		 * FORMAT
@@ -71,13 +79,13 @@ public class Minshoe extends Staff
 		{
 			case 0:
 				name="tardy";
-				damage=20;
-				tp=tp;
-				type=AttackType.FRONT;
+				damage=10;
+				tp=20;
+				type=AttackType.FAR_FRONT;
 				speed=0;
-				duration=10;
+				duration=.5;
 				reuse=duration;
-				stillTime=50;
+				stillTime=.5;
 				hits=1;
 				hitDelay=duration;
 				status=status;
@@ -87,14 +95,14 @@ public class Minshoe extends Staff
 				break;
 			case 1:
 				name="detention";
-				damage=damage;
-				tp=tp;
-				type=type;
-				speed=speed;
-				duration=duration;
-				reuse=reuse;
-				stillTime=stillTime;
-				hits=hits;
+				damage=5;
+				tp=70;
+				type=AttackType.CENTER;
+				speed=0;
+				duration=4;
+				reuse=4.5;
+				stillTime=3;
+				hits=10;
 				hitDelay=duration/hits;
 				status=status;
 				statusLength=statusLength;
@@ -103,17 +111,17 @@ public class Minshoe extends Staff
 				break;
 			case 2:
 				name="announcement";
-				damage=damage;
-				tp=tp;
-				type=type;
-				speed=speed;
-				duration=duration;
-				reuse=reuse;
-				stillTime=stillTime;
-				hits=hits;
+				damage=0;
+				tp=50;
+				type=AttackType.CENTER;
+				speed=0;
+				duration=10;
+				reuse=15;
+				stillTime=3;
+				hits=10;
 				hitDelay=duration/hits;
-				status=status;
-				statusLength=statusLength;
+				status=Status.STUN;
+				statusLength=10;
 				isStudent=isStudent;
 				AoE=AoE;
 				break;

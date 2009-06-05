@@ -82,7 +82,7 @@ public class Frau extends Staff
 				tp=10;
 				type=AttackType.FRONT;
 				speed=0;
-				duration=0.7;
+				duration=0.6;
 				reuse=duration + 0.2;
 				stillTime=duration;
 				hits=hits;
