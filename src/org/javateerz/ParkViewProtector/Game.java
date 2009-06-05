@@ -316,17 +316,6 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		return true;
 	}
 	
-	public void runOpening()
-	{
-		words = new OpeningWords();
-		words.init();;
-		while(words.running)
-		{
-			words.step();
-			words.draw();
-		}
-	}
-	
 	public void step()
 	{
 		//////////////////////////////////////////////////////////////////////////////////
@@ -340,6 +329,16 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		
 		addKeyListener(this);
 		poll();
+		
+		if(words != null)
+		{
+			words.step();
+			if(!words.running)
+			{
+				words = null;
+			}
+			return;
+		}
 		
 		//////////////////////////////////////////////////////////////////////////////////
 		// Draw students
@@ -624,6 +623,12 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		if(player.getHp() <= 0)
 		{
 			gameOver();
+			return;
+		}
+		
+		if(words != null)
+		{
+			words.draw();
 			return;
 		}
 		
