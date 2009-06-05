@@ -3,7 +3,7 @@
 import os
 from PIL import Image
 
-student_types = ["band", "gangster", "goth", "science", "sport"] # add rocker when female graphic is available
+student_types = ["band", "gangster", "goth", "science", "sport", "rocker"]
 
 for female in student_types:
 	for male in student_types:
