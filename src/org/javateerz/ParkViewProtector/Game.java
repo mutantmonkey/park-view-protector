@@ -69,6 +69,7 @@ public class Game extends GameScreen implements KeyListener, Serializable
 	
 	private int levelNum						= 1;
 	
+	
 	private transient Boss boss;
 	private transient Level level;
 	private transient Sprite background;
