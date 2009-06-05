@@ -80,7 +80,7 @@ public class Stark extends Staff
 			case 0:
 				name="physball";
 				damage=10;
-				tp=10;
+				tp=12;
 				type=AttackType.FRONT;
 				speed=10;
 				duration=1;
@@ -96,7 +96,7 @@ public class Stark extends Staff
 			case 1:
 				name="meterstick";
 				damage=15;
-				tp=10;
+				tp=17;
 				type=AttackType.FRONT;
 				speed=0;
 				duration=0.3;
@@ -113,7 +113,7 @@ public class Stark extends Staff
 				// FIXME: "good freakin' night" > "good night"
 				name="goodnight";
 				damage=3;
-				tp=30;
+				tp=20;
 				type=AttackType.CENTER;
 				speed=0;
 				duration=1.5;

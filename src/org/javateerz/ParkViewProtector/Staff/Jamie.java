@@ -128,17 +128,17 @@ public class Jamie extends Staff
 				break;
 			case 2:
 				name="clarinet";
-				damage=1;
-				tp=25;
+				damage=8;
+				tp=10;
 				type=AttackType.CENTER;
-				speed=0;
-				duration=1;
-				reuse=50;
-				stillTime=1;
+				speed=10;
+				duration=.6;
+				reuse=duration + 0.3;
+				stillTime=duration;
 				hits=1;
 				hitDelay=duration/hits;
 				status=Status.STUN;
-				statusLength=10;
+				statusLength=.3;
 				isEnemy=isEnemy;
 				AoE=true;
 				break;
