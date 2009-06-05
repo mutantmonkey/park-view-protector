@@ -602,10 +602,12 @@ public class Game extends GameScreen implements KeyListener, Serializable
 		
 		initGame();
 		
+		students.clear();
+		attacks.clear();
+		items.clear();
+		fx.clear();
+		
 		students			= level.getStudents();
-		attacks				= new ArrayList<Attack>();
-		items				= new ArrayList<Item>();
-		fx					= new ArrayList<VisualFX>();
 		
 		player.moveTo(level.getStartLocation());
 	}
