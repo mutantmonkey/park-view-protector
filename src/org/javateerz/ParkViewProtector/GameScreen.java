@@ -29,7 +29,7 @@ public abstract class GameScreen extends Input
 	{
 		try
 		{
-			bgMusic									= new Music(file);
+			bgMusic									= new Music(ParkViewProtector.SOUND_PATH + file);
 			
 			// set volume
 			bgMusic.setVolume(Options.INSTANCE.getFloat("music_volume", 0.8f));

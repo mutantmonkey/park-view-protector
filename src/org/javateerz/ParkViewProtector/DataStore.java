@@ -25,7 +25,7 @@ public enum DataStore
 		Sprite sprite = null;
 		try
 		{
-			sprite = new Sprite(file);
+			sprite = new Sprite(ParkViewProtector.SPRITE_PATH + file);
 		}
 		catch(SlickException e)
 		{

@@ -26,6 +26,9 @@ public class ParkViewProtector
 {
 	public static final int WIDTH			= 800;
 	public static final int HEIGHT			= 600;
+
+	public static final String SPRITE_PATH	= "images/";
+	public static final String SOUND_PATH	= "sounds/";
 	
 	// colors
 	public static final Color COLOR_BG_1	= new Color(255, 0, 255);
@@ -381,7 +384,7 @@ public class ParkViewProtector
 	 */
 	public static void playSound(String file) throws SlickException
 	{
-		Sound sound							= new Sound(file);
+		Sound sound							= new Sound(SOUND_PATH + file);
 		
 		sound.play(1.0f, Options.INSTANCE.getFloat("sfx_volume", 1.0f));
 	}
