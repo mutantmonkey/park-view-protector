@@ -1,0 +1,10 @@
+.DS_Store
+*~
+*.swp
+Thumbs.db
+*.class
+
+/native
+/*.jar
+/pvp.jpg
+
